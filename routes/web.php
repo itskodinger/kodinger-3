@@ -34,4 +34,5 @@ Route::get('auth/{provider}/callback', 'Auth\AuthController@handleProviderCallba
 Route::group(['middleware' => 'auth', 'prefix' => 'comments', 'as' => 'comments.'], function() 
 {
 	Route::post('/', 'CommentController@store')->name('store');
+	Route::get('/{post_id}', 'CommentController@index')->name('index');
 });

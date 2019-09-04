@@ -7649,6 +7649,14 @@ body {
   background-position: 10px center;
 }
 
+.comment-msg pre {
+  margin-top: 0.5rem;
+  padding: 1.25rem;
+  color: #fff;
+  background-color: #3c366b;
+  border-radius: 0.25rem;
+}
+
 @media (min-width: 640px) {
   .sm\:appearance-none {
     -webkit-appearance: none;

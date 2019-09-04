@@ -71,7 +71,7 @@
     </div>
 
     <!-- Scripts -->
-    <script src="{{ mix('js/app.js') }}"></script>
+    <script src="{{ url('js/app.js') }}"></script>
 
     @stack('js')
 </body>

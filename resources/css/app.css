@@ -103,3 +103,12 @@ body {
 	background-repeat: no-repeat;
 	background-position: 10px center;
 }
+
+.comment-msg pre {
+	@apply
+		mt-2
+		p-5
+		text-white
+		bg-indigo-900
+		rounded;
+}

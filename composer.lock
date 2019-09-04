@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bddcdab5516b9e24331ff016a329c78f",
+    "content-hash": "fee551654e57c371783d7af0d8e14890",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -611,22 +611,22 @@
         },
         {
             "name": "graham-campbell/markdown",
-            "version": "v11.0.0",
+            "version": "v11.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/GrahamCampbell/Laravel-Markdown.git",
-                "reference": "90f68debfc6611654b16efc5539f5a3b597d55d9"
+                "reference": "80f545b417db2103122c7f094bfa5bb2444b28e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GrahamCampbell/Laravel-Markdown/zipball/90f68debfc6611654b16efc5539f5a3b597d55d9",
-                "reference": "90f68debfc6611654b16efc5539f5a3b597d55d9",
+                "url": "https://api.github.com/repos/GrahamCampbell/Laravel-Markdown/zipball/80f545b417db2103122c7f094bfa5bb2444b28e1",
+                "reference": "80f545b417db2103122c7f094bfa5bb2444b28e1",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "5.5.*|5.6.*|5.7.*|5.8.*",
-                "illuminate/support": "5.5.*|5.6.*|5.7.*|5.8.*",
-                "illuminate/view": "5.5.*|5.6.*|5.7.*|5.8.*",
+                "illuminate/contracts": "^5.5|^6.0",
+                "illuminate/support": "^5.5|^6.0",
+                "illuminate/view": "^5.5|^6.0",
                 "league/commonmark": "^1.0",
                 "php": "^7.1.3"
             },
@@ -640,7 +640,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "11.0-dev"
+                    "dev-master": "11.1-dev"
                 },
                 "laravel": {
                     "providers": [
@@ -675,7 +675,7 @@
                 "laravel",
                 "markdown"
             ],
-            "time": "2019-07-01T22:59:29+00:00"
+            "time": "2019-08-26T16:31:24+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",

@@ -30,7 +30,7 @@
                     <div class="ml-3 w-full">\
                         <p class="mx-1 text-blue-500 text-xs font-semibold float-right cmt-time">Baru saja</p>\
                         <h4 class="mb-1 font-bold text-sm">{{ auth()->user()->name }} <span class="text-gray-600 font-normal">({{ auth()->user()->the_username }})</span></h4>\
-                        <div class="text-sm text-gray-700">\
+                        <div class="text-sm text-gray-700 comment-msg">\
                             <p>{msg}</p>\
                         </div>\
                     </div>\
@@ -82,12 +82,23 @@
             xhr.send('content=' + msg + '&post_id='+{{$post->id}});
         }
 
-        @if($post->comments)
-            @foreach($post->comments as $comment)
-            comment_add('{{ $comment->content }}', function(item) {
-                item.$('.cmt-time').innerHTML = '{{ $comment->time }}'
-            });
-            @endforeach
-        @endif
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == XMLHttpRequest.DONE) {
+                let res = xhr.responseText;
+                if(res)
+                    res = JSON.parse(res);
+
+                res.data.forEach((item) => {
+                    comment_add(item.content, function(cmt) {
+                        cmt.$('.cmt-time').innerHTML = item.time;
+                    });
+                });
+            }
+        }
+        xhr.open("get", "{{ route('comments.index', $post->id) }}", true);
+        xhr.setRequestHeader("Accept", "application/json");
+        xhr.send();
+
     </script>
 @endpush
