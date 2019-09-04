@@ -30,3 +30,8 @@ Route::post('/posts', 'PostController@store')->name('post.store');
 
 Route::get('auth/{provider}', 'Auth\AuthController@redirectToProvider')->name('auth');
 Route::get('auth/{provider}/callback', 'Auth\AuthController@handleProviderCallback');
+
+Route::group(['middleware' => 'auth', 'prefix' => 'comments', 'as' => 'comments.'], function() 
+{
+	Route::post('/', 'CommentController@store')->name('store');
+});

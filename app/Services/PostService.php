@@ -9,7 +9,7 @@ class PostService
 {
 	public function model()
 	{
-		return Post::with(['tags', 'tags.tag', 'user']);
+		return Post::with(['tags', 'tags.tag', 'user', 'comments']);
 	}
 
 	public function paginate($num=10)
