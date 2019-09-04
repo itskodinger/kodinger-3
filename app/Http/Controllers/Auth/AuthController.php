@@ -56,10 +56,16 @@ class AuthController extends Controller
             $data = User::create([
                 'name'     => $user->name,
                 'email'    => !empty($user->email)? $user->email : '' ,
-                'username' => (explode('@', $user->email))[0] . uniqid(),
+                'username' => $user->nickname,
                 'provider' => $provider,
                 'provider_id' => $user->id,
-                'avatar' => $user->getId() . '.jpg'
+                'avatar' => $user->getId() . '.jpg',
+                'bio' => $user->user['bio'],
+                'link' => $user->user['blog'],
+                'location' => $user->user['location'],
+                'hireable' => $user->user['hireable'],
+                'github' => $user->user['html_url'],
+                'company' => $user->user['company'],
             ]);
             return $data;
         }
