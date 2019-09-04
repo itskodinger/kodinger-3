@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Services\CommentService;
 use Requests\CommentCreateRequest;
-use GrahamCampbell\Markdown\Facades\Markdown;
 
 class CommentController extends Controller
 {
@@ -21,11 +20,6 @@ class CommentController extends Controller
 	{
 		$comments = $this->comment_service->take($post_id, 0, 10);
 
-		$comments->each(function($item) {
-			$item->content = Markdown::convertToHtml($item->content);
-			$item->time = $item->created_at->diffForHumans();
-		});
-
 		return response([
 			'data' => $comments
 		], 200);
@@ -38,6 +32,23 @@ class CommentController extends Controller
 
     	return response([
     		'data' => $comment
+    	], 200);
+    }
+
+    public function destroy(Request $request)
+    {
+    	$comment = $this->comment_service->find($request->id);
+
+    	if($comment->user_id == auth()->user()->id) {
+    		$comment->delete();
+
+    		return response([
+    			'status' => true
+    		], 200);
+    	}
+
+    	return response([
+    		'status' => false
     	], 200);
     }
 }

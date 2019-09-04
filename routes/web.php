@@ -35,4 +35,5 @@ Route::group(['middleware' => 'auth', 'prefix' => 'comments', 'as' => 'comments.
 {
 	Route::post('/', 'CommentController@store')->name('store');
 	Route::get('/{post_id}', 'CommentController@index')->name('index');
+	Route::delete('/delete', 'CommentController@destroy')->name('destroy');
 });

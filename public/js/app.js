@@ -23,3 +23,13 @@ Object.prototype.removes = function(str)
 		me.remove(item);
 	});
 }
+
+Object.prototype.adds = function(str)
+{
+	let me = this;
+	str = str.split(' ');
+
+	str.forEach((item) => {
+		me.add(item);
+	});
+}

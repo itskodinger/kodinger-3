@@ -24,25 +24,33 @@
 @push('js')
     <script>
         let comment_tmp = '\
-            <div class="px-6 py-3 bg-gray-100 rounded-bl rounded-br">\
+            <div class="px-6 py-3 bg-gray-100 rounded-bl rounded-br cmt-{id}">\
                 <div class="flex">\
-                    <img class="rounded-full w-10 h-10 flex-shrink-0" src="{{ auth()->user()->the_avatar }}">\
+                    <img class="rounded-full w-10 h-10 flex-shrink-0" src="{avatar}">\
                     <div class="ml-3 w-full">\
-                        <p class="mx-1 text-blue-500 text-xs font-semibold float-right cmt-time">Baru saja</p>\
-                        <h4 class="mb-1 font-bold text-sm">{{ auth()->user()->name }} <span class="text-gray-600 font-normal">({{ auth()->user()->the_username }})</span></h4>\
+                        <p class="mx-1 text-blue-500 text-xs font-semibold float-right cmt-time">{time}</p>\
+                        <h4 class="mb-1 font-bold text-sm">{name} <span class="text-gray-600 font-normal">({username})</span></h4>\
                         <div class="text-sm text-gray-700 comment-msg">\
                             <p>{msg}</p>\
+                            {is_mine}\
                         </div>\
                     </div>\
                 </div>\
             </div>',
             comments = $('#comments');
 
-        function comment_add(msg, classes, method)
+        function comment_add(obj, classes, method, target)
         {
             if(!method) method = 'append';
 
-            let item = comment_tmp.replace(/{msg}/g, msg);
+            let item = comment_tmp.replace(/{msg}/g, obj.msg);
+            item = item.replace(/{avatar}/g, obj.avatar)
+            item = item.replace(/{name}/g, obj.name)
+            item = item.replace(/{username}/g, obj.username)
+            item = item.replace(/{time}/g, obj.time)
+            if(obj.id)
+                item = item.replace(/{id}/g, obj.id)
+            item = item.replace(/{is_mine}/g, obj.is_mine ? '<a onclick="let c = confirm(\'are you sure?\'); if(c){comment_remove('+obj.id+', event)}" class="mt-5 text-red-600 cursor-pointer text-xs">Delete</a>' : '')
             item = item.str2dom();
 
             if(typeof classes == 'function')
@@ -55,14 +63,18 @@
                 });
             }
 
-            comments[method](item);
+            if(method == 'after')
+                target.parentNode.insertBefore(item, target);
+            else
+                comments[method](item);
 
             return item;
         }
 
-        function comment(msg)
+        function comment_remove(id, event)
         {
-            let item = comment_add(msg, 'opacity-50 pointer-events-none', 'prepend');
+            const cmt = $('.cmt-' + id);
+            cmt.classList.adds('opacity-50 pointer-events-none');
 
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function() {
@@ -71,8 +83,58 @@
                     if(res)
                         res = JSON.parse(res);
 
-                    item.classList.removes('opacity-50 pointer-events-none')
-                    item.$('.cmt-time').innerHTML = res.data.time;
+                    if(res.status)
+                        cmt.remove();
+                    else
+                        cmt.classList.removes('opacity-50 pointer-events-none');
+                }
+            }
+            xhr.open("delete", "{{ route('comments.destroy') }}", true);
+            xhr.setRequestHeader("X-CSRF-TOKEN", $('[name=csrf-token]').getAttribute('content'));
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.setRequestHeader("Accept", "application/json");
+            xhr.send('id=' + id);
+        }
+
+        var id = function () {
+          return Math.random().toString(36).substr(2, 9);
+        };
+
+        function comment(msg)
+        {
+
+            let temp_id = id();
+
+            let item = comment_add({
+                name: '{{ auth()->user()->name }}',
+                username: '{{ auth()->user()->the_username }}',
+                avatar: '{{ auth()->user()->the_avatar }}',
+                id: temp_id,
+                is_mine: false,
+                msg: '<i>Mengirim ...</i>',
+                time: 'Baru Saja',
+            }, 'opacity-50 pointer-events-none', 'prepend');
+
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == XMLHttpRequest.DONE) {
+                    let res = xhr.responseText;
+                    if(res)
+                        res = JSON.parse(res);
+
+                    console.log(res)
+
+                    comment_add({
+                        name: '{{ auth()->user()->name }}',
+                        username: '{{ auth()->user()->the_username }}',
+                        avatar: '{{ auth()->user()->the_avatar }}',
+                        id: res.data.id,
+                        is_mine: res.data.is_mine,
+                        time: res.data.time,
+                        msg,
+                    }, false, 'after', $('.cmt-' + temp_id));
+
+                    $('.cmt-' + temp_id).remove();
                 }
             }
             xhr.open("post", "{{ route('comments.store') }}", true);
@@ -90,9 +152,15 @@
                     res = JSON.parse(res);
 
                 res.data.forEach((item) => {
-                    comment_add(item.content, function(cmt) {
-                        cmt.$('.cmt-time').innerHTML = item.time;
-                    });
+                    comment_add({
+                        id: item.id,
+                        name: item.user.name,
+                        username: item.username,
+                        avatar: item.avatar,
+                        msg: item.content,
+                        time: item.time,
+                        is_mine: item.is_mine
+                    }, false, 'prepend');
                 });
             }
         }
