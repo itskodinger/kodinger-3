@@ -12,6 +12,11 @@ class CommentService
 		return Comment::find($id);
 	}
 
+	public function total($post_id)
+	{
+		return Comment::wherePostId($post_id)->count();
+	}
+
 	public function attrs($comment)
 	{
 		$comment->content = Markdown::convertToHtml($comment->content);

@@ -96,6 +96,28 @@
             xhr.send('id=' + id);
         }
 
+        function add_load_more()
+        {
+            let tpl = '\
+            <div class="comment-load px-6 py-2 text-sm text-center cursor-pointer bg-gray-200 hover:bg-gray-300">\
+                Load More\
+            </div>'.str2dom();
+
+            tpl.addEventListener('click', function() {
+                take += 10;
+
+                comment_load();
+            });
+
+            comments.prepend(tpl);
+        }
+
+        function remove_load_more()
+        {
+            if($('.comment-load'))
+                $('.comment-load').remove();
+        }
+
         var id = function () {
           return Math.random().toString(36).substr(2, 9);
         };
@@ -122,8 +144,6 @@
                     if(res)
                         res = JSON.parse(res);
 
-                    console.log(res)
-
                     comment_add({
                         name: '{{ auth()->user()->name }}',
                         username: '{{ auth()->user()->the_username }}',
@@ -131,7 +151,7 @@
                         id: res.data.id,
                         is_mine: res.data.is_mine,
                         time: res.data.time,
-                        msg,
+                        msg: res.data.content,
                     }, false, 'after', $('.cmt-' + temp_id));
 
                     $('.cmt-' + temp_id).remove();
@@ -144,29 +164,43 @@
             xhr.send('content=' + msg + '&post_id='+{{$post->id}});
         }
 
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == XMLHttpRequest.DONE) {
-                let res = xhr.responseText;
-                if(res)
-                    res = JSON.parse(res);
+        let take = 10;
+        function comment_load()
+        {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == XMLHttpRequest.DONE) {
+                    let res = xhr.responseText;
+                    if(res)
+                        res = JSON.parse(res);
 
-                res.data.forEach((item) => {
-                    comment_add({
-                        id: item.id,
-                        name: item.user.name,
-                        username: item.username,
-                        avatar: item.avatar,
-                        msg: item.content,
-                        time: item.time,
-                        is_mine: item.is_mine
-                    }, false, 'prepend');
-                });
+                    remove_load_more();
+
+                    res.data.forEach((item) => {
+                        comment_add({
+                            id: item.id,
+                            name: item.user.name,
+                            username: item.username,
+                            avatar: item.avatar,
+                            msg: item.content,
+                            time: item.time,
+                            is_mine: item.is_mine
+                        }, false, 'prepend');
+                    });
+
+                    if(res.total > 10)
+                        add_load_more();
+
+                    if(take >= res.total)
+                        remove_load_more();
+                }
             }
+            xhr.open("get", "{{ route('comments.index', $post->id) }}?take=" + take, true);
+            xhr.setRequestHeader("Accept", "application/json");
+            xhr.send();
         }
-        xhr.open("get", "{{ route('comments.index', $post->id) }}", true);
-        xhr.setRequestHeader("Accept", "application/json");
-        xhr.send();
+
+        comment_load();
 
     </script>
 @endpush

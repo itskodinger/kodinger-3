@@ -16,12 +16,14 @@ class CommentController extends Controller
 		$this->comment_service = $comment_service;
 	}
 
-	public function index($post_id)
+	public function index(Request $request, $post_id)
 	{
-		$comments = $this->comment_service->take($post_id, 0, 10);
+		$comments = $this->comment_service->take($post_id, 0, $request->take);
 
 		return response([
-			'data' => $comments
+			'data' => $comments,
+			'count' => count($comments),
+			'total' => $this->comment_service->total($post_id)
 		], 200);
 	}
 
