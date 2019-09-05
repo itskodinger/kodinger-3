@@ -63,6 +63,9 @@
                 });
             }
 
+            if($('.no-comment'))
+                $('.no-comment').remove();
+
             if(method == 'after')
                 target.parentNode.insertBefore(item, target);
             else
@@ -104,12 +107,14 @@
             </div>'.str2dom();
 
             tpl.addEventListener('click', function() {
-                take += 10;
-
-                comment_load();
+                $('.comment-load').classList.adds('pointer-events-none opacity-50');
+                comment_load(function() {
+                    if($('.comment-load'))
+                        $('.comment-load').classList.removes('pointer-events-none opacity-50');
+                });
             });
 
-            comments.prepend(tpl);
+            comments.append(tpl);
         }
 
         function remove_load_more()
@@ -164,8 +169,9 @@
             xhr.send('content=' + msg + '&post_id='+{{$post->id}});
         }
 
-        let take = 10;
-        function comment_load()
+        let take = 10,
+            offset = 0;
+        function comment_load(done)
         {
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function() {
@@ -185,22 +191,30 @@
                             msg: item.content,
                             time: item.time,
                             is_mine: item.is_mine
-                        }, false, 'prepend');
+                        }, false, 'append');
                     });
 
                     if(res.total > 10)
                         add_load_more();
 
-                    if(take >= res.total)
+                    offset += res.count;
+
+                    if(res.count <= 10 && offset >= res.total)
                         remove_load_more();
+
+                    if(done)
+                        done.call(this, res);
                 }
             }
-            xhr.open("get", "{{ route('comments.index', $post->id) }}?take=" + take, true);
+            xhr.open("get", "{{ route('comments.index', $post->id) }}?take=" + take + '&offset=' + offset, true);
             xhr.setRequestHeader("Accept", "application/json");
             xhr.send();
         }
 
-        comment_load();
+        comment_load(function(res) {
+            if(res.count == 0)
+                comments.innerHTML = '<div class="text-center p-2 text-sm no-comment"><i>Belum ada diskusi, jadilah yang pertama.</i></div>';
+        });
 
     </script>
 @endpush

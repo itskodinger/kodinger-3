@@ -30,7 +30,7 @@ class CommentService
 
 	public function take($post_id, $start, $end)
 	{
-		$comments = Comment::with('user')->wherePostId($post_id)->offset($start)->take($end)->get();
+		$comments = Comment::with('user')->wherePostId($post_id)->offset($start)->take($end)->orderBy('created_at', 'desc')->get();
 		$comments->each(function($item) {
 			return $this->attrs($item);
 		});

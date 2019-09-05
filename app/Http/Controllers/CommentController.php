@@ -18,7 +18,7 @@ class CommentController extends Controller
 
 	public function index(Request $request, $post_id)
 	{
-		$comments = $this->comment_service->take($post_id, 0, $request->take);
+		$comments = $this->comment_service->take($post_id, $request->offset ?? 0, $request->take ?? 10);
 
 		return response([
 			'data' => $comments,
