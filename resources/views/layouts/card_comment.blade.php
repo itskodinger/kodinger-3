@@ -1,3 +1,4 @@
+<a name="comments"></a>
 <div class="bg-gray-100 py-4 px-6">
     <form class="w-full flex">
         <img class="w-10 h-10 flex-shrink-0 rounded-full border border-gray-200" src="{{ auth()->user()->the_avatar }}">

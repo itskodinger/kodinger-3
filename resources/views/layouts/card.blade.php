@@ -37,6 +37,20 @@
                             </a>
                             @endforeach
                         </div>
+
+                        <div class="mt-8">
+                            <div class="flex w-full">
+                                <a class="w-4/12 hover:bg-gray-100 flex items-center justify-center border border-gray-300 border-r-0 text-gray-600 py-2 px-4 rounded-tl rounded-bl" href="">
+                                    👍 Up
+                                </a>
+                                <a class="w-4/12 hover:bg-gray-100 flex items-center justify-center border border-gray-300 border-r-0 text-gray-600 py-2 px-4" href="{{ route('single', $props->slug) }}#comments">
+                                    👋 Diskusi ({{ count($post->comments) }})
+                                </a>
+                                <a class="w-4/12 hover:bg-gray-100 flex items-center justify-center border border-gray-300 text-gray-600 py-2 px-4 rounded-tr rounded-br" href="">
+                                    🚀 Bagikan
+                                </a>
+                            </div>
+                        </div>
                     </div>
                     @if((($comment ?? true) != false))
                         @include('layouts.card_comment')

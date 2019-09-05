@@ -18,4 +18,5 @@ Kodinger 3 merupakan project dari tim Kodinger untuk refactoring website utama K
 - Save post
 - Report post, comment, community
 - ACL
+- Upvote post
 - More more more more
