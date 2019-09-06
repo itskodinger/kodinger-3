@@ -2,11 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Save;
+use Services\SaveService;
 use Illuminate\Http\Request;
 
 class SaveController extends Controller
 {
+    public $saveService;
+
+    public function __construct(SaveService $saveService)
+    {
+        $this->saveService = $saveService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -24,7 +31,7 @@ class SaveController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -35,7 +42,13 @@ class SaveController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $save = $this->saveService->create($request);
+
+        return response([
+            'data' => $save,
+            'status' => true,
+            'saved' => is_object($save) ? true : false
+        ], 200);
     }
 
     /**

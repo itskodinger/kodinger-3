@@ -44,6 +44,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function save_posts()
+    {
+        return $this->hasMany('App\Save', 'user_id')->whereMethod('save')->whereModel('Post');
+    }
+
     public function getTheUsernameAttribute()
     {
         return '@' . $this->username;

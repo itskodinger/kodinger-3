@@ -24,3 +24,13 @@ function key2str($k)
 		'examples' => 'Digunakan Oleh'
 	][$k];
 }
+
+function user_post_saves()
+{
+	return auth()->user()->save_posts->pluck('row_id')->all();
+}
+
+function is_post_saved($post_id)
+{
+	return in_array($post_id, user_post_saves());
+}

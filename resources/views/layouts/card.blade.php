@@ -24,7 +24,7 @@
 
                     <div class="p-8 text-sm text-gray-700 leading-loose">
                         <div class="float-right">
-                            <div class="cursor-pointer" data-save="{{ $props->id }}"></div>
+                            <div class="cursor-pointer" data-save="{{ $props->id }}" {{ is_post_saved($props->id) ? 'data-saved' : '' }}></div>
                         </div>
                         <h4 class="text-lg text-black font-bold"><a class="text-indigo-700" href="{{ route('single', $props->slug) }}">
                             {{ $props->title }}
@@ -43,13 +43,16 @@
                         <div class="mt-8">
                             <div class="flex w-full">
                                 <a class="w-4/12 hover:bg-gray-100 flex items-center justify-center border border-gray-300 border-r-0 text-gray-600 py-2 px-4 rounded-tl rounded-bl" href="">
-                                    👍 Up
+                                    <svg class="mr-2 stroke-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                                    Love
                                 </a>
                                 <a class="w-4/12 hover:bg-gray-100 flex items-center justify-center border border-gray-300 border-r-0 text-gray-600 py-2 px-4" href="{{ route('single', $props->slug) }}#comments">
-                                    👋 Diskusi ({{ count($post->comments) }})
+                                    <svg class="mr-2 stroke-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg> 
+                                    Diskusi
                                 </a>
                                 <a class="w-4/12 hover:bg-gray-100 flex items-center justify-center border border-gray-300 text-gray-600 py-2 px-4 rounded-tr rounded-br" href="">
-                                    🚀 Bagikan
+                                    <svg class="mr-2 stroke-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                                    Bagikan
                                 </a>
                             </div>
                         </div>

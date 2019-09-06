@@ -71,6 +71,9 @@
     </div>
 
     <!-- Scripts -->
+    <script>
+        const save_url = '{{ route('saves.store') }}';
+    </script>
     <script src="{{ url('js/app.js') }}"></script>
 
     @stack('js')

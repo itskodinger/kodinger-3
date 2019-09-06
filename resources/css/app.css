@@ -112,3 +112,19 @@ body {
 		bg-indigo-900
 		rounded;
 }
+
+.spin {
+	animation-name: spin;
+	animation-iteration-count: infinite;
+	animation-timing-function: steps(8);
+	animation-duration: 1s;
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(180deg);
+	}
+}
