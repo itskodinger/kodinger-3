@@ -46,14 +46,10 @@
                                     <li><a class="block py-2 px-4 text-sm hover:bg-indigo-100 rounded-tr rounded-tl" href="">Profile</a></li>
                                     <li><a class="block py-2 px-4 text-sm hover:bg-indigo-100" href="">Setting</a></li>
                                     <li class="w-full h-px bg-gray-200"></li>
-                                    <li><a class="block py-2 px-4 text-sm text-red-600 hover:bg-indigo-100 rounded-br rounded-bl" href="">Logout</a></li>
+                                    <li><a onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="block py-2 px-4 text-sm text-red-600 hover:bg-indigo-100 rounded-br rounded-bl" href="">Logout</a></li>
                                 </ul>
                             </div>
 
-                            <a href="{{ route('logout') }}"
-                               class="no-underline hover:underline text-gray-300 text-sm p-3"
-                               onclick="event.preventDefault();
-                                    document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
                                 {{ csrf_field() }}
                             </form>
@@ -72,7 +68,8 @@
 
     <!-- Scripts -->
     <script>
-        const save_url = '{{ route('saves.store') }}';
+        const save_url = '{{ route('saves.store') }}',
+              base_url = '{{ url('') }}';
     </script>
     <script src="{{ url('js/app.js') }}"></script>
 

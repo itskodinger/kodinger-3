@@ -62,8 +62,7 @@
  */
 
 body {
-	@apply
-		bg-blue-100;
+	background-color: #f2f4f9;
 }
 
 .bg-gradient {

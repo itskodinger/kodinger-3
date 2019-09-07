@@ -59,6 +59,16 @@ class User extends Authenticatable
         return '@' . $this->username;
     }
 
+    public function getFirstNameAttribute()
+    {
+        if(strpos($this->name, ' ') > -1)
+        {
+            return (explode(' ', $this->name))[0];
+        }
+        
+        return $this->name;
+    }
+
     public function getTheAvatarAttribute()
     {
         if(!$this->avatar)

@@ -57,6 +57,9 @@ function save(data, done)
         if (xhr.readyState == XMLHttpRequest.DONE) {
         	if(done)
         		done.call(this, JSON.parse(xhr.responseText));
+
+        	if(xhr.status == 401)
+        		alert('Anda perlu login dulu!')
 		}
     }
     xhr.open("post", save_url, true);

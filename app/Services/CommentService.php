@@ -23,7 +23,7 @@ class CommentService
 		$comment->time = $comment->created_at->diffForHumans();
 		$comment->avatar = $comment->user->the_avatar;
 		$comment->username = $comment->user->the_username;
-		$comment->is_mine = $comment->user_id == auth()->user()->id;
+		$comment->is_mine = $comment->user_id == optional(auth()->user())->id;
 
 		return $comment;
 	}

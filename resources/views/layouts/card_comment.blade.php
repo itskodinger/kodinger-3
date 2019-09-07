@@ -1,7 +1,8 @@
 <a name="comments"></a>
+@if(auth()->check())
 <div class="bg-gray-100 py-4 px-6">
     <form class="w-full flex">
-        <img class="w-10 h-10 flex-shrink-0 rounded-full border border-gray-200" src="{{ auth()->user()->the_avatar }}">
+        <img class="w-10 h-10 flex-shrink-0 rounded-full border border-gray-200" src="{{ the_avatar() }}">
         <div class="ml-3 w-full">
             <textarea 
                 onkeydown="if(event.keyCode == 13 && !event.shiftKey) {event.preventDefault(); comment(this.value); this.value = ''; return false;} " 
@@ -19,6 +20,7 @@
         </div>
     </form>
 </div>
+@endif
 <div id="comments">
 </div>
 
@@ -30,7 +32,7 @@
                     <img class="rounded-full w-10 h-10 flex-shrink-0" src="{avatar}">\
                     <div class="ml-3 w-full">\
                         <p class="mx-1 text-blue-500 text-xs font-semibold float-right cmt-time">{time}</p>\
-                        <h4 class="mb-1 font-bold text-sm">{name} <span class="text-gray-600 font-normal">({username})</span></h4>\
+                        <h4 class="mb-1 font-bold text-sm"><a class="text-indigo-600" href="'+ base_url +'/{username}">{name}</a> <span class="text-gray-600 font-normal">({username})</span></h4>\
                         <div class="text-sm text-gray-700 comment-msg">\
                             <p>{msg}</p>\
                             {is_mine}\
@@ -134,9 +136,9 @@
             let temp_id = id();
 
             let item = comment_add({
-                name: '{{ auth()->user()->name }}',
-                username: '{{ auth()->user()->the_username }}',
-                avatar: '{{ auth()->user()->the_avatar }}',
+                name: '{{ optional(auth()->user())->name }}',
+                username: '{{ optional(auth()->user())->the_username }}',
+                avatar: '{{ optional(auth()->user())->the_avatar }}',
                 id: temp_id,
                 is_mine: false,
                 msg: '<i>Mengirim ...</i>',
@@ -151,9 +153,9 @@
                         res = JSON.parse(res);
 
                     comment_add({
-                        name: '{{ auth()->user()->name }}',
-                        username: '{{ auth()->user()->the_username }}',
-                        avatar: '{{ auth()->user()->the_avatar }}',
+                        name: res.data.user.name,
+                        username: res.data.username,
+                        avatar: res.data.avatar,
                         id: res.data.id,
                         is_mine: res.data.is_mine,
                         time: res.data.time,

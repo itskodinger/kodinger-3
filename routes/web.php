@@ -18,6 +18,7 @@ Auth::routes();
 
 Route::get('/', 'FrontendController@index')->name('index');
 Route::get('/{slug}', 'FrontendController@single')->name('single');
+Route::get('/{slug}/loves', 'FrontendController@profile_loves')->name('profile_loves');
 Route::get('/tag/{slug}', 'FrontendController@tag')->name('tag');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/posts/create', 'PostController@create')->name('post.create');
@@ -31,11 +32,14 @@ Route::post('/posts', 'PostController@store')->name('post.store');
 Route::get('auth/{provider}', 'Auth\AuthController@redirectToProvider')->name('auth');
 Route::get('auth/{provider}/callback', 'Auth\AuthController@handleProviderCallback');
 
-Route::group(['middleware' => 'auth', 'prefix' => 'comments', 'as' => 'comments.'], function() 
+Route::group(['prefix' => 'comments', 'as' => 'comments.'], function() 
 {
-	Route::post('/', 'CommentController@store')->name('store');
+	Route::group(['middleware' => 'auth'], function() 
+	{
+		Route::post('/', 'CommentController@store')->name('store');
+		Route::delete('/delete', 'CommentController@destroy')->name('destroy');
+	});
 	Route::get('/{post_id}', 'CommentController@index')->name('index');
-	Route::delete('/delete', 'CommentController@destroy')->name('destroy');
 });
 
 Route::group(['middleware' => 'auth', 'prefix' => 'saves', 'as' => 'saves.'], function() 
