@@ -49,6 +49,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Save', 'user_id')->whereMethod('save')->whereModel('Post');
     }
 
+    public function love_posts()
+    {
+        return $this->hasMany('App\Save', 'user_id')->whereMethod('love')->whereModel('Post');
+    }
+
     public function getTheUsernameAttribute()
     {
         return '@' . $this->username;
