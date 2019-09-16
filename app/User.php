@@ -74,6 +74,6 @@ class User extends Authenticatable
         if(!$this->avatar)
             return 'https://ui-avatars.com/api/?name=' . $this->name;
 
-        return url('avatar/' . $this->avatar);
+        return url('storage/avatar/' . $this->avatar);
     }
 }
