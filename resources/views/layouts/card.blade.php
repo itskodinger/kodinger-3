@@ -1,8 +1,14 @@
                 <div class="bg-white rounded shadow-md mb-12">
                     <div class="flex p-4 items-center">
-                        <img class="rounded w-12 rounded" src="{{ $props->user->the_avatar }}">
+                        <a href="{{ route('single', $props->user->the_username) }}">
+                            <img class="rounded w-12 rounded" src="{{ $props->user->the_avatar }}">
+                        </a>
                         <div class="ml-3">
-                            <h4 class="mb-1 font-bold">{{ $props->user->name }}</h4>
+                            <h4 class="mb-1 font-bold">
+                                <a class="text-indigo-600" href="{{ route('single', $props->user->the_username) }}">
+                                    {{ $props->user->name }}
+                                </a>
+                            </h4>
                             <div class="-mx-1 flex items-center text-xs text-gray-500">
                                 <p class="mx-1">{{ $props->user->the_username }}</p>
                                 <p class="mx-1">&bull;</p>
