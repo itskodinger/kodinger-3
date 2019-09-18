@@ -14,7 +14,7 @@ class AddUuidPostsTable extends Migration
     public function up()
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->uuid('id')->change();
+            // $table->uuid('id')->change();
         });
     }
 

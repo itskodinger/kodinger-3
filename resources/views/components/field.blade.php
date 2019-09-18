@@ -8,7 +8,7 @@
 				$id = 'mde-' . uniqid();
 			@endphp
 
-			<textarea name="{{ $name }}" id="{{$id}}" class="mt-2">{{$value ?? ''}}</textarea>
+			<textarea name="{{ $name }}" id="{{ $id }}" class="mt-2">{{$value ?? ''}}</textarea>
 
 			@push('css')
 				<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">

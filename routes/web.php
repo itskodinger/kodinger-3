@@ -16,11 +16,6 @@ Route::get('/single', function () {
 });
 Auth::routes();
 
-Route::get('/', 'FrontendController@index')->name('index');
-Route::get('/{slug}', 'FrontendController@single')->name('single');
-Route::get('/{slug}/loves', 'FrontendController@profile_loves')->name('profile_loves');
-Route::get('/tag/{slug}', 'FrontendController@tag')->name('tag');
-Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/posts/create', 'PostController@create')->name('post.create');
 Route::get('/posts', 'PostController@index')->name('post.index');
 Route::get('/posts/{id}/publish', 'PostController@publish')->name('post.publish');
@@ -28,6 +23,11 @@ Route::get('/posts/{id}/edit', 'PostController@edit')->name('post.edit');
 Route::put('/posts/{id}/edit', 'PostController@update')->name('post.update');
 Route::patch('/posts/{id}/edit', 'PostController@update')->name('post.update');
 Route::post('/posts', 'PostController@store')->name('post.store');
+Route::get('/', 'FrontendController@index')->name('index');
+Route::get('/{slug}', 'FrontendController@single')->name('single');
+Route::get('/{slug}/loves', 'FrontendController@profile_loves')->name('profile_loves');
+Route::get('/tag/{slug}', 'FrontendController@tag')->name('tag');
+Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('auth/{provider}', 'Auth\AuthController@redirectToProvider')->name('auth');
 Route::get('auth/{provider}/callback', 'Auth\AuthController@handleProviderCallback');
