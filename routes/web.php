@@ -22,6 +22,7 @@ Route::get('/posts/{id}/publish', 'PostController@publish')->name('post.publish'
 Route::get('/posts/{id}/edit', 'PostController@edit')->name('post.edit');
 Route::put('/posts/{id}/edit', 'PostController@update')->name('post.update');
 Route::patch('/posts/{id}/edit', 'PostController@update')->name('post.update');
+Route::delete('/posts/{id}/delete', 'PostController@destroy')->name('post.delete');
 Route::post('/posts', 'PostController@store')->name('post.store');
 Route::get('/', 'FrontendController@index')->name('index');
 Route::get('/{slug}', 'FrontendController@single')->name('single');

@@ -29,6 +29,7 @@
 			'type' => 'select',
 			'class' => 'tags',
 			'data' => Facades\Services\TagService::select(),
+			'value' => isset($post) ? $post->tags->pluck('tag_id') : null,
 			'multiple' => true
 		])
 
@@ -36,49 +37,48 @@
 			'name' => 'keyword',
 			'label' => 'Keyword',
 			'type' => 'text',
-			'value' => $post->keyword ?? ''
+			'value' => $post->keyword ?? '',
+			'help' => 'Keyword bukan untuk SEO, melainkan digunakan untuk mencari inspirasi desain ke situs di luar Kodinger, seperti Dribbble, Behance atau Uplabs.'
 		])
 
 		@field([
 			'name' => 'images',
 			'label' => 'Images',
 			'type' => 'textarea',
-			'value' => $post->images ?? ''
-		])
-
-		@field([
-			'name' => 'inspirations',
-			'label' => 'inspirations',
-			'type' => 'textarea',
-			'value' => $post->inspirations ?? ''
+			'value' => $post->images ?? '',
+			'help' => '1 Baris untuk 1 URL gambar. Urutan gambar sesuai dengan urutan URL di atas.'
 		])
 
 		@field([
 			'name' => 'pages',
 			'label' => 'pages',
 			'type' => 'textarea',
-			'value' => $post->pages ?? ''
+			'value' => $post->pages ?? '',
+			'help' => 'Halaman web terkait dengan konten'
 		])
 
 		@field([
 			'name' => 'tutorials',
 			'label' => 'tutorials',
 			'type' => 'textarea',
-			'value' => $post->tutorials ?? ''
+			'value' => $post->tutorials ?? '',
+			'help' => 'Tutorial implementasi terkait dengan konten. Boleh bahasa Inggris atau Indonesia.'
 		])
 
 		@field([
 			'name' => 'helps',
 			'label' => 'helps',
 			'type' => 'textarea',
-			'value' => $post->helps ?? ''
+			'value' => $post->helps ?? '',
+			'help' => 'Halaman komunitas terkait dengan konten, seperti GitHub issue dari repository tersebut, Stack Overflow, Quora atau apapun.'
 		])
 
 		@field([
 			'name' => 'examples',
 			'label' => 'examples',
 			'type' => 'textarea',
-			'value' => $post->examples ?? ''
+			'value' => $post->examples ?? '',
+			'help' => 'Contoh situs yang menggunakan library terkait ataupun halaman demo dari library.'
 		])
 
 

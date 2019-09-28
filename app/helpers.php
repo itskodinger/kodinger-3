@@ -21,7 +21,7 @@ function key2str($k)
 		'pages' => 'Halaman Terkait',
 		'tutorials' => 'Tutorial',
 		'helps' => 'Komunitas',
-		'examples' => 'Digunakan Oleh'
+		'examples' => 'Demo'
 	][$k];
 }
 

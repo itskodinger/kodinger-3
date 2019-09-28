@@ -23,14 +23,14 @@
 				</script>
 			@endpush
 		@elseif($type == 'select')
-			<select id="{{ $name }}" {{ isset($multiple) ? 'multiple' : '' }} class="w-full inline-block bg-gray-100 border py-2 px-4 rounded focus:bg-white outline-none {{ $class ?? '' }}" name="{{ $name }}">
-				@foreach($data as $k => $d)
-				<option value="{{ $k }}" {{ isset($value) && $k == $value ? 'selected' : '' }}>{{ $d }}</option>
-				@endforeach
-			</select>
+			{!! Form::select($name, $data ?? [], $value ?? null, ['class' => 'w-full inline-block bg-gray-100 border py-2 px-4 rounded focus:bg-white outline-none ' . $class ?? '', 'id' => $id ?? '', $multiple ? 'multiple' : '']) !!}
 		@else
 		<input id="{{ $name }}" class="w-full inline-block bg-gray-100 border py-2 px-4 rounded focus:bg-white outline-none {{ $class ?? '' }}" type="{{ $type }}" name="{{ $name }}" value="{{ $value ?? '' }}">
 		@endif
+	@endisset
+
+	@isset($help)
+		<p class="text-gray-600 text-xs mt-1 font-light">{!! $help !!}</p>
 	@endisset
 
 	{!! $slot ?? null !!}

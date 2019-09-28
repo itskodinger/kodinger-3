@@ -11,6 +11,7 @@ class Post extends Model
 		'title',
 		'slug',
 		'content',
+		'keyword',
 		'images',
 		'inspirations',
 		'pages',

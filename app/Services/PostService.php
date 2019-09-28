@@ -67,4 +67,11 @@ class PostService
 
 		return $update;
 	}
+
+	public function delete($id)
+	{
+		$post = $this->model()->find($id);
+
+		return $post->delete($id);
+	}
 }
