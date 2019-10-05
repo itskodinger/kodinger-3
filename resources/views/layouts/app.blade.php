@@ -71,7 +71,7 @@
         const save_url = '{{ route('saves.store') }}',
               base_url = '{{ url('') }}';
     </script>
-    @stack('js')
     <script src="{{ url('js/app.js') }}"></script>
+    @stack('js')
 </body>
 </html>
