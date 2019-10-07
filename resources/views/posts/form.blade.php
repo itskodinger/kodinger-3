@@ -51,7 +51,7 @@
 
 		@field([
 			'name' => 'pages',
-			'label' => 'pages',
+			'label' => 'Pages',
 			'type' => 'textarea',
 			'value' => $post->pages ?? '',
 			'help' => 'Halaman web terkait dengan konten'
@@ -59,7 +59,7 @@
 
 		@field([
 			'name' => 'tutorials',
-			'label' => 'tutorials',
+			'label' => 'Tutorials',
 			'type' => 'textarea',
 			'value' => $post->tutorials ?? '',
 			'help' => 'Tutorial implementasi terkait dengan konten. Boleh bahasa Inggris atau Indonesia.'
@@ -67,7 +67,7 @@
 
 		@field([
 			'name' => 'helps',
-			'label' => 'helps',
+			'label' => 'Helps',
 			'type' => 'textarea',
 			'value' => $post->helps ?? '',
 			'help' => 'Halaman komunitas terkait dengan konten, seperti GitHub issue dari repository tersebut, Stack Overflow, Quora atau apapun.'
@@ -75,7 +75,7 @@
 
 		@field([
 			'name' => 'examples',
-			'label' => 'examples',
+			'label' => 'Examples',
 			'type' => 'textarea',
 			'value' => $post->examples ?? '',
 			'help' => 'Contoh situs yang menggunakan library terkait ataupun halaman demo dari library.'

@@ -49,3 +49,8 @@ function the_avatar()
 {
 	return auth()->check() ? auth()->user()->the_avatar : '';
 }
+
+function is_video($str)
+{
+	return strpos($str, '.mp4') > -1 ? true : false;
+}

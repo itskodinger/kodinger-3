@@ -20,7 +20,13 @@
                     <div class="relative carousel-outer"> 
                         <div class="carousel">
                             @foreach(nl_array($props->images) as $image)
-                            <img src="{{ $image }}">
+                                @if(is_video($image))
+                                <video autoplay controls="">
+                                    <source src="{{ $image }}" type="video/mp4">
+                                </video>
+                                @else
+                                <img src="{{ $image }}">
+                                @endif
                             @endforeach
                         </div>
 
@@ -66,15 +72,3 @@
                         @include('layouts.card_comment')
                     @endif
                 </div>
-
-@push('js')
-    <script src="https://cdn.jsdelivr.net/npm/siema@1.5.1/dist/siema.min.js"></script>
-    <script>
-        let cr = new Siema({
-            selector: '.carousel'
-        });
-
-        document.querySelector('.prev').addEventListener('click', () => cr.prev());
-        document.querySelector('.next').addEventListener('click', () => cr.next());
-    </script>
-@endpush
