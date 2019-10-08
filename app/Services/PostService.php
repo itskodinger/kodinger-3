@@ -18,7 +18,7 @@ class PostService
 
 		if($request)
 			$posts = $posts->where('title', 'like', '%'. $request->search .'%');
-		
+
 		$posts = $posts->orderBy('created_at', 'desc')->paginate($num);
 
 		return $posts;
@@ -34,6 +34,13 @@ class PostService
 		$input['user_id'] = auth()->user()->id;
 
 		$data = $this->model()->create($input);
+		foreach($request->tags as $tag)
+		{
+			PostTag::create([
+				'post_id' => $data->id,
+				'tag_id' => $tag
+			]);
+		}
 
 		return $data;
 	}
