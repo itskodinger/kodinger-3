@@ -17,9 +17,9 @@ class FrontendController extends Controller
 		$this->userService = $userService;
 	}
 
-	public function index()
+	public function index(Request $request)
 	{
-		$posts = $this->postService->paginate(10);
+		$posts = $this->postService->paginate(10, $request);
 
 		return view('welcome', compact('posts'));
 	}

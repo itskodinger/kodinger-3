@@ -31,7 +31,7 @@
                     </div>
                     <div class="ml-auto flex items-center">
                         <form>
-                            <input type="text" name="q" class="bg-search focus:outline-none focus:bg-transparent pl-10 bg-gray-200 border border-gray-200 py-3 px-4 mr-2 rounded text-sm w-64" placeholder="Cari di sini ...">
+                            <input type="text" name="search" class="bg-search focus:outline-none focus:bg-transparent pl-10 bg-gray-200 border border-gray-200 py-3 px-4 mr-2 rounded text-sm w-64" placeholder="Cari di sini ...">
                         </form>
                         <div class="w-px h-6 mx-6 mr-8 bg-gray-200"></div>
                         @guest

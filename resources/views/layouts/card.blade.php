@@ -21,7 +21,7 @@
                         <div class="carousel">
                             @foreach(nl_array($props->images) as $image)
                                 @if(is_video($image))
-                                <video autoplay controls="">
+                                <video controls="">
                                     <source src="{{ $image }}" type="video/mp4">
                                 </video>
                                 @else
