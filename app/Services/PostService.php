@@ -12,10 +12,13 @@ class PostService
 		return Post::with(['tags', 'tags.tag', 'user', 'comments']);
 	}
 
-	public function paginate($num=10, $request)
+	public function paginate($num=10, $request=false)
 	{
 		$posts = $this->model();
-		$posts = $posts->where('title', 'like', '%'. $request->search .'%');
+
+		if($request)
+			$posts = $posts->where('title', 'like', '%'. $request->search .'%');
+		
 		$posts = $posts->orderBy('created_at', 'desc')->paginate($num);
 
 		return $posts;
