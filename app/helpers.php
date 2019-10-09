@@ -2,6 +2,9 @@
 
 function nl_array($str)
 {
+	if(!$str)
+		return [];
+
 	$arr = explode("\r\n", $str);
 
 	return $arr;

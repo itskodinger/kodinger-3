@@ -17,11 +17,14 @@ class FrontendController extends Controller
 		$this->userService = $userService;
 	}
 
-	public function index(Request $request)
+	public function index(Request $request, $tag = false)
 	{
-		$posts = $this->postService->paginate(10, $request);
+		$posts = $this->postService->paginate(10, $request->all() + ['tag' => $tag]);
 
-		return view('welcome', compact('posts'));
+		if(!$posts)
+			return abort(404);
+
+		return view('welcome', compact('posts', 'tag'));
 	}
 
 	public function single($slug)
@@ -36,9 +39,5 @@ class FrontendController extends Controller
 		}
 
 		return view('single', compact('post'));
-	}
-
-	public function tag($slug)
-	{
 	}
 }

@@ -5,9 +5,9 @@
         <div class="flex py-12 -mx-6">
             <div class="w-4/12 px-6">
             	@foreach(['pages', 'tutorials', 'helps', 'examples'] as $r)
-            	@if(count(nl_array($post->{$r})) > 0)
                 <div class="mb-12">
                 	<h2 class="pb-3 font-bold text-indigo-600">{{ key2str($r) }}</h2>
+	            	@if(count(nl_array($post->{$r})) > 0)
                 	<div class="bg-white rounded shadow">
                 		@foreach(nl_array($post->{$r}) as $page)
                 		<a data-fetch="{{ $page }}" class="flex items-center hover:bg-gray-100 px-5 py-4 border-b border-gray-100" href="">
@@ -18,9 +18,11 @@
 	                	</a>
 	                	@endforeach
 	                </div>
+	                @endif
                 </div>
-                @endif
                 @endforeach
+
+                @if($post->keyword)
                 <div class="mb-12">
                 	<h2 class="pb-3 font-bold text-indigo-600">Cari Inspirasi Desain</h2>
                 	<div class="flex flex-wrap shadow-md bg-white rounded">
@@ -35,6 +37,7 @@
 						</a>
 					</div>
 				</div>
+				@endif
             </div>
             <div class="w-8/12 px-6">
             	@include('layouts.card', ['props' => $post, 'comment' => false])
@@ -46,3 +49,15 @@
         </div>
     </div>
 @stop
+
+@push('js')
+    <script src="https://cdn.jsdelivr.net/npm/siema@1.5.1/dist/siema.min.js"></script>
+    <script>
+            var cr = new Siema({
+                selector: '.carousel'
+            });
+
+            document.querySelector('.prev').addEventListener('click', () => cr.prev());
+            document.querySelector('.next').addEventListener('click', () => cr.next());
+    </script>
+@endpush

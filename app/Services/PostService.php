@@ -4,6 +4,7 @@ namespace Services;
 
 use App\Post;
 use App\PostTag;
+use App\Tag;
 
 class PostService
 {
@@ -16,8 +17,25 @@ class PostService
 	{
 		$posts = $this->model();
 
-		if($request)
-			$posts = $posts->where('title', 'like', '%'. $request->search .'%');
+		if($request) {
+			$req_search = $request['search'] ?? null;
+			if($req_search)
+				$posts = $posts->where('title', 'like', '%'. $req_search .'%');
+
+			$req_tag = $request['tag'] ?? null;
+			if($req_tag) {
+				$tag = Tag::whereName($req_tag)->first();
+
+				if(!$tag) 
+					return false;
+
+				$tag_id = $tag->id;
+
+				$posts = $posts->whereHas('tags', function($q) use($tag_id) {
+					$q = $q->whereTagId($tag_id);
+				});
+			}
+		}
 
 		$posts = $posts->orderBy('created_at', 'desc')->paginate($num);
 

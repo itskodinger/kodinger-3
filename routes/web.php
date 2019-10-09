@@ -27,7 +27,7 @@ Route::post('/posts', 'PostController@store')->name('post.store');
 Route::get('/', 'FrontendController@index')->name('index');
 Route::get('/{slug}', 'FrontendController@single')->name('single');
 Route::get('/{slug}/loves', 'FrontendController@profile_loves')->name('profile_loves');
-Route::get('/tag/{slug}', 'FrontendController@tag')->name('tag');
+Route::get('/tag/{slug}', 'FrontendController@index')->name('tag');
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('auth/{provider}', 'Auth\AuthController@redirectToProvider')->name('auth');
