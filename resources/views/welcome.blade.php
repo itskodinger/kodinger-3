@@ -20,9 +20,9 @@
                 <h4 class="mb-4 text-gray-600">Mencari konten dengan kata kunci: {{ request()->search . ($tag ? ' di dalam tag ' . $tag : '') }}</h4>
                 @endif
 
-                @isset($tag)
+                @if($tag)
                 <h4 class="mb-4 text-gray-600">Semua konten dengan tag {{ $tag }}</h4>
-                @endisset
+                @endif
 
                 @foreach($posts as $post)
                     @include('layouts.card', ['props' => $post, 'comment' => false])
