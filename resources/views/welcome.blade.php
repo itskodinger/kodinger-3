@@ -28,7 +28,7 @@
                     @include('layouts.card', ['props' => $post, 'comment' => false])
                 @endforeach
 
-                {!! $posts->links() !!}
+                {!! $posts->links('vendor.pagination.simple-default') !!}
             </div>
         </div>
     </div>
