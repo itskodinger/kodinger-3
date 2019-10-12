@@ -10,13 +10,21 @@
 	            	@if(count(nl_array($post->{$r})) > 0)
                 	<div class="bg-white rounded shadow">
                 		@foreach(nl_array($post->{$r}) as $page)
-                		<a data-fetch="{{ $page }}" class="flex items-center hover:bg-gray-100 px-5 py-4 border-b border-gray-100" href="">
+                		<a data-fetch="{{ $page }}" class="flex items-center hover:bg-gray-100 px-5 py-4 border-b border-gray-100" href="{{ $page }}">
 	                		<img class="w-8 flex-shrink-0" src="https://s2.googleusercontent.com/s2/favicons?domain_url={{ $page }}">
 	                		<div class="ml-4 overflow-hidden">
 		                		<span class="text-xs text-gray-700">{{ rtrim($page, '/') }}</span>
 	                		</div>
 	                	</a>
 	                	@endforeach
+	                	<div class="flex items-center text-sm justify-center px-2 py-2 border-b border-gray-100">
+		                	<a href="{{ route('recommend', [$post->slug, 'col' => $r]) }}" class="inline-block text-sm bg-indigo-600 hover:bg-transparent hover:text-indigo-600 border border-indigo-600 text-white rounded-full py-1 px-4">Rekomendasikan</a>
+	                	</div>
+	                </div>
+	                @else
+	                <div class="bg-white shadow-md rounded p-4 text-sm text-center mb-3">
+	                	<h4>Tidak ada link {{ key2str($r) }}</h4>
+	                	<a href="{{ route('recommend', [$post->slug, 'col' => $r]) }}" class="inline-block mt-3 text-sm bg-indigo-600 hover:bg-transparent hover:text-indigo-600 border border-indigo-600 text-white rounded-full py-1 px-4">Rekomendasikan</a>
 	                </div>
 	                @endif
                 </div>
@@ -51,6 +59,7 @@
 @stop
 
 @push('js')
+    <script src="{{ url('js/app.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/siema@1.5.1/dist/siema.min.js"></script>
     <script>
             var cr = new Siema({

@@ -26,6 +26,7 @@ Route::delete('/posts/{id}/delete', 'PostController@destroy')->name('post.delete
 Route::post('/posts', 'PostController@store')->name('post.store');
 Route::get('/', 'FrontendController@index')->name('index');
 Route::get('/{slug}', 'FrontendController@single')->name('single');
+Route::get('/{slug}/recommend', 'FrontendController@recommend')->name('recommend');
 Route::get('/{slug}/loves', 'FrontendController@profile_loves')->name('profile_loves');
 Route::get('/tag/{slug}', 'FrontendController@index')->name('tag');
 Route::get('/home', 'HomeController@index')->name('home');

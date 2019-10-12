@@ -10,6 +10,13 @@ function nl_array($str)
 	return $arr;
 }
 
+function nl_array_first($str)
+{
+	$str = nl_array($str);
+
+	return $str[0];
+}
+
 function nl_array_end($str)
 {
 	$str = nl_array($str);
@@ -56,4 +63,19 @@ function the_avatar()
 function is_video($str)
 {
 	return strpos($str, '.mp4') > -1 ? true : false;
+}
+
+function recommend_fields()
+{
+	return [
+		'pages',
+		'tutorials',
+		'helps',
+		'examples',
+	];
+}
+
+function truncate($str, $num=30)
+{
+	return substr($str, 0, $num) . (strlen($str) >= $num ? '...' : null);
 }

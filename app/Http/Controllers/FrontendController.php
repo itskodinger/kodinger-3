@@ -40,4 +40,18 @@ class FrontendController extends Controller
 
 		return view('single', compact('post'));
 	}
+
+	public function recommend(Request $request, $slug)
+	{
+		$col = $request->col;
+
+		if(!in_array($col, recommend_fields())) return abort(404);
+
+		$post = $this->postService->findBySlug($slug);
+
+		if(!$post)
+			return abort(404);
+
+		return view('recommend', compact('post', 'col'));
+	}
 }
