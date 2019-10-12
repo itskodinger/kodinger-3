@@ -64,7 +64,7 @@
 
 		var links = new List('links', options, values);
 
-		let disableButtonCheck = function() {
+		let get_invalid = function() {
 			let invalid = [];
 
 			document.querySelectorAll('#links .list .url').forEach(function(input) {
@@ -72,6 +72,12 @@
 					invalid.push(input);
 				}
 			});
+
+			return invalid;
+		}
+
+		let disableButtonCheck = function() {
+			let invalid = get_invalid();
 
 			let submit_btn = document.querySelector('.submit-btn');
 			if(invalid.length < 1 && document.querySelector('#links .list').children.length > 0) {
@@ -95,7 +101,7 @@
 				field.setAttribute('placeholder', 'URL tidak valid. Mungkin berisi spasi atau karakter spesial');
 		}
 
-		document.getElementById('link-add').addEventListener('click', function(e) {
+		let link_add = function() {
 			let last = document.querySelector('#links .list');
 
 			if(last.children.length > 0) {
@@ -104,15 +110,26 @@
 				last = false;
 			}
 
+			let invalid = get_invalid();
+
 			if(last && (last.value.trim().length == 0 || validateUrl(last.value) == false)) {
 				required(last);
+			}else if(invalid.length > 0) {
+				required(invalid[0]);
 			}else{
 				links.add({
 					'link-id': ID()
 				});
 
 				disableButtonCheck();
+
+				document.querySelector('#links .list').lastChild.querySelector('.url').focus();
 			}
+		}
+
+		document.getElementById('link-add').addEventListener('click', function(e) {
+			link_add();
+
 			e.preventDefault();
 		});
 
@@ -137,17 +154,7 @@
 					if(e.keyCode == 9) {
 						e.preventDefault();
 						
-						if(e.target.value.trim().length == 0 || validateUrl(e.target.value) == false) {
-							required(e.target);
-						}else{
-							links.add({
-								'link-id': ID()
-							});
-
-							disableButtonCheck();
-
-							document.querySelector('#links .list').lastChild.querySelector('.url').focus();
-						}
+						link_add();
 					}
 				}
 			}
