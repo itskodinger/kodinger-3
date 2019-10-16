@@ -30,7 +30,7 @@ class PostController extends Controller
 
     public function create()
     {
-        return view('upload');
+        return view('posts.create');
     }
 
 	public function store(Request $request)
@@ -71,6 +71,18 @@ class PostController extends Controller
 
 	public function recommend(Request $request)
 	{
-		
+
+	}
+
+	public function getLinkInfo(Request $request)
+	{
+		$data = get_data($request->url);
+		preg_match('/<title>(.*)<\/title>/i', $data, $matches);
+		$title = $matches[1] ?? get_title_by_url($request->url);
+
+		return response([
+			'url' => $request->url,
+			'title' => $title
+		], 200);
 	}
 }

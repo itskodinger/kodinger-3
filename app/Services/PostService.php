@@ -84,11 +84,22 @@ class PostService
 		return $data;
 	}
 
-	public function findBySlug($slug)
+	public function findBySlug($slug, $views=false)
 	{
 		$post = $this->model()->whereSlug($slug)->first();
 
+		if($views) {
+			$post->update(['views' => ($post->views ?? 0) + 1]);
+		}
+
 		return $post;
+	}
+
+	public function popular($limit=5)
+	{
+		$posts = $this->model()->orderBy('views', 'desc')->limit($limit)->get();
+
+		return $posts;
 	}
 
 	public function publish($id)

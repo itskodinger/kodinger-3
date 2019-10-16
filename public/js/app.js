@@ -1,6 +1,3 @@
-const $ = document.querySelector.bind(document),
-	  $$ = document.querySelectorAll.bind(document);
-
 Object.prototype.$ = function(query)
 {
 	return this.querySelector(query);

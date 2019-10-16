@@ -21,19 +21,23 @@ class FrontendController extends Controller
 	{
 		$posts = $this->postService->paginate(10, $request->all() + ['tag' => $tag]);
 
+		$popular = $this->postService->popular(1)[0];
+
 		if(!$posts)
 			return abort(404);
 
-		return view('welcome', compact('posts', 'tag'));
+		return view('welcome', compact('posts', 'tag', 'popular'));
 	}
 
 	public function single($slug)
 	{
-		$post = $this->postService->findBySlug($slug);
+		$post = $this->postService->findBySlug($slug, true);
 
 		if(!$post)
 		{
 			$user = $this->userService->findByUsername($slug);
+
+			if(!$user) return abort(404);
 
 			return view('profile', compact('user'));
 		}

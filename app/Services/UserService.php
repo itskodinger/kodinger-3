@@ -11,6 +11,16 @@ class UserService
 		return new User;
 	}
 
+	public function find($id)
+	{
+		return $this->model()->find($id);
+	}
+
+	public function paginate($num=10)
+	{
+		return $this->model()->paginate($num);
+	}
+
 	public function findByUsername($username)
 	{
 		if(strpos($username, '@') > -1) 

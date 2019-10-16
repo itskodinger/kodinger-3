@@ -62,7 +62,13 @@
  */
 
 body {
-	background-color: #f2f4f9;
+	background-color: #F7F9FB;
+}
+
+@screen xl {
+	.container {
+		max-width: 1024px;
+	}
 }
 
 .bg-gradient {

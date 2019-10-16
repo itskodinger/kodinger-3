@@ -13,7 +13,8 @@
                 		<a data-fetch="{{ $page }}" class="flex items-center hover:bg-gray-100 px-5 py-4 border-b border-gray-100" href="{{ $page }}">
 	                		<img class="w-8 flex-shrink-0" src="https://s2.googleusercontent.com/s2/favicons?domain_url={{ $page }}">
 	                		<div class="ml-4 overflow-hidden">
-		                		<span class="text-xs text-gray-700">{{ rtrim($page, '/') }}</span>
+	                			<div class="text-indigo-600 font-semibold title truncate"></div>
+		                		<span class="text-xs text-gray-700 truncate">{{ rtrim($page, '/') }}</span>
 	                		</div>
 	                	</a>
 	                	@endforeach
@@ -62,11 +63,31 @@
     <script src="{{ url('js/app.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/siema@1.5.1/dist/siema.min.js"></script>
     <script>
+    		@if(count(nl_array($post->images)) > 1)
             var cr = new Siema({
                 selector: '.carousel'
             });
 
             document.querySelector('.prev').addEventListener('click', () => cr.prev());
             document.querySelector('.next').addEventListener('click', () => cr.next());
+            @endif
+
+            $$('[data-fetch]').forEach(function(item) {
+            	let url = item.dataset.fetch;
+
+			    var xhr = new XMLHttpRequest();
+			    xhr.onreadystatechange = function() {
+			        if (xhr.readyState == XMLHttpRequest.DONE) {
+			        	let data = xhr.responseText;
+			        	data = JSON.parse(data);
+			        	item.querySelector('.title').innerText = data.title;
+					}
+			    }
+			    xhr.open("post", '{{ route('post.getLinkInfo') }}', true);
+			    xhr.setRequestHeader("X-CSRF-TOKEN", $('[name=csrf-token]').getAttribute('content'));
+			    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+			    xhr.setRequestHeader("Accept", "application/json");
+			    xhr.send('url=' + url);
+            });
     </script>
 @endpush

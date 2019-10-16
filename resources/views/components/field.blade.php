@@ -14,7 +14,7 @@
 	            <p class="text-xs text-gray-600">Diizinkan Markdown – <a href="https://daringfireball.net/projects/markdown/" class="text-indigo-600 font-bold">Lihat dokumentasi</a>.
 	        </div>
 		@elseif($type == 'select')
-			{!! Form::select($name, $data ?? [], $value ?? null, ['class' => 'w-full inline-block bg-gray-100 border py-2 px-4 rounded focus:bg-white outline-none ' . $class ?? '', 'id' => $id ?? '', $multiple ? 'multiple' : '']) !!}
+			{!! Form::select($name, $data ?? [], $value ?? null, ['class' => 'w-full inline-block bg-gray-100 border h-12 px-4 rounded focus:bg-white outline-none ' . ($class ?? ''), 'id' => $id ?? '', isset($multiple) ? 'multiple' : '']) !!}
 		@else
 		<input id="{{ $name }}" class="w-full inline-block bg-gray-100 border py-2 px-4 rounded focus:bg-white outline-none {{ $class ?? '' }}" type="{{ $type }}" name="{{ $name }}" value="{{ $value ?? '' }}">
 		@endif

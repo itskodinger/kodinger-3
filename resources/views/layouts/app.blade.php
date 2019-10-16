@@ -16,7 +16,7 @@
 </head>
 <body class="h-screen">
     <div id="app">
-        <nav class="bg-white border-b-2 border-indigo-600 shadow mb-4 py-3">
+        <nav class="bg-white border-b-2 border-indigo-600 shadow mb-4 py-3 fixed left-0 w-full z-10">
             <div class="container mx-auto px-6 md:px-0">
                 <div class="flex items-center justify-center">
                     <div class="ml-6">
@@ -41,8 +41,8 @@
                             </a>
                         @else
                             <div class="relative">
-                                <a onclick="this.nextElementSibling.classList.toggle('hidden');"><img src="{{ auth()->user()->the_avatar }}" class="cursor-pointer rounded-full border w-10"></a>
-                                <ul class="absolute hidden bg-white shadow-lg w-48 right-0 mt-3 rounded">
+                                <a onclick="this.nextElementSibling.classList.toggle('hidden');"><img src="{{ auth()->user()->the_avatar }}" class="user-dropdown cursor-pointer rounded-full border w-10"></a>
+                                <ul class="user-dropdown-menu absolute hidden bg-white shadow-lg w-48 right-0 mt-3 rounded">
                                     <li><a class="block py-2 px-4 text-sm hover:bg-indigo-100 rounded-tr rounded-tl" href="">Profile</a></li>
                                     <li><a class="block py-2 px-4 text-sm hover:bg-indigo-100" href="">Setting</a></li>
                                     <li class="w-full h-px bg-gray-200"></li>
@@ -59,7 +59,9 @@
             </div>
         </nav>
 
-        @yield('content')
+        <div class="pt-16">
+            @yield('content')
+        </div>
 
         <div class="py-10 text-center text-sm">
             Copyright &copy; {{date('Y')}}
@@ -69,7 +71,15 @@
     <!-- Scripts -->
     <script>
         const save_url = '{{ route('saves.store') }}',
-              base_url = '{{ url('') }}';
+              base_url = '{{ url('') }}',
+              $ = document.querySelector.bind(document),
+              $$ = document.querySelectorAll.bind(document);
+
+        $('body').addEventListener('click', function(e) {
+            // close dropdown
+            if(e.target && !e.target.classList.contains('user-dropdown'))
+                $('.user-dropdown-menu').classList.add('hidden');
+        });
     </script>
 
     @stack('js')

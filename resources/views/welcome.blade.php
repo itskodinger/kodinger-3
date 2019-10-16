@@ -12,8 +12,17 @@
                             Dapatkan informasi seputar teknologi web di Instagram.
                         </div>
                         <a href="https://instagram.com/itskodinger" target="_blank" class="inline-block mt-5 bg-white hover:bg-transparent hover:text-white hover:border-white border-2 border-transparent text-purple-600 py-2 px-6 uppercase font-semibold tracking-wider rounded text-xs">Follow</a>
-                    </div>                
+                    </div>
                 </div>                
+
+                <h4 class="mt-10 font-bold mb-3">Konten Populer</h4>
+                <div class="rounded">
+                    <img src="{{ nl_array_first($popular->images) }}" alt="{{ $popular->title }}" class="rounded-lg">
+                    <div class="bg-white p-5 rounded-lg mx-4 -mt-16 relative shadow-lg">
+                        <h4 class="text-indigo-500 font-semibold hover:text-indigo-700"><a href="{{ route('single', $popular->slug) }}">{{ $popular->title }}</a></h4>
+                        <p class="text-gray-600 text-sm mt-2">{{ $popular->views }} Views</p>
+                    </div>
+                </div>
             </div>
             <div class="w-8/12 px-6">
                 @if(request()->search)
@@ -25,7 +34,7 @@
                 @endif
 
                 @foreach($posts as $post)
-                    @include('layouts.card', ['props' => $post, 'comment' => false])
+                    @include('layouts.card', ['props' => $post, 'comment' => false, 'truncate_content' => true])
                 @endforeach
 
                 {!! $posts->links('vendor.pagination.simple-default') !!}

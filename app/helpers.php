@@ -79,3 +79,31 @@ function truncate($str, $num=30)
 {
 	return substr($str, 0, $num) . (strlen($str) >= $num ? '...' : null);
 }
+
+function user_statuses()
+{
+	return [
+		'active' => 'Active',
+		'mute' => 'Mute',
+		'ban' => 'Ban',
+		'block' => 'Block'
+	];
+}
+
+function get_data($url) {
+	$ch = curl_init();
+	$timeout = 5;
+	curl_setopt($ch, CURLOPT_URL, $url);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+	$data = curl_exec($ch);
+	curl_close($ch);
+	return $data;
+}
+
+function get_title_by_url($url)
+{
+	$url = parse_url($url);
+
+	return str_replace('www.', '', $url['host']);
+}

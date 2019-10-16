@@ -17,8 +17,8 @@
                         </div>
                     </div>
 
-                    <div class="relative carousel-outer"> 
-                        <div class="carousel">
+                    <div class="relative{{count(nl_array($props->images)) > 1 ? ' carousel-outer' : ''}}"> 
+                        <div class="{{count(nl_array($props->images)) > 1 ? 'carousel' : ''}}">
                             @foreach(nl_array($props->images) as $image)
                                 @if(is_video($image))
                                 <video controls="">
@@ -30,8 +30,10 @@
                             @endforeach
                         </div>
 
+                        @if(count(nl_array($props->images)) > 1)
                         <button class="prev">&lsaquo;</button>
                         <button class="next">&rsaquo;</button>
+                        @endif
                     </div>
 
                     <div class="p-8 text-sm text-gray-700 leading-loose">
@@ -42,7 +44,7 @@
                             {{ $props->title }}
                         </a></h4>
 
-                        {!! Markdown::convertToHtml($props->content) !!}
+                        {!! isset($truncate_content) && $truncate_content ? truncate(Markdown::convertToHtml($props->content), 150) : Markdown::convertToHtml($props->content) !!}
 
                         <div class="mt-5">
                             @foreach($props->tags as $tag)

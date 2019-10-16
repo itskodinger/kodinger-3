@@ -1,7 +1,7 @@
 @extends('layouts.app', ['title' => 'Posts'])
 
 @section('content')
-    <div class="flex items-center">
+    <div class="flex items-center py-12">
         <div class="md:w-1/2 md:mx-auto">
         	<h2 class="mb-2 text-gray-600 text-lg flex items-center">Semua Content
         		@button(['tag' => 'a', 'href' => route('post.create'), 'class' => 'text-sm ml-auto'])

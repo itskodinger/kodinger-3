@@ -24,6 +24,7 @@ class User extends Authenticatable
         'hireable',
         'github',
         'company',
+        'status'
 
     ];
 
