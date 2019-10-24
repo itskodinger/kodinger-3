@@ -43,8 +43,11 @@
                             <div class="relative">
                                 <a onclick="this.nextElementSibling.classList.toggle('hidden');"><img src="{{ auth()->user()->the_avatar }}" class="user-dropdown cursor-pointer rounded-full border w-10"></a>
                                 <ul class="user-dropdown-menu absolute hidden bg-white shadow-lg w-48 right-0 mt-3 rounded">
-                                    <li><a class="block py-2 px-4 text-sm hover:bg-indigo-100 rounded-tr rounded-tl" href="">Profile</a></li>
-                                    <li><a class="block py-2 px-4 text-sm hover:bg-indigo-100" href="">Setting</a></li>
+                                    <li><a class="block py-2 px-4 text-sm hover:bg-indigo-100 rounded-tr rounded-tl" href="{{ route('single', auth()->user()->username) }}">Profile</a></li>
+                                    <li><a class="block py-2 px-4 text-sm hover:bg-indigo-100 rounded-tr rounded-tl" href="{{ route('profile_loves', auth()->user()->username) }}">Loves</a></li>
+                                    <li><a class="block py-2 px-4 text-sm hover:bg-indigo-100 rounded-tr rounded-tl" href="{{ route('profile_saves', auth()->user()->username) }}">Saves</a></li>
+                                    <li><a class="block py-2 px-4 text-sm hover:bg-indigo-100 rounded-tr rounded-tl" href="{{ route('contributes', auth()->user()->username) }}">Contributes</a></li>
+                                    <li><a class="block py-2 px-4 text-sm hover:bg-indigo-100" href="{{ route('single', auth()->user()->username) }}">Setting</a></li>
                                     <li class="w-full h-px bg-gray-200"></li>
                                     <li><a onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="block py-2 px-4 text-sm text-red-600 hover:bg-indigo-100 rounded-br rounded-bl" href="">Logout</a></li>
                                 </ul>
@@ -74,6 +77,35 @@
               base_url = '{{ url('') }}',
               $ = document.querySelector.bind(document),
               $$ = document.querySelectorAll.bind(document);
+
+        // https://codepen.io/gabrieleromanato/pen/LpLVeQ
+        function toJSONString( form ) {
+            var obj = {};
+            var elements = form.querySelectorAll( "input, select, textarea" );
+            for( var i = 0; i < elements.length; ++i ) {
+                var element = elements[i];
+                var name = element.name;
+                var value = element.value;
+
+                if( name ) {
+                    obj[ name ] = value;
+                }
+            }
+
+            return JSON.stringify( obj );
+        }
+
+
+        // https://stackoverflow.com/questions/14321862/javascript-get-value-from-multiple-inputs-in-an-array
+        function getMultipleInputValue(form) {
+            var inputs = form.querySelectorAll('input, select, textarea'),
+                names  = [].map.call(inputs, function( input ) {
+                    if(input.value.trim().length > 0) 
+                        return input.value;
+                });
+
+            return names;
+        }
 
         $('body').addEventListener('click', function(e) {
             // close dropdown

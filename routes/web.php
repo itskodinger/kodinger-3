@@ -18,15 +18,25 @@ Auth::routes();
 
 Route::group(['prefix' => 'posts', 'as' => 'post.'], function() 
 {
-	Route::get('/posts/create', 'PostController@create')->name('create');
+	Route::get('/create', 'PostController@create')->name('create');
 	Route::get('/', 'PostController@index')->name('index');
 	Route::post('/link-info', 'PostController@getLinkInfo')->name('getLinkInfo');
-	Route::get('/posts/{id}/publish', 'PostController@publish')->name('publish');
-	Route::get('/posts/{id}/edit', 'PostController@edit')->name('edit');
-	Route::put('/posts/{id}/edit', 'PostController@update')->name('update');
-	Route::patch('/posts/{id}/edit', 'PostController@update')->name('update');
-	Route::delete('/posts/{id}/delete', 'PostController@destroy')->name('delete');
-	Route::post('/posts', 'PostController@store')->name('store');
+	Route::get('/{id}/publish', 'PostController@publish')->name('publish');
+	Route::get('/{id}/edit', 'PostController@edit')->name('edit');
+	Route::put('/{id}/edit', 'PostController@update')->name('update');
+	Route::patch('/{id}/edit', 'PostController@update')->name('update');
+	Route::delete('/{id}/delete', 'PostController@destroy')->name('delete');
+	Route::post('/', 'PostController@store')->name('store');
+});
+
+Route::group(['prefix' => 'contributes', 'as' => 'contribute.', 'middleware' => 'auth'], function() 
+{
+	Route::get('/', 'ContributeController@index')->name('index');
+	Route::get('/{slug}', 'ContributeController@create')->name('create');
+	Route::post('{id}/{col}/links', 'ContributeController@links')->name('links');
+	Route::delete('{id}', 'ContributeController@destroy')->name('delete');
+	Route::get('{id}/merge', 'ContributeController@merge')->name('merge');
+	Route::post('{id}/reject', 'ContributeController@reject')->name('reject');
 });
 
 Route::group(['prefix' => 'users', 'as' => 'user.'], function() 
@@ -42,8 +52,9 @@ Route::group(['prefix' => 'users', 'as' => 'user.'], function()
 
 Route::get('/', 'FrontendController@index')->name('index');
 Route::get('/{slug}', 'FrontendController@single')->name('single');
-Route::get('/{slug}/recommend', 'FrontendController@recommend')->name('recommend')->middleware('auth');
 Route::get('/{slug}/loves', 'FrontendController@profile_loves')->name('profile_loves');
+Route::get('/{slug}/saves', 'FrontendController@profile_saves')->name('profile_saves');
+Route::get('/{slug}/contributes', 'FrontendController@contributes')->name('contributes');
 Route::get('/tag/{slug}', 'FrontendController@index')->name('tag');
 Route::get('/home', 'HomeController@index')->name('home');
 

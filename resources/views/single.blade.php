@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app', ['title' => $post->title])
 
 @section('content')
     <div class="container mx-auto">
@@ -19,13 +19,13 @@
 	                	</a>
 	                	@endforeach
 	                	<div class="flex items-center text-sm justify-center px-2 py-2 border-b border-gray-100">
-		                	<a href="{{ route('recommend', [$post->slug, 'col' => $r]) }}" class="inline-block text-sm bg-indigo-600 hover:bg-transparent hover:text-indigo-600 border border-indigo-600 text-white rounded-full py-1 px-4">Rekomendasikan</a>
+		                	<a href="{{ route('contribute.create', [$post->slug, 'col' => $r]) }}" class="inline-block text-sm bg-indigo-600 hover:bg-transparent hover:text-indigo-600 border border-indigo-600 text-white rounded-full py-1 px-4">Rekomendasikan</a>
 	                	</div>
 	                </div>
 	                @else
 	                <div class="bg-white shadow-md rounded p-4 text-sm text-center mb-3">
 	                	<h4>Tidak ada link {{ key2str($r) }}</h4>
-	                	<a href="{{ route('recommend', [$post->slug, 'col' => $r]) }}" class="inline-block mt-3 text-sm bg-indigo-600 hover:bg-transparent hover:text-indigo-600 border border-indigo-600 text-white rounded-full py-1 px-4">Rekomendasikan</a>
+	                	<a href="{{ route('contribute.create', [$post->slug, 'col' => $r]) }}" class="inline-block mt-3 text-sm bg-indigo-600 hover:bg-transparent hover:text-indigo-600 border border-indigo-600 text-white rounded-full py-1 px-4">Rekomendasikan</a>
 	                </div>
 	                @endif
                 </div>

@@ -10,6 +10,19 @@ function nl_array($str)
 	return $arr;
 }
 
+function nl_list($str, $class='', $tag='div')
+{
+	$arr = nl_array($str);
+
+	$out = '';
+	foreach($arr as $r)
+	{
+		$out .= '<' . $tag . ' class="'.$class.'">' . $r . '</'. $tag .'>';
+	}
+
+	return $out;
+}
+
 function nl_array_first($str)
 {
 	$str = nl_array($str);
@@ -106,4 +119,16 @@ function get_title_by_url($url)
 	$url = parse_url($url);
 
 	return str_replace('www.', '', $url['host']);
+}
+
+function determine_page_title($title, $url)
+{
+	$hide = [
+		'Object moved',
+	];
+
+	if(in_array($title, $hide))
+		return get_title_by_url($url);
+
+	return $title;
 }
