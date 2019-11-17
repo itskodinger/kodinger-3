@@ -69,16 +69,11 @@ class PostController extends Controller
 		return redirect()->route('post.index');
 	}
 
-	public function recommend(Request $request)
-	{
-
-	}
-
 	public function getLinkInfo(Request $request)
 	{
 		$data = get_data($request->url);
 		preg_match('/<title>(.*)<\/title>/i', $data, $matches);
-		$title = $matches[1] ?? get_title_by_url($request->url);
+		$title = determine_page_title($matches[1], $request->url);
 
 		return response([
 			'url' => $request->url,

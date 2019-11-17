@@ -5,6 +5,7 @@ namespace Services;
 use App\Post;
 use App\PostTag;
 use App\Tag;
+use App\Contribute;
 
 class PostService
 {
@@ -88,7 +89,7 @@ class PostService
 	{
 		$post = $this->model()->whereSlug($slug)->first();
 
-		if($views) {
+		if($post && $views) {
 			$post->update(['views' => ($post->views ?? 0) + 1]);
 		}
 
