@@ -14,7 +14,11 @@
 Route::get('/single', function () {
     return view('single');
 });
-Auth::routes();
+
+Route::get('/files', function() {
+	dd(Storage::disk('spaces')->allFiles());
+});
+Auth::routes(['register' => false]);
 
 Route::group(['prefix' => 'posts', 'as' => 'post.'], function() 
 {
@@ -41,7 +45,7 @@ Route::group(['prefix' => 'contributes', 'as' => 'contribute.', 'middleware' => 
 
 Route::group(['prefix' => 'users', 'as' => 'user.'], function() 
 {
-	Route::get('/users/create', 'UserController@create')->name('create');
+	// Route::get('/users/create', 'UserController@create')->name('create');
 	Route::get('/', 'UserController@index')->name('index');
 	Route::get('/users/{id}/edit', 'UserController@edit')->name('edit');
 	Route::put('/users/{id}/edit', 'UserController@update')->name('update');
@@ -51,10 +55,13 @@ Route::group(['prefix' => 'users', 'as' => 'user.'], function()
 });
 
 Route::get('/', 'FrontendController@index')->name('index');
-Route::get('/{slug}', 'FrontendController@single')->name('single');
-Route::get('/{slug}/loves', 'FrontendController@profile_loves')->name('profile_loves');
-Route::get('/{slug}/saves', 'FrontendController@profile_saves')->name('profile_saves');
+Route::get('/{slug}/loves', 'FrontendController@profile_loves')->name('loves');
+Route::get('/saves', 'FrontendController@profile_saves')->name('saves');
 Route::get('/{slug}/contributes', 'FrontendController@contributes')->name('contributes');
+Route::get('/{slug}/disccuss', 'FrontendController@disccuss')->name('disccuss');
+Route::get('/setting', 'FrontendController@setting')->name('setting');
+Route::post('/setting', 'FrontendController@setting_update')->name('setting_update');
+Route::get('/{slug}', 'FrontendController@single')->name('single');
 Route::get('/tag/{slug}', 'FrontendController@index')->name('tag');
 Route::get('/home', 'HomeController@index')->name('home');
 

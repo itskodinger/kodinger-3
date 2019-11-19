@@ -76,6 +76,11 @@ class User extends Authenticatable
         if(!$this->avatar)
             return 'https://ui-avatars.com/api/?name=' . $this->name;
 
-        return url('storage/avatar/' . $this->avatar);
+        return avatar($this->avatar);
+    }
+
+    public function posts()
+    {
+        return $this->hasMany('App\Post');
     }
 }

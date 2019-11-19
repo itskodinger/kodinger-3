@@ -103,15 +103,39 @@ function user_statuses()
 	];
 }
 
-function get_data($url) {
-	$ch = curl_init();
-	$timeout = 5;
-	curl_setopt($ch, CURLOPT_URL, $url);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-	$data = curl_exec($ch);
-	curl_close($ch);
-	return $data;
+function check_url($value)
+{
+	$value = trim($value);
+	if (get_magic_quotes_gpc()) 
+	{
+		$value = stripslashes($value);
+	}
+	$value = strtr($value, array_flip(get_html_translation_table(HTML_ENTITIES)));
+	$value = strip_tags($value);
+	$value = htmlspecialchars($value);
+	return $value;
+}	
+
+function get_data($url)
+{
+	$url = check_url($url);
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+    $data = curl_exec($ch);
+	$info = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+	
+	//checking mime types
+	if(strstr($info,'text/html')) {
+		curl_close($ch);
+    	return $data;
+	} else {
+		return false;
+	}
 }
 
 function get_title_by_url($url)
@@ -123,12 +147,43 @@ function get_title_by_url($url)
 
 function determine_page_title($title, $url)
 {
+	$title = trim($title);
+
 	$hide = [
 		'Object moved',
+		'Attention Required! | Cloudflare'
 	];
 
 	if(in_array($title, $hide))
 		return get_title_by_url($url);
 
 	return $title;
+}
+
+// https://stackoverflow.com/questions/2762061/how-to-add-http-if-it-doesnt-exists-in-the-url
+function add_http($url) {
+    if (!preg_match("~^(?:f|ht)tps?://~i", $url)) {
+        $url = "http://" . $url;
+    }
+    return $url;
+}
+
+function is_route($name, $str)
+{
+	return request()->route()->getName() == $name ? $str : '';
+}
+
+function space_url($path=null)
+{
+	return env('DO_SPACES_BASEURL') . '/' . ($path ?? '');
+}
+
+function avatar_path()
+{
+	return 'public/avatar';
+}
+
+function avatar($name)
+{
+	return space_url(avatar_path() . '/' . $name);
 }

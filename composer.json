@@ -12,12 +12,14 @@
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "^4.0",
         "graham-campbell/markdown": "^11.1",
+        "intervention/image": "^2.5",
         "laracasts/flash": "^3.0",
         "laravel-frontend-presets/tailwindcss": "^1.0",
         "laravel/framework": "5.8.*",
         "laravel/socialite": "^4.1",
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "^5.4.0",
+        "league/flysystem-aws-s3-v3": "^1.0",
         "spatie/laravel-permission": "^3.0"
     },
     "require-dev": {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Services\PostService;
 use Services\UserService;
+use Requests\SettingUpdateRequest;
 
 class FrontendController extends Controller
 {
@@ -39,9 +40,30 @@ class FrontendController extends Controller
 
 			if(!$user) return abort(404);
 
-			return view('profile', compact('user'));
+			$posts = $user->posts()->paginate(10);
+
+			return view('profile', compact('user', 'posts'));
 		}
 
 		return view('single', compact('post'));
+	}
+
+	public function setting()
+	{
+		$user = auth()->user();
+
+		return view('setting', compact('user'));
+	}
+
+	public function setting_update(SettingUpdateRequest $request)
+	{
+		$setting = $this->userService->setting($request);
+
+		if(!$setting)
+			return redirect()->back()->withErrors();
+
+		flash()->success('User setting saved successfully');
+
+		return redirect()->back();
 	}
 }

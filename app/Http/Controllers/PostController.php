@@ -72,8 +72,11 @@ class PostController extends Controller
 	public function getLinkInfo(Request $request)
 	{
 		$data = get_data($request->url);
-		preg_match('/<title>(.*)<\/title>/i', $data, $matches);
-		$title = determine_page_title($matches[1], $request->url);
+		
+		$doc = new \DOMDocument();
+		@$doc->loadHTML($data);
+		$nodes = $doc->getElementsByTagName('title');
+		$title = determine_page_title($nodes->item(0)->nodeValue, $request->url);
 
 		return response([
 			'url' => $request->url,

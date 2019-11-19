@@ -7931,6 +7931,13 @@ body {
           animation-duration: 1s;
 }
 
+.nav-active {
+  color: #5a67d8;
+  font-weight: 700;
+  border-bottom-width: 2px;
+  border-color: #5a67d8;
+}
+
 @-webkit-keyframes spin {
   0% {
     transform: rotate(0deg);

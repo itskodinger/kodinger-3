@@ -3,11 +3,7 @@
 @section('content')
     <div class="flex items-center py-12">
         <div class="md:w-1/2 md:mx-auto">
-        	<h2 class="mb-2 text-gray-600 text-lg flex items-center">Semua Pengguna
-        		@button(['tag' => 'a', 'href' => route('user.create'), 'class' => 'text-sm ml-auto'])
-        			Tambah Pengguna
-        		@endbutton
-        	</h2>
+        	<h2 class="mb-2 text-gray-600 text-lg flex items-center">Semua Pengguna</h2>
         	<div class="bg-white rounded shadow-md">
 	        	@foreach($users as $user)
 	        	<div class="p-4 border-b border-gray-200 flex">

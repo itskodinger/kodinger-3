@@ -30,7 +30,7 @@
                         <a class="text-sm py-4 mx-3 text-gray-500" href="">About</a>
                     </div>
                     <div class="ml-auto flex items-center">
-                        <form>
+                        <form action="{{ url('') }}">
                             <input type="text" name="search" class="bg-search focus:outline-none focus:bg-transparent pl-10 bg-gray-200 border border-gray-200 py-3 px-4 mr-2 rounded text-sm w-64" placeholder="Cari di sini ..." value="{{ request()->search }}">
                         </form>
                         <div class="w-px h-6 mx-6 mr-8 bg-gray-200"></div>
@@ -41,13 +41,13 @@
                             </a>
                         @else
                             <div class="relative">
-                                <a onclick="this.nextElementSibling.classList.toggle('hidden');"><img src="{{ auth()->user()->the_avatar }}" class="user-dropdown cursor-pointer rounded-full border w-10"></a>
+                                <a onclick="this.nextElementSibling.classList.toggle('hidden');"><img src="{{ auth()->user()->the_avatar }}" class="user-dropdown cursor-pointer rounded border w-10"></a>
                                 <ul class="user-dropdown-menu absolute hidden bg-white shadow-lg w-48 right-0 mt-3 rounded">
-                                    <li><a class="block py-2 px-4 text-sm hover:bg-indigo-100 rounded-tr rounded-tl" href="{{ route('single', auth()->user()->username) }}">Profile</a></li>
-                                    <li><a class="block py-2 px-4 text-sm hover:bg-indigo-100 rounded-tr rounded-tl" href="{{ route('profile_loves', auth()->user()->username) }}">Loves</a></li>
-                                    <li><a class="block py-2 px-4 text-sm hover:bg-indigo-100 rounded-tr rounded-tl" href="{{ route('profile_saves', auth()->user()->username) }}">Saves</a></li>
-                                    <li><a class="block py-2 px-4 text-sm hover:bg-indigo-100 rounded-tr rounded-tl" href="{{ route('contributes', auth()->user()->username) }}">Contributes</a></li>
-                                    <li><a class="block py-2 px-4 text-sm hover:bg-indigo-100" href="{{ route('single', auth()->user()->username) }}">Setting</a></li>
+                                    <li><a class="block py-2 px-4 text-sm hover:bg-indigo-100 rounded-tr rounded-tl" href="{{ route('single', auth()->user()->the_username) }}">Profile</a></li>
+                                    <li><a class="block py-2 px-4 text-sm hover:bg-indigo-100 rounded-tr rounded-tl" href="{{ route('loves', auth()->user()->the_username) }}">Disukai</a></li>
+                                    <li><a class="block py-2 px-4 text-sm hover:bg-indigo-100 rounded-tr rounded-tl" href="{{ route('saves') }}">Disimpan</a></li>
+                                    <li><a class="block py-2 px-4 text-sm hover:bg-indigo-100 rounded-tr rounded-tl" href="{{ route('contributes', auth()->user()->the_username) }}">Kontribusi</a></li>
+                                    <li><a class="block py-2 px-4 text-sm hover:bg-indigo-100" href="{{ route('setting') }}">Pengaturan</a></li>
                                     <li class="w-full h-px bg-gray-200"></li>
                                     <li><a onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="block py-2 px-4 text-sm text-red-600 hover:bg-indigo-100 rounded-br rounded-bl" href="">Logout</a></li>
                                 </ul>
