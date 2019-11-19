@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app', ['title' => 'Login'])
 
 @section('content')
     <div class="container mx-auto py-12">

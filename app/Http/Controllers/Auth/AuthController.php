@@ -10,9 +10,16 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use File;
+use Services\UserService;
 
 class AuthController extends Controller
 {
+    public $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
 
     public function redirectToProvider($provider)
     {
@@ -46,28 +53,6 @@ class AuthController extends Controller
      */
     public function findOrCreateUser($user, $provider)
     {
-        $authUser = User::where('provider_id', $user->id)->first();
-        if ($authUser) {
-            return $authUser;
-        }
-        else{
-            $fileContents = file_get_contents($user->getAvatar());
-            File::put(storage_path('app/public/avatar/' . $user->getId() . ".jpg"), $fileContents);
-            $data = User::create([
-                'name'     => $user->name,
-                'email'    => !empty($user->email)? $user->email : '' ,
-                'username' => $user->nickname,
-                'provider' => $provider,
-                'provider_id' => $user->id,
-                'avatar' => $user->getId() . '.jpg',
-                'bio' => $user->user['bio'],
-                'link' => $user->user['blog'],
-                'location' => $user->user['location'],
-                'hireable' => $user->user['hireable'],
-                'github' => $user->user['html_url'],
-                'company' => $user->user['company'],
-            ]);
-            return $data;
-        }
+        return $this->userService->register($user, $provider);
     }
 }

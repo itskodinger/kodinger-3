@@ -18,6 +18,7 @@ class RolePermissionSeeder extends Seeder
     		['name' => 'contributor'],
     		['name' => 'moderator'],
     		['name' => 'author'],
+            ['name' => 'member'],
     	];
 
     	foreach ($roles as $role) 
@@ -29,7 +30,7 @@ class RolePermissionSeeder extends Seeder
     		['name' => 'post-list'],
     		['name' => 'post-create'],
     		['name' => 'post-update'],
-    		['name' => 'post-delete'],
+    		['name' => 'post-deleted'],
     	];
 
     	foreach($permissions as $permission) 

@@ -25,9 +25,9 @@
                         </a>
                     </div>
                     <div class="ml-4">
-                        <a class="text-sm py-4 mx-3 text-indigo-600 font-semibold" href="">Home</a>
-                        <a class="text-sm py-4 mx-3 text-gray-500" href="">Goods</a>
-                        <a class="text-sm py-4 mx-3 text-gray-500" href="">About</a>
+                        <a class="text-sm py-4 mx-3 text-indigo-600 font-semibold" href="{{ url('') }}">Beranda</a>
+                        <a class="text-sm py-4 mx-3 text-gray-500 hover:text-indigo-600" href="">Komunitas</a>
+                        <a class="text-sm py-4 mx-3 text-gray-500 hover:text-indigo-600" href="">Discover</a>
                     </div>
                     <div class="ml-auto flex items-center">
                         <form action="{{ url('') }}">
@@ -41,7 +41,7 @@
                             </a>
                         @else
                             <div class="relative">
-                                <a onclick="this.nextElementSibling.classList.toggle('hidden');"><img src="{{ auth()->user()->the_avatar }}" class="user-dropdown cursor-pointer rounded border w-10"></a>
+                                <a onclick="this.nextElementSibling.classList.toggle('hidden');"><img src="{{ auth()->user()->the_avatar_sm }}" class="user-dropdown cursor-pointer rounded border w-10"></a>
                                 <ul class="user-dropdown-menu absolute hidden bg-white shadow-lg w-48 right-0 mt-3 rounded">
                                     <li><a class="block py-2 px-4 text-sm hover:bg-indigo-100 rounded-tr rounded-tl" href="{{ route('single', auth()->user()->the_username) }}">Profile</a></li>
                                     <li><a class="block py-2 px-4 text-sm hover:bg-indigo-100 rounded-tr rounded-tl" href="{{ route('loves', auth()->user()->the_username) }}">Disukai</a></li>

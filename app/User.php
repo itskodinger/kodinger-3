@@ -73,10 +73,12 @@ class User extends Authenticatable
 
     public function getTheAvatarAttribute()
     {
-        if(!$this->avatar)
-            return 'https://ui-avatars.com/api/?name=' . $this->name;
+        return avatar($this->avatar, 460, $this->name);
+    }
 
-        return avatar($this->avatar);
+    public function getTheAvatarSmAttribute()
+    {
+        return avatar($this->avatar, 80, $this->name);
     }
 
     public function posts()

@@ -183,7 +183,10 @@ function avatar_path()
 	return 'public/avatar';
 }
 
-function avatar($name)
+function avatar($avatar, $size=460, $name=null)
 {
-	return space_url(avatar_path() . '/' . $name);
+	if(!$avatar)
+		return 'https://ui-avatars.com/api/?name=' . $name;
+
+	return space_url(avatar_path() . '/' . $size . '/' . $avatar);
 }
