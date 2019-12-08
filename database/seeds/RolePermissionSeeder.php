@@ -27,15 +27,27 @@ class RolePermissionSeeder extends Seeder
     	}
 
     	$permissions = [
-    		['name' => 'post-list'],
-    		['name' => 'post-create'],
-    		['name' => 'post-update'],
-    		['name' => 'post-deleted'],
+    		'post-list',
+    		'post-create',
+    		'post-update',
+    		'post-delete',
+            'user-list',
+            'user-update',
+            'user-block',
+            'user-role', // change the user role
+            'user-delete',
+            'contribute-list',
+            'contribute-merge',
+            'contribute-reject',
+            'contribute-delete',
     	];
 
     	foreach($permissions as $permission) 
     	{
     		Permission::firstOrcreate($permission);
     	}
+
+        $admin = Role::whereName('admin')->first();
+        $admin->syncPermissions($permissions);
     }
 }

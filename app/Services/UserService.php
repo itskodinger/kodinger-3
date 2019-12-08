@@ -10,7 +10,7 @@ class UserService
 {
 	public function model()
 	{
-		return User::with('posts');
+		return User::with('posts', 'savePosts', 'lovePosts', 'savePosts.post');
 	}
 
 	public function find($id)

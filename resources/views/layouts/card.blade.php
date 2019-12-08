@@ -1,4 +1,4 @@
-                <div class="bg-white rounded shadow-md mb-12">
+                <div class="bg-white rounded border-2 border-gray-200 mb-10">
                     <div class="flex p-4 items-center">
                         <a href="{{ route('single', $props->user->the_username) }}">
                             <img class="rounded w-12 rounded" src="{{ $props->user->the_avatar_sm }}">

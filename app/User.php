@@ -46,12 +46,17 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function save_posts()
+    public function getIsMeAttribute()
+    {
+        return auth()->check() && auth()->id() == $this->id;
+    }
+
+    public function savePosts()
     {
         return $this->hasMany('App\Save', 'user_id')->whereMethod('save')->whereModel('Post');
     }
 
-    public function love_posts()
+    public function lovePosts()
     {
         return $this->hasMany('App\Save', 'user_id')->whereMethod('love')->whereModel('Post');
     }

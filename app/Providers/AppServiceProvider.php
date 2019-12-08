@@ -25,10 +25,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        \Carbon\Carbon::setLocale(config('app.locale'));
+
         Blade::component('components.button');
         Blade::component('components.card');
         Blade::include('components.field');
         Blade::component('components.field', 'fieldblock');
+        Blade::if('isme', function($user) {
+            return $user->isme;
+        });
 
         Paginator::defaultView('pagination::default');
     }

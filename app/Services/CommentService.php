@@ -7,30 +7,41 @@ use GrahamCampbell\Markdown\Facades\Markdown;
 
 class CommentService 
 {
+	public function model()
+	{
+		return Comment::with('user', 'post');
+	}
+
 	public function find($id)
 	{
-		return Comment::find($id);
+		return $this->model()->find($id);
 	}
 
 	public function total($post_id)
 	{
-		return Comment::wherePostId($post_id)->count();
+		return $this->model()->wherePostId($post_id)->count();
 	}
 
+	public function mine()
+	{
+		return $this->model()->orderBy('created_at', 'desc')->paginate(10);
+	}
+
+	// move to eloquent soon
 	public function attrs($comment)
 	{
-		$comment->content = Markdown::convertToHtml($comment->content);
-		$comment->time = $comment->created_at->diffForHumans();
+		$comment->content = $comment->markdown;
+		$comment->time = $comment->time;
 		$comment->avatar = $comment->user->the_avatar;
 		$comment->username = $comment->user->the_username;
-		$comment->is_mine = $comment->user_id == optional(auth()->user())->id;
+		$comment->is_mine = $comment->is_mine;
 
 		return $comment;
 	}
 
 	public function take($post_id, $start, $end)
 	{
-		$comments = Comment::with('user')->wherePostId($post_id)->offset($start)->take($end)->orderBy('created_at', 'desc')->get();
+		$comments = $this->model()->wherePostId($post_id)->offset($start)->take($end)->orderBy('created_at', 'desc')->get();
 		$comments->each(function($item) {
 			return $this->attrs($item);
 		});

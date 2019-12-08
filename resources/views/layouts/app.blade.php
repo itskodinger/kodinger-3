@@ -14,24 +14,22 @@
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 </head>
-<body class="h-screen">
+<body class="h-screen bg-white">
     <div id="app">
         <nav class="bg-white border-b-2 border-indigo-600 shadow mb-4 py-3 fixed left-0 w-full z-10">
             <div class="container mx-auto px-6 md:px-0">
                 <div class="flex items-center justify-center">
-                    <div class="ml-6">
-                        <a href="{{ url('/') }}" class="text-lg font-semibold text-indigo-600 no-underline">
-                            <img src="http://kodinger.com/assets/images/logos/kodinger.svg" width="45">
-                        </a>
-                    </div>
+                    <a href="{{ url('/') }}" class="text-lg font-semibold text-indigo-600 no-underline">
+                        <img src="http://kodinger.com/assets/images/logos/kodinger.svg" width="45">
+                    </a>
                     <div class="ml-4">
-                        <a class="text-sm py-4 mx-3 text-indigo-600 font-semibold" href="{{ url('') }}">Beranda</a>
-                        <a class="text-sm py-4 mx-3 text-gray-500 hover:text-indigo-600" href="">Komunitas</a>
-                        <a class="text-sm py-4 mx-3 text-gray-500 hover:text-indigo-600" href="">Discover</a>
+                        <a class="text-sm py-4 mx-3 {{ is_route('index', 'text-indigo-600', 'text-gray-500')}} hover:text-indigo-600" href="{{ url('') }}">Beranda</a>
+                        <a class="text-sm py-4 mx-3 {{ is_route('community', 'text-indigo-600', 'text-gray-500')}} hover:text-indigo-600" href="{{ route('community') }}">Komunitas</a>
+                        <a class="text-sm py-4 mx-3 {{ is_route('discover', 'text-indigo-600', 'text-gray-500')}} hover:text-indigo-600" href="{{ route('discover') }}">Discover</a>
                     </div>
                     <div class="ml-auto flex items-center">
                         <form action="{{ url('') }}">
-                            <input type="text" name="search" class="bg-search focus:outline-none focus:bg-transparent pl-10 bg-gray-200 border border-gray-200 py-3 px-4 mr-2 rounded text-sm w-64" placeholder="Cari di sini ..." value="{{ request()->search }}">
+                            <input type="text" name="search" class="bg-search focus:outline-none pl-10 border-2 border-gray-200 focus:border-indigo-600 py-3 px-4 mr-2 rounded text-sm w-64" placeholder="Cari di sini ..." value="{{ request()->search }}">
                         </form>
                         <div class="w-px h-6 mx-6 mr-8 bg-gray-200"></div>
                         @guest
@@ -43,11 +41,11 @@
                             <div class="relative">
                                 <a onclick="this.nextElementSibling.classList.toggle('hidden');"><img src="{{ auth()->user()->the_avatar_sm }}" class="user-dropdown cursor-pointer rounded border w-10"></a>
                                 <ul class="user-dropdown-menu absolute hidden bg-white shadow-lg w-48 right-0 mt-3 rounded">
-                                    <li><a class="block py-2 px-4 text-sm hover:bg-indigo-100 rounded-tr rounded-tl" href="{{ route('single', auth()->user()->the_username) }}">Profile</a></li>
-                                    <li><a class="block py-2 px-4 text-sm hover:bg-indigo-100 rounded-tr rounded-tl" href="{{ route('loves', auth()->user()->the_username) }}">Disukai</a></li>
-                                    <li><a class="block py-2 px-4 text-sm hover:bg-indigo-100 rounded-tr rounded-tl" href="{{ route('saves') }}">Disimpan</a></li>
-                                    <li><a class="block py-2 px-4 text-sm hover:bg-indigo-100 rounded-tr rounded-tl" href="{{ route('contributes', auth()->user()->the_username) }}">Kontribusi</a></li>
-                                    <li><a class="block py-2 px-4 text-sm hover:bg-indigo-100" href="{{ route('setting') }}">Pengaturan</a></li>
+                                    <li><a class="block py-2 px-4 text-sm text-gray-800 hover:bg-indigo-100 rounded-tr rounded-tl" href="{{ route('single', auth()->user()->the_username) }}">Profile</a></li>
+                                    <li><a class="block py-2 px-4 text-sm text-gray-800 hover:bg-indigo-100 rounded-tr rounded-tl" href="{{ route('loves', auth()->user()->the_username) }}">Disukai</a></li>
+                                    <li><a class="block py-2 px-4 text-sm text-gray-800 hover:bg-indigo-100 rounded-tr rounded-tl" href="{{ route('saves') }}">Disimpan</a></li>
+                                    <li><a class="block py-2 px-4 text-sm text-gray-800 hover:bg-indigo-100 rounded-tr rounded-tl" href="{{ route('contributes', auth()->user()->the_username) }}">Kontribusi</a></li>
+                                    <li><a class="block py-2 px-4 text-sm text-gray-800 hover:bg-indigo-100" href="{{ route('setting') }}">Pengaturan</a></li>
                                     <li class="w-full h-px bg-gray-200"></li>
                                     <li><a onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="block py-2 px-4 text-sm text-red-600 hover:bg-indigo-100 rounded-br rounded-bl" href="">Logout</a></li>
                                 </ul>
@@ -63,11 +61,20 @@
         </nav>
 
         <div class="pt-16">
-            @yield('content')
+            <div class="min-h-screen">
+                @yield('content')
+            </div>
         </div>
 
-        <div class="py-10 text-center text-sm">
-            Copyright &copy; {{date('Y')}}
+        <div class="py-6 border-t border-gray-200 text-sm">
+            <div class="container mx-auto flex">
+                <div class="text-gray-600 font-light">Copyright &copy; Kodinger</div>
+                <div class="ml-auto">
+                    <a class="mx-3 text-gray-600 hover:text-indigo-600" href="{{ route('about') }}">About</a>
+                    <a class="mx-3 text-gray-600 hover:text-indigo-600" href="">Help</a>
+                    <a class="ml-3 text-gray-600 hover:text-indigo-600" href="http://uarnix.com">Uarnix</a>
+                </div>
+            </div>
         </div>
     </div>
 

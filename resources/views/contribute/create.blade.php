@@ -11,7 +11,7 @@
 	            			<div class="ml-6">
 	            				<h4 class="text-lg font-bold text-gray-800">Rekomendasi Berhasil Disimpan</h4>
 	            				<p class="mt-1 text-gray-600 mb-3">Kontribusi kamu akan kami tinjau terlebih dahulu sebelum kami tambahkan ke konten terkait. Terima kasih sudah berkontribusi!</p>
-	            				<a href="" class="text-indigo-600">Lihat Semua Rekomendasi</a>
+	            				<a href="{{ route('contributes', auth()->user()->the_username) }}" class="text-indigo-600">Lihat Semua Rekomendasi</a>
 	            			</div>
 	            		</div>
 	            		<div class="flex hidden" id="error-message">

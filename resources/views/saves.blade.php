@@ -1,10 +1,10 @@
 @extends('layouts.profile', ['title' => $user->name])
 
 @section('profile_content')
-    <h1 class="mb-4 text-gray-600 text-lg flex items-center">Semua Post</h1>
+    <h1 class="mb-4 text-gray-600 text-lg flex items-center">Semua Post Yang Disimpa</h1>
 
     @forelse($posts as $post)
-        @include('layouts.card', ['props' => $post, 'comment' => false, 'truncate_content' => true])
+        @include('layouts.card', ['props' => $post->post, 'comment' => false, 'truncate_content' => true])
     @empty
         Tidak ada postingan
     @endforelse

@@ -27,7 +27,7 @@
 @push('js')
     <script>
         let comment_tmp = '\
-            <div class="px-6 py-3 bg-gray-100 rounded-bl rounded-br cmt-{id}">\
+            <div id="discuss-{id}" class="px-6 py-3 bg-gray-100 rounded-bl rounded-br cmt-{id}">\
                 <div class="flex">\
                     <img class="rounded-full w-10 h-10 flex-shrink-0" src="{avatar}">\
                     <div class="ml-3 w-full">\
@@ -35,7 +35,7 @@
                         <h4 class="mb-1 font-bold text-sm"><a class="text-indigo-600" href="'+ base_url +'/{username}">{name}</a> <span class="text-gray-600 font-normal">({username})</span></h4>\
                         <div class="text-sm text-gray-700 comment-msg">\
                             <p>{msg}</p>\
-                            {is_mine}\
+                            {is_mine}<a class="text-xs ml-3" href="{currentUrl}#discuss-{id}">Permalink</a>\
                         </div>\
                     </div>\
                 </div>\
@@ -47,6 +47,7 @@
             if(!method) method = 'append';
 
             let item = comment_tmp.replace(/{msg}/g, obj.msg);
+            item = item.replace(/{currentUrl}/g, window.location.href)
             item = item.replace(/{avatar}/g, obj.avatar)
             item = item.replace(/{name}/g, obj.name)
             item = item.replace(/{username}/g, obj.username)
@@ -220,6 +221,12 @@
         comment_load(function(res) {
             if(res.count == 0)
                 comments.innerHTML = '<div class="text-center p-2 text-sm no-comment"><i>Belum ada diskusi, jadilah yang pertama.</i></div>';
+
+            let hash = window.location.hash;
+            setTimeout(function() {
+                if(hash)
+                    window.scrollTo(0, document.querySelector(hash).offsetTop - 80);                
+            }, 50);
         });
 
     </script>

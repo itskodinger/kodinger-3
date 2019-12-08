@@ -55,12 +55,15 @@ Route::group(['prefix' => 'users', 'as' => 'user.'], function()
 });
 
 Route::get('/', 'FrontendController@index')->name('index');
-Route::get('/{slug}/loves', 'FrontendController@profile_loves')->name('loves');
-Route::get('/saves', 'FrontendController@profile_saves')->name('saves');
+Route::get('/community', 'FrontendController@community')->name('community');
+Route::get('/about', 'FrontendController@about')->name('about');
+Route::get('/discover', 'FrontendController@discover')->name('discover');
+Route::get('/{slug}/loves', 'FrontendController@profileLoves')->name('loves');
+Route::get('/saves', 'FrontendController@profileSaves')->name('saves');
 Route::get('/{slug}/contributes', 'FrontendController@contributes')->name('contributes');
-Route::get('/{slug}/disccuss', 'FrontendController@disccuss')->name('disccuss');
+Route::get('/{slug}/discuss', 'FrontendController@discuss')->name('discuss');
 Route::get('/setting', 'FrontendController@setting')->name('setting');
-Route::post('/setting', 'FrontendController@setting_update')->name('setting_update');
+Route::post('/setting', 'FrontendController@settingUpdate')->name('setting_update');
 Route::get('/{slug}', 'FrontendController@single')->name('single');
 Route::get('/tag/{slug}', 'FrontendController@index')->name('tag');
 Route::get('/home', 'HomeController@index')->name('home');

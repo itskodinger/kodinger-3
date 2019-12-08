@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app', ['title' => 'Where developers share their knowledge'])
 
 @section('content')
     <div class="container mx-auto">
