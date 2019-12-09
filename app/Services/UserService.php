@@ -23,6 +23,20 @@ class UserService
 		return $this->model()->paginate($num);
 	}
 
+	public function findAndUpdate($request, $id)
+	{
+		$user = $this->find($id);
+
+		$input = $request->all() ?? $request;
+
+		$user->update($input);
+
+		$user->syncRoles($request->roles);
+
+		return $user;
+
+	}
+
 	public function findByUsername($username)
 	{
 		if(strpos($username, '@') > -1) 

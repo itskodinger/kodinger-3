@@ -11,13 +11,6 @@
 |
 */
 
-Route::get('/single', function () {
-    return view('single');
-});
-
-Route::get('/files', function() {
-	dd(Storage::disk('spaces')->allFiles());
-});
 Auth::routes(['register' => false]);
 
 Route::group(['prefix' => 'posts', 'as' => 'post.'], function() 

@@ -37,6 +37,16 @@
 			'value' => $user->status
 		])
 
+		@field([
+			'name' => 'roles[]',
+			'label' => 'Roles',
+			'type' => 'select',
+			'data' => Role::pluck('name', 'id'),
+			'multiple' => true,
+			'class' => 'h-24',
+			'value' => $user->roles()->pluck('id')
+		])
+
 		@button([
 			'class' => 'w-full'
 		])

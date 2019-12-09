@@ -28,12 +28,10 @@ class FrontendController extends Controller
 	{
 		$posts = $this->postService->paginate(10, $request->all() + ['tag' => $tag]);
 
-		$popular = $this->postService->popular(1)[0];
-
 		if(!$posts)
 			return abort(404);
 
-		return view('welcome', compact('posts', 'tag', 'popular'));
+		return view('welcome', compact('posts', 'tag'));
 	}
 
 	public function community()

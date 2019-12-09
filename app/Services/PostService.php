@@ -6,6 +6,8 @@ use App\Post;
 use App\PostTag;
 use App\Tag;
 use App\Contribute;
+use App\Save;
+use DB;
 
 class PostService
 {
@@ -96,9 +98,23 @@ class PostService
 		return $post;
 	}
 
-	public function popular($limit=5)
+	public function popular()
 	{
-		$posts = $this->model()->orderBy('views', 'desc')->limit($limit)->get();
+		$posts = $this->model()->orderBy('views', 'desc')->first();
+
+		return $posts;
+	}
+
+	public function loved($take=5)
+	{
+		$posts = Save::whereModel('Post')
+						->whereMethod('love')
+						->groupBy('row_id')
+						->select('row_id', DB::raw('count(row_id) as total'))
+						->orderBy('total', 'desc')
+						->with('post')
+						->take($take)
+						->get();
 
 		return $posts;
 	}

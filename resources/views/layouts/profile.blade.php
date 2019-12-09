@@ -34,7 +34,7 @@
                 @yield('profile_content')
     		</div>
     		<div class="w-4/12 px-6">
-    			Hello
+    			@sidebar
     		</div>
     	</div>
 	</div>

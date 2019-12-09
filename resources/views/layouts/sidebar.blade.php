@@ -1,10 +1,33 @@
-                <h4 class="font-bold mb-3 text-indigo-600">Konten Populer</h4>
+                @inject('post', 'Services\PostService')
+                @inject('tag', 'Services\TagService')
+
+                <h4 class="font-bold mb-3 text-indigo-600">Topik Populer</h4>
+                <div class="bg-white rounded border-2 border-gray-200">
+                    @foreach($tag->popular(5) as $tag)
+                    <a class="flex items-center hover:bg-gray-100 px-5 py-4 border-b border-gray-100" href="{{ route('tag', $tag->name) }}">
+                        <div class="text-sm text-gray-600 font-semibold truncate">{{ '#' . $tag->name }}</div>
+                    </a>
+                    @endforeach
+                </div>
+
+                <h4 class="mt-10 font-bold mb-3 text-indigo-600">Konten Populer</h4>
                 <div class="rounded">
-                    <img src="{{ nl_array_first($popular->images) }}" alt="{{ $popular->title }}" class="rounded-lg">
-                    <div class="bg-white p-5 rounded-lg mx-4 -mt-16 relative shadow-lg">
-                        <h4 class="text-indigo-500 font-semibold hover:text-indigo-700"><a href="{{ route('single', $popular->slug) }}">{{ $popular->title }}</a></h4>
-                        <p class="text-gray-600 text-sm mt-2">{{ $popular->views }} Views</p>
+                    <img src="{{ nl_array_first($post->popular()->images) }}" alt="{{ $post->popular()->title }}" class="rounded-lg">
+                    <div class="bg-white p-5 rounded-lg mx-4 -mt-16 relative border-2 border-gray-200">
+                        <h4 class="text-indigo-500 font-semibold hover:text-indigo-700"><a href="{{ route('single', $post->popular()->slug) }}">{{ $post->popular()->title }}</a></h4>
+                        <p class="text-gray-600 text-sm mt-2">{{ $post->popular()->views }} Views</p>
                     </div>
+                </div>
+
+                <h4 class="mt-10 font-bold mb-3 text-indigo-600">Paling Banyak Disukai</h4>
+                <div class="bg-white rounded border-2 border-gray-200">
+                    @foreach($post->loved() as $post)
+                    @isset($post->post)
+                    <a class="flex items-center hover:bg-gray-100 px-5 py-4 border-b border-gray-100" href="{{ route('single', $post->post->slug) }}">
+                        <div class="text-sm text-gray-600 font-semibold truncate">{{ $post->post->title }}</div>
+                    </a>
+                    @endisset
+                    @endforeach
                 </div>
 
                 <div class="py-12 rounded shadow-md px-8 bg-gradient text-white flex items-center mt-10">

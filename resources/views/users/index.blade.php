@@ -3,8 +3,8 @@
 @section('content')
     <div class="flex items-center py-12">
         <div class="md:w-1/2 md:mx-auto">
-        	<h2 class="mb-2 text-gray-600 text-lg flex items-center">Semua Pengguna</h2>
-        	<div class="bg-white rounded shadow-md">
+        	<h2 class="mb-3 text-gray-600 text-lg flex items-center">Semua Pengguna</h2>
+        	<div class="bg-white rounded border-2 border-gray-200">
 	        	@foreach($users as $user)
 	        	<div class="p-4 border-b border-gray-200 flex">
 	        		<img src="{{ $user->the_avatar }}" class="w-16 rounded">
@@ -13,7 +13,7 @@
 			        		<div class="py-1 px-2 mr-2 rounded text-xs inline-block text-white capitalize {{ $user->status == 'active' ? 'bg-green-500' : 'bg-orange-500' }}">
 			        			{{ $user->status }}
 			        		</div>
-			        		{{ $user->name }}
+			        		{{ $user->name }} <span class="text-xs ml-2">({{ $user->roles()->pluck('name')->implode(',') }})</span>
 		        		</div>
 		        		<div class="mt-2 -mx-3 text-gray-600 text-sm flex">
 			        		<div class="mx-3">{{ $user->created_at->diffForHumans() }}</div>

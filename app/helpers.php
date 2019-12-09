@@ -229,3 +229,8 @@ function teams()
 		],
 	];
 }
+
+function skills()
+{
+	return ['beginner', 'intermediate', 'advanced'];
+}

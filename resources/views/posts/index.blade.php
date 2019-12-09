@@ -8,7 +8,7 @@
         			Tambah Konten
         		@endbutton
         	</h2>
-        	<div class="bg-white rounded shadow-md">
+        	<div class="bg-white rounded border-2 border-gray-200">
 	        	@foreach($posts as $post)
 	        	<div class="p-4 border-b border-gray-200">
 	        		<div class="items-center">
