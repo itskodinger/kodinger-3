@@ -35,7 +35,7 @@
                         <h4 class="mb-1 font-bold text-sm"><a class="text-indigo-600" href="'+ base_url +'/{username}">{name}</a> <span class="text-gray-600 font-normal">({username})</span></h4>\
                         <div class="text-sm text-gray-700 comment-msg">\
                             <p>{msg}</p>\
-                            {is_mine}<a class="text-xs ml-3" href="{currentUrl}#discuss-{id}">Permalink</a>\
+                            {is_mine}<a class="text-xs" href="{currentUrl}#discuss-{id}">Permalink</a>\
                         </div>\
                     </div>\
                 </div>\
@@ -54,7 +54,7 @@
             item = item.replace(/{time}/g, obj.time)
             if(obj.id)
                 item = item.replace(/{id}/g, obj.id)
-            item = item.replace(/{is_mine}/g, obj.is_mine ? '<a onclick="let c = confirm(\'are you sure?\'); if(c){comment_remove('+obj.id+', event)}" class="mt-5 text-red-600 cursor-pointer text-xs">Delete</a>' : '')
+            item = item.replace(/{is_mine}/g, obj.is_mine ? '<a onclick="let c = confirm(\'are you sure?\'); if(c){comment_remove('+obj.id+', event)}" class="mt-5 text-red-600 cursor-pointer text-xs mr-3">Delete</a>' : '')
             item = item.str2dom();
 
             if(typeof classes == 'function')

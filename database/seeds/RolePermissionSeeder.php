@@ -23,14 +23,16 @@ class RolePermissionSeeder extends Seeder
 
     	foreach ($roles as $role) 
     	{
-	    	Role::firstOrcreate($role);
+	    	Role::firstOrCreate($role);
     	}
 
     	$permissions = [
-    		'post-list',
+    		'dashboard',
+            'post-list',
     		'post-create',
     		'post-update',
     		'post-delete',
+            'post-publish',
             'user-list',
             'user-update',
             'user-block',
@@ -44,7 +46,7 @@ class RolePermissionSeeder extends Seeder
 
     	foreach($permissions as $permission) 
     	{
-    		Permission::firstOrcreate($permission);
+    		Permission::firstOrCreate(['name' => $permission]);
     	}
 
         $admin = Role::whereName('admin')->first();

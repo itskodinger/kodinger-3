@@ -10,7 +10,7 @@ class UserService
 {
 	public function model()
 	{
-		return User::with('posts', 'savePosts', 'lovePosts', 'savePosts.post');
+		return User::with('posts', 'savePosts', 'lovePosts', 'savePosts.post')->withTrashed();
 	}
 
 	public function find($id)
@@ -146,5 +146,17 @@ class UserService
 
             return $user;
         }
+	}
+
+	public function destroy($id)
+	{
+		$user = $this->model()->find($id);
+
+		if($user->trashed())
+		{
+			return $user->forceDelete();
+		}
+
+		return $user->delete();
 	}
 }

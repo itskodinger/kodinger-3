@@ -2,11 +2,11 @@
 
 @section('content')
     <div class="container mx-auto">
-        <div class="flex py-12 -mx-6">
-            <div class="w-4/12 px-6">
+        <div class="flex py-12 -mx-4">
+            <div class="w-3/12 px-4">
                 @sidebar
             </div>
-            <div class="w-8/12 px-6">
+            <div class="w-6/12 px-4">
                 @if(request()->search)
                 <h4 class="mb-4 text-gray-600">Mencari konten dengan kata kunci: {{ request()->search . ($tag ? ' di dalam tag ' . $tag : '') }}</h4>
                 @endif
@@ -16,10 +16,13 @@
                 @endif
 
                 @foreach($posts as $post)
-                    @include('layouts.card', ['props' => $post, 'comment' => false, 'truncate_content' => true])
+                    @include('layouts.card', ['props' => $post, 'carousel' => false, 'comment' => false, 'truncate_content' => true])
                 @endforeach
 
                 {!! $posts->links('vendor.pagination.simple-default') !!}
+            </div>
+            <div class="w-3/12 px-4">
+                @rightbar
             </div>
         </div>
     </div>
@@ -27,15 +30,4 @@
 
 @push('js')
     <script src="{{ url('js/app.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/siema@1.5.1/dist/siema.min.js"></script>
-    <script>
-        document.querySelectorAll('.carousel').forEach(function(item) {
-            var cr = new Siema({
-                selector: item
-            });
-
-            item.parentNode.querySelector('.prev').addEventListener('click', () => cr.prev());
-            item.parentNode.querySelector('.next').addEventListener('click', () => cr.next());
-        });
-    </script>
 @endpush

@@ -42,4 +42,13 @@ class UserController extends Controller
 		flash('Success')->success();
 		return redirect()->route('user.index');
 	}
+
+	public function destroy($id)
+	{
+		$this->userService->destroy($id);
+
+		flash('Success')->success();
+
+		return back();
+	}
 }

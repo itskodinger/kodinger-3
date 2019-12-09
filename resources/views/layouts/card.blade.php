@@ -19,18 +19,26 @@
 
                     <div class="relative{{count(nl_array($props->images)) > 1 ? ' carousel-outer' : ''}}"> 
                         <div class="{{count(nl_array($props->images)) > 1 ? 'carousel' : ''}}">
-                            @foreach(nl_array($props->images) as $image)
-                                @if(is_video($image))
-                                <video controls="">
-                                    <source src="{{ $image }}" type="video/mp4">
-                                </video>
-                                @else
-                                <img src="{{ $image }}">
-                                @endif
-                            @endforeach
+                            
+                            @if(isset($carousel) && $carousel == false)
+                                <a href="@route('single', $props->slug)">
+                                    <img src="{{ nl_array($props->images)[0] }}">
+                                </a>
+                            @else
+
+                                @foreach(nl_array($props->images) as $image)
+                                    @if(is_video($image))
+                                    <video controls="">
+                                        <source src="{{ $image }}" type="video/mp4">
+                                    </video>
+                                    @else
+                                    <img src="{{ $image }}" alt="{{ $image }}">
+                                    @endif
+                                @endforeach
+                            @endif
                         </div>
 
-                        @if(count(nl_array($props->images)) > 1)
+                        @if(count(nl_array($props->images)) > 1 && ($carousel ?? '') !== false)
                         <button class="prev">&lsaquo;</button>
                         <button class="next">&rsaquo;</button>
                         @endif

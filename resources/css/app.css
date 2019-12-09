@@ -67,7 +67,7 @@ body {
 
 @screen xl {
 	.container {
-		max-width: 1024px;
+		max-width: 1180px;
 	}
 }
 

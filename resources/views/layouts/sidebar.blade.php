@@ -1,16 +1,6 @@
                 @inject('post', 'Services\PostService')
-                @inject('tag', 'Services\TagService')
 
-                <h4 class="font-bold mb-3 text-indigo-600">Topik Populer</h4>
-                <div class="bg-white rounded border-2 border-gray-200">
-                    @foreach($tag->popular(5) as $tag)
-                    <a class="flex items-center hover:bg-gray-100 px-5 py-4 border-b border-gray-100" href="{{ route('tag', $tag->name) }}">
-                        <div class="text-sm text-gray-600 font-semibold truncate">{{ '#' . $tag->name }}</div>
-                    </a>
-                    @endforeach
-                </div>
-
-                <h4 class="mt-10 font-bold mb-3 text-indigo-600">Konten Populer</h4>
+                <h4 class="font-bold mb-3 text-indigo-600">Konten Populer</h4>
                 <div class="rounded">
                     <img src="{{ nl_array_first($post->popular()->images) }}" alt="{{ $post->popular()->title }}" class="rounded-lg">
                     <div class="bg-white p-5 rounded-lg mx-4 -mt-16 relative border-2 border-gray-200">
@@ -30,7 +20,7 @@
                     @endforeach
                 </div>
 
-                <div class="py-12 rounded shadow-md px-8 bg-gradient text-white flex items-center mt-10">
+                <div class="py-12 rounded shadow-md px-2 bg-gradient text-white flex items-center mt-10">
                     <div class="text-center">
                         <svg class="inline-block mb-3" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-instagram"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"></line></svg>
                         <h2 class="text-lg">@itskodinger</h2>

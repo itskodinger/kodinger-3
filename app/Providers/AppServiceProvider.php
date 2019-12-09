@@ -31,9 +31,14 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('components.card');
         Blade::include('components.field');
         Blade::include('layouts.sidebar');
+        Blade::include('layouts.rightbar');
         Blade::component('components.field', 'fieldblock');
         Blade::if('isme', function($user) {
             return $user->isme;
+        });
+
+        Blade::directive('route', function($expression) {
+            return "<?php echo route($expression); ?>";
         });
 
         Paginator::defaultView('pagination::default');

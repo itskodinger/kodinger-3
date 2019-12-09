@@ -22,8 +22,9 @@ class PostService
 
 		if($request) {
 			$req_search = $request['search'] ?? null;
-			if($req_search)
+			if($req_search) {
 				$posts = $posts->where('title', 'like', '%'. $req_search .'%');
+			}
 
 			$req_tag = $request['tag'] ?? null;
 			if($req_tag) {
