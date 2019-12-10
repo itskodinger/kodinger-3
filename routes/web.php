@@ -18,7 +18,7 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.'], function()
 	Route::get('/', 'DashboardController@index')->name('index')->middleware('permission:dashboard');
 });
 
-Route::group(['prefix' => 'posts', 'as' => 'post.'], function() 
+Route::group(['prefix' => 'posts', 'as' => 'post.', 'middleware' => 'auth'], function() 
 {
 	Route::get('/create', 'PostController@create')->name('create')->middleware('permission:post-create');
 	Route::get('/', 'PostController@index')->name('index')->middleware('permission:post-list');
@@ -52,6 +52,17 @@ Route::group(['prefix' => 'users', 'as' => 'user.'], function()
 	// Route::post('/', 'UserController@store')->name('store');
 });
 
+Route::group(['prefix' => 'comments', 'as' => 'comment.'], function() 
+{
+	Route::group(['middleware' => 'auth'], function() 
+	{
+		Route::get('/', 'CommentController@index')->name('index');
+		Route::post('/', 'CommentController@store')->name('store');
+		Route::delete('/delete', 'CommentController@destroy')->name('destroy');
+	});
+	Route::get('/{post_id}', 'CommentController@ajax')->name('ajax');
+});
+
 Route::get('/', 'FrontendController@index')->name('index');
 Route::get('/community', 'FrontendController@community')->name('community');
 Route::get('/about', 'FrontendController@about')->name('about');
@@ -68,16 +79,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('auth/{provider}', 'Auth\AuthController@redirectToProvider')->name('auth');
 Route::get('auth/{provider}/callback', 'Auth\AuthController@handleProviderCallback');
-
-Route::group(['prefix' => 'comments', 'as' => 'comments.'], function() 
-{
-	Route::group(['middleware' => 'auth'], function() 
-	{
-		Route::post('/', 'CommentController@store')->name('store');
-		Route::delete('/delete', 'CommentController@destroy')->name('destroy');
-	});
-	Route::get('/{post_id}', 'CommentController@index')->name('index');
-});
 
 Route::group(['middleware' => 'auth', 'prefix' => 'saves', 'as' => 'saves.'], function() 
 {

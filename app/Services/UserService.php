@@ -13,6 +13,11 @@ class UserService
 		return User::with('posts', 'savePosts', 'lovePosts', 'savePosts.post')->withTrashed();
 	}
 
+	public function total()
+	{
+		return $this->model()->count();
+	}
+
 	public function find($id)
 	{
 		return $this->model()->find($id);

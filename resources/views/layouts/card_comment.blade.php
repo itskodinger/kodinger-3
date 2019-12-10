@@ -96,7 +96,7 @@
                         cmt.classList.removes('opacity-50 pointer-events-none');
                 }
             }
-            xhr.open("delete", "{{ route('comments.destroy') }}", true);
+            xhr.open("delete", "{{ route('comment.destroy') }}", true);
             xhr.setRequestHeader("X-CSRF-TOKEN", $('[name=csrf-token]').getAttribute('content'));
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xhr.setRequestHeader("Accept", "application/json");
@@ -169,7 +169,7 @@
                     $('.cmt-' + temp_id).remove();
                 }
             }
-            xhr.open("post", "{{ route('comments.store') }}", true);
+            xhr.open("post", "{{ route('comment.store') }}", true);
             xhr.setRequestHeader("X-CSRF-TOKEN", $('[name=csrf-token]').getAttribute('content'));
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xhr.setRequestHeader("Accept", "application/json");
@@ -213,7 +213,7 @@
                         done.call(this, res);
                 }
             }
-            xhr.open("get", "{{ route('comments.index', $post->id) }}?take=" + take + '&offset=' + offset, true);
+            xhr.open("get", "{{ route('comment.ajax', $post->id) }}?take=" + take + '&offset=' + offset, true);
             xhr.setRequestHeader("Accept", "application/json");
             xhr.send();
         }

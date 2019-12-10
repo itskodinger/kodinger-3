@@ -22,6 +22,16 @@ class CommentService
 		return $this->model()->wherePostId($post_id)->count();
 	}
 
+	public function paginate($limit=5)
+	{
+		return $this->model()->orderBy('created_at', 'desc')->paginate($limit);
+	}
+
+	public function latest($limit=5)
+	{
+		return $this->model()->orderBy('created_at', 'desc')->take($limit)->get();
+	}
+
 	public function mine()
 	{
 		return $this->model()->orderBy('created_at', 'desc')->paginate(10);

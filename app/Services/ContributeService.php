@@ -19,6 +19,16 @@ class ContributeService
 		return Contribute::with(['user', 'post']);
 	}
 
+	public function total()
+	{
+		return $this->model()->count();
+	}
+
+	public function latest($limit=10)
+	{
+		return $this->model()->whereStatus('draft')->orderBy('created_at', 'desc')->take($limit)->get();
+	}
+
 	public function find($id)
 	{
 		return $this->model()->find($id);

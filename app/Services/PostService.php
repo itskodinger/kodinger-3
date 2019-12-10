@@ -16,6 +16,11 @@ class PostService
 		return Post::with(['tags', 'tags.tag', 'user', 'comments']);
 	}
 
+	public function total()
+	{
+		return $this->model()->count();
+	}
+
 	public function paginate($num=10, $request=false)
 	{
 		$posts = $this->model();

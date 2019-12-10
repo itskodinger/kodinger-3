@@ -16,7 +16,13 @@ class CommentController extends Controller
 		$this->comment_service = $comment_service;
 	}
 
-	public function index(Request $request, $post_id)
+    public function index()
+    {
+        $comments = $this->comment_service->paginate();
+        return view('comments.index', compact('comments'));
+    }
+
+	public function ajax(Request $request, $post_id)
 	{
 		$comments = $this->comment_service->take($post_id, $request->offset ?? 0, $request->take ?? 10);
 
