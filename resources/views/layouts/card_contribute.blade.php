@@ -1,4 +1,4 @@
-            <div class="p-4 border-b border-gray-200 bg-white rounded shadow-md mb-8">
+            <div class="p-4 border-b border-gray-200 bg-white rounded border-2 border-gray-200 mb-8">
                 <div class="items-center">
                     <div class="py-1 px-2 mr-1 rounded text-xs inline-block text-white capitalize {{ $contribute->status == 'merged' ? 'bg-green-500' : 'bg-orange-500' }}">
                         {{ $contribute->status }}
@@ -28,10 +28,12 @@
                     <a class="mx-3 text-orange-500" href="#" onclick="document.querySelector('#reject-form-{{$contribute->id}}').submit();">Reject</a>
                     @endcan
                     @endif
+                    @can('contribute-delete')
                     <a class="mx-3 text-red-600 cursor-pointer" onclick="let c = confirm('Are you sure?'); if(!c) return false; else document.getElementById('delete').submit();">Delete</a>
                     <form action="{{ route('contribute.delete', $contribute->id) }}" method="post" id="delete">
                         {!! method_field('delete') !!}
                         @csrf
                     </form>
+                    @endcan
                 </div>
             </div>

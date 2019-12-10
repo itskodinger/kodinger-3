@@ -1,7 +1,7 @@
 @extends('layouts.profile', ['title' => $user->name])
 
 @section('profile_content')
-    <h1 class="mb-4 text-gray-600 text-lg flex items-center">Semua Kontribusi</h1>
+    <h1 class="mb-4 text-lg flex items-center">Semua Kontribusi</h1>
 
     <div class="flex items-center">
         <div class="w-full">

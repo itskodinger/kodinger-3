@@ -1,10 +1,10 @@
 @extends('layouts.profile', ['title' => $user->name])
 
 @section('profile_content')
-    <h1 class="mb-4 text-gray-600 text-lg flex items-center">Semua Diskusi</h1>
+    <h1 class="mb-4 text-lg flex items-center">Semua Diskusi</h1>
 
     @forelse($comments as $comment)
-        <div class="bg-white mb-4 shadow-md rounded">
+        <div class="bg-white mb-4 border-2 border-gray-200 rounded">
             <div class="py-3 px-6 text-sm italic inline-block text-gray-600 font-light">
                 <a class="not-italic text-gray-900 font-bold">{{ $user->name }}</a>
                 berkomentar di
