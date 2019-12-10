@@ -39,14 +39,24 @@ class FrontendController extends Controller
 		return view('construction');
 	}
 
-	public function discover()
+	public function discover(Request $request, $tag=false)
 	{
-		return view('construction');
+		$posts = $this->postService->discover(10, $request->all() + ['tag' => $tag]);
+
+		if(!$posts)
+			return abort(404);
+
+		return view('discover', compact('posts'));
 	}
 
 	public function about()
 	{
 		return view('about');
+	}
+
+	public function contact()
+	{
+		return view('contact');
 	}
 
 	public function single($slug)

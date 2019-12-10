@@ -20,7 +20,8 @@ class Post extends Model
 		'examples',
 		'status',
 		'views',
-		'user_id'
+		'user_id',
+		'type'
 	];
 
 	public function tags()

@@ -66,7 +66,8 @@ Route::group(['prefix' => 'comments', 'as' => 'comment.'], function()
 Route::get('/', 'FrontendController@index')->name('index');
 Route::get('/community', 'FrontendController@community')->name('community');
 Route::get('/about', 'FrontendController@about')->name('about');
-Route::get('/discover', 'FrontendController@discover')->name('discover');
+Route::get('/contact', 'FrontendController@contact')->name('contact');
+Route::get('/discover/{tag?}', 'FrontendController@discover')->name('discover');
 Route::get('/{slug}/loves', 'FrontendController@profileLoves')->name('loves');
 Route::get('/saves', 'FrontendController@profileSaves')->name('saves');
 Route::get('/{slug}/contributes', 'FrontendController@contributes')->name('contributes');

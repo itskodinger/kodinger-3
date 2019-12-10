@@ -13,7 +13,7 @@
 		            <div class="container mx-auto">
 		                <div class="-mx-2 mb-2">
 		                    <a class="mx-2 mb-2 inline-block text-gray-600 hover:text-indigo-600" href="{{ route('about') }}">About</a>
-		                    <a class="mx-2 mb-2 inline-block text-gray-600 hover:text-indigo-600" href="{{ route('about') }}">Contact</a>
+		                    <a class="mx-2 mb-2 inline-block text-gray-600 hover:text-indigo-600" href="{{ route('contact') }}">Contact</a>
 		                    <a class="mx-2 mb-2 inline-block text-gray-600 hover:text-indigo-600" href="">Help</a>
 		                    <a class="mx-2 mb-2 inline-block text-gray-600 hover:text-indigo-600" href="">Privacy Policy</a>
 		                    <a class="mx-2 mb-2 inline-block text-gray-600 hover:text-indigo-600" href="">Terms of Use</a>

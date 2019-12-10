@@ -11,6 +11,8 @@ use DB;
 
 class PostService
 {
+	protected $init;
+
 	public function model()
 	{
 		return Post::with(['tags', 'tags.tag', 'user', 'comments']);
@@ -21,9 +23,16 @@ class PostService
 		return $this->model()->count();
 	}
 
+	public function discover(...$args)
+	{
+		$this->init = $this->model()->whereType('link');
+
+		return $this->paginate(...$args);
+	}
+
 	public function paginate($num=10, $request=false)
 	{
-		$posts = $this->model();
+		$posts = $this->init ?? $this->model();
 
 		if($request) {
 			$req_search = $request['search'] ?? null;
