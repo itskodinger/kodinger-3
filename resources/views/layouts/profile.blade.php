@@ -50,11 +50,11 @@
                 </ul>
             </div>
             <div class="w-9/12 px-4 py-12 flex-shrink-0">
-            	<div class="flex -mx-6">
-            		<div class="w-8/12 px-6 flex-shrink-0">
+            	<div class="flex -mx-4">
+            		<div class="w-8/12 px-4 flex-shrink-0">
                         @yield('profile_content')
             		</div>
-            		<div class="w-4/12 px-6 flex-shrink-0">
+            		<div class="w-4/12 px-4 flex-shrink-0">
             			@sidebar
                         <div class="mt-12"></div>
                         @rightbar

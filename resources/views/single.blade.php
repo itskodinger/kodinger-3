@@ -1,9 +1,17 @@
 @extends('layouts.app', ['title' => $post->title])
 
+@push('meta')
+<meta property="og:title" content="{{$post->title}}">
+<meta property="og:description" content="Lihat selengkapnya di Kodinger">
+<meta property="og:image" content="{{ nl_array_first($post->images) }}">
+<meta property="og:url" content="@route('single', $post->slug)">
+<meta name="twitter:card" content="summary_large_image">
+@endpush
+
 @section('content')
     <div class="container mx-auto">
-        <div class="flex py-12 -mx-6">
-            <div class="w-4/12 px-6">
+        <div class="flex py-12 -mx-4">
+            <div class="w-3/12 px-4">
             	@foreach(['pages', 'tutorials', 'helps', 'examples'] as $r)
                 <div class="mb-12">
                 	<h2 class="pb-3 font-bold text-indigo-600">{{ key2str($r) }}</h2>
@@ -48,12 +56,15 @@
 				</div>
 				@endif
             </div>
-            <div class="w-8/12 px-6">
+            <div class="w-6/12 px-4">
             	@include('layouts.card', ['props' => $post, 'comment' => false])
                 <div class="bg-white rounded border-2 border-gray-200 mb-12">
                 	<h2 class="py-4 px-6 font-bold">Diskusi</h2>
 	            	@include('layouts.card_comment')
 	            </div>
+            </div>
+            <div class="w-3/12 px-4">
+            	@rightbar
             </div>
         </div>
     </div>
