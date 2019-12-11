@@ -1,5 +1,7 @@
 <div class="inline-block w-full mb-5">
+	@isset($label)
 	<label class="mb-2 inline-block text-sm text-gray-600 {{ isset($error) && $error != false ? 'text-red-600' : '' }}" for="{{ $name }}">{{ $label }}</label>
+	@endisset
 	@isset($type)
 		@if($type == 'textarea')
 			<textarea name="{{ $name }}" class="w-full inline-block bg-gray-100 border {{ isset($error) && $error != false ? 'border-red-600' : '' }} py-2 px-4 rounded focus:bg-white outline-none h-32 text-sm">{{$value ?? ''}}</textarea>
