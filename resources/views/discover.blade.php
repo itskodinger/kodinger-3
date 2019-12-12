@@ -56,7 +56,6 @@
 @stop
 
 @push('js')
-    <script src="{{ url('js/app.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 
     <script>
@@ -84,7 +83,23 @@
             } else if(getSelectValues(tags).length < 1) {
                 tag_el.input.focus();
             } else {
-                // do XHR
+                // do ajax
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == XMLHttpRequest.DONE) {
+                        console.log(this)
+                        if(done)
+                            done.call(this, JSON.parse(xhr.responseText));
+
+                        if(xhr.status == 401)
+                            alert('Anda perlu login dulu!')
+                    }
+                }
+                xhr.open("post", '@route('post.store_discover')', true);
+                xhr.setRequestHeader("X-CSRF-TOKEN", $('[name=csrf-token]').getAttribute('content'));
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.send('pages=' + link.value + '&tags='+ getSelectValues(tags));
             }
 
             e.preventDefault();

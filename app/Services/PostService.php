@@ -30,6 +30,18 @@ class PostService
 		return $this->paginate(...$args);
 	}
 
+	public function createDiscover($request)
+	{
+		$adds = [
+			'slug' => uniqid(), 
+			'type' => 'link',
+			'tags' => explode(',', $request->tags),
+			'status' => 'publish'
+		];
+
+		return $this->create($request, $adds);
+	}
+
 	public function paginate($num=10, $request=false)
 	{
 		$posts = $this->init ?? $this->model();
@@ -60,17 +72,18 @@ class PostService
 		return $posts;
 	}
 
-	public function create($request)
+	public function create($request, $arr=[])
 	{
-		$dir = str_slug($request->title, '-');
-
 		$input = $request->all();
+		$tags = $arr['tags'] ?? $request->tags;
 		$input['status'] = 'draft';
 		$input['views'] = 0;
 		$input['user_id'] = auth()->user()->id;
 
+		$input = array_merge($input, $arr);
+
 		$data = $this->model()->create($input);
-		foreach($request->tags as $tag)
+		foreach($tags as $tag)
 		{
 			PostTag::create([
 				'post_id' => $data->id,

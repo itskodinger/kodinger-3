@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Services\PostService;
+use Requests\PostDiscoverCreateRequest;
+use Requests\PostCreateRequest;
+use Requests\PostUpdateRequest;
 
 class PostController extends Controller
 {
@@ -33,7 +36,7 @@ class PostController extends Controller
         return view('posts.create');
     }
 
-	public function store(Request $request)
+	public function store(PostCreateRequest $request)
 	{
 		$this->postService->create($request);
 
@@ -42,7 +45,14 @@ class PostController extends Controller
 		return redirect()->route('post.index');
 	}
 
-	public function update($id, Request $request)
+	public function storeDiscover(PostDiscoverCreateRequest $request)
+	{
+		$this->postService->createDiscover($request);
+
+		return response(['status' => 'ok'], 200);
+	}
+
+	public function update($id, PostUpdateRequest $request)
 	{
 		$this->postService->findAndUpdate($id, $request);
 
