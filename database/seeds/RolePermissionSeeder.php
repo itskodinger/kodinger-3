@@ -1,5 +1,6 @@
 <?php
 
+use App\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -37,5 +38,11 @@ class RolePermissionSeeder extends Seeder
     	{
     		Permission::firstOrcreate($permission);
     	}
+
+        $user = User::find(1);
+
+        if($user instanceof User) {
+            $user->assignRole('admin');            
+        }
     }
 }
