@@ -1,7 +1,7 @@
 @extends('layouts.profile', ['title' => 'Pengaturan'])
 
 @section('profile_content')
-    <h1 class="mb-2 text-gray-600 text-lg flex items-center">Pengaturan</h1>
+    <h1 class="mb-4 text-lg flex items-center">Pengaturan</h1>
     @include('flash::message')
     <form enctype="multipart/form-data" method="post" action="{{ route('setting_update') }}">
         @csrf

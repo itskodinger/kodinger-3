@@ -1,10 +1,13 @@
 @extends('layouts.profile', ['title' => $user->name])
 
 @section('profile_content')
-    <h1 class="mb-2 text-gray-600 text-lg flex items-center">Semua Post</h1>
-    @foreach($posts as $post)
+    <h1 class="mb-4 text-lg flex items-center">Semua Post</h1>
+
+    @forelse($posts as $post)
         @include('layouts.card', ['props' => $post, 'comment' => false, 'truncate_content' => true])
-    @endforeach
+    @empty
+        Tidak ada postingan
+    @endforelse
 
     {!! $posts->links('vendor.pagination.simple-default') !!}
 @stop

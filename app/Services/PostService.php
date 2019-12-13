@@ -6,22 +6,58 @@ use App\Post;
 use App\PostTag;
 use App\Tag;
 use App\Contribute;
+use App\Save;
+use DB;
 
 class PostService
 {
+	protected $init;
+
 	public function model()
 	{
 		return Post::with(['tags', 'tags.tag', 'user', 'comments']);
 	}
 
+	public function total()
+	{
+		return $this->model()->count();
+	}
+
+	public function discover(...$args)
+	{
+		$this->init = $this->model()->whereType('link');
+
+		return $this->paginate(...$args);
+	}
+
+	public function createDiscover($request)
+	{
+		$adds = [
+			'slug' => uniqid(), 
+			'type' => 'link',
+			'tags' => explode(',', $request->tags),
+			'status' => 'publish'
+		];
+
+		return $this->create($request, $adds);
+	}
+
+	public function content(...$args)
+	{
+		$this->init = $this->model()->whereType(null);
+
+		return $this->paginate(...$args);
+	}
+
 	public function paginate($num=10, $request=false)
 	{
-		$posts = $this->model();
+		$posts = $this->init ?? $this->model();
 
 		if($request) {
 			$req_search = $request['search'] ?? null;
-			if($req_search)
+			if($req_search) {
 				$posts = $posts->where('title', 'like', '%'. $req_search .'%');
+			}
 
 			$req_tag = $request['tag'] ?? null;
 			if($req_tag) {
@@ -43,17 +79,18 @@ class PostService
 		return $posts;
 	}
 
-	public function create($request)
+	public function create($request, $arr=[])
 	{
-		$dir = str_slug($request->title, '-');
-
 		$input = $request->all();
+		$tags = $arr['tags'] ?? $request->tags;
 		$input['status'] = 'draft';
 		$input['views'] = 0;
 		$input['user_id'] = auth()->user()->id;
 
+		$input = array_merge($input, $arr);
+
 		$data = $this->model()->create($input);
-		foreach($request->tags as $tag)
+		foreach($tags as $tag)
 		{
 			PostTag::create([
 				'post_id' => $data->id,
@@ -96,9 +133,23 @@ class PostService
 		return $post;
 	}
 
-	public function popular($limit=5)
+	public function popular()
 	{
-		$posts = $this->model()->orderBy('views', 'desc')->limit($limit)->get();
+		$posts = $this->model()->orderBy('views', 'desc')->first();
+
+		return $posts;
+	}
+
+	public function loved($take=5)
+	{
+		$posts = Save::whereModel('Post')
+						->whereMethod('love')
+						->groupBy('row_id')
+						->select('row_id', DB::raw('count(row_id) as total'))
+						->orderBy('total', 'desc')
+						->with('post')
+						->take($take)
+						->get();
 
 		return $posts;
 	}

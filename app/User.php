@@ -6,10 +6,11 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
-    use Notifiable, HasRoles;
+    use Notifiable, HasRoles, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -46,12 +47,17 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function save_posts()
+    public function getIsMeAttribute()
+    {
+        return auth()->check() && auth()->id() == $this->id;
+    }
+
+    public function savePosts()
     {
         return $this->hasMany('App\Save', 'user_id')->whereMethod('save')->whereModel('Post');
     }
 
-    public function love_posts()
+    public function lovePosts()
     {
         return $this->hasMany('App\Save', 'user_id')->whereMethod('love')->whereModel('Post');
     }

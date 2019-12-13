@@ -3,6 +3,8 @@
 namespace Services;
 
 use App\Tag;
+use App\PostTag;
+use DB;
 
 class TagService 
 {
@@ -22,5 +24,26 @@ class TagService
 		}
 
 		return $res;
+	}
+
+	public function popular($method_or_take=false, $args=false)
+	{
+		$tags = PostTag::groupBy('tag_id')
+						->join('tags', 'post_tags.tag_id', 'tags.id')
+						->select([
+							'tags.name as name', 
+							'tag_id', 
+							DB::raw('count(*) as total')
+						])
+						->whereNotIn('name', skills())
+						->orderBy('total', 'desc');
+
+		if(is_numeric($method_or_take))
+			$tags = $tags->take($method_or_take)->get();
+
+		else if($method_or_take)
+			$tags = $tags->{$method_or_take}($args);
+
+		return $tags;
 	}
 }

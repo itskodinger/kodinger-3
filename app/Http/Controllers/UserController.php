@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Services\UserService;
+use Requests\UserUpdateRequest;
 
 class UserController extends Controller
 {
@@ -26,5 +27,28 @@ class UserController extends Controller
 		$user = $this->userService->find($id);
 		
 		return view('users.edit', compact('user'));
+	}
+
+	public function update(UserUpdateRequest $request, $id)
+	{
+		$update = $this->userService->findAndUpdate($request, $id);
+
+		if(!$update)
+		{
+			flash('Failed')->danger();
+			return back();
+		}
+
+		flash('Success')->success();
+		return redirect()->route('user.index');
+	}
+
+	public function destroy($id)
+	{
+		$this->userService->destroy($id);
+
+		flash('Success')->success();
+
+		return back();
 	}
 }

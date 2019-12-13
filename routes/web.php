@@ -11,26 +11,25 @@
 |
 */
 
-Route::get('/single', function () {
-    return view('single');
-});
-
-Route::get('/files', function() {
-	dd(Storage::disk('spaces')->allFiles());
-});
 Auth::routes(['register' => false]);
 
-Route::group(['prefix' => 'posts', 'as' => 'post.'], function() 
+Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.'], function() 
 {
-	Route::get('/create', 'PostController@create')->name('create');
-	Route::get('/', 'PostController@index')->name('index');
+	Route::get('/', 'DashboardController@index')->name('index')->middleware('permission:dashboard');
+});
+
+Route::group(['prefix' => 'posts', 'as' => 'post.', 'middleware' => 'auth'], function() 
+{
+	Route::get('/create', 'PostController@create')->name('create')->middleware('permission:post-create');
+	Route::get('/', 'PostController@index')->name('index')->middleware('permission:post-list');
 	Route::post('/link-info', 'PostController@getLinkInfo')->name('getLinkInfo');
-	Route::get('/{id}/publish', 'PostController@publish')->name('publish');
-	Route::get('/{id}/edit', 'PostController@edit')->name('edit');
-	Route::put('/{id}/edit', 'PostController@update')->name('update');
-	Route::patch('/{id}/edit', 'PostController@update')->name('update');
-	Route::delete('/{id}/delete', 'PostController@destroy')->name('delete');
-	Route::post('/', 'PostController@store')->name('store');
+	Route::get('/{id}/publish', 'PostController@publish')->name('publish')->middleware('permission:post-publish');
+	Route::get('/{id}/edit', 'PostController@edit')->name('edit')->middleware('permission:post-update');
+	Route::put('/{id}/edit', 'PostController@update')->name('update')->middleware('permission:post-update');
+	Route::patch('/{id}/edit', 'PostController@update')->name('update')->middleware('permission:post-update');
+	Route::delete('/{id}/delete', 'PostController@destroy')->name('delete')->middleware('permission:post-delete');
+	Route::post('/', 'PostController@store')->name('store')->middleware('permission:post-create');
+	Route::post('/discover', 'PostController@storeDiscover')->name('store_discover');
 });
 
 Route::group(['prefix' => 'contributes', 'as' => 'contribute.', 'middleware' => 'auth'], function() 
@@ -45,38 +44,43 @@ Route::group(['prefix' => 'contributes', 'as' => 'contribute.', 'middleware' => 
 
 Route::group(['prefix' => 'users', 'as' => 'user.'], function() 
 {
-	// Route::get('/users/create', 'UserController@create')->name('create');
-	Route::get('/', 'UserController@index')->name('index');
-	Route::get('/users/{id}/edit', 'UserController@edit')->name('edit');
-	Route::put('/users/{id}/edit', 'UserController@update')->name('update');
-	Route::patch('/users/{id}/edit', 'UserController@update')->name('update');
-	Route::delete('/users/{id}/delete', 'UserController@destroy')->name('delete');
-	Route::post('/users', 'UserController@store')->name('store');
+	// Route::get('/create', 'UserController@create')->name('create');
+	Route::get('/', 'UserController@index')->name('index')->middleware('permission:user-list');
+	Route::get('/{id}/edit', 'UserController@edit')->name('edit')->middleware('permission:user-update');
+	Route::put('/{id}/edit', 'UserController@update')->name('update')->middleware('permission:user-update');
+	Route::patch('/{id}/edit', 'UserController@update')->name('update')->middleware('permission:user-update');
+	Route::delete('/{id}/delete', 'UserController@destroy')->name('delete')->middleware('permission:user-delete');
+	// Route::post('/', 'UserController@store')->name('store');
+});
+
+Route::group(['prefix' => 'comments', 'as' => 'comment.'], function() 
+{
+	Route::group(['middleware' => 'auth'], function() 
+	{
+		Route::get('/', 'CommentController@index')->name('index');
+		Route::post('/', 'CommentController@store')->name('store');
+		Route::delete('/delete', 'CommentController@destroy')->name('destroy');
+	});
+	Route::get('/{post_id}', 'CommentController@ajax')->name('ajax');
 });
 
 Route::get('/', 'FrontendController@index')->name('index');
-Route::get('/{slug}/loves', 'FrontendController@profile_loves')->name('loves');
-Route::get('/saves', 'FrontendController@profile_saves')->name('saves');
+Route::get('/community', 'FrontendController@community')->name('community');
+Route::get('/about', 'FrontendController@about')->name('about');
+Route::get('/contact', 'FrontendController@contact')->name('contact');
+Route::get('/discover/{tag?}', 'FrontendController@discover')->name('discover');
+Route::get('/{slug}/loves', 'FrontendController@profileLoves')->name('loves');
+Route::get('/saves', 'FrontendController@profileSaves')->name('saves');
 Route::get('/{slug}/contributes', 'FrontendController@contributes')->name('contributes');
-Route::get('/{slug}/disccuss', 'FrontendController@disccuss')->name('disccuss');
+Route::get('/{slug}/discuss', 'FrontendController@discuss')->name('discuss');
 Route::get('/setting', 'FrontendController@setting')->name('setting');
-Route::post('/setting', 'FrontendController@setting_update')->name('setting_update');
+Route::post('/setting', 'FrontendController@settingUpdate')->name('setting_update');
 Route::get('/{slug}', 'FrontendController@single')->name('single');
 Route::get('/tag/{slug}', 'FrontendController@index')->name('tag');
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('auth/{provider}', 'Auth\AuthController@redirectToProvider')->name('auth');
 Route::get('auth/{provider}/callback', 'Auth\AuthController@handleProviderCallback');
-
-Route::group(['prefix' => 'comments', 'as' => 'comments.'], function() 
-{
-	Route::group(['middleware' => 'auth'], function() 
-	{
-		Route::post('/', 'CommentController@store')->name('store');
-		Route::delete('/delete', 'CommentController@destroy')->name('destroy');
-	});
-	Route::get('/{post_id}', 'CommentController@index')->name('index');
-});
 
 Route::group(['middleware' => 'auth', 'prefix' => 'saves', 'as' => 'saves.'], function() 
 {

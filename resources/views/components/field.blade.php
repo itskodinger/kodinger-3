@@ -1,10 +1,12 @@
 <div class="inline-block w-full mb-5">
-	<label class="mb-2 inline-block text-sm text-gray-600 {{ isset($error) && $error ? 'text-red-600' : '' }}" for="{{ $name }}">{{ $label }}</label>
+	@isset($label)
+	<label class="mb-2 inline-block text-sm text-gray-600 {{ isset($error) && $error != false ? 'text-red-600' : '' }}" for="{{ $name }}">{{ $label }}</label>
+	@endisset
 	@isset($type)
 		@if($type == 'textarea')
-			<textarea name="{{ $name }}" class="w-full inline-block bg-gray-100 border {{ isset($error) && $error ? 'border-red-600' : '' }} py-2 px-4 rounded focus:bg-white outline-none h-32 text-sm">{{$value ?? ''}}</textarea>
+			<textarea name="{{ $name }}" class="w-full inline-block bg-gray-100 border {{ isset($error) && $error != false ? 'border-red-600' : '' }} py-2 px-4 rounded focus:bg-white outline-none h-32 text-sm">{{$value ?? ''}}</textarea>
 		@elseif($type == 'markdown')
-			<textarea name="{{ $name }}" class="w-full inline-block bg-gray-100 border {{ isset($error) && $error ? 'border-red-600' : '' }} py-2 px-4 rounded focus:bg-white outline-none h-32 text-sm">{{$value ?? ''}}</textarea>
+			<textarea name="{{ $name }}" class="w-full inline-block bg-gray-100 border {{ isset($error) && $error != false ? 'border-red-600' : '' }} py-2 px-4 rounded focus:bg-white outline-none h-32 text-sm">{{$value ?? ''}}</textarea>
             <div class="flex items-center">
 	            <svg width="20px" class="mr-2 fill-current text-gray-600" viewBox="0 0 256 158" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid">
 	                <g>
@@ -14,11 +16,11 @@
 	            <p class="text-xs text-gray-600">Diizinkan Markdown – <a href="https://daringfireball.net/projects/markdown/" class="text-indigo-600 font-bold">Lihat dokumentasi</a>.
 	        </div>
 		@elseif($type == 'select')
-			{!! Form::select($name, $data ?? [], $value ?? null, ['class' => 'w-full inline-block bg-gray-100 border ' . isset($error) && $error ? 'border-red-600' : '' . ' h-12 px-4 rounded focus:bg-white outline-none ' . ($class ?? ''), 'id' => $id ?? '', isset($multiple) ? 'multiple' : '']) !!}
+			{!! Form::select($name, $data ?? [], $value ?? null, ['class' => 'w-full inline-block bg-gray-100 border ' . (isset($error) && $error != false ? 'border-red-600' : '') . ' h-12 px-4 rounded focus:bg-white outline-none ' . ($class ?? ''), 'id' => $id ?? '', isset($multiple) ? 'multiple' : '']) !!}
 		@elseif($type == 'div')
-		<div id="{{ $name }}" class="w-full inline-block bg-gray-100 border {{ isset($error) && $error ? 'border-red-600' : '' }} py-2 px-4 rounded focus:bg-white outline-none {{ $class ?? '' }}">{{ $value ?? '' }}</div>
+		<div id="{{ $name }}" class="w-full inline-block bg-gray-100 border {{ isset($error) && $error != false ? 'border-red-600' : '' }} py-2 px-4 rounded focus:bg-white outline-none {{ $class ?? '' }}">{{ $value ?? '' }}</div>
 		@else
-		<input id="{{ $name }}" class="w-full inline-block bg-gray-100 border {{ isset($error) && $error ? 'border-red-600' : '' }} py-2 px-4 rounded focus:bg-white outline-none {{ $class ?? '' }}" type="{{ $type }}" name="{{ $name }}" value="{{ $value ?? '' }}">
+		<input id="{{ $name }}" class="w-full inline-block bg-gray-100 border {{ isset($error) && $error != false ? 'border-red-600' : '' }} py-2 px-4 rounded focus:bg-white outline-none {{ $class ?? '' }}" type="{{ $type }}" name="{{ $name }}" value="{{ $value ?? '' }}">
 		@endif
 	@endisset
 

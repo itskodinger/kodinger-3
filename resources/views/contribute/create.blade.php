@@ -5,13 +5,13 @@
         <div class="flex py-12 -mx-6 justify-center">
             <div class="w-8/12 px-6">
             	<form method="post" id="form">
-	            	<div class="p-8 bg-white shadow-md rounded">
+	            	<div class="p-8 bg-white border-2 border-gray-200 rounded">
 	            		<div class="flex hidden" id="success-message">
 	            			<div class="border-2 border-green-500 rounded-full w-12 h-12 flex justify-center items-center flex-shrink-0"><svg class="fill-current text-green-500 w-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="checkmark"><rect width="24" height="24" opacity="0"/><path d="M9.86 18a1 1 0 0 1-.73-.32l-4.86-5.17a1 1 0 1 1 1.46-1.37l4.12 4.39 8.41-9.2a1 1 0 1 1 1.48 1.34l-9.14 10a1 1 0 0 1-.73.33z"/></g></g></svg></div>
 	            			<div class="ml-6">
 	            				<h4 class="text-lg font-bold text-gray-800">Rekomendasi Berhasil Disimpan</h4>
 	            				<p class="mt-1 text-gray-600 mb-3">Kontribusi kamu akan kami tinjau terlebih dahulu sebelum kami tambahkan ke konten terkait. Terima kasih sudah berkontribusi!</p>
-	            				<a href="" class="text-indigo-600">Lihat Semua Rekomendasi</a>
+	            				<a href="{{ route('contributes', auth()->user()->the_username) }}" class="text-indigo-600">Lihat Semua Rekomendasi</a>
 	            			</div>
 	            		</div>
 	            		<div class="flex hidden" id="error-message">
@@ -105,10 +105,6 @@
 				submit_btn.classList.add('pointer-events-none');
 				submit_btn.classList.add('opacity-75');				
 			}
-		}
-
-		let validateUrl = function(value) {
-			return /^(?:(?:(?:https?):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(value);
 		}
 
 		let required = function(field) {

@@ -3,12 +3,30 @@
 namespace Services;
 
 use App\Contribute;
+use Services\UserService;
 
 class ContributeService
 {
+	protected $userService;
+
+	public function __construct(UserService $userService)
+	{
+		$this->userService = $userService;
+	}
+
 	public function model()
 	{
 		return Contribute::with(['user', 'post']);
+	}
+
+	public function total()
+	{
+		return $this->model()->count();
+	}
+
+	public function latest($limit=10)
+	{
+		return $this->model()->whereStatus('draft')->orderBy('created_at', 'desc')->take($limit)->get();
 	}
 
 	public function find($id)
@@ -16,11 +34,19 @@ class ContributeService
 		return $this->model()->find($id);
 	}
 
-	public function paginate($num=10)
+	public function paginate($num=10, $instance=false)
 	{
-		$contributes = $this->model()->whereStatus(request()->status ?? 'draft');
+		$contributes = ($instance ? $instance : $this->model())->whereStatus(request()->status ?? 'draft');
 
 		$contributes = $contributes->orderBy('created_at', 'desc')->paginate($num);
+
+		return $contributes;
+	}
+
+	public function byUser($user)
+	{
+		$user = $this->userService->findByUsername($user);
+		$contributes = $this->paginate(10, $this->model()->whereUserId($user->id));
 
 		return $contributes;
 	}

@@ -10,7 +10,12 @@ class UserService
 {
 	public function model()
 	{
-		return User::with('posts');
+		return User::with('posts', 'savePosts', 'lovePosts', 'savePosts.post')->withTrashed();
+	}
+
+	public function total()
+	{
+		return $this->model()->count();
 	}
 
 	public function find($id)
@@ -21,6 +26,20 @@ class UserService
 	public function paginate($num=10)
 	{
 		return $this->model()->paginate($num);
+	}
+
+	public function findAndUpdate($request, $id)
+	{
+		$user = $this->find($id);
+
+		$input = $request->all() ?? $request;
+
+		$user->update($input);
+
+		$user->syncRoles($request->roles);
+
+		return $user;
+
 	}
 
 	public function findByUsername($username)
@@ -132,5 +151,17 @@ class UserService
 
             return $user;
         }
+	}
+
+	public function destroy($id)
+	{
+		$user = $this->model()->find($id);
+
+		if($user->trashed())
+		{
+			return $user->forceDelete();
+		}
+
+		return $user->delete();
 	}
 }
