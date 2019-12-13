@@ -94,10 +94,7 @@
                 var xhr = new XMLHttpRequest();
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState == XMLHttpRequest.DONE) {
-                        console.log(this)
-                        if(done)
-                            done.call(this, JSON.parse(xhr.responseText));
-
+                        console.log(xhr)
                         if(xhr.status == 401)
                             alert('Anda perlu login dulu!')
                     }
