@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Pagination\Paginator;
+use URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         URL::forceSchema('https');
-        
+
         \Carbon\Carbon::setLocale(config('app.locale'));
 
         Blade::component('components.button');
