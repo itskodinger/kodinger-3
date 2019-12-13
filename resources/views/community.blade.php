@@ -56,5 +56,8 @@
         	</div>
         	@endforeach
         </div>
+        <div class="mt-10">
+		    {!! $communities->links('vendor.pagination.simple-default') !!}
+        </div>
     </div>
 @stop
