@@ -24,6 +24,15 @@ class CommunityService
 	{
 		$communities = $this->init ?? $this->model();
 
+		$request = request();
+
+		if($request) {
+			$req_search = $request['search'] ?? null;
+			if($req_search) {
+				$communities = $communities->where('name', 'like', '%'. $req_search .'%');
+			}
+		}
+
 		$communities = $communities->orderBy('created_at', 'desc')->paginate($num);
 
 		return $communities;
