@@ -81,7 +81,7 @@
         function comment_remove(id, event)
         {
             const cmt = $('.cmt-' + id);
-            cmt.classList.adds('opacity-50 pointer-events-none');
+            adds(cmt.classList, 'opacity-50 pointer-events-none');
 
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function() {
@@ -111,7 +111,7 @@
             </div>');
 
             tpl.addEventListener('click', function() {
-                $('.comment-load').classList.adds('pointer-events-none opacity-50');
+                adds($('.comment-load').classList, 'pointer-events-none opacity-50');
                 comment_load(function() {
                     if($('.comment-load'))
                         $('.comment-load').classList.removes('pointer-events-none opacity-50');
