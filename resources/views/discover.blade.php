@@ -43,7 +43,13 @@
 
                 <h1 class="mb-4 text-lg flex items-center mt-8 text-gray-600">Link Dari Komunitas</h1>
                 @foreach($posts as $post)
-                    @include('layouts.card', ['props' => $post, 'carousel' => false, 'comment' => false, 'truncate_content' => true])
+                    @include('layouts.card', [
+                        'props' => $post, 
+                        'discover' => true, 
+                        'carousel' => false, 
+                        'comment' => false, 
+                        'truncate_content' => true
+                    ])
                 @endforeach
 
                 {!! $posts->links('vendor.pagination.simple-default') !!}
@@ -56,6 +62,7 @@
 @stop
 
 @push('js')
+    <script src="{{ url('js/app.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 
     <script>

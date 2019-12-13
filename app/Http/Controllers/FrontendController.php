@@ -26,7 +26,7 @@ class FrontendController extends Controller
 
 	public function index(Request $request, $tag = false)
 	{
-		$posts = $this->postService->paginate(10, $request->all() + ['tag' => $tag]);
+		$posts = $this->postService->content(10, $request->all() + ['tag' => $tag]);
 
 		if(!$posts)
 			return abort(404);

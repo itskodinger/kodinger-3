@@ -42,6 +42,13 @@ class PostService
 		return $this->create($request, $adds);
 	}
 
+	public function content(...$args)
+	{
+		$this->init = $this->model()->whereType(null);
+
+		return $this->paginate(...$args);
+	}
+
 	public function paginate($num=10, $request=false)
 	{
 		$posts = $this->init ?? $this->model();

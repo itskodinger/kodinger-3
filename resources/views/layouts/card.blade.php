@@ -17,6 +17,17 @@
                         </div>
                     </div>
 
+                    @isset($discover)
+                        <div class="shimmer border-t border-b">
+                            <div class="w-full bg-gray-200 h-64"></div>
+                            <div class="p-4">
+                                <h2 class="text-lg font-semibold">Title of the link</h2>
+                                <p class="text-gray-600 text-sm">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                tempor incididunt ut labore et dolore magna aliqua.</p>
+                                <div class="text-gray-600 uppercase tracking-wider text-xs mt-3 text-indigo-600 font-semibold">youtube.com</div>
+                            </div>
+                        </div>
+                    @else
                     <div class="relative{{count(nl_array($props->images)) > 1 ? ' carousel-outer' : ''}}"> 
                         <div class="{{count(nl_array($props->images)) > 1 ? 'carousel' : ''}}">
                             
@@ -43,20 +54,19 @@
                         <button class="next">&rsaquo;</button>
                         @endif
                     </div>
+                    @endisset
 
                     <div class="p-8 text-sm text-gray-700 leading-loose">
                         <h4 class="text-lg text-black font-bold"><a class="text-indigo-700" href="{{ route('single', $props->slug) }}">
                             {{ $props->title }}
                         </a></h4>
 
+                        @if(!isset($discover))
                         {!! isset($truncate_content) && $truncate_content ? truncate(Markdown::convertToHtml($props->content), 150) : Markdown::convertToHtml($props->content) !!}
+                        @endif
 
                         <div class="mt-5">
-                            @foreach($props->tags as $tag)
-                            <a class="border border-gray-300 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded-full py-2 px-4 text-xs" href="{{ route('tag', $tag->tag->name) }}">
-                                #{{ $tag->tag->name }}
-                            </a>
-                            @endforeach
+                            @include('layouts.tags', ['tags' => $props->tags])
                         </div>
 
                         <div class="mt-8">
