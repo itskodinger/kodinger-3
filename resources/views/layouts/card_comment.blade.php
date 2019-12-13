@@ -55,7 +55,7 @@
             if(obj.id)
                 item = item.replace(/{id}/g, obj.id)
             item = item.replace(/{is_mine}/g, obj.is_mine ? '<a onclick="let c = confirm(\'are you sure?\'); if(c){comment_remove('+obj.id+', event)}" class="mt-5 text-red-600 cursor-pointer text-xs mr-3">Delete</a>' : '')
-            item = item.str2dom();
+            item = str2dom(item);
 
             if(typeof classes == 'function')
                 classes.call(this, item);
@@ -105,10 +105,10 @@
 
         function add_load_more()
         {
-            let tpl = '\
+            let tpl = str2dom('\
             <div class="comment-load px-6 py-2 text-sm text-center cursor-pointer bg-gray-200 hover:bg-gray-300">\
                 Load More\
-            </div>'.str2dom();
+            </div>');
 
             tpl.addEventListener('click', function() {
                 $('.comment-load').classList.adds('pointer-events-none opacity-50');

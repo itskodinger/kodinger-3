@@ -26,6 +26,9 @@ class RolePermissionSeeder extends Seeder
 	    	Role::firstOrCreate($role);
     	}
 
+        $user = User::find(1);
+        $user->assignRole('admin');
+
     	$permissions = [
     		'dashboard',
             'post-list',
