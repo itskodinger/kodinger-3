@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        URL::forceSchema('https');
+        URL::forceScheme('https');
 
         \Carbon\Carbon::setLocale(config('app.locale'));
 
