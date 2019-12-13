@@ -1,6 +1,5 @@
 <?php
 
-use App\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -27,9 +26,6 @@ class RolePermissionSeeder extends Seeder
 	    	Role::firstOrCreate($role);
     	}
 
-        $user = User::find(1);
-        $user->assignRole('admin');
-
     	$permissions = [
     		'dashboard',
             'post-list',
@@ -46,6 +42,10 @@ class RolePermissionSeeder extends Seeder
             'contribute-merge',
             'contribute-reject',
             'contribute-delete',
+            'community-list',
+            'community-create',
+            'community-update',
+            'community-delete',
     	];
 
     	foreach($permissions as $permission) 
@@ -53,14 +53,7 @@ class RolePermissionSeeder extends Seeder
     		Permission::firstOrCreate(['name' => $permission]);
     	}
 
-        
-      $admin = Role::whereName('admin')->first();
-      $admin->syncPermissions($permissions);
-
-      $user = User::find(1);
-
-      if($user instanceof User) {
-          $user->assignRole('admin');            
-      }
+        $admin = Role::whereName('admin')->first();
+        $admin->syncPermissions($permissions);
     }
 }

@@ -7,6 +7,7 @@ use Services\PostService;
 use Services\UserService;
 use Services\ContributeService;
 use Services\CommentService;
+use Services\CommunityService;
 use Requests\SettingUpdateRequest;
 
 class FrontendController extends Controller
@@ -15,13 +16,15 @@ class FrontendController extends Controller
 	protected $userService;
 	protected $contributeService;
 	protected $commentService;
+	protected $communityService;
 
-	public function __construct(PostService $postService, UserService $userService, ContributeService $contributeService, CommentService $commentService)
+	public function __construct(PostService $postService, UserService $userService, ContributeService $contributeService, CommentService $commentService, CommunityService $communityService)
 	{
 		$this->postService = $postService;
 		$this->userService = $userService;
 		$this->contributeService = $contributeService;
 		$this->commentService = $commentService;
+		$this->communityService = $communityService;
 	}
 
 	public function index(Request $request, $tag = false)
@@ -36,7 +39,9 @@ class FrontendController extends Controller
 
 	public function community()
 	{
-		return view('community');
+		$communities = $this->communityService->paginate();
+
+		return view('community', compact('communities'));
 	}
 
 	public function discover(Request $request, $tag=false)

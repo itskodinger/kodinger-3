@@ -20,7 +20,7 @@
 		@elseif($type == 'div')
 		<div id="{{ $name }}" class="w-full inline-block bg-gray-100 border {{ isset($error) && $error != false ? 'border-red-600' : '' }} py-2 px-4 rounded focus:bg-white outline-none {{ $class ?? '' }}">{{ $value ?? '' }}</div>
 		@else
-		<input id="{{ $name }}" class="w-full inline-block bg-gray-100 border {{ isset($error) && $error != false ? 'border-red-600' : '' }} py-2 px-4 rounded focus:bg-white outline-none {{ $class ?? '' }}" type="{{ $type }}" name="{{ $name }}" value="{{ $value ?? '' }}">
+		<input id="{{ $name }}" class="w-full inline-block bg-gray-100 border {{ isset($error) && $error != false ? 'border-red-600' : '' }} py-2 px-4 rounded focus:bg-white outline-none {{ $class ?? '' }}" type="{{ $type }}" name="{{ $name }}" value="{{ $value ?? '' }}" placeholder="{{ $placeholder ?? '' }}">
 		@endif
 	@endisset
 

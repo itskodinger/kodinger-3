@@ -18,18 +18,32 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.'], function()
 	Route::get('/', 'DashboardController@index')->name('index')->middleware('permission:dashboard');
 });
 
+Route::group(['prefix' => 'communities', 'as' => 'community.', 'middleware' => 'auth'], function() 
+{
+	Route::get('/create', 'CommunityController@create')->name('create')->middleware('permission:community-create');
+	Route::get('/', 'CommunityController@index')->name('index')->middleware('permission:community-list');
+	Route::get('/{id}/edit', 'CommunityController@edit')->name('edit')->middleware('permission:community-update');
+	Route::put('/{id}/edit', 'CommunityController@update')->name('update')->middleware('permission:community-update');
+	Route::patch('/{id}/edit', 'CommunityController@update')->name('update')->middleware('permission:community-update');
+	Route::delete('/{id}/delete', 'CommunityController@destroy')->name('delete')->middleware('permission:community-delete');
+	Route::post('/', 'CommunityController@store')->name('store')->middleware('permission:community-create');
+});
+
 Route::group(['prefix' => 'posts', 'as' => 'post.', 'middleware' => 'auth'], function() 
 {
-	Route::get('/create', 'PostController@create')->name('create')->middleware('permission:post-create');
-	Route::get('/', 'PostController@index')->name('index')->middleware('permission:post-list');
+	Route::group(['middleware' => 'auth'], function() 
+	{
+		Route::get('/create', 'PostController@create')->name('create')->middleware('permission:post-create');
+		Route::get('/', 'PostController@index')->name('index')->middleware('permission:post-list');
+		Route::get('/{id}/publish', 'PostController@publish')->name('publish')->middleware('permission:post-publish');
+		Route::get('/{id}/edit', 'PostController@edit')->name('edit')->middleware('permission:post-update');
+		Route::put('/{id}/edit', 'PostController@update')->name('update')->middleware('permission:post-update');
+		Route::patch('/{id}/edit', 'PostController@update')->name('update')->middleware('permission:post-update');
+		Route::delete('/{id}/delete', 'PostController@destroy')->name('delete')->middleware('permission:post-delete');
+		Route::post('/', 'PostController@store')->name('store')->middleware('permission:post-create');
+		Route::post('/discover', 'PostController@storeDiscover')->name('store_discover');
+	});
 	Route::post('/link-info', 'PostController@getLinkInfo')->name('getLinkInfo');
-	Route::get('/{id}/publish', 'PostController@publish')->name('publish')->middleware('permission:post-publish');
-	Route::get('/{id}/edit', 'PostController@edit')->name('edit')->middleware('permission:post-update');
-	Route::put('/{id}/edit', 'PostController@update')->name('update')->middleware('permission:post-update');
-	Route::patch('/{id}/edit', 'PostController@update')->name('update')->middleware('permission:post-update');
-	Route::delete('/{id}/delete', 'PostController@destroy')->name('delete')->middleware('permission:post-delete');
-	Route::post('/', 'PostController@store')->name('store')->middleware('permission:post-create');
-	Route::post('/discover', 'PostController@storeDiscover')->name('store_discover');
 });
 
 Route::group(['prefix' => 'contributes', 'as' => 'contribute.', 'middleware' => 'auth'], function() 

@@ -178,6 +178,16 @@ function space_url($path=null)
 	return env('DO_SPACES_BASEURL') . '/' . ($path ?? '');
 }
 
+function logo_path()
+{
+	return 'public/logo';
+}
+
+function logo($name)
+{
+	return space_url(logo_path() . '/' . $name);
+}
+
 function avatar_path()
 {
 	return 'public/avatar';
@@ -233,4 +243,12 @@ function teams()
 function skills()
 {
 	return ['beginner', 'intermediate', 'advanced'];
+}
+
+
+function parsing_url($url)
+{
+	$url = nl_array($url);
+
+	dd($url);
 }

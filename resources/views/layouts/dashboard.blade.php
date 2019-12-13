@@ -12,6 +12,9 @@
                     <a class="flex items-center hover:bg-gray-100 px-5 py-4 border-b border-gray-100" href="@route('post.index')">
                         <div class="text-sm text-gray-600 font-semibold truncate">Posts</div>
                     </a>
+                    <a class="flex items-center hover:bg-gray-100 px-5 py-4 border-b border-gray-100" href="@route('community.index')">
+                        <div class="text-sm text-gray-600 font-semibold truncate">Communities</div>
+                    </a>
                     <a class="flex items-center hover:bg-gray-100 px-5 py-4 border-b border-gray-100" href="@route('user.index')">
                         <div class="text-sm text-gray-600 font-semibold truncate">Users</div>
                     </a>
