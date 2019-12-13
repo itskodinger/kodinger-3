@@ -32,7 +32,7 @@
                     </div>
                     <div class="ml-auto flex items-center">
                         <form action="{{ url('') }}" autocomplete="off">
-                            <input type="text" name="search" class="bg-search focus:outline-none pl-10 border-2 border-gray-200 focus:border-indigo-600 py-3 px-4 mr-2 rounded text-sm w-64" placeholder="Cari di sini ..." value="{{ request()->search }}">
+                            <input type="text" name="search" class="bg-search focus:outline-none pl-10 border-2 border-gray-200 focus:border-indigo-600 py-3 px-4 mr-2 rounded text-sm w-64" placeholder="Pencarian" value="{{ request()->search }}">
                         </form>
                         <div class="w-px h-6 mx-6 mr-8 bg-gray-200"></div>
                         @guest

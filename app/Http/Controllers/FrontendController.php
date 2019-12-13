@@ -36,7 +36,7 @@ class FrontendController extends Controller
 
 	public function community()
 	{
-		return view('construction');
+		return view('community');
 	}
 
 	public function discover(Request $request, $tag=false)
