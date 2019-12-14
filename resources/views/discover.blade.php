@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Discover'])
+@extends('layouts.app', ['title' => 'Discover', 'footer' => false])
 
 @push('css')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">

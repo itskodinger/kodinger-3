@@ -109,6 +109,17 @@
         </div>
     </div>
 
+    @if(!isset($footer) || (isset($footer) && $footer != false))
+    <div class="py-6 border-t border-gray-200 text-sm">
+        <div class="container mx-auto flex">
+            <div class="text-gray-600 font-light">Copyright &copy; Kodinger</div>
+            <div class="ml-auto">
+                @include('layouts.links')
+            </div>
+        </div>
+    </div>
+    @endif
+
     <!-- Scripts -->
     <script>
         const save_url = '{{ route('saves.store') }}',
