@@ -18,6 +18,16 @@
                     </div>
 
                     @isset($discover)
+                        <div class="p-2 text-sm text-gray-700 leading-loose">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis aliquam nam quos numquam rerum optio voluptate a quasi nisi odit velit atque provident quae, quas sint ipsum reprehenderit animi placeat.
+
+                            <br>
+                            <br>
+
+                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corrupti repudiandae tempora voluptatibus necessitatibus quis architecto vero quasi iste? Error vero veritatis aut nam porro nisi maiores voluptatem obcaecati facere
+                            <a href="" class="text-blue-300">...(view more)</a>
+
+                        </div>
                         <div class="shimmer border-t border-b">
                             <div class="w-full bg-gray-200 h-64"></div>
                             <div class="p-4">
@@ -43,7 +53,7 @@
                                         <source src="{{ $image }}" type="video/mp4">
                                     </video>
                                     @else
-                                    <img src="{{ $image }}" alt="{{ $image }}">
+                                    <img src="{{ $image }}" alt="{{ urldecode($image) }}">
                                     @endif
                                 @endforeach
                             @endif
