@@ -32,9 +32,21 @@ module.exports = {
         '.text-whatsapp': {
           color: '#075e54',
         },
+
       }
 
       addUtilities(newUtilities, ['responsive', 'hover'])
-	  }
+	  },
+
+    function({ addUtilities }) {
+      const newUtilities = {
+        '.min-h-main': {
+          minHeight: 'calc(100vh - 142px)',
+        },
+
+      }
+
+      addUtilities(newUtilities, ['responsive'])
+	  },
   ]
 }

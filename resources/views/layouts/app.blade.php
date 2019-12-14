@@ -103,7 +103,7 @@
         </nav>
 
         <div class="pt-16">
-            <div class="min-h-screen">
+            <div class="min-h-main">
                 @yield('content')
             </div>
         </div>
