@@ -2,12 +2,13 @@
 
 namespace Services;
 
+use DB;
+use App\Tag;
+use App\Save;
 use App\Post;
 use App\PostTag;
-use App\Tag;
 use App\Contribute;
-use App\Save;
-use DB;
+use App\Events\Post\Discover\DiscoverPostCreated;
 
 class PostService
 {
@@ -36,10 +37,16 @@ class PostService
 			'slug' => uniqid(), 
 			'type' => 'link',
 			'tags' => explode(',', $request->tags),
-			'status' => 'publish'
+			'status' => 'processing'
 		];
 
-		return $this->create($request, $adds);
+		$post = $this->create($request, $adds);
+
+		event(
+			new DiscoverPostCreated($post)
+		);
+
+		return $post;
 	}
 
 	public function content(...$args)
