@@ -56,6 +56,7 @@
 			'name' => 'logo_bg',
 			'label' => 'Logo Background',
 			'type' => 'text',
+			'value' => $community->logo_bg,
 			'help' => 'Opsional. Kode HEX warna untuk background logo.'
 		])
 

@@ -7853,6 +7853,70 @@ video {
   z-index: auto;
 }
 
+.bg-facebook {
+  background-color: #3b5998;
+}
+
+.bg-twitter {
+  background-color: #00acee;
+}
+
+.bg-telegram {
+  background-color: #0088cc;
+}
+
+.bg-whatsapp {
+  background-color: #075e54;
+}
+
+.text-facebook {
+  color: #3b5998;
+}
+
+.text-twitter {
+  color: #00acee;
+}
+
+.text-telegram {
+  color: #0088cc;
+}
+
+.text-whatsapp {
+  color: #075e54;
+}
+
+.hover\:bg-facebook:hover {
+  background-color: #3b5998;
+}
+
+.hover\:bg-twitter:hover {
+  background-color: #00acee;
+}
+
+.hover\:bg-telegram:hover {
+  background-color: #0088cc;
+}
+
+.hover\:bg-whatsapp:hover {
+  background-color: #075e54;
+}
+
+.hover\:text-facebook:hover {
+  color: #3b5998;
+}
+
+.hover\:text-twitter:hover {
+  color: #00acee;
+}
+
+.hover\:text-telegram:hover {
+  color: #0088cc;
+}
+
+.hover\:text-whatsapp:hover {
+  color: #075e54;
+}
+
 /**
  * Here you would add any custom utilities you need that don't come out of the
  * box with Tailwind.
@@ -14882,6 +14946,70 @@ body {
   .sm\:z-auto {
     z-index: auto;
   }
+
+  .sm\:bg-facebook {
+    background-color: #3b5998;
+  }
+
+  .sm\:bg-twitter {
+    background-color: #00acee;
+  }
+
+  .sm\:bg-telegram {
+    background-color: #0088cc;
+  }
+
+  .sm\:bg-whatsapp {
+    background-color: #075e54;
+  }
+
+  .sm\:text-facebook {
+    color: #3b5998;
+  }
+
+  .sm\:text-twitter {
+    color: #00acee;
+  }
+
+  .sm\:text-telegram {
+    color: #0088cc;
+  }
+
+  .sm\:text-whatsapp {
+    color: #075e54;
+  }
+
+  .sm\:hover\:bg-facebook:hover {
+    background-color: #3b5998;
+  }
+
+  .sm\:hover\:bg-twitter:hover {
+    background-color: #00acee;
+  }
+
+  .sm\:hover\:bg-telegram:hover {
+    background-color: #0088cc;
+  }
+
+  .sm\:hover\:bg-whatsapp:hover {
+    background-color: #075e54;
+  }
+
+  .sm\:hover\:text-facebook:hover {
+    color: #3b5998;
+  }
+
+  .sm\:hover\:text-twitter:hover {
+    color: #00acee;
+  }
+
+  .sm\:hover\:text-telegram:hover {
+    color: #0088cc;
+  }
+
+  .sm\:hover\:text-whatsapp:hover {
+    color: #075e54;
+  }
 }
 
 @media (min-width: 768px) {
@@ -21807,6 +21935,70 @@ body {
 
   .md\:z-auto {
     z-index: auto;
+  }
+
+  .md\:bg-facebook {
+    background-color: #3b5998;
+  }
+
+  .md\:bg-twitter {
+    background-color: #00acee;
+  }
+
+  .md\:bg-telegram {
+    background-color: #0088cc;
+  }
+
+  .md\:bg-whatsapp {
+    background-color: #075e54;
+  }
+
+  .md\:text-facebook {
+    color: #3b5998;
+  }
+
+  .md\:text-twitter {
+    color: #00acee;
+  }
+
+  .md\:text-telegram {
+    color: #0088cc;
+  }
+
+  .md\:text-whatsapp {
+    color: #075e54;
+  }
+
+  .md\:hover\:bg-facebook:hover {
+    background-color: #3b5998;
+  }
+
+  .md\:hover\:bg-twitter:hover {
+    background-color: #00acee;
+  }
+
+  .md\:hover\:bg-telegram:hover {
+    background-color: #0088cc;
+  }
+
+  .md\:hover\:bg-whatsapp:hover {
+    background-color: #075e54;
+  }
+
+  .md\:hover\:text-facebook:hover {
+    color: #3b5998;
+  }
+
+  .md\:hover\:text-twitter:hover {
+    color: #00acee;
+  }
+
+  .md\:hover\:text-telegram:hover {
+    color: #0088cc;
+  }
+
+  .md\:hover\:text-whatsapp:hover {
+    color: #075e54;
   }
 }
 
@@ -28734,6 +28926,70 @@ body {
   .lg\:z-auto {
     z-index: auto;
   }
+
+  .lg\:bg-facebook {
+    background-color: #3b5998;
+  }
+
+  .lg\:bg-twitter {
+    background-color: #00acee;
+  }
+
+  .lg\:bg-telegram {
+    background-color: #0088cc;
+  }
+
+  .lg\:bg-whatsapp {
+    background-color: #075e54;
+  }
+
+  .lg\:text-facebook {
+    color: #3b5998;
+  }
+
+  .lg\:text-twitter {
+    color: #00acee;
+  }
+
+  .lg\:text-telegram {
+    color: #0088cc;
+  }
+
+  .lg\:text-whatsapp {
+    color: #075e54;
+  }
+
+  .lg\:hover\:bg-facebook:hover {
+    background-color: #3b5998;
+  }
+
+  .lg\:hover\:bg-twitter:hover {
+    background-color: #00acee;
+  }
+
+  .lg\:hover\:bg-telegram:hover {
+    background-color: #0088cc;
+  }
+
+  .lg\:hover\:bg-whatsapp:hover {
+    background-color: #075e54;
+  }
+
+  .lg\:hover\:text-facebook:hover {
+    color: #3b5998;
+  }
+
+  .lg\:hover\:text-twitter:hover {
+    color: #00acee;
+  }
+
+  .lg\:hover\:text-telegram:hover {
+    color: #0088cc;
+  }
+
+  .lg\:hover\:text-whatsapp:hover {
+    color: #075e54;
+  }
 }
 
 @media (min-width: 1280px) {
@@ -35659,5 +35915,69 @@ body {
 
   .xl\:z-auto {
     z-index: auto;
+  }
+
+  .xl\:bg-facebook {
+    background-color: #3b5998;
+  }
+
+  .xl\:bg-twitter {
+    background-color: #00acee;
+  }
+
+  .xl\:bg-telegram {
+    background-color: #0088cc;
+  }
+
+  .xl\:bg-whatsapp {
+    background-color: #075e54;
+  }
+
+  .xl\:text-facebook {
+    color: #3b5998;
+  }
+
+  .xl\:text-twitter {
+    color: #00acee;
+  }
+
+  .xl\:text-telegram {
+    color: #0088cc;
+  }
+
+  .xl\:text-whatsapp {
+    color: #075e54;
+  }
+
+  .xl\:hover\:bg-facebook:hover {
+    background-color: #3b5998;
+  }
+
+  .xl\:hover\:bg-twitter:hover {
+    background-color: #00acee;
+  }
+
+  .xl\:hover\:bg-telegram:hover {
+    background-color: #0088cc;
+  }
+
+  .xl\:hover\:bg-whatsapp:hover {
+    background-color: #075e54;
+  }
+
+  .xl\:hover\:text-facebook:hover {
+    color: #3b5998;
+  }
+
+  .xl\:hover\:text-twitter:hover {
+    color: #00acee;
+  }
+
+  .xl\:hover\:text-telegram:hover {
+    color: #0088cc;
+  }
+
+  .xl\:hover\:text-whatsapp:hover {
+    color: #075e54;
   }
 }
