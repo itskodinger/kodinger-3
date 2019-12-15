@@ -3,6 +3,24 @@ let find = function(parent, query)
 	return parent.querySelector(query);
 }
 
+let dom2str = function(dom)
+{
+	let div = document.createElement('div');
+	div.appendChild(dom);
+
+	return div.innerHTML;
+}
+
+let findRemove = function(dom, query)
+{
+	let div = document.createElement('div');
+	div.appendChild(dom);
+
+	find(div, query).remove();
+
+	return div.innerHTML;
+}
+
 let str2dom = function(str)
 {
 	let div = document.createElement('div');

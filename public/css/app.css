@@ -3309,6 +3309,378 @@ video {
   border-color: #702459;
 }
 
+.focus-within\:border-transparent:focus-within {
+  border-color: transparent;
+}
+
+.focus-within\:border-black:focus-within {
+  border-color: #000;
+}
+
+.focus-within\:border-white:focus-within {
+  border-color: #fff;
+}
+
+.focus-within\:border-gray-100:focus-within {
+  border-color: #f7fafc;
+}
+
+.focus-within\:border-gray-200:focus-within {
+  border-color: #edf2f7;
+}
+
+.focus-within\:border-gray-300:focus-within {
+  border-color: #e2e8f0;
+}
+
+.focus-within\:border-gray-400:focus-within {
+  border-color: #cbd5e0;
+}
+
+.focus-within\:border-gray-500:focus-within {
+  border-color: #a0aec0;
+}
+
+.focus-within\:border-gray-600:focus-within {
+  border-color: #718096;
+}
+
+.focus-within\:border-gray-700:focus-within {
+  border-color: #4a5568;
+}
+
+.focus-within\:border-gray-800:focus-within {
+  border-color: #2d3748;
+}
+
+.focus-within\:border-gray-900:focus-within {
+  border-color: #1a202c;
+}
+
+.focus-within\:border-red-100:focus-within {
+  border-color: #fff5f5;
+}
+
+.focus-within\:border-red-200:focus-within {
+  border-color: #fed7d7;
+}
+
+.focus-within\:border-red-300:focus-within {
+  border-color: #feb2b2;
+}
+
+.focus-within\:border-red-400:focus-within {
+  border-color: #fc8181;
+}
+
+.focus-within\:border-red-500:focus-within {
+  border-color: #f56565;
+}
+
+.focus-within\:border-red-600:focus-within {
+  border-color: #e53e3e;
+}
+
+.focus-within\:border-red-700:focus-within {
+  border-color: #c53030;
+}
+
+.focus-within\:border-red-800:focus-within {
+  border-color: #9b2c2c;
+}
+
+.focus-within\:border-red-900:focus-within {
+  border-color: #742a2a;
+}
+
+.focus-within\:border-orange-100:focus-within {
+  border-color: #fffaf0;
+}
+
+.focus-within\:border-orange-200:focus-within {
+  border-color: #feebc8;
+}
+
+.focus-within\:border-orange-300:focus-within {
+  border-color: #fbd38d;
+}
+
+.focus-within\:border-orange-400:focus-within {
+  border-color: #f6ad55;
+}
+
+.focus-within\:border-orange-500:focus-within {
+  border-color: #ed8936;
+}
+
+.focus-within\:border-orange-600:focus-within {
+  border-color: #dd6b20;
+}
+
+.focus-within\:border-orange-700:focus-within {
+  border-color: #c05621;
+}
+
+.focus-within\:border-orange-800:focus-within {
+  border-color: #9c4221;
+}
+
+.focus-within\:border-orange-900:focus-within {
+  border-color: #7b341e;
+}
+
+.focus-within\:border-yellow-100:focus-within {
+  border-color: #fffff0;
+}
+
+.focus-within\:border-yellow-200:focus-within {
+  border-color: #fefcbf;
+}
+
+.focus-within\:border-yellow-300:focus-within {
+  border-color: #faf089;
+}
+
+.focus-within\:border-yellow-400:focus-within {
+  border-color: #f6e05e;
+}
+
+.focus-within\:border-yellow-500:focus-within {
+  border-color: #ecc94b;
+}
+
+.focus-within\:border-yellow-600:focus-within {
+  border-color: #d69e2e;
+}
+
+.focus-within\:border-yellow-700:focus-within {
+  border-color: #b7791f;
+}
+
+.focus-within\:border-yellow-800:focus-within {
+  border-color: #975a16;
+}
+
+.focus-within\:border-yellow-900:focus-within {
+  border-color: #744210;
+}
+
+.focus-within\:border-green-100:focus-within {
+  border-color: #f0fff4;
+}
+
+.focus-within\:border-green-200:focus-within {
+  border-color: #c6f6d5;
+}
+
+.focus-within\:border-green-300:focus-within {
+  border-color: #9ae6b4;
+}
+
+.focus-within\:border-green-400:focus-within {
+  border-color: #68d391;
+}
+
+.focus-within\:border-green-500:focus-within {
+  border-color: #48bb78;
+}
+
+.focus-within\:border-green-600:focus-within {
+  border-color: #38a169;
+}
+
+.focus-within\:border-green-700:focus-within {
+  border-color: #2f855a;
+}
+
+.focus-within\:border-green-800:focus-within {
+  border-color: #276749;
+}
+
+.focus-within\:border-green-900:focus-within {
+  border-color: #22543d;
+}
+
+.focus-within\:border-teal-100:focus-within {
+  border-color: #e6fffa;
+}
+
+.focus-within\:border-teal-200:focus-within {
+  border-color: #b2f5ea;
+}
+
+.focus-within\:border-teal-300:focus-within {
+  border-color: #81e6d9;
+}
+
+.focus-within\:border-teal-400:focus-within {
+  border-color: #4fd1c5;
+}
+
+.focus-within\:border-teal-500:focus-within {
+  border-color: #38b2ac;
+}
+
+.focus-within\:border-teal-600:focus-within {
+  border-color: #319795;
+}
+
+.focus-within\:border-teal-700:focus-within {
+  border-color: #2c7a7b;
+}
+
+.focus-within\:border-teal-800:focus-within {
+  border-color: #285e61;
+}
+
+.focus-within\:border-teal-900:focus-within {
+  border-color: #234e52;
+}
+
+.focus-within\:border-blue-100:focus-within {
+  border-color: #ebf8ff;
+}
+
+.focus-within\:border-blue-200:focus-within {
+  border-color: #bee3f8;
+}
+
+.focus-within\:border-blue-300:focus-within {
+  border-color: #90cdf4;
+}
+
+.focus-within\:border-blue-400:focus-within {
+  border-color: #63b3ed;
+}
+
+.focus-within\:border-blue-500:focus-within {
+  border-color: #4299e1;
+}
+
+.focus-within\:border-blue-600:focus-within {
+  border-color: #3182ce;
+}
+
+.focus-within\:border-blue-700:focus-within {
+  border-color: #2b6cb0;
+}
+
+.focus-within\:border-blue-800:focus-within {
+  border-color: #2c5282;
+}
+
+.focus-within\:border-blue-900:focus-within {
+  border-color: #2a4365;
+}
+
+.focus-within\:border-indigo-100:focus-within {
+  border-color: #ebf4ff;
+}
+
+.focus-within\:border-indigo-200:focus-within {
+  border-color: #c3dafe;
+}
+
+.focus-within\:border-indigo-300:focus-within {
+  border-color: #a3bffa;
+}
+
+.focus-within\:border-indigo-400:focus-within {
+  border-color: #7f9cf5;
+}
+
+.focus-within\:border-indigo-500:focus-within {
+  border-color: #667eea;
+}
+
+.focus-within\:border-indigo-600:focus-within {
+  border-color: #5a67d8;
+}
+
+.focus-within\:border-indigo-700:focus-within {
+  border-color: #4c51bf;
+}
+
+.focus-within\:border-indigo-800:focus-within {
+  border-color: #434190;
+}
+
+.focus-within\:border-indigo-900:focus-within {
+  border-color: #3c366b;
+}
+
+.focus-within\:border-purple-100:focus-within {
+  border-color: #faf5ff;
+}
+
+.focus-within\:border-purple-200:focus-within {
+  border-color: #e9d8fd;
+}
+
+.focus-within\:border-purple-300:focus-within {
+  border-color: #d6bcfa;
+}
+
+.focus-within\:border-purple-400:focus-within {
+  border-color: #b794f4;
+}
+
+.focus-within\:border-purple-500:focus-within {
+  border-color: #9f7aea;
+}
+
+.focus-within\:border-purple-600:focus-within {
+  border-color: #805ad5;
+}
+
+.focus-within\:border-purple-700:focus-within {
+  border-color: #6b46c1;
+}
+
+.focus-within\:border-purple-800:focus-within {
+  border-color: #553c9a;
+}
+
+.focus-within\:border-purple-900:focus-within {
+  border-color: #44337a;
+}
+
+.focus-within\:border-pink-100:focus-within {
+  border-color: #fff5f7;
+}
+
+.focus-within\:border-pink-200:focus-within {
+  border-color: #fed7e2;
+}
+
+.focus-within\:border-pink-300:focus-within {
+  border-color: #fbb6ce;
+}
+
+.focus-within\:border-pink-400:focus-within {
+  border-color: #f687b3;
+}
+
+.focus-within\:border-pink-500:focus-within {
+  border-color: #ed64a6;
+}
+
+.focus-within\:border-pink-600:focus-within {
+  border-color: #d53f8c;
+}
+
+.focus-within\:border-pink-700:focus-within {
+  border-color: #b83280;
+}
+
+.focus-within\:border-pink-800:focus-within {
+  border-color: #97266d;
+}
+
+.focus-within\:border-pink-900:focus-within {
+  border-color: #702459;
+}
+
 .rounded-none {
   border-radius: 0;
 }
@@ -14173,6 +14545,378 @@ body {
     border-color: #702459;
   }
 
+  .sm\:focus-within\:border-transparent:focus-within {
+    border-color: transparent;
+  }
+
+  .sm\:focus-within\:border-black:focus-within {
+    border-color: #000;
+  }
+
+  .sm\:focus-within\:border-white:focus-within {
+    border-color: #fff;
+  }
+
+  .sm\:focus-within\:border-gray-100:focus-within {
+    border-color: #f7fafc;
+  }
+
+  .sm\:focus-within\:border-gray-200:focus-within {
+    border-color: #edf2f7;
+  }
+
+  .sm\:focus-within\:border-gray-300:focus-within {
+    border-color: #e2e8f0;
+  }
+
+  .sm\:focus-within\:border-gray-400:focus-within {
+    border-color: #cbd5e0;
+  }
+
+  .sm\:focus-within\:border-gray-500:focus-within {
+    border-color: #a0aec0;
+  }
+
+  .sm\:focus-within\:border-gray-600:focus-within {
+    border-color: #718096;
+  }
+
+  .sm\:focus-within\:border-gray-700:focus-within {
+    border-color: #4a5568;
+  }
+
+  .sm\:focus-within\:border-gray-800:focus-within {
+    border-color: #2d3748;
+  }
+
+  .sm\:focus-within\:border-gray-900:focus-within {
+    border-color: #1a202c;
+  }
+
+  .sm\:focus-within\:border-red-100:focus-within {
+    border-color: #fff5f5;
+  }
+
+  .sm\:focus-within\:border-red-200:focus-within {
+    border-color: #fed7d7;
+  }
+
+  .sm\:focus-within\:border-red-300:focus-within {
+    border-color: #feb2b2;
+  }
+
+  .sm\:focus-within\:border-red-400:focus-within {
+    border-color: #fc8181;
+  }
+
+  .sm\:focus-within\:border-red-500:focus-within {
+    border-color: #f56565;
+  }
+
+  .sm\:focus-within\:border-red-600:focus-within {
+    border-color: #e53e3e;
+  }
+
+  .sm\:focus-within\:border-red-700:focus-within {
+    border-color: #c53030;
+  }
+
+  .sm\:focus-within\:border-red-800:focus-within {
+    border-color: #9b2c2c;
+  }
+
+  .sm\:focus-within\:border-red-900:focus-within {
+    border-color: #742a2a;
+  }
+
+  .sm\:focus-within\:border-orange-100:focus-within {
+    border-color: #fffaf0;
+  }
+
+  .sm\:focus-within\:border-orange-200:focus-within {
+    border-color: #feebc8;
+  }
+
+  .sm\:focus-within\:border-orange-300:focus-within {
+    border-color: #fbd38d;
+  }
+
+  .sm\:focus-within\:border-orange-400:focus-within {
+    border-color: #f6ad55;
+  }
+
+  .sm\:focus-within\:border-orange-500:focus-within {
+    border-color: #ed8936;
+  }
+
+  .sm\:focus-within\:border-orange-600:focus-within {
+    border-color: #dd6b20;
+  }
+
+  .sm\:focus-within\:border-orange-700:focus-within {
+    border-color: #c05621;
+  }
+
+  .sm\:focus-within\:border-orange-800:focus-within {
+    border-color: #9c4221;
+  }
+
+  .sm\:focus-within\:border-orange-900:focus-within {
+    border-color: #7b341e;
+  }
+
+  .sm\:focus-within\:border-yellow-100:focus-within {
+    border-color: #fffff0;
+  }
+
+  .sm\:focus-within\:border-yellow-200:focus-within {
+    border-color: #fefcbf;
+  }
+
+  .sm\:focus-within\:border-yellow-300:focus-within {
+    border-color: #faf089;
+  }
+
+  .sm\:focus-within\:border-yellow-400:focus-within {
+    border-color: #f6e05e;
+  }
+
+  .sm\:focus-within\:border-yellow-500:focus-within {
+    border-color: #ecc94b;
+  }
+
+  .sm\:focus-within\:border-yellow-600:focus-within {
+    border-color: #d69e2e;
+  }
+
+  .sm\:focus-within\:border-yellow-700:focus-within {
+    border-color: #b7791f;
+  }
+
+  .sm\:focus-within\:border-yellow-800:focus-within {
+    border-color: #975a16;
+  }
+
+  .sm\:focus-within\:border-yellow-900:focus-within {
+    border-color: #744210;
+  }
+
+  .sm\:focus-within\:border-green-100:focus-within {
+    border-color: #f0fff4;
+  }
+
+  .sm\:focus-within\:border-green-200:focus-within {
+    border-color: #c6f6d5;
+  }
+
+  .sm\:focus-within\:border-green-300:focus-within {
+    border-color: #9ae6b4;
+  }
+
+  .sm\:focus-within\:border-green-400:focus-within {
+    border-color: #68d391;
+  }
+
+  .sm\:focus-within\:border-green-500:focus-within {
+    border-color: #48bb78;
+  }
+
+  .sm\:focus-within\:border-green-600:focus-within {
+    border-color: #38a169;
+  }
+
+  .sm\:focus-within\:border-green-700:focus-within {
+    border-color: #2f855a;
+  }
+
+  .sm\:focus-within\:border-green-800:focus-within {
+    border-color: #276749;
+  }
+
+  .sm\:focus-within\:border-green-900:focus-within {
+    border-color: #22543d;
+  }
+
+  .sm\:focus-within\:border-teal-100:focus-within {
+    border-color: #e6fffa;
+  }
+
+  .sm\:focus-within\:border-teal-200:focus-within {
+    border-color: #b2f5ea;
+  }
+
+  .sm\:focus-within\:border-teal-300:focus-within {
+    border-color: #81e6d9;
+  }
+
+  .sm\:focus-within\:border-teal-400:focus-within {
+    border-color: #4fd1c5;
+  }
+
+  .sm\:focus-within\:border-teal-500:focus-within {
+    border-color: #38b2ac;
+  }
+
+  .sm\:focus-within\:border-teal-600:focus-within {
+    border-color: #319795;
+  }
+
+  .sm\:focus-within\:border-teal-700:focus-within {
+    border-color: #2c7a7b;
+  }
+
+  .sm\:focus-within\:border-teal-800:focus-within {
+    border-color: #285e61;
+  }
+
+  .sm\:focus-within\:border-teal-900:focus-within {
+    border-color: #234e52;
+  }
+
+  .sm\:focus-within\:border-blue-100:focus-within {
+    border-color: #ebf8ff;
+  }
+
+  .sm\:focus-within\:border-blue-200:focus-within {
+    border-color: #bee3f8;
+  }
+
+  .sm\:focus-within\:border-blue-300:focus-within {
+    border-color: #90cdf4;
+  }
+
+  .sm\:focus-within\:border-blue-400:focus-within {
+    border-color: #63b3ed;
+  }
+
+  .sm\:focus-within\:border-blue-500:focus-within {
+    border-color: #4299e1;
+  }
+
+  .sm\:focus-within\:border-blue-600:focus-within {
+    border-color: #3182ce;
+  }
+
+  .sm\:focus-within\:border-blue-700:focus-within {
+    border-color: #2b6cb0;
+  }
+
+  .sm\:focus-within\:border-blue-800:focus-within {
+    border-color: #2c5282;
+  }
+
+  .sm\:focus-within\:border-blue-900:focus-within {
+    border-color: #2a4365;
+  }
+
+  .sm\:focus-within\:border-indigo-100:focus-within {
+    border-color: #ebf4ff;
+  }
+
+  .sm\:focus-within\:border-indigo-200:focus-within {
+    border-color: #c3dafe;
+  }
+
+  .sm\:focus-within\:border-indigo-300:focus-within {
+    border-color: #a3bffa;
+  }
+
+  .sm\:focus-within\:border-indigo-400:focus-within {
+    border-color: #7f9cf5;
+  }
+
+  .sm\:focus-within\:border-indigo-500:focus-within {
+    border-color: #667eea;
+  }
+
+  .sm\:focus-within\:border-indigo-600:focus-within {
+    border-color: #5a67d8;
+  }
+
+  .sm\:focus-within\:border-indigo-700:focus-within {
+    border-color: #4c51bf;
+  }
+
+  .sm\:focus-within\:border-indigo-800:focus-within {
+    border-color: #434190;
+  }
+
+  .sm\:focus-within\:border-indigo-900:focus-within {
+    border-color: #3c366b;
+  }
+
+  .sm\:focus-within\:border-purple-100:focus-within {
+    border-color: #faf5ff;
+  }
+
+  .sm\:focus-within\:border-purple-200:focus-within {
+    border-color: #e9d8fd;
+  }
+
+  .sm\:focus-within\:border-purple-300:focus-within {
+    border-color: #d6bcfa;
+  }
+
+  .sm\:focus-within\:border-purple-400:focus-within {
+    border-color: #b794f4;
+  }
+
+  .sm\:focus-within\:border-purple-500:focus-within {
+    border-color: #9f7aea;
+  }
+
+  .sm\:focus-within\:border-purple-600:focus-within {
+    border-color: #805ad5;
+  }
+
+  .sm\:focus-within\:border-purple-700:focus-within {
+    border-color: #6b46c1;
+  }
+
+  .sm\:focus-within\:border-purple-800:focus-within {
+    border-color: #553c9a;
+  }
+
+  .sm\:focus-within\:border-purple-900:focus-within {
+    border-color: #44337a;
+  }
+
+  .sm\:focus-within\:border-pink-100:focus-within {
+    border-color: #fff5f7;
+  }
+
+  .sm\:focus-within\:border-pink-200:focus-within {
+    border-color: #fed7e2;
+  }
+
+  .sm\:focus-within\:border-pink-300:focus-within {
+    border-color: #fbb6ce;
+  }
+
+  .sm\:focus-within\:border-pink-400:focus-within {
+    border-color: #f687b3;
+  }
+
+  .sm\:focus-within\:border-pink-500:focus-within {
+    border-color: #ed64a6;
+  }
+
+  .sm\:focus-within\:border-pink-600:focus-within {
+    border-color: #d53f8c;
+  }
+
+  .sm\:focus-within\:border-pink-700:focus-within {
+    border-color: #b83280;
+  }
+
+  .sm\:focus-within\:border-pink-800:focus-within {
+    border-color: #97266d;
+  }
+
+  .sm\:focus-within\:border-pink-900:focus-within {
+    border-color: #702459;
+  }
+
   .sm\:rounded-none {
     border-radius: 0;
   }
@@ -24906,6 +25650,378 @@ body {
   }
 
   .md\:focus\:border-pink-900:focus {
+    border-color: #702459;
+  }
+
+  .md\:focus-within\:border-transparent:focus-within {
+    border-color: transparent;
+  }
+
+  .md\:focus-within\:border-black:focus-within {
+    border-color: #000;
+  }
+
+  .md\:focus-within\:border-white:focus-within {
+    border-color: #fff;
+  }
+
+  .md\:focus-within\:border-gray-100:focus-within {
+    border-color: #f7fafc;
+  }
+
+  .md\:focus-within\:border-gray-200:focus-within {
+    border-color: #edf2f7;
+  }
+
+  .md\:focus-within\:border-gray-300:focus-within {
+    border-color: #e2e8f0;
+  }
+
+  .md\:focus-within\:border-gray-400:focus-within {
+    border-color: #cbd5e0;
+  }
+
+  .md\:focus-within\:border-gray-500:focus-within {
+    border-color: #a0aec0;
+  }
+
+  .md\:focus-within\:border-gray-600:focus-within {
+    border-color: #718096;
+  }
+
+  .md\:focus-within\:border-gray-700:focus-within {
+    border-color: #4a5568;
+  }
+
+  .md\:focus-within\:border-gray-800:focus-within {
+    border-color: #2d3748;
+  }
+
+  .md\:focus-within\:border-gray-900:focus-within {
+    border-color: #1a202c;
+  }
+
+  .md\:focus-within\:border-red-100:focus-within {
+    border-color: #fff5f5;
+  }
+
+  .md\:focus-within\:border-red-200:focus-within {
+    border-color: #fed7d7;
+  }
+
+  .md\:focus-within\:border-red-300:focus-within {
+    border-color: #feb2b2;
+  }
+
+  .md\:focus-within\:border-red-400:focus-within {
+    border-color: #fc8181;
+  }
+
+  .md\:focus-within\:border-red-500:focus-within {
+    border-color: #f56565;
+  }
+
+  .md\:focus-within\:border-red-600:focus-within {
+    border-color: #e53e3e;
+  }
+
+  .md\:focus-within\:border-red-700:focus-within {
+    border-color: #c53030;
+  }
+
+  .md\:focus-within\:border-red-800:focus-within {
+    border-color: #9b2c2c;
+  }
+
+  .md\:focus-within\:border-red-900:focus-within {
+    border-color: #742a2a;
+  }
+
+  .md\:focus-within\:border-orange-100:focus-within {
+    border-color: #fffaf0;
+  }
+
+  .md\:focus-within\:border-orange-200:focus-within {
+    border-color: #feebc8;
+  }
+
+  .md\:focus-within\:border-orange-300:focus-within {
+    border-color: #fbd38d;
+  }
+
+  .md\:focus-within\:border-orange-400:focus-within {
+    border-color: #f6ad55;
+  }
+
+  .md\:focus-within\:border-orange-500:focus-within {
+    border-color: #ed8936;
+  }
+
+  .md\:focus-within\:border-orange-600:focus-within {
+    border-color: #dd6b20;
+  }
+
+  .md\:focus-within\:border-orange-700:focus-within {
+    border-color: #c05621;
+  }
+
+  .md\:focus-within\:border-orange-800:focus-within {
+    border-color: #9c4221;
+  }
+
+  .md\:focus-within\:border-orange-900:focus-within {
+    border-color: #7b341e;
+  }
+
+  .md\:focus-within\:border-yellow-100:focus-within {
+    border-color: #fffff0;
+  }
+
+  .md\:focus-within\:border-yellow-200:focus-within {
+    border-color: #fefcbf;
+  }
+
+  .md\:focus-within\:border-yellow-300:focus-within {
+    border-color: #faf089;
+  }
+
+  .md\:focus-within\:border-yellow-400:focus-within {
+    border-color: #f6e05e;
+  }
+
+  .md\:focus-within\:border-yellow-500:focus-within {
+    border-color: #ecc94b;
+  }
+
+  .md\:focus-within\:border-yellow-600:focus-within {
+    border-color: #d69e2e;
+  }
+
+  .md\:focus-within\:border-yellow-700:focus-within {
+    border-color: #b7791f;
+  }
+
+  .md\:focus-within\:border-yellow-800:focus-within {
+    border-color: #975a16;
+  }
+
+  .md\:focus-within\:border-yellow-900:focus-within {
+    border-color: #744210;
+  }
+
+  .md\:focus-within\:border-green-100:focus-within {
+    border-color: #f0fff4;
+  }
+
+  .md\:focus-within\:border-green-200:focus-within {
+    border-color: #c6f6d5;
+  }
+
+  .md\:focus-within\:border-green-300:focus-within {
+    border-color: #9ae6b4;
+  }
+
+  .md\:focus-within\:border-green-400:focus-within {
+    border-color: #68d391;
+  }
+
+  .md\:focus-within\:border-green-500:focus-within {
+    border-color: #48bb78;
+  }
+
+  .md\:focus-within\:border-green-600:focus-within {
+    border-color: #38a169;
+  }
+
+  .md\:focus-within\:border-green-700:focus-within {
+    border-color: #2f855a;
+  }
+
+  .md\:focus-within\:border-green-800:focus-within {
+    border-color: #276749;
+  }
+
+  .md\:focus-within\:border-green-900:focus-within {
+    border-color: #22543d;
+  }
+
+  .md\:focus-within\:border-teal-100:focus-within {
+    border-color: #e6fffa;
+  }
+
+  .md\:focus-within\:border-teal-200:focus-within {
+    border-color: #b2f5ea;
+  }
+
+  .md\:focus-within\:border-teal-300:focus-within {
+    border-color: #81e6d9;
+  }
+
+  .md\:focus-within\:border-teal-400:focus-within {
+    border-color: #4fd1c5;
+  }
+
+  .md\:focus-within\:border-teal-500:focus-within {
+    border-color: #38b2ac;
+  }
+
+  .md\:focus-within\:border-teal-600:focus-within {
+    border-color: #319795;
+  }
+
+  .md\:focus-within\:border-teal-700:focus-within {
+    border-color: #2c7a7b;
+  }
+
+  .md\:focus-within\:border-teal-800:focus-within {
+    border-color: #285e61;
+  }
+
+  .md\:focus-within\:border-teal-900:focus-within {
+    border-color: #234e52;
+  }
+
+  .md\:focus-within\:border-blue-100:focus-within {
+    border-color: #ebf8ff;
+  }
+
+  .md\:focus-within\:border-blue-200:focus-within {
+    border-color: #bee3f8;
+  }
+
+  .md\:focus-within\:border-blue-300:focus-within {
+    border-color: #90cdf4;
+  }
+
+  .md\:focus-within\:border-blue-400:focus-within {
+    border-color: #63b3ed;
+  }
+
+  .md\:focus-within\:border-blue-500:focus-within {
+    border-color: #4299e1;
+  }
+
+  .md\:focus-within\:border-blue-600:focus-within {
+    border-color: #3182ce;
+  }
+
+  .md\:focus-within\:border-blue-700:focus-within {
+    border-color: #2b6cb0;
+  }
+
+  .md\:focus-within\:border-blue-800:focus-within {
+    border-color: #2c5282;
+  }
+
+  .md\:focus-within\:border-blue-900:focus-within {
+    border-color: #2a4365;
+  }
+
+  .md\:focus-within\:border-indigo-100:focus-within {
+    border-color: #ebf4ff;
+  }
+
+  .md\:focus-within\:border-indigo-200:focus-within {
+    border-color: #c3dafe;
+  }
+
+  .md\:focus-within\:border-indigo-300:focus-within {
+    border-color: #a3bffa;
+  }
+
+  .md\:focus-within\:border-indigo-400:focus-within {
+    border-color: #7f9cf5;
+  }
+
+  .md\:focus-within\:border-indigo-500:focus-within {
+    border-color: #667eea;
+  }
+
+  .md\:focus-within\:border-indigo-600:focus-within {
+    border-color: #5a67d8;
+  }
+
+  .md\:focus-within\:border-indigo-700:focus-within {
+    border-color: #4c51bf;
+  }
+
+  .md\:focus-within\:border-indigo-800:focus-within {
+    border-color: #434190;
+  }
+
+  .md\:focus-within\:border-indigo-900:focus-within {
+    border-color: #3c366b;
+  }
+
+  .md\:focus-within\:border-purple-100:focus-within {
+    border-color: #faf5ff;
+  }
+
+  .md\:focus-within\:border-purple-200:focus-within {
+    border-color: #e9d8fd;
+  }
+
+  .md\:focus-within\:border-purple-300:focus-within {
+    border-color: #d6bcfa;
+  }
+
+  .md\:focus-within\:border-purple-400:focus-within {
+    border-color: #b794f4;
+  }
+
+  .md\:focus-within\:border-purple-500:focus-within {
+    border-color: #9f7aea;
+  }
+
+  .md\:focus-within\:border-purple-600:focus-within {
+    border-color: #805ad5;
+  }
+
+  .md\:focus-within\:border-purple-700:focus-within {
+    border-color: #6b46c1;
+  }
+
+  .md\:focus-within\:border-purple-800:focus-within {
+    border-color: #553c9a;
+  }
+
+  .md\:focus-within\:border-purple-900:focus-within {
+    border-color: #44337a;
+  }
+
+  .md\:focus-within\:border-pink-100:focus-within {
+    border-color: #fff5f7;
+  }
+
+  .md\:focus-within\:border-pink-200:focus-within {
+    border-color: #fed7e2;
+  }
+
+  .md\:focus-within\:border-pink-300:focus-within {
+    border-color: #fbb6ce;
+  }
+
+  .md\:focus-within\:border-pink-400:focus-within {
+    border-color: #f687b3;
+  }
+
+  .md\:focus-within\:border-pink-500:focus-within {
+    border-color: #ed64a6;
+  }
+
+  .md\:focus-within\:border-pink-600:focus-within {
+    border-color: #d53f8c;
+  }
+
+  .md\:focus-within\:border-pink-700:focus-within {
+    border-color: #b83280;
+  }
+
+  .md\:focus-within\:border-pink-800:focus-within {
+    border-color: #97266d;
+  }
+
+  .md\:focus-within\:border-pink-900:focus-within {
     border-color: #702459;
   }
 
@@ -35645,6 +36761,378 @@ body {
     border-color: #702459;
   }
 
+  .lg\:focus-within\:border-transparent:focus-within {
+    border-color: transparent;
+  }
+
+  .lg\:focus-within\:border-black:focus-within {
+    border-color: #000;
+  }
+
+  .lg\:focus-within\:border-white:focus-within {
+    border-color: #fff;
+  }
+
+  .lg\:focus-within\:border-gray-100:focus-within {
+    border-color: #f7fafc;
+  }
+
+  .lg\:focus-within\:border-gray-200:focus-within {
+    border-color: #edf2f7;
+  }
+
+  .lg\:focus-within\:border-gray-300:focus-within {
+    border-color: #e2e8f0;
+  }
+
+  .lg\:focus-within\:border-gray-400:focus-within {
+    border-color: #cbd5e0;
+  }
+
+  .lg\:focus-within\:border-gray-500:focus-within {
+    border-color: #a0aec0;
+  }
+
+  .lg\:focus-within\:border-gray-600:focus-within {
+    border-color: #718096;
+  }
+
+  .lg\:focus-within\:border-gray-700:focus-within {
+    border-color: #4a5568;
+  }
+
+  .lg\:focus-within\:border-gray-800:focus-within {
+    border-color: #2d3748;
+  }
+
+  .lg\:focus-within\:border-gray-900:focus-within {
+    border-color: #1a202c;
+  }
+
+  .lg\:focus-within\:border-red-100:focus-within {
+    border-color: #fff5f5;
+  }
+
+  .lg\:focus-within\:border-red-200:focus-within {
+    border-color: #fed7d7;
+  }
+
+  .lg\:focus-within\:border-red-300:focus-within {
+    border-color: #feb2b2;
+  }
+
+  .lg\:focus-within\:border-red-400:focus-within {
+    border-color: #fc8181;
+  }
+
+  .lg\:focus-within\:border-red-500:focus-within {
+    border-color: #f56565;
+  }
+
+  .lg\:focus-within\:border-red-600:focus-within {
+    border-color: #e53e3e;
+  }
+
+  .lg\:focus-within\:border-red-700:focus-within {
+    border-color: #c53030;
+  }
+
+  .lg\:focus-within\:border-red-800:focus-within {
+    border-color: #9b2c2c;
+  }
+
+  .lg\:focus-within\:border-red-900:focus-within {
+    border-color: #742a2a;
+  }
+
+  .lg\:focus-within\:border-orange-100:focus-within {
+    border-color: #fffaf0;
+  }
+
+  .lg\:focus-within\:border-orange-200:focus-within {
+    border-color: #feebc8;
+  }
+
+  .lg\:focus-within\:border-orange-300:focus-within {
+    border-color: #fbd38d;
+  }
+
+  .lg\:focus-within\:border-orange-400:focus-within {
+    border-color: #f6ad55;
+  }
+
+  .lg\:focus-within\:border-orange-500:focus-within {
+    border-color: #ed8936;
+  }
+
+  .lg\:focus-within\:border-orange-600:focus-within {
+    border-color: #dd6b20;
+  }
+
+  .lg\:focus-within\:border-orange-700:focus-within {
+    border-color: #c05621;
+  }
+
+  .lg\:focus-within\:border-orange-800:focus-within {
+    border-color: #9c4221;
+  }
+
+  .lg\:focus-within\:border-orange-900:focus-within {
+    border-color: #7b341e;
+  }
+
+  .lg\:focus-within\:border-yellow-100:focus-within {
+    border-color: #fffff0;
+  }
+
+  .lg\:focus-within\:border-yellow-200:focus-within {
+    border-color: #fefcbf;
+  }
+
+  .lg\:focus-within\:border-yellow-300:focus-within {
+    border-color: #faf089;
+  }
+
+  .lg\:focus-within\:border-yellow-400:focus-within {
+    border-color: #f6e05e;
+  }
+
+  .lg\:focus-within\:border-yellow-500:focus-within {
+    border-color: #ecc94b;
+  }
+
+  .lg\:focus-within\:border-yellow-600:focus-within {
+    border-color: #d69e2e;
+  }
+
+  .lg\:focus-within\:border-yellow-700:focus-within {
+    border-color: #b7791f;
+  }
+
+  .lg\:focus-within\:border-yellow-800:focus-within {
+    border-color: #975a16;
+  }
+
+  .lg\:focus-within\:border-yellow-900:focus-within {
+    border-color: #744210;
+  }
+
+  .lg\:focus-within\:border-green-100:focus-within {
+    border-color: #f0fff4;
+  }
+
+  .lg\:focus-within\:border-green-200:focus-within {
+    border-color: #c6f6d5;
+  }
+
+  .lg\:focus-within\:border-green-300:focus-within {
+    border-color: #9ae6b4;
+  }
+
+  .lg\:focus-within\:border-green-400:focus-within {
+    border-color: #68d391;
+  }
+
+  .lg\:focus-within\:border-green-500:focus-within {
+    border-color: #48bb78;
+  }
+
+  .lg\:focus-within\:border-green-600:focus-within {
+    border-color: #38a169;
+  }
+
+  .lg\:focus-within\:border-green-700:focus-within {
+    border-color: #2f855a;
+  }
+
+  .lg\:focus-within\:border-green-800:focus-within {
+    border-color: #276749;
+  }
+
+  .lg\:focus-within\:border-green-900:focus-within {
+    border-color: #22543d;
+  }
+
+  .lg\:focus-within\:border-teal-100:focus-within {
+    border-color: #e6fffa;
+  }
+
+  .lg\:focus-within\:border-teal-200:focus-within {
+    border-color: #b2f5ea;
+  }
+
+  .lg\:focus-within\:border-teal-300:focus-within {
+    border-color: #81e6d9;
+  }
+
+  .lg\:focus-within\:border-teal-400:focus-within {
+    border-color: #4fd1c5;
+  }
+
+  .lg\:focus-within\:border-teal-500:focus-within {
+    border-color: #38b2ac;
+  }
+
+  .lg\:focus-within\:border-teal-600:focus-within {
+    border-color: #319795;
+  }
+
+  .lg\:focus-within\:border-teal-700:focus-within {
+    border-color: #2c7a7b;
+  }
+
+  .lg\:focus-within\:border-teal-800:focus-within {
+    border-color: #285e61;
+  }
+
+  .lg\:focus-within\:border-teal-900:focus-within {
+    border-color: #234e52;
+  }
+
+  .lg\:focus-within\:border-blue-100:focus-within {
+    border-color: #ebf8ff;
+  }
+
+  .lg\:focus-within\:border-blue-200:focus-within {
+    border-color: #bee3f8;
+  }
+
+  .lg\:focus-within\:border-blue-300:focus-within {
+    border-color: #90cdf4;
+  }
+
+  .lg\:focus-within\:border-blue-400:focus-within {
+    border-color: #63b3ed;
+  }
+
+  .lg\:focus-within\:border-blue-500:focus-within {
+    border-color: #4299e1;
+  }
+
+  .lg\:focus-within\:border-blue-600:focus-within {
+    border-color: #3182ce;
+  }
+
+  .lg\:focus-within\:border-blue-700:focus-within {
+    border-color: #2b6cb0;
+  }
+
+  .lg\:focus-within\:border-blue-800:focus-within {
+    border-color: #2c5282;
+  }
+
+  .lg\:focus-within\:border-blue-900:focus-within {
+    border-color: #2a4365;
+  }
+
+  .lg\:focus-within\:border-indigo-100:focus-within {
+    border-color: #ebf4ff;
+  }
+
+  .lg\:focus-within\:border-indigo-200:focus-within {
+    border-color: #c3dafe;
+  }
+
+  .lg\:focus-within\:border-indigo-300:focus-within {
+    border-color: #a3bffa;
+  }
+
+  .lg\:focus-within\:border-indigo-400:focus-within {
+    border-color: #7f9cf5;
+  }
+
+  .lg\:focus-within\:border-indigo-500:focus-within {
+    border-color: #667eea;
+  }
+
+  .lg\:focus-within\:border-indigo-600:focus-within {
+    border-color: #5a67d8;
+  }
+
+  .lg\:focus-within\:border-indigo-700:focus-within {
+    border-color: #4c51bf;
+  }
+
+  .lg\:focus-within\:border-indigo-800:focus-within {
+    border-color: #434190;
+  }
+
+  .lg\:focus-within\:border-indigo-900:focus-within {
+    border-color: #3c366b;
+  }
+
+  .lg\:focus-within\:border-purple-100:focus-within {
+    border-color: #faf5ff;
+  }
+
+  .lg\:focus-within\:border-purple-200:focus-within {
+    border-color: #e9d8fd;
+  }
+
+  .lg\:focus-within\:border-purple-300:focus-within {
+    border-color: #d6bcfa;
+  }
+
+  .lg\:focus-within\:border-purple-400:focus-within {
+    border-color: #b794f4;
+  }
+
+  .lg\:focus-within\:border-purple-500:focus-within {
+    border-color: #9f7aea;
+  }
+
+  .lg\:focus-within\:border-purple-600:focus-within {
+    border-color: #805ad5;
+  }
+
+  .lg\:focus-within\:border-purple-700:focus-within {
+    border-color: #6b46c1;
+  }
+
+  .lg\:focus-within\:border-purple-800:focus-within {
+    border-color: #553c9a;
+  }
+
+  .lg\:focus-within\:border-purple-900:focus-within {
+    border-color: #44337a;
+  }
+
+  .lg\:focus-within\:border-pink-100:focus-within {
+    border-color: #fff5f7;
+  }
+
+  .lg\:focus-within\:border-pink-200:focus-within {
+    border-color: #fed7e2;
+  }
+
+  .lg\:focus-within\:border-pink-300:focus-within {
+    border-color: #fbb6ce;
+  }
+
+  .lg\:focus-within\:border-pink-400:focus-within {
+    border-color: #f687b3;
+  }
+
+  .lg\:focus-within\:border-pink-500:focus-within {
+    border-color: #ed64a6;
+  }
+
+  .lg\:focus-within\:border-pink-600:focus-within {
+    border-color: #d53f8c;
+  }
+
+  .lg\:focus-within\:border-pink-700:focus-within {
+    border-color: #b83280;
+  }
+
+  .lg\:focus-within\:border-pink-800:focus-within {
+    border-color: #97266d;
+  }
+
+  .lg\:focus-within\:border-pink-900:focus-within {
+    border-color: #702459;
+  }
+
   .lg\:rounded-none {
     border-radius: 0;
   }
@@ -46378,6 +47866,378 @@ body {
   }
 
   .xl\:focus\:border-pink-900:focus {
+    border-color: #702459;
+  }
+
+  .xl\:focus-within\:border-transparent:focus-within {
+    border-color: transparent;
+  }
+
+  .xl\:focus-within\:border-black:focus-within {
+    border-color: #000;
+  }
+
+  .xl\:focus-within\:border-white:focus-within {
+    border-color: #fff;
+  }
+
+  .xl\:focus-within\:border-gray-100:focus-within {
+    border-color: #f7fafc;
+  }
+
+  .xl\:focus-within\:border-gray-200:focus-within {
+    border-color: #edf2f7;
+  }
+
+  .xl\:focus-within\:border-gray-300:focus-within {
+    border-color: #e2e8f0;
+  }
+
+  .xl\:focus-within\:border-gray-400:focus-within {
+    border-color: #cbd5e0;
+  }
+
+  .xl\:focus-within\:border-gray-500:focus-within {
+    border-color: #a0aec0;
+  }
+
+  .xl\:focus-within\:border-gray-600:focus-within {
+    border-color: #718096;
+  }
+
+  .xl\:focus-within\:border-gray-700:focus-within {
+    border-color: #4a5568;
+  }
+
+  .xl\:focus-within\:border-gray-800:focus-within {
+    border-color: #2d3748;
+  }
+
+  .xl\:focus-within\:border-gray-900:focus-within {
+    border-color: #1a202c;
+  }
+
+  .xl\:focus-within\:border-red-100:focus-within {
+    border-color: #fff5f5;
+  }
+
+  .xl\:focus-within\:border-red-200:focus-within {
+    border-color: #fed7d7;
+  }
+
+  .xl\:focus-within\:border-red-300:focus-within {
+    border-color: #feb2b2;
+  }
+
+  .xl\:focus-within\:border-red-400:focus-within {
+    border-color: #fc8181;
+  }
+
+  .xl\:focus-within\:border-red-500:focus-within {
+    border-color: #f56565;
+  }
+
+  .xl\:focus-within\:border-red-600:focus-within {
+    border-color: #e53e3e;
+  }
+
+  .xl\:focus-within\:border-red-700:focus-within {
+    border-color: #c53030;
+  }
+
+  .xl\:focus-within\:border-red-800:focus-within {
+    border-color: #9b2c2c;
+  }
+
+  .xl\:focus-within\:border-red-900:focus-within {
+    border-color: #742a2a;
+  }
+
+  .xl\:focus-within\:border-orange-100:focus-within {
+    border-color: #fffaf0;
+  }
+
+  .xl\:focus-within\:border-orange-200:focus-within {
+    border-color: #feebc8;
+  }
+
+  .xl\:focus-within\:border-orange-300:focus-within {
+    border-color: #fbd38d;
+  }
+
+  .xl\:focus-within\:border-orange-400:focus-within {
+    border-color: #f6ad55;
+  }
+
+  .xl\:focus-within\:border-orange-500:focus-within {
+    border-color: #ed8936;
+  }
+
+  .xl\:focus-within\:border-orange-600:focus-within {
+    border-color: #dd6b20;
+  }
+
+  .xl\:focus-within\:border-orange-700:focus-within {
+    border-color: #c05621;
+  }
+
+  .xl\:focus-within\:border-orange-800:focus-within {
+    border-color: #9c4221;
+  }
+
+  .xl\:focus-within\:border-orange-900:focus-within {
+    border-color: #7b341e;
+  }
+
+  .xl\:focus-within\:border-yellow-100:focus-within {
+    border-color: #fffff0;
+  }
+
+  .xl\:focus-within\:border-yellow-200:focus-within {
+    border-color: #fefcbf;
+  }
+
+  .xl\:focus-within\:border-yellow-300:focus-within {
+    border-color: #faf089;
+  }
+
+  .xl\:focus-within\:border-yellow-400:focus-within {
+    border-color: #f6e05e;
+  }
+
+  .xl\:focus-within\:border-yellow-500:focus-within {
+    border-color: #ecc94b;
+  }
+
+  .xl\:focus-within\:border-yellow-600:focus-within {
+    border-color: #d69e2e;
+  }
+
+  .xl\:focus-within\:border-yellow-700:focus-within {
+    border-color: #b7791f;
+  }
+
+  .xl\:focus-within\:border-yellow-800:focus-within {
+    border-color: #975a16;
+  }
+
+  .xl\:focus-within\:border-yellow-900:focus-within {
+    border-color: #744210;
+  }
+
+  .xl\:focus-within\:border-green-100:focus-within {
+    border-color: #f0fff4;
+  }
+
+  .xl\:focus-within\:border-green-200:focus-within {
+    border-color: #c6f6d5;
+  }
+
+  .xl\:focus-within\:border-green-300:focus-within {
+    border-color: #9ae6b4;
+  }
+
+  .xl\:focus-within\:border-green-400:focus-within {
+    border-color: #68d391;
+  }
+
+  .xl\:focus-within\:border-green-500:focus-within {
+    border-color: #48bb78;
+  }
+
+  .xl\:focus-within\:border-green-600:focus-within {
+    border-color: #38a169;
+  }
+
+  .xl\:focus-within\:border-green-700:focus-within {
+    border-color: #2f855a;
+  }
+
+  .xl\:focus-within\:border-green-800:focus-within {
+    border-color: #276749;
+  }
+
+  .xl\:focus-within\:border-green-900:focus-within {
+    border-color: #22543d;
+  }
+
+  .xl\:focus-within\:border-teal-100:focus-within {
+    border-color: #e6fffa;
+  }
+
+  .xl\:focus-within\:border-teal-200:focus-within {
+    border-color: #b2f5ea;
+  }
+
+  .xl\:focus-within\:border-teal-300:focus-within {
+    border-color: #81e6d9;
+  }
+
+  .xl\:focus-within\:border-teal-400:focus-within {
+    border-color: #4fd1c5;
+  }
+
+  .xl\:focus-within\:border-teal-500:focus-within {
+    border-color: #38b2ac;
+  }
+
+  .xl\:focus-within\:border-teal-600:focus-within {
+    border-color: #319795;
+  }
+
+  .xl\:focus-within\:border-teal-700:focus-within {
+    border-color: #2c7a7b;
+  }
+
+  .xl\:focus-within\:border-teal-800:focus-within {
+    border-color: #285e61;
+  }
+
+  .xl\:focus-within\:border-teal-900:focus-within {
+    border-color: #234e52;
+  }
+
+  .xl\:focus-within\:border-blue-100:focus-within {
+    border-color: #ebf8ff;
+  }
+
+  .xl\:focus-within\:border-blue-200:focus-within {
+    border-color: #bee3f8;
+  }
+
+  .xl\:focus-within\:border-blue-300:focus-within {
+    border-color: #90cdf4;
+  }
+
+  .xl\:focus-within\:border-blue-400:focus-within {
+    border-color: #63b3ed;
+  }
+
+  .xl\:focus-within\:border-blue-500:focus-within {
+    border-color: #4299e1;
+  }
+
+  .xl\:focus-within\:border-blue-600:focus-within {
+    border-color: #3182ce;
+  }
+
+  .xl\:focus-within\:border-blue-700:focus-within {
+    border-color: #2b6cb0;
+  }
+
+  .xl\:focus-within\:border-blue-800:focus-within {
+    border-color: #2c5282;
+  }
+
+  .xl\:focus-within\:border-blue-900:focus-within {
+    border-color: #2a4365;
+  }
+
+  .xl\:focus-within\:border-indigo-100:focus-within {
+    border-color: #ebf4ff;
+  }
+
+  .xl\:focus-within\:border-indigo-200:focus-within {
+    border-color: #c3dafe;
+  }
+
+  .xl\:focus-within\:border-indigo-300:focus-within {
+    border-color: #a3bffa;
+  }
+
+  .xl\:focus-within\:border-indigo-400:focus-within {
+    border-color: #7f9cf5;
+  }
+
+  .xl\:focus-within\:border-indigo-500:focus-within {
+    border-color: #667eea;
+  }
+
+  .xl\:focus-within\:border-indigo-600:focus-within {
+    border-color: #5a67d8;
+  }
+
+  .xl\:focus-within\:border-indigo-700:focus-within {
+    border-color: #4c51bf;
+  }
+
+  .xl\:focus-within\:border-indigo-800:focus-within {
+    border-color: #434190;
+  }
+
+  .xl\:focus-within\:border-indigo-900:focus-within {
+    border-color: #3c366b;
+  }
+
+  .xl\:focus-within\:border-purple-100:focus-within {
+    border-color: #faf5ff;
+  }
+
+  .xl\:focus-within\:border-purple-200:focus-within {
+    border-color: #e9d8fd;
+  }
+
+  .xl\:focus-within\:border-purple-300:focus-within {
+    border-color: #d6bcfa;
+  }
+
+  .xl\:focus-within\:border-purple-400:focus-within {
+    border-color: #b794f4;
+  }
+
+  .xl\:focus-within\:border-purple-500:focus-within {
+    border-color: #9f7aea;
+  }
+
+  .xl\:focus-within\:border-purple-600:focus-within {
+    border-color: #805ad5;
+  }
+
+  .xl\:focus-within\:border-purple-700:focus-within {
+    border-color: #6b46c1;
+  }
+
+  .xl\:focus-within\:border-purple-800:focus-within {
+    border-color: #553c9a;
+  }
+
+  .xl\:focus-within\:border-purple-900:focus-within {
+    border-color: #44337a;
+  }
+
+  .xl\:focus-within\:border-pink-100:focus-within {
+    border-color: #fff5f7;
+  }
+
+  .xl\:focus-within\:border-pink-200:focus-within {
+    border-color: #fed7e2;
+  }
+
+  .xl\:focus-within\:border-pink-300:focus-within {
+    border-color: #fbb6ce;
+  }
+
+  .xl\:focus-within\:border-pink-400:focus-within {
+    border-color: #f687b3;
+  }
+
+  .xl\:focus-within\:border-pink-500:focus-within {
+    border-color: #ed64a6;
+  }
+
+  .xl\:focus-within\:border-pink-600:focus-within {
+    border-color: #d53f8c;
+  }
+
+  .xl\:focus-within\:border-pink-700:focus-within {
+    border-color: #b83280;
+  }
+
+  .xl\:focus-within\:border-pink-800:focus-within {
+    border-color: #97266d;
+  }
+
+  .xl\:focus-within\:border-pink-900:focus-within {
     border-color: #702459;
   }
 

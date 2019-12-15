@@ -9,33 +9,33 @@ use Requests\CommentCreateRequest;
 class CommentController extends Controller
 {
 
-	public $comment_service;
+	public $commentService;
 
-	public function __construct(CommentService $comment_service)
+	public function __construct(CommentService $commentService)
 	{
-		$this->comment_service = $comment_service;
+		$this->commentService = $commentService;
 	}
 
     public function index()
     {
-        $comments = $this->comment_service->paginate();
+        $comments = $this->commentService->paginate();
         return view('comments.index', compact('comments'));
     }
 
 	public function ajax(Request $request, $post_id)
 	{
-		$comments = $this->comment_service->take($post_id, $request->offset ?? 0, $request->take ?? 10);
+		$comments = $this->commentService->take($post_id, $request->offset ?? 0, $request->take ?? 10);
 
 		return response([
 			'data' => $comments,
 			'count' => count($comments),
-			'total' => $this->comment_service->total($post_id)
+			'total' => $this->commentService->total($post_id)
 		], 200);
 	}
 
     public function store(CommentCreateRequest $request)
     {
-    	$comment = $this->comment_service->create($request);
+    	$comment = $this->commentService->create($request);
     	$comment->time = $comment->created_at->diffForHumans();
 
     	return response([
@@ -45,7 +45,7 @@ class CommentController extends Controller
 
     public function destroy(Request $request)
     {
-    	$comment = $this->comment_service->find($request->id);
+    	$comment = $this->commentService->find($request->id);
 
     	if($comment->user_id == auth()->user()->id) {
     		$comment->delete();

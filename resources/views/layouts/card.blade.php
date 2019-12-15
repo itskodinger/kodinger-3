@@ -1,5 +1,5 @@
                 <div class="bg-white rounded border-2 border-gray-200 mb-10">
-                    <div class="flex p-4 items-center">
+                    <div class="flex p-6 items-center">
                         <a href="{{ route('single', $props->user->the_username) }}">
                             <img class="rounded w-12 rounded" src="{{ $props->user->the_avatar_sm }}">
                         </a>
@@ -42,18 +42,18 @@
 
                         @endphp
 
-                        <div class="px-4 text-sm text-gray-700 leading-loose">
+                        <div class="px-6 text-sm text-gray-700 leading-loose">
                             {{-- POST CAPTION HERE? --}}
                             @if($props->status == 'CONTAINS_PORNOGRAPHIC')
 
                                 <div class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 px-4 py-2 mb-4" role="alert">
-                                    <p class="font-bold">Be Warned</p>
-                                    <p>This post might contains pornographic content.</p>
+                                    <p class="font-bold">Hati-hati</p>
+                                    <p>Post ini mungkin mengandung konten ponografi</p>
                                 </div>
                             @endif
                         </div>
 
-                        <div class="shimmer border-t border-b">
+                        <div class="shimmer border rounded mx-6">
 
                             {{-- <div class="w-full bg-gray-200 h-64"></div> --}}
 
@@ -68,11 +68,11 @@
                             @endif
 
                             <div class="p-4 border-t bg-gray-100">
-                                <h2 class="text-lg font-semibold hover:text-indigo-600"><a href="{{ $props->pages }}">@if($title instanceof \App\PostAttribute) {{$title->value}} @endif</a></h2>
+                                <h2 class="text-lg font-semibold hover:text-indigo-600"><a href="{{ $props->pages }}">@if($title instanceof \App\PostAttribute) {{$title->value}} @else {{ $url['host'] }} @endif</a></h2>
                                 @if($description instanceof \App\PostAttribute)
                                     <p class="text-gray-600 text-sm"> {{ str_limit($description->value, 200) }} </p>
                                 @endif
-                                <div class="text-gray-600 uppercase tracking-wider text-xs mt-3 text-indigo-600 font-semibold">{{ $url['host'] }}</div>
+                                <div class="uppercase tracking-wider text-xs mt-3 text-teal-500 font-semibold">{{ $url['host'] }}</div>
                             </div>
                         </div>
 
@@ -105,18 +105,18 @@
                     </div>
                     @endisset
 
-                    <div class="p-8 text-sm text-gray-700 leading-loose">
-                        <h4 class="text-lg text-black font-bold"><a class="text-indigo-700" href="{{ route('single', $props->slug) }}">
+                    <div class="p-6 text-sm text-gray-700 leading-loose">
+                        @isset($props->title)
+                        <h4 class="text-lg mb-5 text-black font-bold"><a class="text-indigo-700" href="{{ route('single', $props->slug) }}">
                             {{ $props->title }}
                         </a></h4>
+                        @endisset
 
                         @if(!isset($discover))
                         {!! isset($truncate_content) && $truncate_content ? truncate(Markdown::convertToHtml($props->content), 150) : Markdown::convertToHtml($props->content) !!}
                         @endif
 
-                        <div class="mt-5">
-                            @include('layouts.tags', ['tags' => $props->tags])
-                        </div>
+                        @include('layouts.tags', ['tags' => $props->tags])
 
                         <div class="mt-8">
                             <div class="flex w-full">

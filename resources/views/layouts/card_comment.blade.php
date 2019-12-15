@@ -35,12 +35,20 @@
                         <p class="mx-1 text-blue-500 text-xs font-semibold float-right cmt-time">{time}</p>\
                         <h4 class="mb-1 font-bold text-sm"><a class="text-indigo-600 cmt-name" href="'+ base_url +'/{username}">{name}</a> <span class="text-gray-600 font-normal">({username})</span></h4>\
                         <div class="text-sm text-gray-700 cmt-msg">\
+                            {quoted}\
                             <div class="cmt-content">{msg}</div>\
                             {is_mine}{quote}<a class="text-xs" href="{currentUrl}#discuss-{id}">Permalink</a>\
                         </div>\
                     </div>\
                 </div>\
             </div>',
+            quote_tmp = '\
+                <div onclick="comment_go(\'#discuss-{id}\')" class="quoted-cmt cursor-pointer hover:bg-teal-200 bg-teal-100 border border-teal-200 mb-2 py-2 px-4 text-sm rounded">\
+                    <div class="text-xs text-teal-600">Original by <span class="font-bold">{name}</span></div>\
+                    <div class="overflow-hidden h-22">{content}</div>\
+                    <a onclick="quote_remove(event)" class="quote-remove cursor-pointer text-red-600 text-xs mt-2 inline-block">Batalkan</a>\
+                </div>\
+            ',
             comments = $('#comments');
 
         function comment_add(obj, classes, method, target)
@@ -57,6 +65,20 @@
                 item = item.replace(/{id}/g, obj.id)
             item = item.replace(/{is_mine}/g, obj.is_mine ? '<a onclick="let c = confirm(\'are you sure?\'); if(c){comment_remove('+obj.id+', event)}" class="mt-5 text-red-600 cursor-pointer text-xs mr-3">Delete</a>' : '')
             item = item.replace(/{quote}/g, '<a onclick="quote('+obj.id+', event)" class="mt-5 hover:text-indigo-600 cursor-pointer text-xs mr-3">Quote</a>')
+
+            // if has reply
+            if("reply" in obj && obj.reply) {
+                let quote_template = quote_tmp;
+                quote_template = quote_template.replace(/{id}/, obj.reply.id);
+                quote_template = quote_template.replace(/{name}/, obj.reply.user.name);
+                quote_template = quote_template.replace(/{content}/, obj.reply.markdown);
+                item = item.replace(/{quoted}/g, quote_template);
+
+                item = findRemove(str2dom(item), '.quote-remove');
+            }else{
+                item = item.replace(/{quoted}/, '');
+            }
+
             item = str2dom(item);
 
             if(typeof classes == 'function')
@@ -91,13 +113,11 @@
 
             $('.reply-id').value = id;
 
-            let the_template = str2dom('\
-                <div class="quoted-cmt bg-teal-100 border border-teal-200 mb-2 py-2 px-4 text-sm rounded">\
-                    <div class="text-xs text-teal-600">Original by <span class="font-bold">' + find(quoted, '.cmt-name').innerText + '</span></div>\
-                    <div class="overflow-hidden h-22">' + find(quoted, '.cmt-msg .cmt-content').innerHTML + '</div>\
-                    <a onclick="quote_remove(event)" class="cursor-pointer text-red-600 text-xs mt-2 inline-block">Batalkan</a>\
-                </div>\
-            ');
+            let the_template = quote_tmp;
+            the_template = the_template.replace(/{id}/, id);
+            the_template = the_template.replace(/{name}/, find(quoted, '.cmt-name').innerText);
+            the_template = the_template.replace(/{content}/, find(quoted, '.cmt-content').innerHTML);
+            the_template = str2dom(the_template);
 
             // remove first
             if(find(the_form, '.quoted-cmt'))
@@ -166,6 +186,11 @@
           return Math.random().toString(36).substr(2, 9);
         };
 
+        function comment_go(id)
+        {
+            window.scrollTo(0, $(id).offsetTop - 80);
+        }
+
         function comment(msg)
         {
 
@@ -194,12 +219,13 @@
 
                     comment_add({
                         name: res.data.user.name,
-                        username: res.data.username,
-                        avatar: res.data.avatar,
+                        username: res.data.user.the_username,
+                        avatar: res.data.user.the_avatar_sm,
                         id: res.data.id,
                         is_mine: res.data.is_mine,
                         time: res.data.time,
-                        msg: res.data.content,
+                        msg: res.data.markdown,
+                        reply: res.data.reply
                     }, false, 'after', $('.cmt-' + temp_id));
 
                     $('.cmt-' + temp_id).remove();
@@ -231,11 +257,12 @@
                         comment_add({
                             id: item.id,
                             name: item.user.name,
-                            username: item.username,
-                            avatar: item.avatar,
-                            msg: item.content,
+                            username: item.user.the_username,
+                            avatar: item.user.the_avatar_sm,
+                            msg: item.markdown,
                             time: item.time,
-                            is_mine: item.is_mine
+                            is_mine: item.is_mine,
+                            reply: item.reply
                         }, false, 'append');
                     });
 

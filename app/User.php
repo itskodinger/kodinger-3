@@ -29,6 +29,8 @@ class User extends Authenticatable
 
     ];
 
+    protected $appends = ['is_me', 'the_username', 'the_avatar', 'the_avatar_sm'];
+
     /**
      * The attributes that should be hidden for arrays.
      *

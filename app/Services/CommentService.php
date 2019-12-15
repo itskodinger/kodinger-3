@@ -9,7 +9,7 @@ class CommentService
 {
 	public function model()
 	{
-		return Comment::with('user', 'post');
+		return Comment::with('user', 'post', 'reply', 'reply.user');
 	}
 
 	public function find($id)
@@ -37,24 +37,22 @@ class CommentService
 		return $this->model()->whereUserId(auth()->user()->id)->orderBy('created_at', 'desc')->paginate(10);
 	}
 
-	// move to eloquent soon
-	public function attrs($comment)
-	{
-		$comment->content = $comment->markdown;
-		$comment->time = $comment->time;
-		$comment->avatar = $comment->user->the_avatar;
-		$comment->username = $comment->user->the_username;
-		$comment->is_mine = $comment->is_mine;
+	// // move to eloquent soon
+	// public function attrs($comment)
+	// {
+	// 	$comment->content = $comment->markdown;
+	// 	$comment->time = $comment->time;
+	// 	$comment->avatar = $comment->user->the_avatar;
+	// 	$comment->username = $comment->user->the_username;
+	// 	$comment->is_mine = $comment->is_mine;
 
-		return $comment;
-	}
+	// 	return $comment;
+	// }
 
 	public function take($post_id, $start, $end)
 	{
 		$comments = $this->model()->wherePostId($post_id)->offset($start)->take($end)->orderBy('created_at', 'desc')->get();
-		$comments->each(function($item) {
-			return $this->attrs($item);
-		});
+
 		return $comments;
 	}
 
@@ -63,9 +61,8 @@ class CommentService
 		$input = $request->all();
 		$input['user_id'] = auth()->user()->id;
 
-		$comment = Comment::create($input);
-		$comment = $this->attrs($comment);
+		$comment = $this->model()->create($input);
 
-		return $comment;
+		return $this->model()->find($comment->id);
 	}
 }

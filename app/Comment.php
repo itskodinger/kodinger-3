@@ -16,6 +16,8 @@ class Comment extends Model
 		'post_id',
     ];
 
+    protected $appends = ['time', 'markdown', 'is_mine'];
+
     public function getTimeAttribute()
     {
     	return $this->created_at->diffForHumans();
@@ -39,5 +41,10 @@ class Comment extends Model
     public function post()
     {
         return $this->belongsTo('App\Post');
+    }
+
+    public function reply()
+    {
+        return $this->belongsTo('App\Comment', 'reply_id');
     }
 }
