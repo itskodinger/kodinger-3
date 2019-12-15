@@ -71,6 +71,41 @@ body {
 	}
 }
 
+
+@responsive {
+	@variants hover {
+		.bg-facebook {
+		  background-color: #3b5998;
+		}
+		.bg-twitter {
+		  background-color: #00acee;
+		}
+		.bg-telegram {
+		  background-color: #0088cc;
+		}
+		.bg-whatsapp {
+		  background-color: #075e54;
+		}
+		.text-facebook {
+		  color: #3b5998;
+		}
+		.text-twitter {
+		  color: #00acee;
+		}
+		.text-telegram {
+		  color: #0088cc;
+		}
+		.text-whatsapp {
+		  color: #075e54;
+		}
+	}
+
+    .min-h-main {
+      min-height: calc(100vh - 142px);
+    }
+}
+
+
 .bg-gradient {
   background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }

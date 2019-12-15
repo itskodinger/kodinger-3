@@ -33,9 +33,9 @@
                     <img class="rounded-full w-10 h-10 flex-shrink-0" src="{avatar}">\
                     <div class="ml-3 w-full">\
                         <p class="mx-1 text-blue-500 text-xs font-semibold float-right cmt-time">{time}</p>\
-                        <h4 class="mb-1 font-bold text-sm"><a class="text-indigo-600" href="'+ base_url +'/{username}">{name}</a> <span class="text-gray-600 font-normal">({username})</span></h4>\
-                        <div class="text-sm text-gray-700 comment-msg">\
-                            <p>{msg}</p>\
+                        <h4 class="mb-1 font-bold text-sm"><a class="text-indigo-600 cmt-name" href="'+ base_url +'/{username}">{name}</a> <span class="text-gray-600 font-normal">({username})</span></h4>\
+                        <div class="text-sm text-gray-700 cmt-msg">\
+                            <div class="cmt-content">{msg}</div>\
                             {is_mine}{quote}<a class="text-xs" href="{currentUrl}#discuss-{id}">Permalink</a>\
                         </div>\
                     </div>\
@@ -80,18 +80,37 @@
             return item;
         }
 
-        function quote(id)
+        function quote(id, e)
         {
-            const the_form = $('.comment-form');
+            const the_form = $('.comment-form'),
+                  quoted = $('#discuss-'+id);
+
             let form_pos = the_form.offsetTop - 150;
 
             window.scrollTo(0, form_pos);
 
             $('.reply-id').value = id;
 
-            let the_template = str2dom('<div>Hello</div>');
+            let the_template = str2dom('\
+                <div class="quoted-cmt bg-teal-100 border border-teal-200 mb-2 py-2 px-4 text-sm rounded">\
+                    <div class="text-xs text-teal-600">Original by <span class="font-bold">' + find(quoted, '.cmt-name').innerText + '</span></div>\
+                    <div class="overflow-hidden h-22">' + find(quoted, '.cmt-msg .cmt-content').innerHTML + '</div>\
+                    <a onclick="quote_remove(event)" class="cursor-pointer text-red-600 text-xs mt-2 inline-block">Batalkan</a>\
+                </div>\
+            ');
 
-            the_form.parentNode.prepend(the_template);
+            // remove first
+            if(find(the_form, '.quoted-cmt'))
+                find(the_form, '.quoted-cmt').remove();
+
+            find(the_form, 'textarea').parentNode.prepend(the_template);
+            find(the_form, 'textarea').focus();
+        }
+
+        function quote_remove(e)
+        {
+            $('.quoted-cmt').remove();
+            $('.reply-id').value = '';
         }
 
         function comment_remove(id, event)
@@ -154,6 +173,7 @@
                 return;
 
             let temp_id = id();
+            const reply_id = $('.reply-id').value;
 
             let item = comment_add({
                 name: '{{ optional(auth()->user())->name }}',
@@ -183,13 +203,15 @@
                     }, false, 'after', $('.cmt-' + temp_id));
 
                     $('.cmt-' + temp_id).remove();
+
+                    quote_remove();
                 }
             }
             xhr.open("post", "{{ route('comment.store') }}", true);
             xhr.setRequestHeader("X-CSRF-TOKEN", $('[name=csrf-token]').getAttribute('content'));
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xhr.setRequestHeader("Accept", "application/json");
-            xhr.send('content=' + msg + '&post_id='+{{$post->id}});
+            xhr.send('reply_id='+ reply_id +'&content=' + msg + '&post_id='+{{$post->id}});
         }
 
         let take = 10,
