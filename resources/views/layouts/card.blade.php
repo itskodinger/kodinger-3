@@ -107,13 +107,13 @@
 
                     <div class="p-6 text-sm text-gray-700 leading-loose">
                         @isset($props->title)
-                        <h4 class="text-lg mb-5 text-black font-bold"><a class="text-indigo-700" href="{{ route('single', $props->slug) }}">
+                        <h4 class="text-lg mb-2 text-black font-bold"><a class="text-indigo-700" href="{{ route('single', $props->slug) }}">
                             {{ $props->title }}
                         </a></h4>
                         @endisset
 
                         @if(!isset($discover))
-                        {!! isset($truncate_content) && $truncate_content ? truncate(Markdown::convertToHtml($props->content), 150) : Markdown::convertToHtml($props->content) !!}
+                        <div class="mb-5">{!! isset($truncate_content) && $truncate_content ? truncate(Markdown::convertToHtml($props->content), 150) : Markdown::convertToHtml($props->content) !!}</div>
                         @endif
 
                         @include('layouts.tags', ['tags' => $props->tags])
