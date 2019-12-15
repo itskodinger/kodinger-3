@@ -8,6 +8,20 @@ use App\Services\Post\DiscoverPost;
 class VerifyDoesNotContainsPornographicContent {
 
     /**
+     * Ignore this domain list.
+     * 
+     * @var  array $ignore
+     */
+    protected $ignore = [
+        'dev.to',
+        'stackoverflow.com',
+        'css-tricks.com',
+        'getbootstrap.com',
+        'codepen.io',
+        'getstisla.com'
+    ];
+
+    /**
      * Handle the pipe.
      * 
      * @param  mixed    $passable
@@ -29,7 +43,7 @@ class VerifyDoesNotContainsPornographicContent {
             if(isset($url['host'])) {
                 $domain = $url['host'];
 
-                if(strpos($lists, $domain)) {
+                if(strpos($lists, $domain) && ! in_array($domain, $this->ignore)) {
                     $passable->setStatus(DiscoverPost::CONTAINS_PORNOGRAPHIC);
                 }
             }
