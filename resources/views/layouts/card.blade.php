@@ -18,25 +18,64 @@
                     </div>
 
                     @isset($discover)
+
+                        @php
+                            
+                            $attributes   = $post->attributes;
+                            $url          = $attributes->where('key', 'url')->first();
+                            $title        = $attributes->where('key', 'url-title')->first();
+                            $thumbnail    = $attributes->where('key', 'url-thumbnail')->first();
+                            $description  = $attributes->where('key', 'url-description')->first();
+                            $embeddable   = $attributes->where('key', 'url-embeddable-code')->first();
+
+                            if($url instanceof \App\PostAttribute) {
+
+                                $url = parse_url($url->value);
+
+                            }
+                            else {
+                                $url = parse_url(
+                                    nl_array_first($props->pages)
+                                );
+                            }
+
+
+                        @endphp
+
                         <div class="p-2 text-sm text-gray-700 leading-loose">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis aliquam nam quos numquam rerum optio voluptate a quasi nisi odit velit atque provident quae, quas sint ipsum reprehenderit animi placeat.
+                            {{-- POST CAPTION HERE? --}}
+                            @if($props->status == 'CONTAINS_PORNOGRAPHIC')
 
-                            <br>
-                            <br>
-
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corrupti repudiandae tempora voluptatibus necessitatibus quis architecto vero quasi iste? Error vero veritatis aut nam porro nisi maiores voluptatem obcaecati facere
-                            <a href="" class="text-blue-300">...(view more)</a>
-
+                                <div class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4" role="alert">
+                                    <p class="font-bold">Be Warned</p>
+                                    <p>This post might contains pornographic content.</p>
+                                </div>
+                            @endif
                         </div>
+
                         <div class="shimmer border-t border-b">
-                            <div class="w-full bg-gray-200 h-64"></div>
+
+                            {{-- <div class="w-full bg-gray-200 h-64"></div> --}}
+
+                            @if($embeddable instanceof \App\PostAttribute)
+
+                                <div width="100%" >
+                                    {!! $embeddable->value !!}
+                                </div>
+
+                            @elseif($thumbnail instanceof \App\PostAttribute)
+                                <img src="{{$thumbnail->value}}"  height="200" width="100%"  alt="">
+                            @endif
+
                             <div class="p-4">
-                                <h2 class="text-lg font-semibold">Title of the link</h2>
-                                <p class="text-gray-600 text-sm">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                tempor incididunt ut labore et dolore magna aliqua.</p>
-                                <div class="text-gray-600 uppercase tracking-wider text-xs mt-3 text-indigo-600 font-semibold">youtube.com</div>
+                                <h2 class="text-lg font-semibold">@if($title instanceof \App\PostAttribute) {{$title->value}} @endif</h2>
+                                @if($description instanceof \App\PostAttribute)
+                                    <p class="text-gray-600 text-sm"> {{ str_limit($description->value, 200) }} </p>
+                                @endif
+                                <div class="text-gray-600 uppercase tracking-wider text-xs mt-3 text-indigo-600 font-semibold">{{ $url['host'] }}</div>
                             </div>
                         </div>
+
                     @else
                     <div class="relative{{count(nl_array($props->images)) > 1 ? ' carousel-outer' : ''}}"> 
                         <div class="{{count(nl_array($props->images)) > 1 ? 'carousel' : ''}}">
