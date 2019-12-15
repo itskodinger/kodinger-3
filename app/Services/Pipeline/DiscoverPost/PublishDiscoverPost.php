@@ -23,7 +23,7 @@ class PublishDiscoverPost {
 
             if($attribute instanceof PostAttributeContract) {
 
-                app(PostAttribute::class)->create([
+                $dd = app(PostAttribute::class)->create([
                     'post_id' => $post->id,
                     'key' => $attribute->getKey(),
                     'value' => $attribute->getValue(),

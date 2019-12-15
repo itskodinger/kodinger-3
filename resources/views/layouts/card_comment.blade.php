@@ -1,7 +1,8 @@
 <a name="comments"></a>
 @if(auth()->check())
 <div class="bg-gray-100 py-4 px-6">
-    <form class="w-full flex">
+    <form class="w-full flex comment-form">
+        <input type="hidden" name="reply_id" class="reply-id">
         <img class="w-10 h-10 flex-shrink-0 rounded-full border border-gray-200" src="{{ the_avatar() }}">
         <div class="ml-3 w-full">
             <textarea 
@@ -35,7 +36,7 @@
                         <h4 class="mb-1 font-bold text-sm"><a class="text-indigo-600" href="'+ base_url +'/{username}">{name}</a> <span class="text-gray-600 font-normal">({username})</span></h4>\
                         <div class="text-sm text-gray-700 comment-msg">\
                             <p>{msg}</p>\
-                            {is_mine}<a class="text-xs" href="{currentUrl}#discuss-{id}">Permalink</a>\
+                            {is_mine}{quote}<a class="text-xs" href="{currentUrl}#discuss-{id}">Permalink</a>\
                         </div>\
                     </div>\
                 </div>\
@@ -55,6 +56,7 @@
             if(obj.id)
                 item = item.replace(/{id}/g, obj.id)
             item = item.replace(/{is_mine}/g, obj.is_mine ? '<a onclick="let c = confirm(\'are you sure?\'); if(c){comment_remove('+obj.id+', event)}" class="mt-5 text-red-600 cursor-pointer text-xs mr-3">Delete</a>' : '')
+            item = item.replace(/{quote}/g, '<a onclick="quote('+obj.id+', event)" class="mt-5 hover:text-indigo-600 cursor-pointer text-xs mr-3">Quote</a>')
             item = str2dom(item);
 
             if(typeof classes == 'function')
@@ -76,6 +78,20 @@
                 comments[method](item);
 
             return item;
+        }
+
+        function quote(id)
+        {
+            const the_form = $('.comment-form');
+            let form_pos = the_form.offsetTop - 150;
+
+            window.scrollTo(0, form_pos);
+
+            $('.reply-id').value = id;
+
+            let the_template = str2dom('<div>Hello</div>');
+
+            the_form.parentNode.prepend(the_template);
         }
 
         function comment_remove(id, event)

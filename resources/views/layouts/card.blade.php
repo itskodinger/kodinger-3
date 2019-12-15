@@ -59,7 +59,7 @@
 
                             @if($embeddable instanceof \App\PostAttribute)
 
-                                <div width="100%" >
+                                <div class="embeddable-frame">
                                     {!! $embeddable->value !!}
                                 </div>
 
@@ -67,8 +67,8 @@
                                 <img src="{{$thumbnail->value}}"  height="200" width="100%"  alt="">
                             @endif
 
-                            <div class="p-4">
-                                <h2 class="text-lg font-semibold">@if($title instanceof \App\PostAttribute) {{$title->value}} @endif</h2>
+                            <div class="p-4 border-t bg-gray-100">
+                                <h2 class="text-lg font-semibold hover:text-indigo-600"><a href="{{ $props->pages }}">@if($title instanceof \App\PostAttribute) {{$title->value}} @endif</a></h2>
                                 @if($description instanceof \App\PostAttribute)
                                     <p class="text-gray-600 text-sm"> {{ str_limit($description->value, 200) }} </p>
                                 @endif
