@@ -61,7 +61,7 @@ class GeneratePostAttributes {
                     ->setKind('image')
             );
 
-            if(in_array(strtolower($preview->providerName), $this->embedableProviders)) {
+            if(in_array(strtolower($preview->providerName), $this->embedableProviders) && !is_null($preview->code)) {
                 $passable->addPostAttribute(
                     app(PostAttribute::class)
                         ->setKey('url-embeddable-code')
