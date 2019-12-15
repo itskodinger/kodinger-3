@@ -80,6 +80,9 @@ body {
 .telegram {
   background-color: #0088cc;
 }
+.whatsapp {
+  background-color: #075e54;
+}
 
 .min-h-main {
   min-height: calc(100vh - 142px);
