@@ -42,11 +42,11 @@
 
                         @endphp
 
-                        <div class="p-2 text-sm text-gray-700 leading-loose">
+                        <div class="px-4 text-sm text-gray-700 leading-loose">
                             {{-- POST CAPTION HERE? --}}
                             @if($props->status == 'CONTAINS_PORNOGRAPHIC')
 
-                                <div class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4" role="alert">
+                                <div class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 px-4 py-2 mb-4" role="alert">
                                     <p class="font-bold">Be Warned</p>
                                     <p>This post might contains pornographic content.</p>
                                 </div>
