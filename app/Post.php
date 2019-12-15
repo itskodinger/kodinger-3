@@ -38,4 +38,8 @@ class Post extends Model
 	{
 		return $this->hasMany('App\Comment');
 	}
+
+	public function attributes() {
+		return $this->hasMany(PostAttribute::class);
+	}
 }
