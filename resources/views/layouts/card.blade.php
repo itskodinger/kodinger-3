@@ -68,7 +68,7 @@
                             @endif
 
                             <div class="p-4 border-t bg-gray-100">
-                                <h2 class="text-lg font-semibold hover:text-indigo-600"><a href="{{ leaveUrl($props->pages) }}">@if($title instanceof \App\PostAttribute) {{$title->value}} @else {{ leaveUrl($url['host']) }} @endif</a></h2>
+                                <h2 class="text-lg font-semibold hover:text-indigo-600 break-words truncate"><a href="{{ leaveUrl($props->pages) }}">@if($title instanceof \App\PostAttribute) {{$title->value}} @else {{ leaveUrl($url['host']) }} @endif</a></h2>
                                 @if($description instanceof \App\PostAttribute)
                                     <p class="text-gray-600 text-sm"> {{ str_limit($description->value, 200) }} </p>
                                 @endif
