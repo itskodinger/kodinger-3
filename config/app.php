@@ -230,6 +230,7 @@ return [
         'Markdown' => GrahamCampbell\Markdown\Facades\Markdown::class,
         'Role' => Spatie\Permission\Models\Role::class,
         'Redirector' => App\Facades\Redirector::class,
+        'Postcard' => App\Facades\Postcard::class,
 
     ],
 
