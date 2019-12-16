@@ -46,4 +46,9 @@ class TagService
 
 		return $tags;
 	}
+
+	public function search($keyword)
+	{
+		return $this->model()->where('name', 'like', '%' . $keyword . '%')->select('name as value', 'id')->get();
+	}
 }

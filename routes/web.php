@@ -49,6 +49,7 @@ Route::group(['prefix' => 'posts', 'as' => 'post.', 'middleware' => 'auth'], fun
 		Route::post('/discover', 'PostController@storeDiscover')->name('store_discover');
 	});
 	Route::post('/link-info', 'PostController@getLinkInfo')->name('getLinkInfo');
+	Route::get('/tags', 'PostController@tags')->name('tags');
 });
 
 Route::group(['prefix' => 'contributes', 'as' => 'contribute.', 'middleware' => 'auth'], function() 

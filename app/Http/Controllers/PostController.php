@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Services\PostService;
+use Services\TagService;
 use Requests\PostDiscoverCreateRequest;
 use Requests\PostCreateRequest;
 use Requests\PostUpdateRequest;
@@ -11,10 +12,12 @@ use Requests\PostUpdateRequest;
 class PostController extends Controller
 {
 	public $postService;
+	public $tagService;
 
-	public function __construct(PostService $postService)
+	public function __construct(PostService $postService, TagService $tagService)
 	{
 		$this->postService = $postService;
+		$this->tagService = $tagService;
 	}
 
     public function index()
@@ -92,5 +95,12 @@ class PostController extends Controller
 			'url' => $request->url,
 			'title' => $title
 		], 200);
+	}
+
+	public function tags(Request $request)
+	{
+		$tags = $this->tagService->search($request->value);
+
+		return response($tags->toArray());
 	}
 }
