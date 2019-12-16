@@ -73,6 +73,7 @@ class RedirectorPageController extends Controller
     protected function showRedirectorPage() {
         $parsedUrl = parse_url($this->url);
 
+        // Need to optimize this!!!
         $redirectData = [
             'whitelisted_domain' => false,
             'url'                => $this->url,
