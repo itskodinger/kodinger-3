@@ -68,7 +68,9 @@
                             @endif
 
                             <div class="p-4 border-t bg-gray-100">
+                            
                                 <h2 class="text-lg font-semibold hover:text-indigo-600"><a href="{{ Redirector::setUrl('https://rixalfakhri.com')->addUtm('kodinger_discovery', Redirector::UTM_SOURCE) }}">@if($title instanceof \App\PostAttribute) {{$title->value}} @else {{ Redirector::setUrl($url['host'])->addUtm('kodinger_discovery', Redirector::UTM_SOURCE) }} @endif</a></h2>
+
                                 @if($description instanceof \App\PostAttribute)
                                     <p class="text-gray-600 text-sm"> {{ str_limit($description->value, 200) }} </p>
                                 @endif
