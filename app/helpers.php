@@ -1,5 +1,7 @@
 <?php
 
+use App\Services\UrlRedirector;
+
 function nl_array($str)
 {
 	if(!$str)
@@ -251,4 +253,30 @@ function parsing_url($url)
 	$url = nl_array($url);
 
 	dd($url);
+}
+
+if( ! function_exists('leaveUrl') ) {
+	/**
+	 * Get the leave url. 
+	 * 
+	 * @param  string                   $url
+	 * @return Illuminate\Http\Response
+	 * @throws \Exception
+	 */
+	function leaveUrl($url) {
+		return (new UrlRedirector($url))->getRedirectorPageUrl();	
+	}
+}
+
+if( ! function_exists('leave') ) {
+	/**
+	 * Leave the Kodinger to intended url.
+	 * 
+	 * @param  string                   $url
+	 * @return Illuminate\Http\Response
+	 * @throws \Exception
+	 */
+	function leave($url) {
+		return (new UrlRedirector($url))->toRedirectorPage();	
+	}
 }
