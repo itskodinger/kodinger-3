@@ -68,7 +68,7 @@
                             @endif
 
                             <div class="p-4 border-t bg-gray-100">
-                                <h2 class="text-lg font-semibold hover:text-indigo-600"><a href="{{ leaveUrl($props->pages) }}">@if($title instanceof \App\PostAttribute) {{$title->value}} @else {{ leaveUrl($url['host']) }} @endif</a></h2>
+                                <h2 class="text-lg font-semibold hover:text-indigo-600"><a href="{{ Redirector::setUrl('https://rixalfakhri.com')->addUtm('kodinger_discovery', Redirector::UTM_SOURCE) }}">@if($title instanceof \App\PostAttribute) {{$title->value}} @else {{ Redirector::setUrl($url['host'])->addUtm('kodinger_discovery', Redirector::UTM_SOURCE) }} @endif</a></h2>
                                 @if($description instanceof \App\PostAttribute)
                                     <p class="text-gray-600 text-sm"> {{ str_limit($description->value, 200) }} </p>
                                 @endif
@@ -123,7 +123,7 @@
                                 <a data-love="{{ $props->id }}" {{ is_post_loved($props->id) ? 'data-loved' : '' }} class="w-12 h-12 hover:bg-gray-100 rounded-full text-gray-600 flex items-center justify-center border-2 border-gray-200" href="">
                                     <span></span>
                                 </a>
-                                <a class="ml-2 w-12 h-12 hover:bg-gray-100 rounded-full text-gray-600 flex items-center justify-center border-2 border-gray-200" href="{{ leaveUrl(route('single', $props->slug)) }}#comments">
+                                <a class="ml-2 w-12 h-12 hover:bg-gray-100 rounded-full text-gray-600 flex items-center justify-center border-2 border-gray-200" href="{{ Redirector::setUrl(route('single', $props->slug))->addUtm('kodinger_discovery', Redirector::UTM_SOURCE) }}#comments">
                                     <svg class="stroke-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg> 
                                 </a>
                                 <a data-url="{{ route('single', $props->slug) }}" class="share-button ml-2 w-12 h-12 hover:bg-gray-100 rounded-full text-gray-600 flex items-center justify-center border-2 border-gray-200" href="#">

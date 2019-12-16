@@ -24,10 +24,10 @@
 
 		            		<p class="mb-2 text-gray-600">Halaman Terkait</p>
                             <a href="{{ $redirectData['url'] }}" class="flex items-center bg-gray-100 hover:bg-gray-200 hover:border-gray-300 border border-gray-200 mb-8 p-3 rounded">
-		            			<div class="bg-cover w-16 h-16 rounded" style="background-image: url({{ $redirectData['preview']->image }});"></div>	
+		            			<div class="bg-cover w-16 h-16 rounded" style="background-image: url({{ isset($redirectData['preview']) ? $redirectData['preview']->image : '' }});"></div>	
 		            			<div class="ml-4">
-		            				<h4 class="font-semibold text-indigo-600">{{ $redirectData['preview']->title }}</h4>
-		            				<p class="text-sm text-gray-600 mt-1">{{ truncate($redirectData['preview']->description, 60) }}</p>
+		            				<h4 class="font-semibold text-indigo-600">{{ isset($redirectData['preview']) ? $redirectData['preview']->title : truncate($redirectData['url'], 50) }}</h4>
+		            				<p class="text-sm text-gray-600 mt-1">{{ isset($redirectData['preview']) ? truncate($redirectData['preview']->description, 60) : '' }}</p>
 		            			</div>
 		            		</a>
 

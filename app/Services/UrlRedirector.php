@@ -7,6 +7,53 @@ use App\Exceptions\EmptyUrlException;
 class UrlRedirector {
 
     /**
+     * UTM Type Source.
+     * 
+     * @var string
+     */
+    public const UTM_SOURCE = 'utm_source';
+
+    /**
+     * UTM Type Medium.
+     * 
+     * @var  string 
+     */
+    public const UTM_MEDIUM = 'utm_medium';
+
+    /**
+     * UTM Type Content.
+     * 
+     * @var  string
+     */
+    public const UTM_CONTENT = 'utm_content';
+
+    /**
+     * UTM Type Campaign.
+     * 
+     * @var  string
+     */
+    public const UTM_CAMPAIGN = 'utm_campaign';
+
+    /**
+     * Allowed UTM Types.
+     * 
+     * @var string $allowedUtm
+     */
+    protected $allowedUtm = [
+        self::UTM_SOURCE,
+        self::UTM_MEDIUM,
+        self::UTM_CONTENT,
+        self::UTM_CAMPAIGN
+    ];
+
+    /**
+     * The UTM.
+     * 
+     * @var array $utm
+     */
+    protected $utm = [];
+
+    /**
      * The Target Url.
      * 
      * @var  string $url
@@ -21,13 +68,15 @@ class UrlRedirector {
     protected $referer;
 
     /**
-     * Build the class.
+     * Set the URL.
      * 
      * @param  string $url
-     * @return void
+     * @return self
      */
-    public function __construct($url) {
+    public function setUrl($url) {
         $this->url = $url;
+
+        return $this;
     }
 
     /**
@@ -36,7 +85,10 @@ class UrlRedirector {
      * @return string|null
      */
     public function getUrl() {
-        return $this->url;
+
+        if(empty($this->utm)) return $this->url;
+
+        return sprintf("%s?%s", $this->url, http_build_query($this->utm));
     }
 
     /**
@@ -45,7 +97,7 @@ class UrlRedirector {
      * @return string|null
      */
     public function getEncryptedUrl() {
-        if(!is_null($this->url)) return encrypt($this->url);
+        if(!is_null($this->url)) return encrypt($this->getUrl());
     }
 
     /**
@@ -80,5 +132,29 @@ class UrlRedirector {
         if(is_null($this->url)) throw new EmptyUrlException();
 
         return route('leave.kodinger', ['q' => $this->getEncryptedUrl()]);
+    }
+
+    /**
+     * Add UTM parameter.
+     * 
+     * @param  string  $utmValue
+     * @param  string  $utmType
+     * @return self
+     */
+    public function addUTM($utmValue, $utmType) {
+        if( ! isset($utmType, $this->allowedUtm)) return $this;
+
+        $this->utm[$utmType] = $utmValue;
+
+        return $this;
+    }
+
+    /**
+     * Convert the url to string.
+     * 
+     * @return string
+     */
+    public function __toString() {
+        return $this->getRedirectorPageUrl();
     }
 }
