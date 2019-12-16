@@ -7,6 +7,7 @@ use App\Services\Post\PostAttribute;
 use Illuminate\Support\ServiceProvider;
 use App\Contracts\Post\DiscoverPost as DiscoverPostContract;
 use App\Contracts\Post\PostAttribute as PostAttributeContract;
+use App\Services\Post\PostCard;
 
 class PostServiceProvider extends ServiceProvider
 {
@@ -25,6 +26,11 @@ class PostServiceProvider extends ServiceProvider
         $this->app->bind(
             PostAttributeContract::class,
             PostAttribute::class
+        );
+
+        $this->app->bind(
+            'postcard',
+            Postcard::class
         );
     }
 
