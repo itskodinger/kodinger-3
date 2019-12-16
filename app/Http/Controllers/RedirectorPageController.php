@@ -50,13 +50,17 @@ class RedirectorPageController extends Controller
                 $decryptedUrl = decrypt($request->q);
                 $parsedUrl    = parse_url($decryptedUrl);
 
-                if(!isset($parsedUrl['host'])) return abot(404);
+                if(!isset($parsedUrl['host'])) return abort(404);
 
                 $this->url = $decryptedUrl;
 
                 return $this->showRedirectorPage();
 
             } catch(\Exception $e) {
+
+                if($e instanceof \Embed\Exceptions\InvalidUrlException) {
+                    return $this->showRedirectorPage(true);
+                }
 
                 return abort(404);
 
@@ -68,17 +72,21 @@ class RedirectorPageController extends Controller
     /**
      * Show the redirector page. 
      * 
+     * @param  bool  $ignorePreview To ignore the preview fetcher.
      * @return View
      */
-    protected function showRedirectorPage() {
+    protected function showRedirectorPage($ignorePreview = false) {
         $parsedUrl = parse_url($this->url);
 
         // Need to optimize this!!!
         $redirectData = [
             'whitelisted_domain' => false,
-            'url'                => $this->url,
-            'preview'            => Embed::create($this->url)
+            'url'                => $this->url
         ];
+
+        if(!$ignorePreview) {
+            $redirectData['preview'] = Embed::create($this->url);
+        }
 
         // Redirect to the url if it on the whitelisted domain.
         if(in_array($parsedUrl['host'], $this->whitelist)) return redirect()->away($this->url);

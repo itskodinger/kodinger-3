@@ -175,6 +175,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\PostServiceProvider::class,
+        App\Providers\UrlServiceProvider::class,
 
     ],
 
@@ -227,7 +228,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Markdown' => GrahamCampbell\Markdown\Facades\Markdown::class,
-        'Role' => Spatie\Permission\Models\Role::class
+        'Role' => Spatie\Permission\Models\Role::class,
+        'Redirector' => App\Facades\Redirector::class,
 
     ],
 
