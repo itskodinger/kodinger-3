@@ -21,24 +21,8 @@
 
                         @php
                             
-                            $attributes   = $post->attributes;
-                            $url          = $attributes->where('key', 'url')->first();
-                            $title        = $attributes->where('key', 'url-title')->first();
-                            $thumbnail    = $attributes->where('key', 'url-thumbnail')->first();
-                            $description  = $attributes->where('key', 'url-description')->first();
-                            $embeddable   = $attributes->where('key', 'url-embeddable-code')->first();
-
-                            if($url instanceof \App\PostAttribute) {
-
-                                $url = parse_url($url->value);
-
-                            }
-                            else {
-                                $url = parse_url(
-                                    nl_array_first($props->pages)
-                                );
-                            }
-
+                            $postCard = Postcard::create($props);
+                            $url      = parse_url($postCard->getUrl());
 
                         @endphp
 
@@ -57,22 +41,22 @@
 
                             {{-- <div class="w-full bg-gray-200 h-64"></div> --}}
 
-                            @if($embeddable instanceof \App\PostAttribute)
+                            @if($postCard->hasEmbeddableCode())
 
                                 <div class="embeddable-frame">
-                                    {!! $embeddable->value !!}
+                                    {!! $postCard->getEmbeddableCode() !!}
                                 </div>
 
-                            @elseif($thumbnail instanceof \App\PostAttribute)
-                                <img src="{{$thumbnail->value}}"  height="200" width="100%"  alt="">
+                            @else
+                                <img src="{{$postCard->getThumbnail()}}"  height="200" width="100%"  alt="">
                             @endif
 
                             <div class="p-4 border-t bg-gray-100">
                             
-                                <h2 class="text-lg font-semibold hover:text-indigo-600"><a href="{{ Redirector::setUrl($props->pages)->addUtm('kodinger_discovery', Redirector::UTM_SOURCE) }}">@if($title instanceof \App\PostAttribute) {{$title->value}} @else {{ Redirector::setUrl($url['host'])->addUtm('kodinger_discovery', Redirector::UTM_SOURCE) }} @endif</a></h2>
+                                <h2 class="text-lg font-semibold hover:text-indigo-600"><a href="{{ Redirector::setUrl($postCard->getUrl())->addUtm('kodinger_discovery', Redirector::UTM_SOURCE) }}"> {{$postCard->getTitle()}} </a></h2>
 
-                                @if($description instanceof \App\PostAttribute)
-                                    <p class="text-gray-600 text-sm"> {{ str_limit($description->value, 200) }} </p>
+                                @if(!is_null($postCard->getDescription()))
+                                    <p class="text-gray-600 text-sm"> {{ str_limit($postCard->getDescription(), 200) }} </p>
                                 @endif
                                 <div class="uppercase tracking-wider text-xs mt-3 text-teal-500 font-semibold">{{ $url['host'] }}</div>
                             </div>
