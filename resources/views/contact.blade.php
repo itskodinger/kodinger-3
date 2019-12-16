@@ -8,7 +8,7 @@
                     <h1 class="text-indigo-600 text-xl font-semibold">Contact</h1>
                     <p class="mt-1 text-gray-600">Kami senang menerima sesuatu darimu.</p>
 
-                    <div class="mt-4 text-lg">
+                    <div class="mt-4 leading-loose">
                         <p>Email: nauvalazhar2@gmail.com</p>
                         <p>Phone: +6282124768469</p>
                     </div>

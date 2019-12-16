@@ -7,7 +7,7 @@
             <form method="post" id="form">
                 <div class="p-8 bg-white border-2 border-gray-200 rounded">
                     <div id="form-block">
-                        <h3 class="text-lg font-bold text-gray-600  pb-1  mb-6">Privacy Policy</h3>
+                        <h1 class="text-indigo-600 text-xl font-bold pb-1 mb-6">Privacy Policy</h1>
 
                         <p class="text-sm text-gray-600 mt-2">Kodinger app as an Open Source app. This SERVICE is provided by at no cost and is intended for use as is.</p>
                         <p class="text-sm text-gray-600 mt-2">This page is used to inform visitors regarding Kodinger policies with the collection, use, and disclosure of Personal
