@@ -7,7 +7,7 @@ use App\Services\Post\PostAttribute;
 use Illuminate\Support\ServiceProvider;
 use App\Contracts\Post\DiscoverPost as DiscoverPostContract;
 use App\Contracts\Post\PostAttribute as PostAttributeContract;
-use App\Services\Post\PostCard;
+use App\Services\Post\Postcard;
 
 class PostServiceProvider extends ServiceProvider
 {
