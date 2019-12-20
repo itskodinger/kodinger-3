@@ -25,7 +25,7 @@ class Post extends Model
 		'type'
 	];
 
-    protected $appends = ['time', 'markdown', 'is_mine', 'is_post_saved', 'is_post_loved'];
+    protected $appends = ['time', 'markdown', 'markdown_truncate', 'is_mine', 'is_post_saved', 'is_post_loved'];
 
     public function getIsPostSavedAttribute()
     {
@@ -75,6 +75,11 @@ class Post extends Model
     public function getMarkdownAttribute()
     {
         return Markdown::convertToHtml($this->content ?? '');
+    }
+
+    public function getMarkdownTruncateAttribute()
+    {
+        return truncate(Markdown::convertToHtml($this->content ?? ''), 100);
     }
 
     public function getIsMineAttribute()

@@ -459,7 +459,7 @@ const post = (function() {
 			        : ''}
 
 			        ${!options.discover ?
-			        `<div class="mb-5">${post.markdown}</div>`
+			        `<div class="mb-5">${options.truncate_content ? post.markdown_truncate : post.markdown}</div>`
 			        : ''}
 
 			        ${post.tags.map(function(tag) {
@@ -563,12 +563,72 @@ const post = (function() {
 			run({...args});
 		},
 
-		run: function({templating, query, ...args}) {
+		shimmer: {
+			append: function({elem}) {
+				let uq = 'shimmer-' + new Date().valueOf();
+
+				let tpl = `
+				<div class="${uq} bg-white rounded border-2 border-gray-200 mb-10">
+				    <div class="flex p-6 items-center">
+					    <div class="w-12 h-12 bg-gray-200 rounded"></div>
+				        <div class="ml-3">
+				            <div class="mb-3 w-32 h-4 bg-gray-200 rounded"></div>
+				            <div class="-mx-1 flex items-center">
+				                <div class="mx-1 h-2 w-12 bg-gray-100 rounded"></div>
+				            </div>
+				        </div>
+				    </div>
+
+				    <div class="bg-gray-100 w-full" style="height: 470px;">
+				    </div>
+				    
+
+				    <div class="p-6">
+				        <div class="mb-4 bg-gray-200 w-64 h-8 rounded-lg"></div>
+
+				        <div class="mb-3 bg-gray-100 w-full h-3 rounded"></div>
+				        <div class="bg-gray-100 w-40 h-3 rounded"></div>
+
+				        <div class="flex">
+					        <div class="border border-gray-200 w-20 h-8 mt-6 rounded-full"></div>
+					        <div class="border border-gray-200 w-20 h-8 mt-6 rounded-full ml-2"></div>
+				        </div>
+
+				        <div class="mt-8">
+				            <div class="flex w-full">
+					            <div class="w-12 h-12 rounded-full bg-gray-200 mr-2"></div>
+					            <div class="w-12 h-12 rounded-full bg-gray-200 mr-2"></div>
+					            <div class="w-12 h-12 rounded-full bg-gray-200 mr-2"></div>
+					            <div class="w-12 h-12 rounded-full bg-gray-200 mr-2"></div>
+				            </div>
+				        </div>
+				    </div>
+				</div>
+				`;
+
+				tpl = str2dom(tpl);
+
+				elem.appendChild(tpl);
+
+				return {
+					dispose: function() {
+						$('.' + uq).remove();
+					}
+				}
+			}
+		},
+
+		run: function({templating, shimmer, query, ...args}) {
 			// get new page (don't retrieve from the argument)
 			const {page, incrementPage} = api;
 
+			// show the shimmer
+			const shi = shimmer.append({...args});
+
+			// async, bro
 			query({page}).then(function(data) {
 				templating({data, ...args});
+				shi.dispose();
 			}).catch(function(error) {
 				console.log('Whoopsie! ', error)
 			});
@@ -597,6 +657,7 @@ const post = (function() {
 				templating, 
 				lifecycle, 
 				loadMore,
+				shimmer,
 				page,
 				incrementPage
 			} = api;
@@ -610,6 +671,7 @@ const post = (function() {
 				templating,
 				lifecycle,
 				loadMore,
+				shimmer,
 				page,
 				incrementPage
 			});
