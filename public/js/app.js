@@ -389,9 +389,9 @@ const post = (function() {
 			}
 		},
 		lifecycle: {
-			onContentLoaded: function({elem, options, loadMore, ...args}) {
+			onContentLoaded: function() {
 				scrollReachBottom(function() {
-					loadMore.call(this, { ...args });
+					api.loadMore.call(this, api);
 				});
 			}
 		},
@@ -518,8 +518,8 @@ const post = (function() {
 			return window.__page__;
 		},
 
-		query: async function() {
-			let http = await fetch(post_url);
+		query: async function({page}) {
+			let http = await fetch(post_url + '?page=' + page);
 
 			return await http.json();
 		},
@@ -553,24 +553,28 @@ const post = (function() {
 			// just make sure all content are appended
 			setTimeout(function() {
 				// run ASAP
-				lifecycle.onContentLoaded({elem, options, ...args});
+				lifecycle.onContentLoaded();
 			});
 		},
 
-		loadMore: function({incrementPage}) {
-			const page = incrementPage();
+		loadMore: function({run, ...args}) {
+			// do more stuff here
 
-			console.log(page)
-
-			// this.run();
+			run({...args});
 		},
 
-		run: function({templating, ...args}) {
-			this.query().then(function(data) {
+		run: function({templating, query, ...args}) {
+			// get new page (don't retrieve from the argument)
+			const {page, incrementPage} = api;
+
+			query({page}).then(function(data) {
 				templating({data, ...args});
 			}).catch(function(error) {
 				console.log('Whoopsie! ', error)
 			});
+
+			// page++
+			incrementPage();
 		},
 	}
 
@@ -588,6 +592,7 @@ const post = (function() {
 			const {
 				elem, 
 				options, 
+				query,
 				template, 
 				templating, 
 				lifecycle, 
@@ -600,6 +605,7 @@ const post = (function() {
 			api.run({
 				elem,
 				options,
+				query,
 				template,
 				templating,
 				lifecycle,
