@@ -27,6 +27,14 @@ class PostController extends Controller
         return view('posts.index', compact('posts'));
     }
 
+	public function ajax(Request $request)
+	{
+		$posts = $this->postService->content(10, $request);
+
+		return response()->json($posts);
+	}
+
+
     public function edit($id)
     {
     	$post = $this->postService->model()->find($id);

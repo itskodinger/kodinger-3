@@ -11,15 +11,7 @@
                 <h4 class="mb-4 text-gray-600">Mencari konten dengan kata kunci: {{ request()->search . ($tag ? ' di dalam tag ' . $tag : '') }}</h4>
                 @endif
 
-                @if($tag)
-                <h4 class="mb-4 text-gray-600">Semua konten dengan tag <i>{{ $tag }}</i></h4>
-                @endif
-
-                @foreach($posts as $post)
-                    @include('layouts.card', ['props' => $post, 'carousel' => false, 'comment' => false, 'truncate_content' => true])
-                @endforeach
-
-                {!! $posts->links('vendor.pagination.simple-default') !!}
+                <div class="posts"></div>
             </div>
             <div class="w-3/12 px-4">
                 @rightbar
@@ -31,4 +23,11 @@
 @push('js')
     <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
     <script src="{{ url('js/app.js') }}"></script>
+    <script>
+        post.init('.posts', {
+            carousel: false,
+            comment: false,
+            truncate_content: true
+        });
+    </script>
 @endpush

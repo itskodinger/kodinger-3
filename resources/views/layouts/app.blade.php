@@ -122,10 +122,13 @@
 
     <!-- Scripts -->
     <script>
-        const save_url = '{{ route('saves.store') }}',
+        const save_url = '@route('saves.store')',
+              post_url = '@route('post.ajax')',
               base_url = '{{ url('') }}',
+              single_url = '@route('single')/',
               $ = document.querySelector.bind(document),
-              $$ = document.querySelectorAll.bind(document);
+              $$ = document.querySelectorAll.bind(document),
+              token = $('[name=csrf-token]').getAttribute('content');
 
         // https://codepen.io/gabrieleromanato/pen/LpLVeQ
         function toJSONString( form ) {

@@ -19,6 +19,11 @@ class PostService
 		return Post::with(['tags', 'tags.tag', 'user', 'comments']);
 	}
 
+	public function find($id)
+	{
+		return $this->model()->find($id);
+	}
+
 	public function total()
 	{
 		return $this->model()->count();
@@ -79,6 +84,7 @@ class PostService
 					$q = $q->whereTagId($tag_id);
 				});
 			}
+
 		}
 
 		$posts = $posts->orderBy('created_at', 'desc')->paginate($num);

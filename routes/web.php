@@ -50,6 +50,7 @@ Route::group(['prefix' => 'posts', 'as' => 'post.', 'middleware' => 'auth'], fun
 	});
 	Route::post('/link-info', 'PostController@getLinkInfo')->name('getLinkInfo');
 	Route::get('/tags', 'PostController@tags')->name('tags');
+	Route::get('/ajax', 'PostController@ajax')->name('ajax');
 });
 
 Route::group(['prefix' => 'contributes', 'as' => 'contribute.', 'middleware' => 'auth'], function() 
@@ -95,7 +96,7 @@ Route::get('/{slug}/contributes', 'FrontendController@contributes')->name('contr
 Route::get('/{slug}/discuss', 'FrontendController@discuss')->name('discuss');
 Route::get('/setting', 'FrontendController@setting')->name('setting');
 Route::post('/setting', 'FrontendController@settingUpdate')->name('setting_update');
-Route::get('/{slug}', 'FrontendController@single')->name('single');
+Route::get('/{slug?}', 'FrontendController@single')->name('single');
 Route::get('/tag/{slug}', 'FrontendController@index')->name('tag');
 Route::get('/home', 'HomeController@index')->name('home');
 
