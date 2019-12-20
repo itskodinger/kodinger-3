@@ -24,10 +24,12 @@
     <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
     <script src="{{ url('js/app.js') }}"></script>
     <script>
-        post.init('.posts', {
+        let posts = post.init('.posts', {
             carousel: false,
             comment: false,
             truncate_content: true
         });
+
+        console.log(posts)
     </script>
 @endpush

@@ -505,17 +505,17 @@ const post = (function() {
 		},
 
 		set initPage(num) {
-			window.__page__ = num;
+			api.vars.__page__ = num;
 		},
 
 		incrementPage: function() {
-			window.__page__ += 1;
+			api.vars.__page__ += 1;
 
 			return api.page;
 		},
 
 		get page() {
-			return window.__page__;
+			return api.vars.__page__;
 		},
 
 		query: async function({page, queryPending}, init) {
@@ -544,13 +544,13 @@ const post = (function() {
 
 		queryPending: {
 			init: function() {
-				window.__queryPending__ = true;
+				api.vars.__queryPending__ = true;
 			},
 			dispose: function() {
-				window.__queryPending__ = false;
+				api.vars.__queryPending__ = false;
 			},
 			get status() {
-				return window.__queryPending__;
+				return api.vars.__queryPending__;
 			}
 		},
 
@@ -587,10 +587,11 @@ const post = (function() {
 			});
 		},
 
-		loadMore: function({run, ...args}) {
+		loadMore: function({run, endOfPage, ...args}) {
 			// do more stuff here
 
-			run({...args});
+			if(endOfPage.status == false)
+				run({...args});
 		},
 
 		shimmer: {
@@ -648,7 +649,29 @@ const post = (function() {
 			}
 		},
 
-		run: function({elem, templating, shimmer, queryPending, query, ...args}) {
+		// is end of page?
+		endOfPage: {
+			start: function() {
+				api.vars.__endOfPage__ = false;
+			},
+			init: function() {
+				api.vars.__endOfPage__ = true;
+			},
+			dispose: function() {
+				api.vars.__endOfPage__ = false;
+			},
+			get status() {
+				return api.vars.__endOfPage__;
+			}
+		},
+
+		end: function() {
+			const { endOfPage } = api;
+
+			endOfPage.init();
+		},
+
+		run: function({elem, end, templating, shimmer, queryPending, query, ...args}) {
 			// get new page (don't retrieve from the argument)
 			const {page, incrementPage} = api;
 
@@ -660,16 +683,25 @@ const post = (function() {
 				// show the shimmer
 				shi = shimmer.append({elem})
 			}).then(function(data) {
-				templating({data, elem, ...args});
+				const { last_page } = data;
+
+				// end of page
+				if(page == last_page) {
+					end();
+				}
+
+				if(page <= last_page){
+					templating({data, elem, ...args});
+				}
 
 				// dispose shimmer
 				shi.dispose();
+
+				// page++
+				incrementPage();
 			}).catch(function(error) {
 				console.log('Whoopsie! ', error)
 			});
-
-			// page++
-			incrementPage();
 		},
 	}
 
@@ -684,6 +716,10 @@ const post = (function() {
 			// set page
 			api.initPage = api.options.page;
 
+			// set end of page
+			api.endOfPage.start();
+
+			// destructuring
 			const {
 				elem, 
 				options, 
@@ -695,7 +731,9 @@ const post = (function() {
 				shimmer,
 				page,
 				incrementPage,
-				queryPending
+				queryPending,
+				end,
+				endOfPage
 			} = api;
 
 			// start implementing
@@ -710,7 +748,9 @@ const post = (function() {
 				shimmer,
 				page,
 				incrementPage,
-				queryPending
+				queryPending,
+				end,
+				endOfPage
 			});
 
 			return {};
