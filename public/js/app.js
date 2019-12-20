@@ -518,10 +518,40 @@ const post = (function() {
 			return window.__page__;
 		},
 
-		query: async function({page}) {
+		query: async function({page, queryPending}, init) {
+			if(queryPending.status == true) {
+				return Promise.reject({
+					continue: false
+				});
+			}
+
+			if(init)
+				init.call(this);
+
+			queryPending.init();
 			let http = await fetch(post_url + '?page=' + page);
 
-			return await http.json();
+			if(http) {
+				queryPending.dispose();
+			}
+
+			if(http.ok) {
+				return await http.json();
+			}else{
+				return Promise.reject(http);
+			}
+		},
+
+		queryPending: {
+			init: function() {
+				window.__queryPending__ = true;
+			},
+			dispose: function() {
+				window.__queryPending__ = false;
+			},
+			get status() {
+				return window.__queryPending__;
+			}
 		},
 
 		// default options
@@ -618,16 +648,21 @@ const post = (function() {
 			}
 		},
 
-		run: function({templating, shimmer, query, ...args}) {
+		run: function({elem, templating, shimmer, queryPending, query, ...args}) {
 			// get new page (don't retrieve from the argument)
 			const {page, incrementPage} = api;
 
-			// show the shimmer
-			const shi = shimmer.append({...args});
+			// init the shimmer
+			let shi;
 
 			// async, bro
-			query({page}).then(function(data) {
-				templating({data, ...args});
+			query({page, queryPending}, function() {
+				// show the shimmer
+				shi = shimmer.append({elem})
+			}).then(function(data) {
+				templating({data, elem, ...args});
+
+				// dispose shimmer
 				shi.dispose();
 			}).catch(function(error) {
 				console.log('Whoopsie! ', error)
@@ -659,7 +694,8 @@ const post = (function() {
 				loadMore,
 				shimmer,
 				page,
-				incrementPage
+				incrementPage,
+				queryPending
 			} = api;
 
 			// start implementing
@@ -673,7 +709,8 @@ const post = (function() {
 				loadMore,
 				shimmer,
 				page,
-				incrementPage
+				incrementPage,
+				queryPending
 			});
 
 			return {};

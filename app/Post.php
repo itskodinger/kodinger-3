@@ -79,7 +79,7 @@ class Post extends Model
 
     public function getMarkdownTruncateAttribute()
     {
-        return truncate(Markdown::convertToHtml($this->content ?? ''), 100);
+        return utf8_encode(truncate(Markdown::convertToHtml($this->content ?? ''), 100));
     }
 
     public function getIsMineAttribute()

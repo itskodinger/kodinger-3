@@ -29,8 +29,6 @@ class PostController extends Controller
 
 	public function ajax(Request $request)
 	{
-		sleep(5);
-
 		$posts = $this->postService->content(10, $request);
 
 		return response()->json($posts);
