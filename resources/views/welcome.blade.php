@@ -18,7 +18,7 @@
 
 @push('js')
     <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
-    <script src="{{ url('js/app.js') }}"></script>
+    <script src="{{ mix('js/app.js') }}"></script>
     <script>
         let posts = post.init('.posts', {
             url: routes.post,

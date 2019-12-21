@@ -33,7 +33,7 @@
                     <img class="rounded-full w-10 h-10 flex-shrink-0" src="{avatar}">\
                     <div class="ml-3 w-full">\
                         <p class="mx-1 text-blue-500 text-xs font-semibold float-right cmt-time">{time}</p>\
-                        <h4 class="mb-1 font-bold text-sm"><a class="text-indigo-600 cmt-name" href="'+ base_url +'/{username}">{name}</a> <span class="text-gray-600 font-normal">({username})</span></h4>\
+                        <h4 class="mb-1 font-bold text-sm"><a class="text-indigo-600 cmt-name" href="'+ routes.base_url +'/{username}">{name}</a> <span class="text-gray-600 font-normal">({username})</span></h4>\
                         <div class="text-sm text-gray-700 cmt-msg">\
                             {quoted}\
                             <div class="cmt-content">{msg}</div>\

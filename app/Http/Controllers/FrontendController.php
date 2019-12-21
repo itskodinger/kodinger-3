@@ -64,7 +64,7 @@ class FrontendController extends Controller
 		return view('contact');
 	}
 
-	public function single($slug)
+	public function single($slug, Request $request)
 	{
 		$post = $this->postService->findBySlug($slug, true);
 
@@ -77,6 +77,10 @@ class FrontendController extends Controller
 			$posts = $user->posts()->paginate(10);
 
 			return view('profile', compact('user', 'posts'));
+		}
+
+		if($request->ajax) {
+			return response()->json(['data' => $post]);
 		}
 
 		return view('single', compact('post'));

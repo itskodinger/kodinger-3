@@ -127,9 +127,10 @@
                 post: '@route('post.posts')',
                 discover: '@route('post.discover')',
                 base_url: '{{ url('') }}',
-                single_url: '@route('single')/',
+                single: '@route('single')/',
                 post_store_discover: '@route('post.store_discover')',
                 post_tags: '@route('post.tags')',
+                post_link_info: '@route('post.getLinkInfo')'
             },
             $ = document.querySelector.bind(document),
             $$ = document.querySelectorAll.bind(document),

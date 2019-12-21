@@ -136,6 +136,8 @@ let scrollReachBottom = (function(reach) {
  */
 
 const post = (function() {
+	let instance;
+
 	let api = {
 		vars: {
 			uris: [
@@ -397,21 +399,34 @@ const post = (function() {
 		},
 		lifecycle: {
 			onContentLoaded: function() {
-				scrollReachBottom(function() {
-					api.loadMore.call(this, api);
-				});
+				const { loadMore, options } = api;
+
+				if(!options.first) {
+					scrollReachBottom(function() {
+						loadMore.call(this, api);
+					});
+				}
+
+				if(options.carousel) {
+		            var cr = new Siema({
+		                selector: '.carousel'
+		            });
+
+		            document.querySelector('.prev').addEventListener('click', () => cr.prev());
+		            document.querySelector('.next').addEventListener('click', () => cr.next());
+				}
 			}
 		},
 		template: function({post, options}, events) {
 			let tpl = `
 			<div class="bg-white rounded border-2 border-gray-200 mb-10">
 			    <div class="flex p-6 items-center">
-			        <a href="${routes.single_url + post.user.the_username}">
+			        <a href="${routes.single + post.user.the_username}">
 			            <img class="rounded w-12 rounded" src="${ post.user.the_avatar_sm }">
 			        </a>
 			        <div class="ml-3">
 			            <h4 class="mb-1 font-bold">
-			                <a class="text-indigo-600" href="${ routes.single_url + post.user.the_username }">
+			                <a class="text-indigo-600" href="${ routes.single + post.user.the_username }">
 			                    ${ post.user.name }
 			                </a>
 			            </h4>
@@ -467,7 +482,7 @@ const post = (function() {
 			        <div class="${post.images.length > 1 ? 'carousel' : ''}">
 			            
 			            ${'carousel' in options && options.carousel == false ? `
-			                <a href="${routes.single_url + post.slug}">
+			                <a href="${routes.single + post.slug}">
 			                    <img src="${post.images[0]}">
 			                </a>` 
 
@@ -494,7 +509,7 @@ const post = (function() {
 
 			    <div class="p-6 text-sm text-gray-700 leading-loose">
 			        ${post.title ?
-				        `<h4 class="text-lg mb-2 text-black font-bold"><a class="text-indigo-700" href="${routes.single_url + post.slug}">
+				        `<h4 class="text-lg mb-2 text-black font-bold"><a class="text-indigo-700" href="${routes.single + post.slug}">
 				            ${post.title}
 				        </a></h4>`
 			        : ''}
@@ -518,10 +533,10 @@ const post = (function() {
 			                <a data-love="${ post.id }" ${ post.is_post_loved ? 'data-loved' : '' } class="w-12 h-12 hover:bg-gray-100 rounded-full text-gray-600 flex items-center justify-center border-2 border-gray-200" href="#">
 			                    <span></span>
 			                </a>
-			                <a class="ml-2 w-12 h-12 hover:bg-gray-100 rounded-full text-gray-600 flex items-center justify-center border-2 border-gray-200" href="${routes.single_url + post.slug + '#comments'}">
+			                <a class="ml-2 w-12 h-12 hover:bg-gray-100 rounded-full text-gray-600 flex items-center justify-center border-2 border-gray-200" href="${routes.single + post.slug + '#comments'}">
 			                    <svg class="stroke-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg> 
 			                </a>
-			                <a data-url="${ routes.single_url + post.slug }" class="share-button ml-2 w-12 h-12 hover:bg-gray-100 rounded-full text-gray-600 flex items-center justify-center border-2 border-gray-200" href="#">
+			                <a data-url="${ routes.single + post.slug }" class="share-button ml-2 w-12 h-12 hover:bg-gray-100 rounded-full text-gray-600 flex items-center justify-center border-2 border-gray-200" href="#">
 			                    <svg class="stroke-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
 			                </a>
 			                <a class="ml-2 w-12 h-12 hover:bg-gray-100 rounded-full text-gray-600 flex items-center justify-center border-2 border-gray-200" data-save="${ post.id }" ${ post.is_post_saved ? 'data-saved' : '' } href="#"></a>
@@ -563,7 +578,23 @@ const post = (function() {
 			return api.vars.__page__;
 		},
 
-		query: async function({page, queryPending, url}, init) {
+		buildParams: function(defParams) {
+			const { params } = api.options;
+
+			let parameters;
+
+			if(params) {
+				parameters = params.call(this, defParams);
+			}else{
+				parameters = defParams;
+			}
+
+			let url = new URLSearchParams(parameters).toString();
+
+			return (url ? '?' + url : '');
+		},
+
+		query: async function({page, queryPending, url, buildParams}, init) {
 			if(queryPending.status == true) {
 				return Promise.reject({
 					continue: false
@@ -574,7 +605,14 @@ const post = (function() {
 				init.call(this);
 
 			queryPending.init();
-			let http = await fetch(url + '?page=' + page);
+
+			let objParams = {
+				...(page ? {page} : {})
+			}
+
+			const params = buildParams(objParams);
+
+			let http = await fetch(url + params);
 
 			if(http) {
 				queryPending.dispose();
@@ -601,10 +639,12 @@ const post = (function() {
 
 		// default options
 		defOptions: {
+			first: false,
 			carousel: false,
 			truncate_content: false,
 			discover: false,
 			page: 1,
+			params: null,
 			url: undefined
 		},
 
@@ -614,23 +654,39 @@ const post = (function() {
 			this.options = objExtend(this.defOptions, options);			
 		},
 
-		templating: function({data:res, elem, options, template, lifecycle, ...args}) {
+		templating: function({data:res, rendered, lifecycle, elem, options, template, ...args}) {
 			const { data:posts } = res;
 
-			posts.forEach(function(post) {
-				// append post element to the wrapper
-				elem.appendChild( 
+			// local func
+			// append post element to the wrapper
+			let postChild = function(post) {
+				return elem.appendChild(
 					template({
 						post, options
 					}, ['save', 'share', 'love'])
 				);
-			});
+			}
+
+			if(options.first){
+				postChild(posts);
+			}else{
+				posts.forEach(function(post) {
+					postChild(post);
+				});
+			}
 
 			// just make sure all content are appended
 			setTimeout(function() {
 				// run ASAP
 				lifecycle.onContentLoaded();
 			});
+
+			// firing the event
+			rendered({...args});
+		},
+
+		rendered: function() {
+			
 		},
 
 		loadMore: function({run, endOfPage, ...args}) {
@@ -717,7 +773,7 @@ const post = (function() {
 			endOfPage.init();
 		},
 
-		run: function({elem, end, templating, options, shimmer, queryPending, query, ...args}) {
+		run: function({elem, end, templating, options, buildParams, shimmer, queryPending, query, ...args}) {
 			// get new page (don't retrieve from the argument)
 			const {page, incrementPage} = api;
 
@@ -725,18 +781,18 @@ const post = (function() {
 			let shi;
 
 			// async, bro
-			query({page, queryPending, url: options.url}, function() {
+			query({page, queryPending, url: options.url, buildParams}, function() {
 				// show the shimmer
 				shi = shimmer.append({elem})
 			}).then(function(data) {
 				const { last_page } = data;
 
-				// end of page
-				if(page == last_page) {
+				// end of page or stop fetching
+				if((page == last_page) || (options.first)) {
 					end();
 				}
 
-				if(page <= last_page){
+				if(options.first || (!options.first && page <= last_page)){
 					templating({data, elem, options, ...args});
 				}
 
@@ -760,7 +816,8 @@ const post = (function() {
 			api.opts = opts;
 
 			// set page
-			api.initPage = api.options.page;
+			if(!api.options.first)
+				api.initPage = api.options.page;
 
 			// set end of page
 			api.endOfPage.start();
@@ -779,7 +836,9 @@ const post = (function() {
 				incrementPage,
 				queryPending,
 				end,
-				endOfPage
+				endOfPage,
+				buildParams,
+				rendered
 			} = api;
 
 			// start implementing
@@ -796,14 +855,15 @@ const post = (function() {
 				incrementPage,
 				queryPending,
 				end,
-				endOfPage
+				endOfPage,
+				buildParams,
+				rendered
 			});
 
-			return {};
-		},
+			instance = {
+			};
 
-		dispose: function() {
-			// do stuff here
+			return instance;
 		}
 	}
 

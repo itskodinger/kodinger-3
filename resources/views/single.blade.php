@@ -8,6 +8,49 @@
 <meta name="twitter:card" content="summary_large_image">
 @endpush
 
+@push('js')
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/siema@1.5.1/dist/siema.min.js"></script>
+    <script src="{{ url('js/app.js') }}"></script>
+    <script>
+        let mypost = post.init('.post', {
+            url: routes.single + '{{ $post->slug }}',
+            params: (params) => ({
+            	ajax: 1
+            }),
+            carousel: true,
+            first: true
+        });
+
+        $$('[data-fetch]').forEach(function(item) {
+        	let url = item.dataset.fetch;
+
+        	(async function() {
+        		const res = await fetch(routes.post_link_info, {
+	        		method: 'POST',
+	        		headers: {
+						'X-CSRF-TOKEN': token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					},
+					body: JSON.stringify({
+						url
+					})
+	        	});
+
+        		if(res.ok) {
+        			return Promise.resolve(res.json());
+        		}
+        	})()
+        	.then(function(data) {
+        		const { title } = data;
+
+	        	item.querySelector('.title').innerText = title;
+        	});
+        });
+    </script>
+@endpush
+
 @section('content')
     <div class="container mx-auto">
         <div class="flex py-12 -mx-4">
@@ -15,9 +58,9 @@
             	@foreach(['pages', 'tutorials', 'helps', 'examples'] as $r)
                 <div class="mb-12">
                 	<h2 class="pb-3 font-bold text-indigo-600">{{ key2str($r) }}</h2>
-	            	@if(count(nl_array($post->{$r})) > 0)
+	            	@if(count($post->{$r}) > 0)
                 	<div class="bg-white rounded border-2 border-gray-200">
-                		@foreach(nl_array($post->{$r}) as $page)
+                		@foreach($post->{$r} as $page)
                 		<a data-fetch="{{ $page }}" class="flex items-center hover:bg-gray-100 px-5 py-4 border-b border-gray-100" href="{{ $page }}">
 	                		<img class="w-8 flex-shrink-0" src="https://s2.googleusercontent.com/s2/favicons?domain_url={{ $page }}">
 	                		<div class="ml-4 overflow-hidden">
@@ -57,7 +100,7 @@
 				@endif
             </div>
             <div class="w-6/12 px-4">
-            	@include('layouts.card', ['props' => $post, 'comment' => false])
+            	<div class="post"></div>
                 <div class="bg-white rounded border-2 border-gray-200 mb-12">
                 	<h2 class="py-4 px-6 font-bold">Diskusi</h2>
 	            	@include('layouts.card_comment')
@@ -69,37 +112,3 @@
         </div>
     </div>
 @stop
-
-@push('js')
-    <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
-    <script src="{{ url('js/app.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/siema@1.5.1/dist/siema.min.js"></script>
-    <script>
-    		@if(count(nl_array($post->images)) > 1)
-            var cr = new Siema({
-                selector: '.carousel'
-            });
-
-            document.querySelector('.prev').addEventListener('click', () => cr.prev());
-            document.querySelector('.next').addEventListener('click', () => cr.next());
-            @endif
-
-            $$('[data-fetch]').forEach(function(item) {
-            	let url = item.dataset.fetch;
-
-			    var xhr = new XMLHttpRequest();
-			    xhr.onreadystatechange = function() {
-			        if (xhr.readyState == XMLHttpRequest.DONE) {
-			        	let data = xhr.responseText;
-			        	data = JSON.parse(data);
-			        	item.querySelector('.title').innerText = data.title;
-					}
-			    }
-			    xhr.open("post", '{{ route('post.getLinkInfo') }}', true);
-			    xhr.setRequestHeader("X-CSRF-TOKEN", $('[name=csrf-token]').getAttribute('content'));
-			    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-			    xhr.setRequestHeader("Accept", "application/json");
-			    xhr.send('url=' + url);
-            });
-    </script>
-@endpush
