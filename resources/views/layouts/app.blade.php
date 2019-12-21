@@ -122,13 +122,18 @@
 
     <!-- Scripts -->
     <script>
-        const save_url = '@route('saves.store')',
-              post_url = '@route('post.ajax')',
-              base_url = '{{ url('') }}',
-              single_url = '@route('single')/',
-              $ = document.querySelector.bind(document),
-              $$ = document.querySelectorAll.bind(document),
-              token = $('[name=csrf-token]').getAttribute('content');
+        const routes = { 
+                save: '@route('saves.store')',
+                post: '@route('post.posts')',
+                discover: '@route('post.discover')',
+                base_url: '{{ url('') }}',
+                single_url: '@route('single')/',
+                post_store_discover: '@route('post.store_discover')',
+                post_tags: '@route('post.tags')',
+            },
+            $ = document.querySelector.bind(document),
+            $$ = document.querySelectorAll.bind(document),
+            token = $('[name=csrf-token]').getAttribute('content');
 
         // https://codepen.io/gabrieleromanato/pen/LpLVeQ
         function toJSONString( form ) {

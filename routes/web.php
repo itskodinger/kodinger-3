@@ -50,7 +50,8 @@ Route::group(['prefix' => 'posts', 'as' => 'post.', 'middleware' => 'auth'], fun
 	});
 	Route::post('/link-info', 'PostController@getLinkInfo')->name('getLinkInfo');
 	Route::get('/tags', 'PostController@tags')->name('tags');
-	Route::get('/ajax', 'PostController@ajax')->name('ajax');
+	Route::get('/posts', 'PostController@posts')->name('posts');
+	Route::get('/discover', 'PostController@discover')->name('discover');
 });
 
 Route::group(['prefix' => 'contributes', 'as' => 'contribute.', 'middleware' => 'auth'], function() 

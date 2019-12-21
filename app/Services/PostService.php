@@ -84,7 +84,6 @@ class PostService
 					$q = $q->whereTagId($tag_id);
 				});
 			}
-
 		}
 
 		$posts = $posts->orderBy('created_at', 'desc')->paginate($num);

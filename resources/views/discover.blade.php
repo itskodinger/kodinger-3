@@ -44,17 +44,7 @@
                 @endauth
 
                 <h1 class="mb-4 text-lg flex items-center mt-8 text-gray-600">Link Dari Komunitas</h1>
-                @foreach($posts as $post)
-                    @include('layouts.card', [
-                        'props' => $post, 
-                        'discover' => true, 
-                        'carousel' => false, 
-                        'comment' => false, 
-                        'truncate_content' => true
-                    ])
-                @endforeach
-
-                {!! $posts->links('vendor.pagination.simple-default') !!}
+                <div class="posts"></div>
             </div>
             <div class="w-3/12 px-4">
                 @rightbar
@@ -69,6 +59,12 @@
     <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify@3.1.0/dist/tagify.min.js"></script>
 
     <script>
+        let posts = post.init('.posts', {
+            url: routes.discover,
+            carousel: false,
+            truncate_content: true
+        });
+
         let tagify = new Tagify($('.tags'), {
             enforceWhitelist : true,
             whitelist        : [],
@@ -135,14 +131,13 @@
 
             tagify.loading(true).dropdown.hide.call(tagify)
 
-            fetch('{{route('post.tags')}}?value=' + value, {signal:controller.signal})
+            fetch(routes.post_tags + '?value=' + value, {signal:controller.signal})
             .then(RES => RES.json())
             .then(function(whitelist){
                 tagify.settings.whitelist.splice(0, whitelist.length, ...whitelist)
                 tagify.loading(false).dropdown.show.call(tagify, value);
             })
         }
-
 
         $('#discover-form').addEventListener('submit', function(e) {
             let link = $('.input-link'),
@@ -162,21 +157,32 @@
             } else {
                 adds(btn.classList, 'pointer-events-none opacity-50');
 
-                // do ajax
-                var xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState == XMLHttpRequest.DONE) {
-                        removes(btn.classList, 'pointer-events-none opacity-50');
+                const posting = (async function() {
+                    const res = await fetch(routes.post_store_discover, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': token,
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            pages: link.value,
+                            tags: 'tag_ids'
+                        })
+                    });
 
-                        if(xhr.status == 401)
-                            alert('Anda perlu login dulu!')
-                    }
-                }
-                xhr.open("post", '@route('post.store_discover')', true);
-                xhr.setRequestHeader("X-CSRF-TOKEN", $('[name=csrf-token]').getAttribute('content'));
-                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                xhr.setRequestHeader("Accept", "application/json");
-                xhr.send('pages=' + link.value + '&tags='+ tag_ids);
+                    if(res.ok)
+                        return await res.json();
+                    else
+                        return Promise.reject(res);
+                })()
+                .then(function(res) {
+                    removes(btn.classList, 'pointer-events-none opacity-50');
+                })
+                .catch(function(error) {
+                    if(error.status == 401)
+                        alert('Anda perlu login dulu!')
+                });
             }
 
             e.preventDefault();

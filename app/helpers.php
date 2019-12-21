@@ -26,7 +26,7 @@ function nl_list($str, $class='', $tag='div')
 function nl_array_first($str)
 {
 	if(is_array($str))
-		return $str[0];
+		return (count($str) > 0 ? $str[0] : $str);
 
 	$str = nl_array($str);
 

@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use GrahamCampbell\Markdown\Facades\Markdown;
+use Postcard;
 
 class Post extends Model
 {
@@ -25,7 +26,15 @@ class Post extends Model
 		'type'
 	];
 
-    protected $appends = ['time', 'markdown', 'markdown_truncate', 'is_mine', 'is_post_saved', 'is_post_loved'];
+    protected $appends = [
+    	'time', 
+    	'markdown', 
+    	'markdown_truncate', 
+    	'is_mine', 
+    	'is_post_saved', 
+    	'is_post_loved',
+    	'post_card'
+    ];
 
     public function getIsPostSavedAttribute()
     {
@@ -85,6 +94,15 @@ class Post extends Model
     public function getIsMineAttribute()
     {
         return auth()->check() && auth()->id() == $this->user_id;
+    }
+
+    public function getPostCardAttribute()
+    {
+    	if($this->type == 'link') {
+	        return Postcard::create($this);
+    	}
+
+    	return [];
     }
 
 	public function tags()
