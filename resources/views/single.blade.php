@@ -22,6 +22,10 @@
             first: true
         });
 
+        mypost.onRender = function() {
+        	$('#comment-box').classList.remove('hidden');
+        }
+
         $$('[data-fetch]').forEach(function(item) {
         	let url = item.dataset.fetch;
 
@@ -101,7 +105,7 @@
             </div>
             <div class="w-6/12 px-4">
             	<div class="post"></div>
-                <div class="bg-white rounded border-2 border-gray-200 mb-12">
+                <div id="comment-box" class="bg-white rounded border-2 border-gray-200 mb-12 hidden">
                 	<h2 class="py-4 px-6 font-bold">Diskusi</h2>
 	            	@include('layouts.card_comment')
 	            </div>

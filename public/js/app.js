@@ -133,10 +133,12 @@ let scrollReachBottom = (function(reach) {
 
 /**
  * Post API
+ *
+ * flow: init -> run -> fetching -> templating -> attach event -> append -> rendered
  */
 
 const post = (function() {
-	let instance;
+	let events;
 
 	let api = {
 		vars: {
@@ -682,11 +684,12 @@ const post = (function() {
 			});
 
 			// firing the event
-			rendered({...args});
+			rendered({lifecycle, options, ...args});
 		},
 
-		rendered: function() {
-			
+		rendered: function({options}) {
+			if(typeof events.onRender == 'function')
+				events.onRender.call(this);
 		},
 
 		loadMore: function({run, endOfPage, ...args}) {
@@ -860,10 +863,11 @@ const post = (function() {
 				rendered
 			});
 
-			instance = {
+			events = {
+				onRender: null
 			};
 
-			return instance;
+			return events;
 		}
 	}
 
