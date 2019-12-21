@@ -31,7 +31,7 @@ class VerifyDoesNotContainsPornographicContent {
 
         $post = $passable->getPost();
 
-        $pages = \nl_array($post->pages);
+        $pages = $post->pages;
         $lists = file_get_contents(
             sprintf("%s/%s", storage_path("wordlists"), 'porn.list')
         );

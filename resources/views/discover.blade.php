@@ -167,17 +167,24 @@
                         },
                         body: JSON.stringify({
                             pages: link.value,
-                            tags: 'tag_ids'
+                            tags: tag_ids
                         })
                     });
 
-                    if(res.ok)
-                        return await res.json();
-                    else
-                        return Promise.reject(res);
+                    return Promise.resolve(res);
                 })()
+                // on complete
                 .then(function(res) {
                     removes(btn.classList, 'pointer-events-none opacity-50');
+
+                    if(res.ok) {
+                        return Promise.resolve(res.json());
+                    }
+
+                    return Promise.reject(res);
+                })
+                .then(function(res) {
+                    console.log(res);
                 })
                 .catch(function(error) {
                     if(error.status == 401)

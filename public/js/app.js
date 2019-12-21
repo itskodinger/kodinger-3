@@ -442,7 +442,11 @@ const post = (function() {
 				            </div>`
 				        : // else
 				        `
-				            <img src="${post.post_card.thumbnail}" height="200" width="100%" alt="">
+				        	${post.post_card.thumbnail !== null ? 
+					            `<img src="${post.post_card.thumbnail}" class="w-full h-64 object-cover">`
+				            : // else
+					            `<img src="${post.post_card.default_thumbnail}" class="w-full h-64 object-scale-down">`
+					        }
 				        `}
 
 				        <div class="p-4 border-t bg-gray-100">
@@ -500,9 +504,13 @@ const post = (function() {
 			        : ''}
 
 			        ${post.tags.map(function(tag) {
-	                    return `<a class="border border-gray-300 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded-full py-2 px-4 text-xs" href="#">
-	                        #${ tag.tag.name }
-	                    </a>`;		        	
+			        	if(tag.tag !== null) {
+		                    return `<a class="border border-gray-300 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded-full py-2 px-4 text-xs" href="#">
+		                        #${ tag.tag.name }
+		                    </a>`;			        		
+			        	}else {
+			        		return '';
+			        	}
 			        }).join('')}
 
 			        <div class="mt-8">

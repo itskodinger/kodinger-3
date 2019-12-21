@@ -47,7 +47,7 @@ class Postcard implements Arrayable, Jsonable {
 
         if($title instanceof PostAttribute) return $title->value;
 
-        return $this->post->title;
+        return $this->post->title ?? get_title_by_url($this->getUrl());
     }
 
     /**
@@ -58,11 +58,20 @@ class Postcard implements Arrayable, Jsonable {
     public function getThumbnail() {
         $thumbnail = $this->attributes->where('key', 'url-thumbnail')->first();
 
-        if($thumbnail instanceof PostAttribute) return $thumbnail->value;
+        if($thumbnail instanceof PostAttribute)  return $thumbnail->value;
 
-        if(is_null($this->post->images)) return $this->post->images;
+        return null;
+    }
 
-        return nl_array_first($this->post->images);
+    /**
+     * Get the default image thumbnail.
+     * 
+     * @return string
+     */
+    public function getDefaultThumbnail()
+    {
+        // temp
+        return 'https://s2.googleusercontent.com/s2/favicons?domain_url=' . $this->getUrl();
     }
 
     /**
@@ -135,6 +144,7 @@ class Postcard implements Arrayable, Jsonable {
             'url'                 => $this->getUrl(),
             'title'               => $this->getTitle(),
             'thumbnail'           => $this->getThumbnail(),
+            'default_thumbnail'   => $this->getDefaultThumbnail(),
             'description'         => $this->getDescription(),
             'post_url'            => $this->getPostUrl(),
             'has_embeddable_code' => (bool) $this->hasEmbeddableCode(),
