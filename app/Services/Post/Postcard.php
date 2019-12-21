@@ -5,8 +5,10 @@ namespace App\Services\Post;
 use App\Post;
 use App\PostAttribute;
 use Illuminate\Support\Collection;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
 
-class Postcard {
+class Postcard implements Arrayable, Jsonable {
 
     /**
      * The Post data.
@@ -122,4 +124,33 @@ class Postcard {
 
         return nl_array_first($this->post->pages);
     }
+
+	/**
+     * Get the instance as an array.
+     *
+     * @return array
+     */
+    public function toArray() {
+        return [
+            'url'                 => $this->getUrl(),
+            'title'               => $this->getTitle(),
+            'thumbnail'           => $this->getThumbnail(),
+            'description'         => $this->getDescription(),
+            'post_url'            => $this->getPostUrl(),
+            'has_embeddable_code' => (bool) $this->hasEmbeddableCode(),
+            'embeddable_code'     => $this->getEmbeddableCode()
+        ];
+    }
+
+	/**
+     * Convert the object to its JSON representation.
+     *
+     * @param  int  $options
+     * @return string
+     */
+    public function toJson($options = 0) {
+        return json_encode($this->toArray());
+    }
+
+
 }
