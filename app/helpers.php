@@ -40,15 +40,19 @@ function nl_array_end($str)
 	return $str[count($str)-1];
 }
 
-function key2str($k)
+function key2str($k=false)
 {
-	return [
+	$keys = [
 		'inspirations' => 'Inspirasi',
 		'pages' => 'Halaman Terkait',
 		'tutorials' => 'Tutorial',
 		'helps' => 'Komunitas',
 		'examples' => 'Demo'
-	][$k];
+	];
+
+	if($k) return $keys[$k];
+
+	return $keys;
 }
 
 function user_post_saves()

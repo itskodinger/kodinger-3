@@ -685,6 +685,18 @@ const post = (function() {
 			});
 		},
 
+		lastData: {
+			set function(value) {
+				api.vars.__lastData__ = value;
+			},
+			get function() {
+				return api.vars.__lastData__;
+			},
+			dispose: function() {
+				api.vars.__lastData__ = '';
+			}
+		},
+
 		render: function({elem, dom, ...args}) {
 			return new Promise(function(resolve, reject) {
 				elem.appendChild(
@@ -783,70 +795,77 @@ const post = (function() {
 			console.log('error')
 		},
 
-		run: async function({elem, exception, end, options, buildParams, shimmer, queryPending, query, ...args}) {
+		run: function({elem, exception, end, options, lastData, buildParams, shimmer, queryPending, query, ...args}) {
 			// get new page (don't retrieve from the argument)
 			const {page, incrementPage} = api;
 
 			// init the shimmer
 			let shi;
 
-			// 0. start fetching
-			query({page, queryPending, url: options.url, buildParams}, 
-				function() {
-					// init query callback
-					// show the shimmer
-					shi = shimmer.append({elem})
-				}
-			)
-			.finally(function() {
-				// dispose shimmer
-				shi.dispose();
-			})
-			// 1. collecting post data
-			.then(function(data) {
-				// page++
-				incrementPage();
+			return new Promise(function(resolve) {
+				// 0. start fetching
+				query({page, queryPending, url: options.url, buildParams}, 
+					function() {
+						// init query callback
+						// show the shimmer
+						shi = shimmer.append({elem})
+					}
+				)
+				.finally(function() {
+					// dispose shimmer
+					shi.dispose();
+				})
+				// 1. collecting post data
+				.then(function(data) {
+					// page++
+					incrementPage();
 
-				const { last_page } = data;
+					lastData = data;
 
-				// end of page or stop fetching
-				if((page == last_page) || (options.first)) {
-					end();
-				}
+					const { last_page } = data;
 
-				if(options.first || (!options.first && page <= last_page)){
-					return ({data, elem, options, ...args});
-				}
+					// end of page or stop fetching
+					if((page == last_page) || (options.first)) {
+						end();
+					}
 
-			})
-			// 1.1 oh, shit! there was an error! reject, reject, reject!
-			.catch(function(error) {
-				return Promise.reject('Fetching failed with an error ' + error.status);
-			})
-			// 2. templating
-			.then(function({templating, ...args}) {
-				return templating({...args});
-			})
-			// 3. attaching event listener
-			.then(function({lifecycle, ...args}) {
-				// just make sure all content are appended/collected correctly
-				setTimeout(function() {
-					// run ASAP
-					lifecycle.onContentCollected({...args});
+					if(options.first || (!options.first && page <= last_page)){
+						return ({data, lastData, elem, options, ...args});
+					}
+
+				})
+				// 1.1 oh, shit! there was an error! reject, reject, reject!
+				.catch(function(error) {
+					return Promise.reject('Fetching failed with an error ' + error.status);
+				})
+				// 2. templating
+				.then(function({templating, ...args}) {
+					return templating({...args});
+				})
+				// 3. attaching event listener
+				.then(function({lifecycle, ...args}) {
+					// just make sure all content are appended/collected correctly
+					setTimeout(function() {
+						// run ASAP
+						lifecycle.onContentCollected({...args});
+					});
+
+					return {lifecycle, ...args};
+
+				})
+				// 4. appending element
+				.then(function({render, ...args}) {
+					return render({...args});
+				})
+				// 5. rendered
+				.then(function({lifecycle, elem, ...args}) {
+					lifecycle.onContentLoaded();
+		
+					return resolve({
+						elem,
+						lastData
+					});
 				});
-
-				return {lifecycle, ...args};
-
-			})
-			// 4. appending element
-			.then(function({render, ...args}) {
-				return render({...args});
-			})
-			// 5. rendered
-			.then(function({lifecycle, ...args}) {
-				lifecycle.onContentLoaded();
-	
-				return Promise.resolve(1);
 			});
 		},
 	}
@@ -884,6 +903,7 @@ const post = (function() {
 				end,
 				endOfPage,
 				buildParams,
+				lastData,
 				onrendered,
 				render
 			} = api;
@@ -906,6 +926,7 @@ const post = (function() {
 				end,
 				endOfPage,
 				buildParams,
+				lastData,
 				onrendered,
 				render
 			});

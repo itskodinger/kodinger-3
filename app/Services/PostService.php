@@ -160,6 +160,9 @@ class PostService
 						->select('row_id', DB::raw('count(row_id) as total'))
 						->orderBy('total', 'desc')
 						->with('post')
+						->whereHas('post', function($query) {
+							return $query->whereNull('type');
+						})
 						->take($take)
 						->get();
 

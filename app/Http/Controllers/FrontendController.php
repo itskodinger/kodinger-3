@@ -79,7 +79,8 @@ class FrontendController extends Controller
 			return view('profile', compact('user', 'posts'));
 		}
 
-		if($request->wantsJson()) {
+		if($request->ajax) {
+			sleep(2);
 			return response()->json(['data' => $post]);
 		}
 

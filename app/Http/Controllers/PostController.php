@@ -29,7 +29,6 @@ class PostController extends Controller
 
 	public function posts(Request $request)
 	{		
-
 		$posts = $this->postService->content(10, $request);
 
 		return response()->json($posts);
