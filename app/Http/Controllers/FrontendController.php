@@ -80,7 +80,6 @@ class FrontendController extends Controller
 		}
 
 		if($request->ajax) {
-			sleep(2);
 			return response()->json(['data' => $post]);
 		}
 
