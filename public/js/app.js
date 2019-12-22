@@ -138,7 +138,6 @@ let scrollReachBottom = (function(reach) {
  */
 
 const post = (function() {
-	let events;
 
 	let api = {
 		vars: {
@@ -193,51 +192,51 @@ const post = (function() {
 						item.append(str2dom(ic_save));
 				}
 
-				let item = find(parent, '[data-save]'),
-					is_saved = typeof item.dataset.saved == 'string' ? true : false;
-
-				toggle_icon_save(is_saved, item);
-
-				find(parent, '[data-save]').addEventListener('click', function(e) {
-					let	post_id = item.dataset.save;
+				finds(parent, '[data-save]').forEach(function(item){
+					let	post_id = item.dataset.save,
+						is_saved = typeof item.dataset.saved == 'string' ? true : false;
 
 					toggle_icon_save(is_saved, item);
 
-					item.classList.add('pointer-events-none');
+					item.addEventListener('click', function(e) {
+						toggle_icon_save(is_saved, item);
 
-					if(find(item, 'svg'))
-						find(item, 'svg').remove();
+						item.classList.add('pointer-events-none');
 
-					item.append(str2dom(ic_spin));
+						if(find(item, 'svg'))
+							find(item, 'svg').remove();
 
-					const saving = (async function() {
-						const res = await fetch(routes.save, {
-							method: 'POST',
-							headers: {
-								'X-CSRF-TOKEN': token,
-								'Content-Type': 'application/json',
-								'Accept': 'application/json'
-							},
-							body: JSON.stringify({
-								row_id: post_id,
-								method: 'save',
-								model: 'Post'
-							})
+						item.append(str2dom(ic_spin));
+
+						const saving = (async function() {
+							const res = await fetch(routes.save, {
+								method: 'POST',
+								headers: {
+									'X-CSRF-TOKEN': token,
+									'Content-Type': 'application/json',
+									'Accept': 'application/json'
+								},
+								body: JSON.stringify({
+									row_id: post_id,
+									method: 'save',
+									model: 'Post'
+								})
+							});
+
+							return await res.json();
+						})()
+						.then(function(res) {
+							find(item, 'svg').remove();
+							item.classList.remove('pointer-events-none');
+					
+							is_saved = res.saved; 
+							item.dataset.saved = res.saved;
+
+							toggle_icon_save(is_saved, item);
 						});
 
-						return await res.json();
-					})()
-					.then(function(res) {
-						find(item, 'svg').remove();
-						item.classList.remove('pointer-events-none');
-				
-						is_saved = res.saved; 
-						item.dataset.saved = res.saved;
-
-						toggle_icon_save(is_saved, item);
+						e.preventDefault();
 					});
-
-					e.preventDefault();
 				});
 			},
 			
@@ -254,49 +253,50 @@ const post = (function() {
 						find(item, 'span').append(str2dom(ic_love));
 				}
 
-				let item = find(parent, '[data-love]'),
-					post_id = item.dataset.love,
-					is_loved = typeof item.dataset.loved == 'string' ? true : false;
+				finds(parent, '[data-love]').forEach(function(item) {
+					let post_id = item.dataset.love,
+						is_loved = typeof item.dataset.loved == 'string' ? true : false;
 
-				toggle_icon_love(is_loved, item);
+					toggle_icon_love(is_loved, item);
 
-				item.addEventListener('click', function(e) {
+					item.addEventListener('click', function(e) {
 
-					item.classList.add('pointer-events-none');
+						item.classList.add('pointer-events-none');
 
-					if(find(item, 'span svg'))
-						find(item, 'span svg').remove();
+						if(find(item, 'span svg'))
+							find(item, 'span svg').remove();
 
-					find(item, 'span').append(str2dom(ic_spin));
+						find(item, 'span').append(str2dom(ic_spin));
 
-					const saving = (async function() {
-						const res = await fetch(routes.save, {
-							method: 'POST',
-							headers: {
-								'X-CSRF-TOKEN': token,
-								'Content-Type': 'application/json',
-								'Accept': 'application/json'
-							},
-							body: JSON.stringify({
-								row_id: post_id,
-								method: 'love',
-								model: 'Post'
-							})
+						const saving = (async function() {
+							const res = await fetch(routes.save, {
+								method: 'POST',
+								headers: {
+									'X-CSRF-TOKEN': token,
+									'Content-Type': 'application/json',
+									'Accept': 'application/json'
+								},
+								body: JSON.stringify({
+									row_id: post_id,
+									method: 'love',
+									model: 'Post'
+								})
+							});
+
+							return await res.json();
+						})()
+						.then(function(res) {
+							find(item, 'span svg').remove();
+							item.classList.remove('pointer-events-none');
+					
+							is_loved = res.saved; 
+							item.dataset.loved = res.saved;
+
+							toggle_icon_love(is_loved, item);
 						});
 
-						return await res.json();
-					})()
-					.then(function(res) {
-						find(item, 'span svg').remove();
-						item.classList.remove('pointer-events-none');
-				
-						is_loved = res.saved; 
-						item.dataset.loved = res.saved;
-
-						toggle_icon_love(is_loved, item);
+						e.preventDefault();
 					});
-
-					e.preventDefault();
 				});
 			},
 
@@ -348,58 +348,64 @@ const post = (function() {
 				}
 
 				// find element with `share-button` class inside parent element
-				find(parent, '.share-button').addEventListener('click', function(e) {
-					let item = this, // item reference to `this`
-						url = item.dataset.url; // retrieve the url
+				finds(parent, '.share-button').forEach(function(item) {
+					item.addEventListener('click', function(e) {
+						let url = item.dataset.url; // retrieve the url
 
-					// show the modal by removing the `hidden` class
-					$('.share-modal').classList.remove('hidden');
+						// show the modal by removing the `hidden` class
+						$('.share-modal').classList.remove('hidden');
 
-					for(let i=0; i < uris.length; i++) {
-						// when the button has uri value
-						if(uris[i].uri)
-							// set the href attribute to the value of the uri property 
-							$$('.share-buttons a')[i].setAttribute('href', uris[i].uri + url);
+						for(let i=0; i < uris.length; i++) {
+							// when the button has uri value
+							if(uris[i].uri)
+								// set the href attribute to the value of the uri property 
+								$$('.share-buttons a')[i].setAttribute('href', uris[i].uri + url);
 
-						// when the button is has copy action
-						if(uris[i].action == 'copy') {
-							// select the button
-							var the_btn = $$('.share-buttons a')[i];
-							// set data-clipboard-text to the url variable
-							the_btn.dataset.clipboardText = url;
-							// remove the href attribute
-							the_btn.removeAttribute('href');
-							// adding `copy-btn` class
-							the_btn.classList.add('copy-btn');
+							// when the button is has copy action
+							if(uris[i].action == 'copy') {
+								// select the button
+								var the_btn = $$('.share-buttons a')[i];
+								// set data-clipboard-text to the url variable
+								the_btn.dataset.clipboardText = url;
+								// remove the href attribute
+								the_btn.removeAttribute('href');
+								// adding `copy-btn` class
+								the_btn.classList.add('copy-btn');
 
-							// cjs means clipboard js (clipboard instance)
-							cjs = new ClipboardJS('.copy-btn');
+								// cjs means clipboard js (clipboard instance)
+								cjs = new ClipboardJS('.copy-btn');
 
-							// when cjs success copying text to a clipboard
-							cjs.on('success', function() {
-								// change the text
-								find(the_btn, 'span').innerHTML = 'Copied';
-								// disable button
-								the_btn.classList.add('pointer-events-none');
+								// when cjs success copying text to a clipboard
+								cjs.on('success', function() {
+									// change the text
+									find(the_btn, 'span').innerHTML = 'Copied';
+									// disable button
+									the_btn.classList.add('pointer-events-none');
 
-								// revert text to the original one after 1500ms
-								setTimeout(function() {
-									find(the_btn, 'span').innerHTML = uris[i].name;
-									the_btn.classList.remove('pointer-events-none');
-								}, 1500);
-							})
+									// revert text to the original one after 1500ms
+									setTimeout(function() {
+										find(the_btn, 'span').innerHTML = uris[i].name;
+										the_btn.classList.remove('pointer-events-none');
+									}, 1500);
+								})
+							}
 						}
-					}
 
-					// hide overflow behavior in the body element
-					$("body").classList.add('overflow-hidden');
+						// hide overflow behavior in the body element
+						$("body").classList.add('overflow-hidden');
 
-					// ok, i think you already knew this one
-					e.preventDefault();
+						// ok, i think you already knew this one
+						e.preventDefault();
+					});
 				});
 			}
 		},
 		lifecycle: {
+			onContentCollected: function({dom, interactions}) {
+				interactions.save(dom);
+				interactions.love(dom);
+				interactions.share(dom);
+			},
 			onContentLoaded: function() {
 				const { loadMore, options } = api;
 
@@ -409,7 +415,7 @@ const post = (function() {
 					});
 				}
 
-				if(options.carousel) {
+				if(options.carousel && $('.carousel')) {
 		            var cr = new Siema({
 		                selector: '.carousel'
 		            });
@@ -419,7 +425,7 @@ const post = (function() {
 				}
 			}
 		},
-		template: function({post, options}, events) {
+		template: function({post, options}) {
 			let tpl = `
 			<div class="bg-white rounded border-2 border-gray-200 mb-10">
 			    <div class="flex p-6 items-center">
@@ -547,16 +553,6 @@ const post = (function() {
 			    </div>
 			</div>`;
 
-			tpl = str2dom(tpl);
-
-			const { interactions } = api;
-
-			if(events) {
-				events.forEach(function(event) {
-					interactions[event](tpl);
-				});
-			}
-
 			return tpl;
 		},
 
@@ -614,17 +610,20 @@ const post = (function() {
 
 			const params = buildParams(objParams);
 
-			let http = await fetch(url + params);
+			let http = await fetch(url + params, {
+				headers: {
+					'Accept': 'application/json',
+				}
+			});
 
 			if(http) {
 				queryPending.dispose();
 			}
 
-			if(http.ok) {
-				return await http.json();
-			}else{
+			if(http.ok) 
+				return Promise.resolve(http.json());
+			else
 				return Promise.reject(http);
-			}
 		},
 
 		queryPending: {
@@ -656,40 +655,44 @@ const post = (function() {
 			this.options = objExtend(this.defOptions, options);			
 		},
 
-		templating: function({data:res, rendered, lifecycle, elem, options, template, ...args}) {
+		templating: function({data:res, options, template, ...args}) {
 			const { data:posts } = res;
 
-			// local func
+			let wrapper = document.createElement('div');
+
 			// append post element to the wrapper
-			let postChild = function(post) {
-				return elem.appendChild(
+			let appendingTemplate = function(post) {
+				return wrapper.insertAdjacentHTML('beforeEnd',
 					template({
 						post, options
-					}, ['save', 'share', 'love'])
+					})
 				);
 			}
 
-			if(options.first){
-				postChild(posts);
-			}else{
-				posts.forEach(function(post) {
-					postChild(post);
-				});
-			}
+			return new Promise(function(resolve, reject) {
+				// if `posts`` has only one data 
+				if(options.first){
+					appendingTemplate(posts);
+				}else{
+					// if `posts` has many post data
+					// then iterate it
+					posts.forEach(function(post) {
+						appendingTemplate(post);
+					});
+				}
 
-			// just make sure all content are appended
-			setTimeout(function() {
-				// run ASAP
-				lifecycle.onContentLoaded();
+				return resolve({dom: wrapper, ...args});
 			});
-
-			// firing the event
-			rendered({lifecycle, options, ...args});
 		},
 
-		rendered: function({options}) {
-			if(typeof events.onRender == 'function')
-				events.onRender.call(this);
+		render: function({elem, dom, ...args}) {
+			return new Promise(function(resolve, reject) {
+				elem.appendChild(
+					dom
+				);
+
+				return resolve({elem, ...args});
+			});
 		},
 
 		loadMore: function({run, endOfPage, ...args}) {
@@ -776,18 +779,34 @@ const post = (function() {
 			endOfPage.init();
 		},
 
-		run: function({elem, end, templating, options, buildParams, shimmer, queryPending, query, ...args}) {
+		exception: function() {
+			console.log('error')
+		},
+
+		run: async function({elem, exception, end, options, buildParams, shimmer, queryPending, query, ...args}) {
 			// get new page (don't retrieve from the argument)
 			const {page, incrementPage} = api;
 
 			// init the shimmer
 			let shi;
 
-			// async, bro
-			query({page, queryPending, url: options.url, buildParams}, function() {
-				// show the shimmer
-				shi = shimmer.append({elem})
-			}).then(function(data) {
+			// 0. start fetching
+			query({page, queryPending, url: options.url, buildParams}, 
+				function() {
+					// init query callback
+					// show the shimmer
+					shi = shimmer.append({elem})
+				}
+			)
+			.finally(function() {
+				// dispose shimmer
+				shi.dispose();
+			})
+			// 1. collecting post data
+			.then(function(data) {
+				// page++
+				incrementPage();
+
 				const { last_page } = data;
 
 				// end of page or stop fetching
@@ -796,16 +815,38 @@ const post = (function() {
 				}
 
 				if(options.first || (!options.first && page <= last_page)){
-					templating({data, elem, options, ...args});
+					return ({data, elem, options, ...args});
 				}
 
-				// dispose shimmer
-				shi.dispose();
+			})
+			// 1.1 oh, shit! there was an error! reject, reject, reject!
+			.catch(function(error) {
+				return Promise.reject('Fetching failed with an error ' + error.status);
+			})
+			// 2. templating
+			.then(function({templating, ...args}) {
+				return templating({...args});
+			})
+			// 3. attaching event listener
+			.then(function({lifecycle, ...args}) {
+				// just make sure all content are appended/collected correctly
+				setTimeout(function() {
+					// run ASAP
+					lifecycle.onContentCollected({...args});
+				});
 
-				// page++
-				incrementPage();
-			}).catch(function(error) {
-				console.log('Whoopsie! ', error)
+				return {lifecycle, ...args};
+
+			})
+			// 4. appending element
+			.then(function({render, ...args}) {
+				return render({...args});
+			})
+			// 5. rendered
+			.then(function({lifecycle, ...args}) {
+				lifecycle.onContentLoaded();
+	
+				return Promise.resolve(1);
 			});
 		},
 	}
@@ -831,40 +872,46 @@ const post = (function() {
 				options, 
 				query,
 				template, 
-				templating, 
+				templating,
+				exception, 
 				lifecycle, 
 				loadMore,
 				shimmer,
 				page,
 				incrementPage,
 				queryPending,
+				interactions,
 				end,
 				endOfPage,
 				buildParams,
-				rendered
+				onrendered,
+				render
 			} = api;
 
 			// start implementing
-			api.run({
+			const instance = api.run({
 				elem,
 				options,
 				query,
 				template,
 				templating,
+				exception,
 				lifecycle,
 				loadMore,
 				shimmer,
 				page,
 				incrementPage,
 				queryPending,
+				interactions,
 				end,
 				endOfPage,
 				buildParams,
-				rendered
+				onrendered,
+				render
 			});
 
-			events = {
-				onRender: null
+			let events = {
+				onRender: instance
 			};
 
 			return events;

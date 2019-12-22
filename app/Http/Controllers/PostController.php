@@ -28,9 +28,7 @@ class PostController extends Controller
     }
 
 	public function posts(Request $request)
-	{
-		// simulate slow connection
-		// sleep(5);
+	{		
 
 		$posts = $this->postService->content(10, $request);
 
@@ -39,9 +37,6 @@ class PostController extends Controller
 
 	public function discover(Request $request)
 	{
-		// simulate slow connection
-		// sleep(5);
-
 		$posts = $this->postService->discover(10, $request);
 
 		return response()->json($posts);

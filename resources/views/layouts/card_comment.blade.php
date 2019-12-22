@@ -188,7 +188,17 @@
 
         function comment_go(id)
         {
-            window.scrollTo(0, $(id).offsetTop - 80);
+            function please_go() {
+                window.scrollTo(0, $(id).offsetTop - 80);
+            }
+
+            if(!$(id) && $('.comment-load')) {
+                return comment_load(function() {
+                    please_go();
+                });
+            }
+
+            please_go();
         }
 
         function comment(msg)

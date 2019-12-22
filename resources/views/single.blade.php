@@ -15,42 +15,41 @@
     <script>
         let mypost = post.init('.post', {
             url: routes.single + '{{ $post->slug }}',
-            params: (params) => ({
-            	ajax: 1
-            }),
             carousel: true,
             first: true
         });
 
-        mypost.onRender = function() {
+        mypost.onRender.then(function() {
         	$('#comment-box').classList.remove('hidden');
-        }
+        });
 
         $$('[data-fetch]').forEach(function(item) {
         	let url = item.dataset.fetch;
 
-        	(async function() {
-        		const res = await fetch(routes.post_link_info, {
-	        		method: 'POST',
-	        		headers: {
-						'X-CSRF-TOKEN': token,
-						'Content-Type': 'application/json',
-						'Accept': 'application/json'
-					},
-					body: JSON.stringify({
-						url
-					})
+        	if(url) {
+	        	(async function() {
+	        		const res = await fetch(routes.post_link_info, {
+		        		method: 'POST',
+		        		headers: {
+							'X-CSRF-TOKEN': token,
+							'Content-Type': 'application/json',
+							'Accept': 'application/json'
+						},
+						body: JSON.stringify({
+							url
+						})
+		        	});
+
+	        		if(res.ok) {
+	        			return Promise.resolve(res.json());
+	        		}
+	        	})()
+	        	.then(function(data) {
+	        		const { title } = data;
+
+		        	item.querySelector('.title').innerText = title;
 	        	});
-
-        		if(res.ok) {
-        			return Promise.resolve(res.json());
-        		}
-        	})()
-        	.then(function(data) {
-        		const { title } = data;
-
-	        	item.querySelector('.title').innerText = title;
-        	});
+	        }
         });
     </script>
 @endpush
