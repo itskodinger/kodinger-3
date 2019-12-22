@@ -247,3 +247,16 @@ function skills()
 {
 	return ['beginner', 'intermediate', 'advanced'];
 }
+
+
+function user_js()
+{
+	return collect(auth()->user())
+		->only([
+			'name', 
+			'the_username', 
+			'the_avatar_sm', 
+			'the_avatar'
+		])
+		->toJson();
+}

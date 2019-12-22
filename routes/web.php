@@ -83,7 +83,7 @@ Route::group(['prefix' => 'comments', 'as' => 'comment.'], function()
 		Route::post('/', 'CommentController@store')->name('store');
 		Route::delete('/delete', 'CommentController@destroy')->name('destroy');
 	});
-	Route::get('/{post_id}', 'CommentController@ajax')->name('ajax');
+	Route::get('/{post_id?}', 'CommentController@ajax')->name('ajax');
 });
 
 Route::get('/', 'FrontendController@index')->name('index');

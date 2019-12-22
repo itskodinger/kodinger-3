@@ -5,9 +5,12 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use GrahamCampbell\Markdown\Facades\Markdown;
 use Postcard;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
 {
+	use SoftDeletes;
+	
 	protected $table = 'posts';
 	protected $fillable = [
 		'title',

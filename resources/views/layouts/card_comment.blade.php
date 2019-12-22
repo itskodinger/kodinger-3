@@ -27,6 +27,7 @@
 
 @push('js')
     <script>
+        const post_id = '{{ $post->id }}';
         let comment_tmp = '\
             <div id="discuss-{id}" class="px-6 py-3 bg-gray-100 rounded-bl rounded-br cmt-{id}">\
                 <div class="flex">\
@@ -34,9 +35,9 @@
                     <div class="ml-3 w-full">\
                         <p class="mx-1 text-blue-500 text-xs font-semibold float-right cmt-time">{time}</p>\
                         <h4 class="mb-1 font-bold text-sm"><a class="text-indigo-600 cmt-name" href="'+ routes.base_url +'/{username}">{name}</a> <span class="text-gray-600 font-normal">({username})</span></h4>\
-                        <div class="text-sm text-gray-700 cmt-msg">\
+                        <div class="text-sm text-gray-700">\
                             {quoted}\
-                            <div class="cmt-content">{msg}</div>\
+                            <div class="cmt-content">{content}</div>\
                             {is_mine}{quote}<a class="text-xs" href="{currentUrl}#discuss-{id}">Permalink</a>\
                         </div>\
                     </div>\
@@ -55,7 +56,7 @@
         {
             if(!method) method = 'append';
 
-            let item = comment_tmp.replace(/{msg}/g, obj.msg);
+            let item = comment_tmp.replace(/{content}/g, obj.content);
             item = item.replace(/{currentUrl}/g, window.location.href)
             item = item.replace(/{avatar}/g, obj.avatar)
             item = item.replace(/{name}/g, obj.name)
@@ -72,6 +73,7 @@
                 quote_template = quote_template.replace(/{id}/, obj.reply.id);
                 quote_template = quote_template.replace(/{name}/, obj.reply.user.name);
                 quote_template = quote_template.replace(/{content}/, obj.reply.markdown);
+                quote_template = quote_template.replace(/quoted-cmt /, '');
                 item = item.replace(/{quoted}/g, quote_template);
 
                 item = findRemove(str2dom(item), '.quote-remove');
@@ -138,24 +140,24 @@
             const cmt = $('.cmt-' + id);
             adds(cmt.classList, 'opacity-50 pointer-events-none');
 
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == XMLHttpRequest.DONE) {
-                    let res = xhr.responseText;
-                    if(res)
-                        res = JSON.parse(res);
-
-                    if(res.status)
-                        cmt.remove();
-                    else
-                        cmt.classList.removes('opacity-50 pointer-events-none');
-                }
-            }
-            xhr.open("delete", "{{ route('comment.destroy') }}", true);
-            xhr.setRequestHeader("X-CSRF-TOKEN", $('[name=csrf-token]').getAttribute('content'));
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.setRequestHeader("Accept", "application/json");
-            xhr.send('id=' + id);
+            fetch(routes.comment_destory, {
+                headers: {
+                    'X-CSRF-TOKEN': token,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    id
+                }),
+                method: 'DELETE'
+            })
+            .then(res => res.json())
+            .then(function(res) {
+                if(res.status)
+                    cmt.remove();
+                else
+                    cmt.classList.removes('opacity-50 pointer-events-none');
+            });
         }
 
         function add_load_more()
@@ -189,7 +191,16 @@
         function comment_go(id)
         {
             function please_go() {
-                window.scrollTo(0, $(id).offsetTop - 80);
+                const el = $(id);
+                if(el) {
+                    window.scrollTo(0, el.offsetTop - 80);
+                    el.classList.remove('bg-gray-100');
+                    el.classList.add('bg-yellow-200');
+                    setTimeout(function() {
+                        el.classList.remove('bg-yellow-200');
+                        el.classList.add('bg-gray-100');
+                    }, 2000);
+                }
             }
 
             if(!$(id) && $('.comment-load')) {
@@ -201,96 +212,90 @@
             please_go();
         }
 
-        function comment(msg)
+        function comment(content)
         {
 
-            if(msg.trim().length < 1)
+            if(content.trim().length < 1)
                 return;
 
             let temp_id = id();
             const reply_id = $('.reply-id').value;
 
             let item = comment_add({
-                name: '{{ optional(auth()->user())->name }}',
-                username: '{{ optional(auth()->user())->the_username }}',
-                avatar: '{{ optional(auth()->user())->the_avatar }}',
+                name: user.name,
+                username: user.the_username,
+                avatar: user.the_avatar_sm,
                 id: temp_id,
                 is_mine: false,
-                msg: '<i>Mengirim ...</i>',
+                content: '<i>Mengirim ...</i>',
                 time: 'Baru Saja',
             }, 'opacity-50 pointer-events-none', 'prepend');
 
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == XMLHttpRequest.DONE) {
-                    let res = xhr.responseText;
-                    if(res)
-                        res = JSON.parse(res);
+            fetch(routes.comment_store, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': token,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    reply_id,
+                    content,
+                    post_id
+                })
+            })
+            .then(res => res.json())
+            .then(function(res) {
+                comment_add({
+                    name: res.data.user.name,
+                    username: res.data.user.the_username,
+                    avatar: res.data.user.the_avatar_sm,
+                    id: res.data.id,
+                    is_mine: res.data.is_mine,
+                    time: res.data.time,
+                    content: res.data.markdown,
+                    reply: res.data.reply
+                }, false, 'after', $('.cmt-' + temp_id));
 
-                    comment_add({
-                        name: res.data.user.name,
-                        username: res.data.user.the_username,
-                        avatar: res.data.user.the_avatar_sm,
-                        id: res.data.id,
-                        is_mine: res.data.is_mine,
-                        time: res.data.time,
-                        msg: res.data.markdown,
-                        reply: res.data.reply
-                    }, false, 'after', $('.cmt-' + temp_id));
+                $('.cmt-' + temp_id).remove();
 
-                    $('.cmt-' + temp_id).remove();
-
-                    quote_remove();
-                }
-            }
-            xhr.open("post", "{{ route('comment.store') }}", true);
-            xhr.setRequestHeader("X-CSRF-TOKEN", $('[name=csrf-token]').getAttribute('content'));
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.setRequestHeader("Accept", "application/json");
-            xhr.send('reply_id='+ reply_id +'&content=' + msg + '&post_id='+{{$post->id}});
+                quote_remove();
+            });
         }
 
         let take = 10,
             offset = 0;
         function comment_load(done)
         {
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == XMLHttpRequest.DONE) {
-                    let res = xhr.responseText;
-                    if(res)
-                        res = JSON.parse(res);
+            fetch(routes.comment_ajax + '{{ $post->id }}??take=' + take + '&offset=' + offset)
+            .then(res => res.json())
+            .then(function(res) {
+                remove_load_more();
 
+                res.data.forEach((item) => {
+                    comment_add({
+                        id: item.id,
+                        name: item.user.name,
+                        username: item.user.the_username,
+                        avatar: item.user.the_avatar_sm,
+                        content: item.markdown,
+                        time: item.time,
+                        is_mine: item.is_mine,
+                        reply: item.reply
+                    }, false, 'append');
+                });
+
+                if(res.total > 10)
+                    add_load_more();
+
+                offset += res.count;
+
+                if(res.count <= 10 && offset >= res.total)
                     remove_load_more();
 
-                    res.data.forEach((item) => {
-                        comment_add({
-                            id: item.id,
-                            name: item.user.name,
-                            username: item.user.the_username,
-                            avatar: item.user.the_avatar_sm,
-                            msg: item.markdown,
-                            time: item.time,
-                            is_mine: item.is_mine,
-                            reply: item.reply
-                        }, false, 'append');
-                    });
-
-                    if(res.total > 10)
-                        add_load_more();
-
-                    offset += res.count;
-
-                    if(res.count <= 10 && offset >= res.total)
-                        remove_load_more();
-
-                    if(done)
-                        done.call(this, res);
-                }
-            }
-            xhr.open("get", "{{ route('comment.ajax', $post->id) }}?take=" + take + '&offset=' + offset, true);
-            xhr.setRequestHeader("Accept", "application/json");
-            xhr.send();
+                if(done)
+                    done.call(this, res);
+            })
         }
 
         comment_load(function(res) {

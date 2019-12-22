@@ -4,9 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use GrahamCampbell\Markdown\Facades\Markdown;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Comment extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'comments';
     protected $fillable = [
 		'reply_id',
@@ -45,6 +48,6 @@ class Comment extends Model
 
     public function reply()
     {
-        return $this->belongsTo('App\Comment', 'reply_id');
+        return $this->belongsTo('App\Comment', 'reply_id')->withTrashed();
     }
 }

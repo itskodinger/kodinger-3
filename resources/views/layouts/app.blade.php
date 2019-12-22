@@ -130,8 +130,12 @@
                 single: '@route('single')/',
                 post_store_discover: '@route('post.store_discover')',
                 post_tags: '@route('post.tags')',
-                post_link_info: '@route('post.getLinkInfo')'
+                post_link_info: '@route('post.getLinkInfo')',
+                comment_ajax: '@route('comment.ajax')/',
+                comment_store: '@route('comment.store')',
+                comment_destory: '@route('comment.destroy')'
             },
+            user = {!! user_js() !!},
             $ = document.querySelector.bind(document),
             $$ = document.querySelectorAll.bind(document),
             token = $('[name=csrf-token]').getAttribute('content');

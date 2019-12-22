@@ -45,9 +45,11 @@
 	        		}
 	        	})()
 	        	.then(function(data) {
-	        		const { title } = data;
+	        		if(data) {
+		        		const { title } = data;
 
-		        	item.querySelector('.title').innerText = title;
+			        	item.querySelector('.title').innerText = title;
+	        		}
 	        	});
 	        }
         });
