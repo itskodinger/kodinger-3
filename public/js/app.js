@@ -682,12 +682,12 @@ const post = (function() {
 			}
 
 			return new Promise(function(resolve, reject) {
-				if(!posts.length) return reject({ empty: true, ...args });
-
 				// if `posts`` has only one data 
 				if(options.first){
 					appendingTemplate(posts);
 				}else{
+					if(!posts.length) return reject({ empty: true, ...args });
+
 					// if `posts` has many post data
 					// then iterate it
 					posts.forEach(function(post) {
@@ -905,87 +905,74 @@ const post = (function() {
 
 	const post = {
 		init: function(target, opts) {
+			// set target element
+			api.target = target;
 
-			const initializing = new Promise(function(resolve, reject) {
-				// set target element
-				api.target = target;
+			if(!api.elem) {
+				return console.error('Oh, sh!t. Target element couldn\'t be found. 😭');
+			}
 
-				const { elem } = api;
+			// set options
+			api.opts = opts;
 
-				if(!elem) {
-					console.error('Oh, sh!t. Target element couldn\'t be found. 😭');
-					return reject(0);
-				}
+			// set page
+			if(!api.options.first)
+				api.initPage = api.options.page;
 
-				return resolve(1);
+			// set end of page
+			api.endOfPage.start();
+
+			// destructuring
+			const {
+				elem, 
+				options, 
+				query,
+				template, 
+				templating,
+				exception, 
+				lifecycle, 
+				loadMore,
+				shimmer,
+				page,
+				incrementPage,
+				queryPending,
+				interactions,
+				end,
+				endOfPage,
+				buildParams,
+				lastData,
+				onrendered,
+				render
+			} = api;
+
+			// start implementing
+			const instance = api.run({
+				elem,
+				options,
+				query,
+				template,
+				templating,
+				exception,
+				lifecycle,
+				loadMore,
+				shimmer,
+				page,
+				incrementPage,
+				queryPending,
+				interactions,
+				end,
+				endOfPage,
+				buildParams,
+				lastData,
+				onrendered,
+				render
 			});
 
-			initializing.then(function() {
-				// set options
-				api.opts = opts;
+			let events = {
+				onRender: instance
+			};
 
-				// set page
-				if(!api.options.first)
-					api.initPage = api.options.page;
-
-				// set end of page
-				api.endOfPage.start();
-
-				// destructuring
-				const {
-					elem, 
-					options, 
-					query,
-					template, 
-					templating,
-					exception, 
-					lifecycle, 
-					loadMore,
-					shimmer,
-					page,
-					incrementPage,
-					queryPending,
-					interactions,
-					end,
-					endOfPage,
-					buildParams,
-					lastData,
-					onrendered,
-					render
-				} = api;
-
-				// start implementing
-				const instance = api.run({
-					elem,
-					options,
-					query,
-					template,
-					templating,
-					exception,
-					lifecycle,
-					loadMore,
-					shimmer,
-					page,
-					incrementPage,
-					queryPending,
-					interactions,
-					end,
-					endOfPage,
-					buildParams,
-					lastData,
-					onrendered,
-					render
-				});
-
-				let events = {
-					onRender: instance
-				};
-
-				return events;
-			}).catch(function() {
-
-			});
-
+			return events;
 		}
 	}
 

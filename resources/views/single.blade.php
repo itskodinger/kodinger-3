@@ -35,7 +35,7 @@
         	 * Links
         	 */
 
-	        let link_tpl = function({name, links}) {
+	        let link_tpl = function({originalName, name, links}) {
 	        	return `
 	                <div class="mb-12">
 	                	<h2 class="pb-3 font-bold text-indigo-600">${name}</h2>
@@ -59,7 +59,7 @@
 			            `
 		            	}
 		                	<div class="flex items-center text-sm justify-center px-2 py-2 border-b border-gray-100">
-			                	<a href="${routes.contribute.replace(/slug/g, post_data.slug)}" class="inline-block text-sm bg-indigo-600 hover:bg-indigo-700 border border-indigo-600 text-white rounded py-1 px-4">Rekomendasikan</a>
+			                	<a href="${routes.contribute_create.replace(/slug/g, post_data.slug)}?col=${originalName}" class="inline-block text-sm bg-indigo-600 hover:bg-indigo-700 border border-indigo-600 text-white rounded py-1 px-4">Rekomendasikan</a>
 		                	</div>
 		                </div>
 	                </div>
@@ -72,7 +72,7 @@
 		    el.innerHTML = '';
 
 		    link_names.forEach(function(name) {
-		    	el.insertAdjacentHTML('beforeEnd', link_tpl({name: key2str[name], links: data[name]}));
+		    	el.insertAdjacentHTML('beforeEnd', link_tpl({name: key2str[name], links: data[name], originalName: name}));
 		    });
 
 		    /**

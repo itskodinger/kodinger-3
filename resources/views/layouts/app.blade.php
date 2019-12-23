@@ -136,6 +136,7 @@
                 comment_store: '@route('comment.store')',
                 comment_destory: '@route('comment.destroy')',
                 contribute: '@route('contributes', ['slug' => 'slug'])',
+                contribute_create: '@route('contribute.create', 'slug')',
                 profile_loves: '@route('loves', 'slug')',
                 profile_saves: '@route('saves')',
             },

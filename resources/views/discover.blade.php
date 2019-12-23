@@ -157,39 +157,41 @@
             } else {
                 adds(btn.classList, 'pointer-events-none opacity-50');
 
-                const posting = (async function() {
-                    const res = await fetch(routes.post_store_discover, {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': token,
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            pages: link.value,
-                            tags: tag_ids
-                        })
-                    });
+                console.log(posts)
 
-                    return Promise.resolve(res);
-                })()
-                // on complete
-                .then(function(res) {
-                    removes(btn.classList, 'pointer-events-none opacity-50');
+                // const posting = (async function() {
+                //     const res = await fetch(routes.post_store_discover, {
+                //         method: 'POST',
+                //         headers: {
+                //             'X-CSRF-TOKEN': token,
+                //             'Content-Type': 'application/json',
+                //             'Accept': 'application/json'
+                //         },
+                //         body: JSON.stringify({
+                //             pages: link.value,
+                //             tags: tag_ids
+                //         })
+                //     });
 
-                    if(res.ok) {
-                        return Promise.resolve(res.json());
-                    }
+                //     return Promise.resolve(res);
+                // })()
+                // // on complete
+                // .then(function(res) {
+                //     removes(btn.classList, 'pointer-events-none opacity-50');
 
-                    return Promise.reject(res);
-                })
-                .then(function(res) {
-                    console.log(res);
-                })
-                .catch(function(error) {
-                    if(error.status == 401)
-                        alert('Anda perlu login dulu!')
-                });
+                //     if(res.ok) {
+                //         return Promise.resolve(res.json());
+                //     }
+
+                //     return Promise.reject(res);
+                // })
+                // .then(function(res) {
+                //     console.log(res);
+                // })
+                // .catch(function(error) {
+                //     if(error.status == 401)
+                //         alert('Anda perlu login dulu!')
+                // });
             }
 
             e.preventDefault();
