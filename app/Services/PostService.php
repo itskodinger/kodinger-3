@@ -122,7 +122,7 @@ class PostService
 				});
 			}
 
-			if($request->user) {
+			if(isset($request->user)) {
 				$posts = $posts->whereUserId($request->user);
 			}
 		}

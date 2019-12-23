@@ -682,6 +682,8 @@ const post = (function() {
 			}
 
 			return new Promise(function(resolve, reject) {
+				if(!posts.length) return reject({ empty: true, ...args });
+
 				// if `posts`` has only one data 
 				if(options.first){
 					appendingTemplate(posts);
@@ -691,7 +693,7 @@ const post = (function() {
 					posts.forEach(function(post) {
 						if(!checkPost(post)) {
 							post = post.post;
-							
+
 							if(!checkPost(post))
 								return reject('Bad schema data');
 						}
@@ -810,11 +812,13 @@ const post = (function() {
 			endOfPage.init();
 		},
 
-		exception: function() {
-			console.log('error')
+		exception: {
+			empty: function({elem}) {
+				elem.insertAdjacentHTML('beforeEnd', '<p>Nggak ada isinya 😭</p>');
+			}
 		},
 
-		run: function({elem, exception, end, options, lastData, buildParams, shimmer, queryPending, query, ...args}) {
+		run: function({elem, end, options, lastData, buildParams, shimmer, queryPending, query, ...args}) {
 			// get new page (don't retrieve from the argument)
 			const {page, incrementPage} = api;
 
@@ -859,7 +863,18 @@ const post = (function() {
 				})
 				// 2. templating
 				.then(function({templating, ...args}) {
-					return templating({...args});
+					// i promise you <3
+					return new Promise(function(resolve) {
+						templating({...args}).then(function(res) {
+							// templating success
+							return resolve(res);
+						}).catch(function({empty, exception, ...args}) {
+							// if empty data
+							if(empty) {
+								exception.empty({...args});
+							}
+						});
+					});
 				})
 				// 3. attaching event listener
 				.then(function({lifecycle, ...args}) {
@@ -870,7 +885,6 @@ const post = (function() {
 					});
 
 					return {lifecycle, ...args};
-
 				})
 				// 4. appending element
 				.then(function({render, ...args}) {
