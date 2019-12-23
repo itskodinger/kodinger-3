@@ -39,9 +39,9 @@
 	        	return `
 	                <div class="mb-12">
 	                	<h2 class="pb-3 font-bold text-indigo-600">${name}</h2>
+	                	<div class="bg-white rounded border-2 border-gray-200">
 	                	${ links.length > 0 ?
-	                	`<div class="bg-white rounded border-2 border-gray-200">
-	                		${links.map(function(page) {
+	                		links.map(function(page) {
 	                		return `
 		                		<a data-fetch="${page}" class="flex items-center hover:bg-gray-100 px-5 py-4 border-b border-gray-100" href="${ page }">
 			                		<img class="w-8 flex-shrink-0" src="https://s2.googleusercontent.com/s2/favicons?domain_url=${ page }">
@@ -50,16 +50,18 @@
 				                		<span class="text-xs text-gray-700 truncate">${page}</span>
 			                		</div>
 			                	</a>`
-			                })}
-		                	<div class="flex items-center text-sm justify-center px-2 py-2 border-b border-gray-100">
-			                	<a href="" class="inline-block text-sm bg-indigo-600 hover:bg-indigo-700 border border-indigo-600 text-white rounded py-1 px-4">Rekomendasikan</a>
-		                	</div>
-		                </div>`
-		                : // else
-		                `<div class="bg-white border-2 border-gray-200 rounded p-4 text-sm text-center mb-3">
+			                })
+			            : // else
+			            `
+			            <div class="px-5 py-4 border-b border-gray-100 text-center text-sm">
 		                	<h4>Tidak ada link ${name}</h4>
-		                	<a href="#" class="inline-block mt-3 text-sm bg-indigo-600 hover:bg-indigo-700 border border-indigo-600 text-white rounded py-1 px-4">Rekomendasikan</a>
-		                </div>`}
+	                	</div>
+			            `
+		            	}
+		                	<div class="flex items-center text-sm justify-center px-2 py-2 border-b border-gray-100">
+			                	<a href="${routes.contribute.replace(/slug/g, post_data.slug)}" class="inline-block text-sm bg-indigo-600 hover:bg-indigo-700 border border-indigo-600 text-white rounded py-1 px-4">Rekomendasikan</a>
+		                	</div>
+		                </div>
 	                </div>
 		        `;
 		    }

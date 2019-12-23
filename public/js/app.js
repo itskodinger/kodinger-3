@@ -559,7 +559,11 @@ const post = (function() {
 		elem: undefined,
 
 		set target(elem) {
-			this.elem = $(elem);
+			if($(elem) !== null) {
+				return this.elem = $(elem);
+			}
+
+			return this.elem = false;
 		},
 
 		set initPage(num) {
@@ -669,6 +673,14 @@ const post = (function() {
 				);
 			}
 
+			let checkPost = function(post, tolerance) {
+				if(!tolerance && "post" in post) {
+					return false;
+				}
+
+				return true;
+			}
+
 			return new Promise(function(resolve, reject) {
 				// if `posts`` has only one data 
 				if(options.first){
@@ -677,6 +689,13 @@ const post = (function() {
 					// if `posts` has many post data
 					// then iterate it
 					posts.forEach(function(post) {
+						if(!checkPost(post)) {
+							post = post.post;
+							
+							if(!checkPost(post))
+								return reject('Bad schema data');
+						}
+
 						appendingTemplate(post);
 					});
 				}
@@ -872,70 +891,87 @@ const post = (function() {
 
 	const post = {
 		init: function(target, opts) {
-			// set target element
-			api.target = target;
 
-			// set options
-			api.opts = opts;
+			const initializing = new Promise(function(resolve, reject) {
+				// set target element
+				api.target = target;
 
-			// set page
-			if(!api.options.first)
-				api.initPage = api.options.page;
+				const { elem } = api;
 
-			// set end of page
-			api.endOfPage.start();
+				if(!elem) {
+					console.error('Oh, sh!t. Target element couldn\'t be found. 😭');
+					return reject(0);
+				}
 
-			// destructuring
-			const {
-				elem, 
-				options, 
-				query,
-				template, 
-				templating,
-				exception, 
-				lifecycle, 
-				loadMore,
-				shimmer,
-				page,
-				incrementPage,
-				queryPending,
-				interactions,
-				end,
-				endOfPage,
-				buildParams,
-				lastData,
-				onrendered,
-				render
-			} = api;
-
-			// start implementing
-			const instance = api.run({
-				elem,
-				options,
-				query,
-				template,
-				templating,
-				exception,
-				lifecycle,
-				loadMore,
-				shimmer,
-				page,
-				incrementPage,
-				queryPending,
-				interactions,
-				end,
-				endOfPage,
-				buildParams,
-				lastData,
-				onrendered,
-				render
+				return resolve(1);
 			});
 
-			let events = {
-				onRender: instance
-			};
+			initializing.then(function() {
+				// set options
+				api.opts = opts;
 
-			return events;
+				// set page
+				if(!api.options.first)
+					api.initPage = api.options.page;
+
+				// set end of page
+				api.endOfPage.start();
+
+				// destructuring
+				const {
+					elem, 
+					options, 
+					query,
+					template, 
+					templating,
+					exception, 
+					lifecycle, 
+					loadMore,
+					shimmer,
+					page,
+					incrementPage,
+					queryPending,
+					interactions,
+					end,
+					endOfPage,
+					buildParams,
+					lastData,
+					onrendered,
+					render
+				} = api;
+
+				// start implementing
+				const instance = api.run({
+					elem,
+					options,
+					query,
+					template,
+					templating,
+					exception,
+					lifecycle,
+					loadMore,
+					shimmer,
+					page,
+					incrementPage,
+					queryPending,
+					interactions,
+					end,
+					endOfPage,
+					buildParams,
+					lastData,
+					onrendered,
+					render
+				});
+
+				let events = {
+					onRender: instance
+				};
+
+				return events;
+			}).catch(function() {
+
+			});
+
 		}
 	}
 

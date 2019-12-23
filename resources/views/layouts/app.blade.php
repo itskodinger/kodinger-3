@@ -125,6 +125,7 @@
         const routes = { 
                 save: '@route('saves.store')',
                 post: '@route('post.posts')',
+                post_both: '@route('post.both')',
                 discover: '@route('post.discover')',
                 base_url: '{{ url('') }}',
                 single: '@route('single')/',
@@ -133,7 +134,10 @@
                 post_link_info: '@route('post.getLinkInfo')',
                 comment_ajax: '@route('comment.ajax')/',
                 comment_store: '@route('comment.store')',
-                comment_destory: '@route('comment.destroy')'
+                comment_destory: '@route('comment.destroy')',
+                contribute: '@route('contributes', ['slug' => 'slug'])',
+                profile_loves: '@route('loves', 'slug')',
+                profile_saves: '@route('saves')',
             },
             user = {!! user_js() !!},
             $ = document.querySelector.bind(document),

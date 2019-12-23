@@ -48,9 +48,12 @@ Route::group(['prefix' => 'posts', 'as' => 'post.', 'middleware' => 'auth'], fun
 		Route::post('/', 'PostController@store')->name('store')->middleware('permission:post-create');
 		Route::post('/discover', 'PostController@storeDiscover')->name('store_discover');
 	});
+
+	// AJAX
 	Route::post('/link-info', 'PostController@getLinkInfo')->name('getLinkInfo');
 	Route::get('/tags', 'PostController@tags')->name('tags');
 	Route::get('/posts', 'PostController@posts')->name('posts');
+	Route::get('/both', 'PostController@both')->name('both');
 	Route::get('/discover', 'PostController@discover')->name('discover');
 });
 
@@ -93,7 +96,7 @@ Route::get('/contact', 'FrontendController@contact')->name('contact');
 Route::get('/discover/{tag?}', 'FrontendController@discover')->name('discover');
 Route::get('/{slug}/loves', 'FrontendController@profileLoves')->name('loves');
 Route::get('/saves', 'FrontendController@profileSaves')->name('saves');
-Route::get('/{slug}/contributes', 'FrontendController@contributes')->name('contributes');
+Route::get('/{slug?}/contributes', 'FrontendController@contributes')->name('contributes');
 Route::get('/{slug}/discuss', 'FrontendController@discuss')->name('discuss');
 Route::get('/setting', 'FrontendController@setting')->name('setting');
 Route::post('/setting', 'FrontendController@settingUpdate')->name('setting_update');

@@ -9,14 +9,30 @@ use App\Post;
 use App\PostTag;
 use App\Contribute;
 use App\Events\Post\Discover\DiscoverPostCreated;
+use Services\UserService;
 
 class PostService
 {
 	protected $init;
+	protected $userService;
+
+	public function __construct(UserService $userService) {
+		$this->userService = $userService;
+	}
 
 	public function model()
 	{
-		return Post::with(['tags', 'tags.tag', 'user', 'comments']);
+		return Post::with($this->with());
+	}
+
+	protected function with($parent=false, $arr2=[])
+	{
+		return array_merge([
+			($parent ? $parent . '.' : '') . 'tags', 
+			($parent ? $parent . '.' : '') . 'tags.tag', 
+			($parent ? $parent . '.' : '') . 'user', 
+			($parent ? $parent . '.' : '') . 'comments'
+		], $arr2);
 	}
 
 	public function find($id)
@@ -34,6 +50,20 @@ class PostService
 		$this->init = $this->model()->whereType('link');
 
 		return $this->paginate(...$args);
+	}
+
+	public function myLovesBySlug($user, $request)
+	{
+		$posts = $user->lovePosts()->with($this->with('post', ['post']))->paginate(10);	
+
+		return $posts;
+	}
+
+	public function mySavesBySlug($user, $request)
+	{
+		$posts = $user->savePosts()->with($this->with('post', ['post']))->paginate(10);	
+
+		return $posts;
 	}
 
 	public function createDiscover($request)
@@ -61,6 +91,13 @@ class PostService
 		return $this->paginate(...$args);
 	}
 
+	public function both(...$args)
+	{
+		$this->init = $this->model();
+
+		return $this->paginate(...$args);
+	}
+
 	public function paginate($num=10, $request=false)
 	{
 		$posts = $this->init ?? $this->model();
@@ -83,6 +120,10 @@ class PostService
 				$posts = $posts->whereHas('tags', function($q) use($tag_id) {
 					$q = $q->whereTagId($tag_id);
 				});
+			}
+
+			if($request->user) {
+				$posts = $posts->whereUserId($request->user);
 			}
 		}
 

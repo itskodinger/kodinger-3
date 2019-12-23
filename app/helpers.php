@@ -257,6 +257,7 @@ function user_js()
 {
 	return collect(auth()->user())
 		->only([
+			'id',
 			'name', 
 			'the_username', 
 			'the_avatar_sm', 
