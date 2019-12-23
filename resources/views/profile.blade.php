@@ -8,16 +8,7 @@
 
 @push('js')
     <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
-    <script src="{{ mix('js/app.js') }}"></script>
-    <script>
-        let posts = post.init('.posts', {
-            url: routes.post_both,
-            params: params => ({
-                ...params,
-                user: user.id
-            }),
-            carousel: false,
-            truncate_content: true
-        });
-    </script>
+    <script src="{{ asset('js/post.js') }}"></script>
+    <script>const this_user = '{{$user->username}}';</script>
+    <script src="{{ asset('js/profile.js') }}"></script>
 @endpush

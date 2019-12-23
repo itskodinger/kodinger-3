@@ -200,6 +200,7 @@
                 $('.user-dropdown-menu').classList.add('hidden');
         });
     </script>
+    <script src="{{ asset('js/app.js') }}"></script>
 
     @stack('js')
 </body>

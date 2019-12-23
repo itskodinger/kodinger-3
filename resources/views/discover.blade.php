@@ -157,7 +157,10 @@
             } else {
                 adds(btn.classList, 'pointer-events-none opacity-50');
 
-                console.log(posts)
+                posts.shimmer.add({
+                    elem: posts.elem,
+                    position: 'afterBegin'
+                });
 
                 // const posting = (async function() {
                 //     const res = await fetch(routes.post_store_discover, {

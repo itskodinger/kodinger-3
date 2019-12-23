@@ -122,8 +122,10 @@ class PostService
 				});
 			}
 
-			if(isset($request->user)) {
-				$posts = $posts->whereUserId($request->user);
+			if(isset($request->username)) {
+				$posts = $posts->whereHas('user', function($query) use($request) {
+					return $query->whereUsername($request->username);
+				});
 			}
 		}
 
