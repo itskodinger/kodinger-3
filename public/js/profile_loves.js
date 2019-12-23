@@ -1,8 +1,8 @@
 let posts = Kodinger.API.Post.init('.posts', {
-    url: routes.post_both,
+    url: routes.profile_loves.replace(/slug/g, slug),
     params: params => ({
         ...params,
-        username: this_user
+        ajax: '1'
     }),
     truncate_content: true
 });

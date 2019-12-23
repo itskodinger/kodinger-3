@@ -8,16 +8,6 @@
 
 @push('js')
     <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
-    <script src="{{ mix('js/app.js') }}"></script>
-    <script>
-        let posts = post.init('.posts', {
-            url: routes.profile_saves,
-            params: params => ({
-                ...params,
-                ajax: '1'
-            }),
-            carousel: false,
-            truncate_content: true
-        });
-    </script>
+    <script src="{{ asset('js/post.js') }}"></script>
+    <script src="{{ asset('js/profile_saves.js') }}"></script>
 @endpush

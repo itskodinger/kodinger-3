@@ -29,8 +29,8 @@
                     @endcan
                     @endif
                     @can('contribute-delete')
-                    <a class="mx-3 text-red-600 cursor-pointer" onclick="let c = confirm('Are you sure?'); if(!c) return false; else document.getElementById('delete').submit();">Delete</a>
-                    <form action="{{ route('contribute.delete', $contribute->id) }}" method="post" id="delete">
+                    <a class="mx-3 text-red-600 cursor-pointer" onclick="let c = confirm('Are you sure?'); if(!c) return false; else document.getElementById('delete{{$contribute->id}}').submit();">Delete</a>
+                    <form action="{{ route('contribute.delete', $contribute->id) }}" method="post" id="delete{{$contribute->id}}">
                         {!! method_field('delete') !!}
                         @csrf
                     </form>

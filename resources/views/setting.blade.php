@@ -11,7 +11,7 @@
             <label class="relative inline-block cursor-pointer">
                 <div style="background-image: url({{ $user->the_avatar }});" class="w-32 h-32 bg-cover bg-center rounded-lg border {{ $errors->has('avatar') ? 'border-red-600' : 'border-gray-400'}}" id="avatar"></div>
                 <input type="file" name="avatar" class="avatar-field hidden">
-                <div class="absolute bottom-0 right-0 z-10 bg-black text-white rounded-tl text-sm py-1 px-2">Pilih Foto</div>
+                <div class="absolute bottom-0 right-0 z-1 bg-black text-white rounded-tl text-sm py-1 px-2">Pilih Foto</div>
             </label>
 
             @if($errors->has('avatar'))
@@ -109,17 +109,5 @@
 @stop
 
 @push('js')
-<script>
-    let avatar_field = $('.avatar-field');
-    
-    avatar_field.addEventListener('change', function() {
-        var reader = new FileReader();
-
-        reader.onload = function(e) {
-            $('#avatar').style.backgroundImage = 'url(' + e.target.result + ')';
-        }
-
-        reader.readAsDataURL(this.files[0]);
-    });
-</script>
+<script src="{{ asset('js/setting.js') }}"></script>
 @endpush
