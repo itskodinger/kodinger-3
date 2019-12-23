@@ -21,7 +21,7 @@
                                 Berbagi dengan komunitas
                             </h1>
                             <div class="focus-within:border-indigo-500 px-4 py-3 rounded border border-gray-200">
-                                <textarea name="link" placeholder="Bagikan link artikel, video, e-book atau apapun yang kamu buat sendiri atau kamu temukan di sini. (cth. https://kodinger.com/artikel)" class="focus:outline-none w-full h-16 text-sm resize-none input-link"></textarea>
+                                <input name="link" placeholder="Taruh link di sini (cth. https://kodinger.com/artikel)" class="focus:outline-none w-full text-sm resize-none input-link">
                                 <input type="text" name="tags[]" class="tags border-l-0 border-r-0 border-b-0 border-t mt-4 w-full focus:outline-none text-sm pt-2">
                             </div>
                         </div>
