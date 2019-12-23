@@ -34,7 +34,7 @@ Route::group(['prefix' => 'communities', 'as' => 'community.', 'middleware' => '
 	Route::post('/', 'CommunityController@store')->name('store')->middleware('permission:community-create');
 });
 
-Route::group(['prefix' => 'posts', 'as' => 'post.', 'middleware' => 'auth'], function() 
+Route::group(['prefix' => 'posts', 'as' => 'post.'], function() 
 {
 	Route::group(['middleware' => 'auth'], function() 
 	{

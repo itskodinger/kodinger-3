@@ -10,14 +10,17 @@ function nl_array($str)
 	return $arr;
 }
 
-function nl_list($str, $class='', $tag='div')
+function nl_list($str, $class='', $tag='div', $plus=null)
 {
-	$arr = nl_array($str);
+	$arr = $str;
+	if(!is_array($str))
+		$arr = nl_array($str);
 
 	$out = '';
 	foreach($arr as $r)
 	{
-		$out .= '<' . $tag . ' class="'.$class.'">' . $r . '</'. $tag .'>';
+		if($r)
+			$out .= '<' . $tag . ' class="'.$class.'">' . ($plus ? $plus . ' ' : '') . $r . '</'. $tag .'>';
 	}
 
 	return $out;

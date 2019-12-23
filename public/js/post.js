@@ -89,16 +89,28 @@ Kodinger.API.Post = (function() {
 								})
 							});
 
-							return await res.json();
+							if(!res.ok)
+								return Promise.reject(res);
+
+							const json = await res.json();
+
+							return Promise.resolve(json);
 						})()
-						.then(function(res) {
+						.finally(function() {
 							find(item, 'svg').remove();
 							item.classList.remove('pointer-events-none');
-					
+						})
+						.then(function(res) {
 							is_saved = res.saved; 
 							item.dataset.saved = res.saved;
 
 							toggle_icon_save(is_saved, item);
+						})
+						.catch(function(error) {
+							toggle_icon_save(false, item);
+
+							if(error.status == 401)
+								alert('Login dulu bro');
 						});
 
 						e.preventDefault();
@@ -149,16 +161,27 @@ Kodinger.API.Post = (function() {
 								})
 							});
 
-							return await res.json();
+							if(!res.ok)
+								return Promise.reject(res);
+
+							const json = await res.json();
+
+							return Promise.resolve(json);
 						})()
-						.then(function(res) {
+						.finally(function() {
 							find(item, 'span svg').remove();
 							item.classList.remove('pointer-events-none');
-					
+						})
+						.then(function(res) {
 							is_loved = res.saved; 
 							item.dataset.loved = res.saved;
 
 							toggle_icon_love(is_loved, item);
+						})
+						.catch(function(error) {
+							toggle_icon_love(false, item);
+							if(error.status == 401)
+								alert('Login dulu')
 						});
 
 						e.preventDefault();

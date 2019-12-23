@@ -46,7 +46,7 @@ mypost.onRender.then(function({lastData: {data}}) {
     }
 
     const el = $('.links');
-    const link_names = ['pages', 'inspirations', 'helps', 'tutorials', 'examples'];
+    const link_names = ['pages', 'tutorials', 'helps', 'examples'];
 
     el.innerHTML = '';
 

@@ -137,6 +137,7 @@
                 comment_destory: '@route('comment.destroy')',
                 contribute: '@route('contributes', ['slug' => 'slug'])',
                 contribute_create: '@route('contribute.create', 'slug')',
+                contribute_links: '@route('contribute.links', ['post_id', 'col'])',
                 profile_loves: '@route('loves', 'slug')',
                 profile_saves: '@route('saves')',
             },
@@ -196,7 +197,7 @@
 
         $('body').addEventListener('click', function(e) {
             // close dropdown
-            if(e.target && !e.target.classList.contains('user-dropdown'))
+            if(e.target && !e.target.classList.contains('user-dropdown') && $('.user-dropdown-menu'))
                 $('.user-dropdown-menu').classList.add('hidden');
         });
     </script>

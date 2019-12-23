@@ -114,8 +114,8 @@ class FrontendController extends Controller
 
 	public function discuss($slug)
 	{
-		$comments = $this->commentService->mine();
 		$user = $this->userService->findByUsername($slug);
+		$comments = $this->commentService->mine($user->id);
 
 		return view('discuss', compact('comments', 'user'));
 	}
