@@ -10,12 +10,18 @@ Pusher.logToConsole = true;
 
 var pusher = new Pusher('7c229895dc6ebac97025', {
   cluster: 'ap1',
-  forceTLS: true
+  useTLS: true
 });
 
 var channel = pusher.subscribe(`discover.created.${user.id}`);
+channel.bind('App\\Events\\Post\\Discover\\DiscoverPostCreated', function(data) {
+  console.log('yesss ', data);
+});
 channel.bind('DiscoverPostCreated', function(data) {
-  console.log(data);
+  console.log('aaayesss ', data);
+});
+channel.bind('pusher:subscription_succeeded', function(data) {
+  console.log('aaaa ', data);
 });
 
 

@@ -40,6 +40,6 @@ class DiscoverPostCreated implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('discover.created.' . $this->post->user->id);
+        return new PrivateChannel('discover.created.' . $this->post->user_id);
     }
 }
