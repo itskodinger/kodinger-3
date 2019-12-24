@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Post extends Model
 {
 	use SoftDeletes;
-	
+
 	protected $table = 'posts';
 	protected $fillable = [
 		'title',
@@ -115,7 +115,12 @@ class Post extends Model
 
 	public function user()
 	{
-		return $this->hasOne('App\User', 'id', 'user_id');
+		return $this->hasOne('App\User', 'id', 'user_id')->select([
+			'id', 
+			'name',
+			'username',
+			'avatar'
+		]);
 	}
 
 	public function comments()

@@ -358,7 +358,7 @@ Kodinger.API.Post = (function() {
 			<div class="bg-white rounded border-2 border-gray-200 mb-10">
 			    <div class="flex p-6 items-center">
 			        <a href="${routes.single + post.user.the_username}">
-			            <img class="rounded w-12 rounded" src="${ post.user.the_avatar_sm }">
+			            <img class="rounded w-12 rounded border" src="${ post.user.the_avatar_sm }">
 			        </a>
 			        <div class="ml-3">
 			            <h4 class="mb-1 font-bold">

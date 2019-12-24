@@ -25,13 +25,17 @@ class PostService
 		return Post::with($this->with());
 	}
 
+	public function emptyModel()
+	{
+		return new Post;
+	}
+
 	protected function with($parent=false, $arr2=[])
 	{
 		return array_merge([
 			($parent ? $parent . '.' : '') . 'tags', 
 			($parent ? $parent . '.' : '') . 'tags.tag', 
 			($parent ? $parent . '.' : '') . 'user', 
-			($parent ? $parent . '.' : '') . 'comments'
 		], $arr2);
 	}
 
@@ -100,7 +104,7 @@ class PostService
 
 	public function paginate($num=10, $request=false)
 	{
-		$posts = $this->init ?? $this->model();
+		$posts = $this->init ?? $this->emptyModel();
 
 		if($request) {
 			$req_search = $request['search'] ?? null;
