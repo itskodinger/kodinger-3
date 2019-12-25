@@ -115,19 +115,19 @@
         <nav class="fixed bottom-0 left-0 w-full z-30 sm:hidden">
         	<div class="nav-bottom-overlay hidden absolute top-0 left-0 right-0 h-full bg-white opacity-50"></div>
         	<div class="flex justify-center bg-white border-t border-indigo-600">
-    			<a href="#" class="py-4 w-3/12 text-center side-toggle" data-target="#sidebar">
+    			<a href="#" class="py-4 w-3/12 text-center side-toggle font-semibold" data-target="#sidebar">
     				L
     			</a>
-    			<a href="@route('discover')" class="py-4 w-3/12 text-center">
+    			<a href="@route('discover')" class="py-4 w-3/12 text-center {{ is_route('discover', 'text-indigo-600')}}">
                 	<svg xmlns="http://www.w3.org/2000/svg" class="w-5 inline-block fill-current" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="layers"><rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"/><path d="M21 11.35a1 1 0 0 0-.61-.86l-2.15-.92 2.26-1.3a1 1 0 0 0 .5-.92 1 1 0 0 0-.61-.86l-8-3.41a1 1 0 0 0-.78 0l-8 3.41a1 1 0 0 0-.61.86 1 1 0 0 0 .5.92l2.26 1.3-2.15.92a1 1 0 0 0-.61.86 1 1 0 0 0 .5.92l2.26 1.3-2.15.92a1 1 0 0 0-.61.86 1 1 0 0 0 .5.92l8 4.6a1 1 0 0 0 1 0l8-4.6a1 1 0 0 0 .5-.92 1 1 0 0 0-.61-.86l-2.15-.92 2.26-1.3a1 1 0 0 0 .5-.92zm-9-6.26l5.76 2.45L12 10.85 6.24 7.54zm-.5 7.78a1 1 0 0 0 1 0l3.57-2 1.69.72L12 14.85l-5.76-3.31 1.69-.72zm6.26 2.67L12 18.85l-5.76-3.31 1.69-.72 3.57 2.05a1 1 0 0 0 1 0l3.57-2.05z"/></g></g></svg>
     			</a>
-    			<a href="@route('index')" class="py-4 w-3/12 text-center">
+    			<a href="@route('index')" class="py-4 w-3/12 text-center {{ is_route('index', 'text-indigo-600')}}">
                 	<svg xmlns="http://www.w3.org/2000/svg" class="w-5 inline-block fill-current" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="home"><rect width="24" height="24" opacity="0"/><path d="M20.42 10.18L12.71 2.3a1 1 0 0 0-1.42 0l-7.71 7.89A2 2 0 0 0 3 11.62V20a2 2 0 0 0 1.89 2h14.22A2 2 0 0 0 21 20v-8.38a2.07 2.07 0 0 0-.58-1.44zM10 20v-6h4v6zm9 0h-3v-7a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v7H5v-8.42l7-7.15 7 7.19z"/></g></g></svg>
     			</a>
-    			<a href="@route('community')" class="py-4 w-3/12 text-center">
+    			<a href="@route('community')" class="py-4 w-3/12 text-center {{ is_route('community', 'text-indigo-600')}}">
                 	<svg xmlns="http://www.w3.org/2000/svg" class="w-5 inline-block fill-current" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="people"><rect width="24" height="24" opacity="0"/><path d="M9 11a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0-6a2 2 0 1 1-2 2 2 2 0 0 1 2-2z"/><path d="M17 13a3 3 0 1 0-3-3 3 3 0 0 0 3 3zm0-4a1 1 0 1 1-1 1 1 1 0 0 1 1-1z"/><path d="M17 14a5 5 0 0 0-3.06 1.05A7 7 0 0 0 2 20a1 1 0 0 0 2 0 5 5 0 0 1 10 0 1 1 0 0 0 2 0 6.9 6.9 0 0 0-.86-3.35A3 3 0 0 1 20 19a1 1 0 0 0 2 0 5 5 0 0 0-5-5z"/></g></g></svg>
     			</a>
-    			<a href="#" class="py-4 w-3/12 text-center side-toggle" data-target="#rightbar">
+    			<a href="#" class="py-4 w-3/12 text-center side-toggle font-semibold" data-target="#rightbar">
     				R
     			</a>
         	</div>
