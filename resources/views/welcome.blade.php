@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container mx-auto px-4 sm:px-0">
-        <div class="flex py-12 -mx-4">
+        <div class="flex py-12 -mx-4 pb-10">
             <div class="sm:w-3/12 sm:px-4 md:w-12/12 md:hidden lg:block">
                 @sidebar
             </div>
