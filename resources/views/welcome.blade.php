@@ -6,7 +6,7 @@
             <div class="sm:w-3/12 sm:px-4 md:w-12/12 md:hidden lg:block">
                 @sidebar
             </div>
-            <div class="lg:w-6/12 px-4 md:w-8/12 w-12/12">
+            <div class="lg:w-6/12 px-4 md:w-8/12 w-full">
                 <div class="posts"></div>
             </div>
             <div class="lg:w-3/12 lg:px-4 md:w-4/12">

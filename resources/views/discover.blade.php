@@ -11,7 +11,7 @@
             <div class="sm:w-3/12 sm:px-4 md:w-12/12 md:hidden lg:block">
                 @sidebar
             </div>
-            <div class="lg:w-6/12 px-4 md:w-8/12 w-12/12">
+            <div class="lg:w-6/12 px-4 md:w-8/12 w-full">
                 @auth
                 <form id="discover-form" autocomplete="off">
                     <div class="border-2 border-gray-200 rounded">
