@@ -408,7 +408,7 @@ Kodinger.API.Post = (function() {
 				            <h2 class="text-lg font-semibold hover:text-indigo-600"><a href="${post.post_card.url}">${post.post_card.title}</a></h2>
 
 				            ${post.post_card.description ? `
-				                <p class="text-gray-600 text-sm">${ post.post_card.description.substr(0, 200)}</p>
+				                <p class="text-gray-600 text-sm break-all">${ post.post_card.description.substr(0, 200)}</p>
 				            ` : ''}
 				            <div class="uppercase tracking-wider text-xs mt-3 text-teal-500 font-semibold">${ getHostname(post.post_card.url) }</div>
 				        </div>
