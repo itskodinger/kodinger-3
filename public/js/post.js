@@ -443,7 +443,7 @@ Kodinger.API.Post = (function() {
 			    </div>
 			    ` : ''}
 
-			    <div class="p-6 text-sm text-gray-700 leading-loose">
+			    <div class="p-6 text-sm text-gray-700 leading-relaxed">
 			        ${post.title ?
 				        `<h4 class="text-lg mb-2 text-black font-bold"><a class="text-indigo-700" href="${routes.single + post.slug}">
 				            ${post.title}

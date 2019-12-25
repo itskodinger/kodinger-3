@@ -7,9 +7,9 @@
         	{!!request()->search ? 'Semua komunitas dengan kata kunci: <i>'.request()->search.'</i>. <a href="'.route('community').'" class="text-red-600">Hapus Filter</a>' : 'Temukan komunitas di sekitar kamu di sini.'!!}
         </p>
 
-        <div class="flex -mx-4 mt-6 flex-wrap">
+        <div class="flex -mx-4 mt-6 flex-wrap justify-center">
         	@foreach($communities as $community)
-        	<div class="px-4 w-3/12">
+        	<div class="px-4 w-3/12 md:w-4/12">
         		<div class="bg-white rounded border-2 border-gray-200">
         			<div class="pb-8 pt-6 px-6">
         				<div class="float-right">
