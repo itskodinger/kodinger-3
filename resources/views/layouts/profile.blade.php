@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto">
-        <div class="flex -mx-4">
-            <div class="w-3/12 px-4 flex-shrink-0">
-                <ul class="flex flex-col py-12">
+    <div class="container mx-auto pb-20 md:pb-0 px-4 sm:px-0">
+        <div class="flex -mx-4 flex-col lg:flex-row">
+            <div class="lg:w-3/12 px-4 lg:py-0 flex-shrink-0 w-full">
+                <ul class="flex lg:flex-col flex-row lg:py-12 mb-4 mt-6 -mx-3 lg:mx-0 md:flex-wrap flex-no-wrap overflow-x-auto">
                     <li><a class="flex px-3 py-4 rounded {{ is_route('single', ' text-indigo-600 font-bold', 'hover:text-indigo-600 text-gray-600') }}" href="{{ route('single', $user->the_username) }}">
                         <svg class="w-6 fill-current mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="edit-2"><rect width="24" height="24" opacity="0"/><path d="M19 20H5a1 1 0 0 0 0 2h14a1 1 0 0 0 0-2z"/><path d="M5 18h.09l4.17-.38a2 2 0 0 0 1.21-.57l9-9a1.92 1.92 0 0 0-.07-2.71L16.66 2.6A2 2 0 0 0 14 2.53l-9 9a2 2 0 0 0-.57 1.21L4 16.91a1 1 0 0 0 .29.8A1 1 0 0 0 5 18zM15.27 4L18 6.73l-2 1.95L13.32 6zm-8.9 8.91L12 7.32l2.7 2.7-5.6 5.6-3 .28z"/></g></g></svg>
                         Post
@@ -35,12 +35,12 @@
                     @endisme
                 </ul>
             </div>
-            <div class="w-9/12 px-4 py-12 flex-shrink-0">
+            <div class="lg:w-9/12 px-4 lg:py-12 w-full flex-shrink-0">
                 <div class="border-2 border-gray-200 rounded-lg">
                     <div class="container mx-auto">
-                        <div class="flex p-10">
+                        <div class="flex p-10 flex-col md:flex-row">
                             <img src="{{ $user->the_avatar }}" class="w-40 h-40 rounded-lg inline-block border-2 border-gray-200">
-                            <div class="ml-10">
+                            <div class="md:ml-10 md:mt-0 mt-10">
                                 <h1 class="font-bold text-xl">{{ $user->name }}</h1>
                                 <div class="text-gray-600 text-sm">{{ $user->the_username }} &nbsp;&bull;&nbsp; bergabung {{ $user->created_at->diffForHumans() }}</div>
                                 <p class="mt-3 text-base">{{ $user->location }}</p>
@@ -49,13 +49,13 @@
                         </div>
                     </div>
                 </div>
-            	<div class="flex -mx-4 mt-10">
-            		<div class="w-8/12 px-4 flex-shrink-0">
+            	<div class="flex -mx-4 mt-10 flex-wrap">
+            		<div class="md:w-8/12 w-12/12 px-4 md:flex-shrink-0">
                         @yield('profile_content')
             		</div>
-            		<div class="w-4/12 px-4 flex-shrink-0">
+            		<div class="md:w-4/12 w-12/12 px-4 md:flex-shrink-0">
             			@sidebar
-                        <div class="mt-12"></div>
+                        <div class="md:mt-12 hidden md:block"></div>
                         @rightbar
             		</div>
             	</div>

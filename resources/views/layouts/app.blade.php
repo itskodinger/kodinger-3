@@ -111,9 +111,9 @@
             </div>
         </nav>
 
-        <nav class="fixed bottom-0 left-0 w-full bg-white border-t border-indigo-600 z-30 sm:hidden">
+        <nav class="fixed bottom-0 left-0 w-full z-30 sm:hidden">
         	<div class="nav-bottom-overlay hidden absolute top-0 left-0 right-0 h-full bg-white opacity-50"></div>
-        	<div class="flex justify-center">
+        	<div class="flex justify-center bg-white border-t border-indigo-600">
     			<a href="#" class="py-4 w-3/12 text-center side-toggle" data-target="#sidebar">
     				L
     			</a>
@@ -140,7 +140,7 @@
     </div>
 
     @if(!isset($footer) || (isset($footer) && $footer != false))
-    <div class="py-6 border-t border-gray-200 text-sm">
+    <div class="py-6 border-t border-gray-200 text-sm hidden sm:block">
         <div class="container mx-auto flex">
             <div class="text-gray-600 font-light">Copyright &copy; Kodinger</div>
             <div class="ml-auto">
