@@ -13,7 +13,7 @@
             </div>
             <div class="lg:w-6/12 px-4 md:w-8/12 w-full">
                 @auth
-                <form id="discover-form" autocomplete="off">
+                <form id="discover-form" class="mb-8" autocomplete="off">
                     <div class="border-2 border-gray-200 rounded">
                         <div class="p-5">
                             <h1 class="text-indigo-600 mb-4 font-semibold flex items-center">
@@ -43,7 +43,7 @@
                 </form>
                 @endauth
 
-                <h1 class="mb-4 text-lg flex items-center mt-8 text-gray-600">Link Dari Komunitas</h1>
+                <h1 class="mb-4 text-lg flex items-center text-gray-600">Link Dari Komunitas</h1>
                 <div class="posts"></div>
             </div>
             <div class="lg:w-3/12 lg:px-4 md:w-4/12">
