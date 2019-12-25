@@ -39,7 +39,7 @@
                     </div>
                 </div>
             </div>
-            <div class="w-12/12 lg:w-6/12 px-4 md:w-8/12">
+            <div class="w-full lg:w-6/12 px-4 md:w-8/12">
             	<div class="post"></div>
                 <div id="comment-box" class="bg-white rounded border-2 border-gray-200 mb-12 hidden">
                 	<h2 class="py-4 px-6 font-bold">Diskusi</h2>

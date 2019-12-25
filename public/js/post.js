@@ -345,7 +345,10 @@ Kodinger.API.Post = (function() {
 
 				if(options.carousel && $('.carousel')) {
 		            var cr = new Siema({
-		                selector: '.carousel'
+		                selector: '.carousel',
+		                  perPage: {
+						    0: 1,
+						  },
 		            });
 
 		            document.querySelector('.prev').addEventListener('click', () => cr.prev());
@@ -414,8 +417,8 @@ Kodinger.API.Post = (function() {
 
 			    ${ post.type !== 'link' ? `
 			    
-			    <div class="relative${post.images.length > 1 ? ' carousel-outer' : ''}"> 
-			        <div class="${post.images.length > 1 ? 'carousel' : ''}">
+			    <div class="relative${post.images.length > 1 ? ' carousel-outer w-full' : ''}"> 
+			        <div class="${post.images.length > 1 ? 'carousel w-full' : ''}">
 			            
 			            ${'carousel' in options && options.carousel == false ? `
 			                <a href="${routes.single + post.slug}">
