@@ -6,8 +6,8 @@
                     <a class="hover:text-indigo-500" href="{{ route('single', $contribute->post->slug) }}">{{ $contribute->post->title }}</a>
                 </div>
                 <div class="mt-6 mb-2 text-sm text-gray-600">{{ key2str($contribute->column_name) }}</div>
-                <div class="border border-gray-200 bg-gray-100 rounded mb-4 p-4">
-                    {!! nl_list($contribute->post->{$contribute->column_name}) . nl_list($contribute->value, 'text-green-500 font-semibold') !!}
+                <div class="border border-gray-200 bg-gray-100 rounded mb-4 p-4 break-all">
+                    {!! nl_list($contribute->post->{$contribute->column_name}) . nl_list($contribute->value, 'text-green-500 font-semibold', 'div', '+') !!}
                 </div>
                 @can('contribute-reject')
                 <div class="mt-6 mb-2 text-sm text-gray-600">Catatan (Bila Reject)</div>
@@ -29,8 +29,8 @@
                     @endcan
                     @endif
                     @can('contribute-delete')
-                    <a class="mx-3 text-red-600 cursor-pointer" onclick="let c = confirm('Are you sure?'); if(!c) return false; else document.getElementById('delete').submit();">Delete</a>
-                    <form action="{{ route('contribute.delete', $contribute->id) }}" method="post" id="delete">
+                    <a class="mx-3 text-red-600 cursor-pointer" onclick="let c = confirm('Are you sure?'); if(!c) return false; else document.getElementById('delete{{$contribute->id}}').submit();">Delete</a>
+                    <form action="{{ route('contribute.delete', $contribute->id) }}" method="post" id="delete{{$contribute->id}}">
                         {!! method_field('delete') !!}
                         @csrf
                     </form>

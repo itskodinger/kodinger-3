@@ -34,7 +34,7 @@ Route::group(['prefix' => 'communities', 'as' => 'community.', 'middleware' => '
 	Route::post('/', 'CommunityController@store')->name('store')->middleware('permission:community-create');
 });
 
-Route::group(['prefix' => 'posts', 'as' => 'post.', 'middleware' => 'auth'], function() 
+Route::group(['prefix' => 'posts', 'as' => 'post.'], function() 
 {
 	Route::group(['middleware' => 'auth'], function() 
 	{
@@ -48,9 +48,12 @@ Route::group(['prefix' => 'posts', 'as' => 'post.', 'middleware' => 'auth'], fun
 		Route::post('/', 'PostController@store')->name('store')->middleware('permission:post-create');
 		Route::post('/discover', 'PostController@storeDiscover')->name('store_discover');
 	});
+
+	// AJAX
 	Route::post('/link-info', 'PostController@getLinkInfo')->name('getLinkInfo');
 	Route::get('/tags', 'PostController@tags')->name('tags');
 	Route::get('/posts', 'PostController@posts')->name('posts');
+	Route::get('/both', 'PostController@both')->name('both');
 	Route::get('/discover', 'PostController@discover')->name('discover');
 });
 
@@ -93,13 +96,13 @@ Route::get('/contact', 'FrontendController@contact')->name('contact');
 Route::get('/discover/{tag?}', 'FrontendController@discover')->name('discover');
 Route::get('/{slug}/loves', 'FrontendController@profileLoves')->name('loves');
 Route::get('/saves', 'FrontendController@profileSaves')->name('saves');
-Route::get('/{slug}/contributes', 'FrontendController@contributes')->name('contributes');
+Route::get('/{slug?}/contributes', 'FrontendController@contributes')->name('contributes');
 Route::get('/{slug}/discuss', 'FrontendController@discuss')->name('discuss');
 Route::get('/setting', 'FrontendController@setting')->name('setting');
 Route::post('/setting', 'FrontendController@settingUpdate')->name('setting_update');
 Route::get('/{slug?}', 'FrontendController@single')->name('single');
 Route::get('/tag/{slug}', 'FrontendController@index')->name('tag');
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('auth/{provider}', 'Auth\AuthController@redirectToProvider')->name('auth');
 Route::get('auth/{provider}/callback', 'Auth\AuthController@handleProviderCallback');

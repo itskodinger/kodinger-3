@@ -1,15 +1,22 @@
 @extends('layouts.app', ['title' => 'Komunitas', 'search' => route('community')])
 
 @section('content')
-    <div class="container py-12 mx-auto">
+    <div class="container py-12 mx-auto px-4 sm:px-0">
         <h1 class="text-indigo-600 text-xl font-semibold">{{request()->search ? 'Mencari Komunitas' : 'Komunitas'}}</h1>
         <p class="mt-1 text-gray-600">
         	{!!request()->search ? 'Semua komunitas dengan kata kunci: <i>'.request()->search.'</i>. <a href="'.route('community').'" class="text-red-600">Hapus Filter</a>' : 'Temukan komunitas di sekitar kamu di sini.'!!}
         </p>
 
-        <div class="flex -mx-4 mt-6 flex-wrap">
+        <div class="block sm:hidden">
+            @sidebar
+        </div>
+        <div class="block sm:hidden">
+            @rightbar
+        </div>
+
+        <div class="flex sm:-mx-4 mx-0 mt-6 flex-wrap justify-center">
         	@foreach($communities as $community)
-        	<div class="px-4 w-3/12">
+        	<div class="sm:px-4 px-0 lg:w-3/12 md:w-6/12 mb-6 w-full">
         		<div class="bg-white rounded border-2 border-gray-200">
         			<div class="pb-8 pt-6 px-6">
         				<div class="float-right">

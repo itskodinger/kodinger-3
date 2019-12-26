@@ -6,14 +6,14 @@
 @endpush
 
 @section('content')
-    <div class="container mx-auto">
+    <div class="container mx-auto px-4 sm:px-0">
         <div class="flex py-12 -mx-4">
-            <div class="w-3/12 px-4">
+            <div class="sm:w-3/12 sm:px-4 md:w-12/12 md:hidden lg:block">
                 @sidebar
             </div>
-            <div class="w-6/12 px-4">
+            <div class="lg:w-6/12 px-4 md:w-8/12 w-full">
                 @auth
-                <form id="discover-form" autocomplete="off">
+                <form id="discover-form" class="mb-8" autocomplete="off">
                     <div class="border-2 border-gray-200 rounded">
                         <div class="p-5">
                             <h1 class="text-indigo-600 mb-4 font-semibold flex items-center">
@@ -21,7 +21,7 @@
                                 Berbagi dengan komunitas
                             </h1>
                             <div class="focus-within:border-indigo-500 px-4 py-3 rounded border border-gray-200">
-                                <textarea name="link" placeholder="Bagikan link artikel, video, e-book atau apapun yang kamu buat sendiri atau kamu temukan di sini. (cth. https://kodinger.com/artikel)" class="focus:outline-none w-full h-16 text-sm resize-none input-link"></textarea>
+                                <input name="link" placeholder="Taruh link di sini (cth. https://kodinger.com/artikel)" class="focus:outline-none w-full text-sm resize-none input-link">
                                 <input type="text" name="tags[]" class="tags border-l-0 border-r-0 border-b-0 border-t mt-4 w-full focus:outline-none text-sm pt-2">
                             </div>
                         </div>
@@ -43,10 +43,10 @@
                 </form>
                 @endauth
 
-                <h1 class="mb-4 text-lg flex items-center mt-8 text-gray-600">Link Dari Komunitas</h1>
+                <h1 class="mb-4 text-lg flex items-center text-gray-600">Link Dari Komunitas</h1>
                 <div class="posts"></div>
             </div>
-            <div class="w-3/12 px-4">
+            <div class="lg:w-3/12 lg:px-4 md:w-4/12">
                 @rightbar
             </div>
         </div>
@@ -55,144 +55,8 @@
 
 @push('js')
     <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
-    <script src="{{ url('js/app.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify@3.1.0/dist/tagify.min.js"></script>
-
-    <script>
-        let posts = post.init('.posts', {
-            url: routes.discover,
-            carousel: false,
-            truncate_content: true
-        });
-
-        let tagify = new Tagify($('.tags'), {
-            enforceWhitelist : true,
-            whitelist        : [],
-            maxTags: 5,
-            skipInvalid: true,
-            dropdown : {
-                highlightFirst: true,
-                maxItems: 7
-            },
-            placeholder: 'Pilih maksimal 5 tag',
-            templates : {
-                wrapper(input, settings){
-                  return `<tags class="tagify focus-within:border-indigo-600 ${settings.mode ? "tagify--" + settings.mode : ""} ${input.className}"
-                                      ${settings.readonly ? 'readonly aria-readonly="true"' : 'aria-haspopup="listbox" aria-expanded="false"'}
-                                      role="tagslist">
-                              <span contenteditable data-placeholder="${settings.placeholder || '&#8203;'}" aria-placeholder="${settings.placeholder || ''}"
-                                  class="tagify__input p-0 m-0 py-1"
-                                  role="textbox"
-                                  aria-controls="dropdown"
-                                  aria-autocomplete="both"
-                                  aria-multiline="${settings.mode=='mix'?true:false}"></span>
-                          </tags>`
-                },
-
-                tag(value, tagData){
-                    return `<tag title='${tagData.title || value}'
-                              contenteditable='false'
-                              spellcheck='false'
-                              class='tagify__tag m-0 mr-2 rounded ${tagData.class ? tagData.class : ""}'
-                              ${this.getAttributes(tagData)}>
-                        <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
-                        <div>
-                            <span class='tagify__tag-text'>${value}</span>
-                        </div>
-                    </tag>`
-                },
-
-                dropdownItem( item ){
-                  var mapValueTo = this.settings.dropdown.mapValueTo,
-                      value = (mapValueTo
-                          ? typeof mapValueTo == 'function'
-                              ? mapValueTo(item)
-                              : item[mapValueTo]
-                          : item.value) || item.value,
-                      sanitizedValue = (value || item).replace(/`|'/g, "&#39;");
-
-                  return `<div ${this.getAttributes(item)}
-                              class='tagify__dropdown__item text-sm px-4 ${item.class ? item.class : ""}'
-                              tabindex="0"
-                              role="option"
-                              aria-labelledby="dropdown-label">${sanitizedValue}</div>`;
-                }
-            }
-        }), controller;
-
-        tagify.on('input', onInput)
-
-        function onInput( e ){
-            var value = e.detail.value;
-            tagify.settings.whitelist.length = 0;
-
-            controller && controller.abort();
-            controller = new AbortController();
-
-            tagify.loading(true).dropdown.hide.call(tagify)
-
-            fetch(routes.post_tags + '?value=' + value, {signal:controller.signal})
-            .then(RES => RES.json())
-            .then(function(whitelist){
-                tagify.settings.whitelist.splice(0, whitelist.length, ...whitelist)
-                tagify.loading(false).dropdown.show.call(tagify, value);
-            })
-        }
-
-        $('#discover-form').addEventListener('submit', function(e) {
-            let link = $('.input-link'),
-                tags = tagify.value,
-                btn = $('.publish-button');
-
-            let tag_ids = '';
-            tags.forEach(function(item){
-                tag_ids += item.id + ',';
-            });
-            tag_ids = tag_ids.replace(/,+$/g,"");
-
-            if(link.value.trim().length < 1 || !validateUrl(link.value)) {
-                link.focus();
-            } else if(tags.length < 1) {
-                tagify.DOM.input.focus();
-            } else {
-                adds(btn.classList, 'pointer-events-none opacity-50');
-
-                const posting = (async function() {
-                    const res = await fetch(routes.post_store_discover, {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': token,
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            pages: link.value,
-                            tags: tag_ids
-                        })
-                    });
-
-                    return Promise.resolve(res);
-                })()
-                // on complete
-                .then(function(res) {
-                    removes(btn.classList, 'pointer-events-none opacity-50');
-
-                    if(res.ok) {
-                        return Promise.resolve(res.json());
-                    }
-
-                    return Promise.reject(res);
-                })
-                .then(function(res) {
-                    console.log(res);
-                })
-                .catch(function(error) {
-                    if(error.status == 401)
-                        alert('Anda perlu login dulu!')
-                });
-            }
-
-            e.preventDefault();
-        });
-    </script>
+    <script src="https://js.pusher.com/5.0/pusher.min.js"></script>
+    <script src="{{ asset('js/post.js') }}"></script>
+    <script src="{{ asset('js/discover.js') }}"></script>
 @endpush

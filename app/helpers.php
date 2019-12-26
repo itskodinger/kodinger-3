@@ -10,14 +10,17 @@ function nl_array($str)
 	return $arr;
 }
 
-function nl_list($str, $class='', $tag='div')
+function nl_list($str, $class='', $tag='div', $plus=null)
 {
-	$arr = nl_array($str);
+	$arr = $str;
+	if(!is_array($str))
+		$arr = nl_array($str);
 
 	$out = '';
 	foreach($arr as $r)
 	{
-		$out .= '<' . $tag . ' class="'.$class.'">' . $r . '</'. $tag .'>';
+		if($r)
+			$out .= '<' . $tag . ' class="'.$class.'">' . ($plus ? $plus . ' ' : '') . $r . '</'. $tag .'>';
 	}
 
 	return $out;
@@ -40,15 +43,19 @@ function nl_array_end($str)
 	return $str[count($str)-1];
 }
 
-function key2str($k)
+function key2str($k=false)
 {
-	return [
+	$keys = [
 		'inspirations' => 'Inspirasi',
 		'pages' => 'Halaman Terkait',
 		'tutorials' => 'Tutorial',
 		'helps' => 'Komunitas',
 		'examples' => 'Demo'
-	][$k];
+	];
+
+	if($k) return $keys[$k];
+
+	return $keys;
 }
 
 function user_post_saves()
@@ -253,6 +260,7 @@ function user_js()
 {
 	return collect(auth()->user())
 		->only([
+			'id',
 			'name', 
 			'the_username', 
 			'the_avatar_sm', 

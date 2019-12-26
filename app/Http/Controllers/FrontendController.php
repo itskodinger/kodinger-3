@@ -79,35 +79,43 @@ class FrontendController extends Controller
 			return view('profile', compact('user', 'posts'));
 		}
 
-		if($request->wantsJson()) {
+		if($request->ajax) {
 			return response()->json(['data' => $post]);
 		}
 
 		return view('single', compact('post'));
 	}
 
-	public function profileLoves($slug)
+	public function profileLoves($slug, Request $request)
 	{
 		$user = $this->userService->findByUsername($slug);
 
-		$posts = $user->lovePosts()->with('post')->paginate(10);	
+		$posts = $this->postService->myLovesBySlug($user, $request);
 
-		return view('loves', compact('posts', 'user'));
+		if($request->ajax) {
+			return response()->json($posts);
+		}
+
+	return view('loves', compact('posts', 'user'));
 	}
 
-	public function profileSaves()
+	public function profileSaves(Request $request)
 	{
 		$user = auth()->user();
 
-		$posts = $user->savePosts()->with('post')->paginate(10);	
+		$posts = $this->postService->mySavesBySlug($user, $request);
 
-		return view('loves', compact('posts', 'user'));
+		if($request->ajax) {
+			return response()->json($posts);
+		}
+
+		return view('saves', compact('posts', 'user'));
 	}
 
 	public function discuss($slug)
 	{
-		$comments = $this->commentService->mine();
 		$user = $this->userService->findByUsername($slug);
+		$comments = $this->commentService->mine($user->id);
 
 		return view('discuss', compact('comments', 'user'));
 	}

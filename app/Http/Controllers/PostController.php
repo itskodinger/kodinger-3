@@ -29,7 +29,6 @@ class PostController extends Controller
 
 	public function posts(Request $request)
 	{		
-
 		$posts = $this->postService->content(10, $request);
 
 		return response()->json($posts);
@@ -42,6 +41,19 @@ class PostController extends Controller
 		return response()->json($posts);
 	}
 
+	public function both(Request $request)
+	{
+		$posts = $this->postService->both(10, $request);
+
+		return response()->json($posts);
+	}
+
+	public function me(Request $request)
+	{
+		$posts = $this->postService->me(10, $request);
+
+		return response()->json($posts);
+	}
 
     public function edit($id)
     {

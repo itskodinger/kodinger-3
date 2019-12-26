@@ -1,15 +1,15 @@
 @extends('layouts.app', ['title' => 'Where developers share their knowledge', 'footer' => false])
 
 @section('content')
-    <div class="container mx-auto">
-        <div class="flex py-12 -mx-4">
-            <div class="w-3/12 px-4">
+    <div class="container mx-auto px-4 sm:px-0">
+        <div class="flex py-12 -mx-4 pb-10">
+            <div class="sm:w-3/12 sm:px-4 md:w-12/12 md:hidden lg:block">
                 @sidebar
             </div>
-            <div class="w-6/12 px-4">
+            <div class="lg:w-6/12 px-4 md:w-8/12 w-full">
                 <div class="posts"></div>
             </div>
-            <div class="w-3/12 px-4">
+            <div class="lg:w-3/12 lg:px-4 md:w-4/12">
                 @rightbar
             </div>
         </div>
@@ -18,12 +18,6 @@
 
 @push('js')
     <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
-    <script src="{{ mix('js/app.js') }}"></script>
-    <script>
-        let posts = post.init('.posts', {
-            url: routes.post,
-            carousel: false,
-            truncate_content: true
-        });
-    </script>
+    <script src="{{ asset('js/post.js') }}"></script>
+    <script src="{{ asset('js/home.js') }}"></script>
 @endpush

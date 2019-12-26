@@ -65,12 +65,6 @@ body {
 	background-color: #F7F9FB;
 }
 
-@screen xl {
-	.container {
-		max-width: 1180px;
-	}
-}
-
 .facebook {
   background-color: #3b5998;
 }
@@ -155,11 +149,62 @@ body {
 		border-indigo-600;
 }
 
+.off-canvasify {
+	@apply
+		fixed 
+		w-full 
+		left-0 
+		top-0 
+		bg-white 
+		z-10 
+		overflow-auto 
+		hidden;
+
+	height: calc(100% - 55px);
+}
+
+.off-canvasify--show {
+	@apply
+		block;
+}
+
 @keyframes spin {
 	0% {
 		transform: rotate(0deg);
 	}
 	100% {
 		transform: rotate(180deg);
+	}
+}
+
+@screen sm {
+	.off-canvasify {
+		@apply
+			static
+			bg-transparent
+			block;
+	}
+}
+
+@screen md {
+	.container {
+		max-width: 680px;
+	}
+}
+
+@screen lg {
+	.container {
+		max-width: 980px;
+	}
+
+	.sidebar {
+		@apply
+			block;
+	}
+}
+
+@screen xl {
+	.container {
+		max-width: 1180px;
 	}
 }

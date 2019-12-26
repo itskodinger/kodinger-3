@@ -9,14 +9,34 @@ use App\Post;
 use App\PostTag;
 use App\Contribute;
 use App\Events\Post\Discover\DiscoverPostCreated;
+use Services\UserService;
 
 class PostService
 {
 	protected $init;
+	protected $userService;
+
+	public function __construct(UserService $userService) {
+		$this->userService = $userService;
+	}
 
 	public function model()
 	{
-		return Post::with(['tags', 'tags.tag', 'user', 'comments']);
+		return Post::with($this->with());
+	}
+
+	public function emptyModel()
+	{
+		return new Post;
+	}
+
+	protected function with($parent=false, $arr2=[])
+	{
+		return array_merge([
+			($parent ? $parent . '.' : '') . 'tags', 
+			($parent ? $parent . '.' : '') . 'tags.tag', 
+			($parent ? $parent . '.' : '') . 'user', 
+		], $arr2);
 	}
 
 	public function find($id)
@@ -34,6 +54,20 @@ class PostService
 		$this->init = $this->model()->whereType('link');
 
 		return $this->paginate(...$args);
+	}
+
+	public function myLovesBySlug($user, $request)
+	{
+		$posts = $user->lovePosts()->with($this->with('post', ['post']))->paginate(10);	
+
+		return $posts;
+	}
+
+	public function mySavesBySlug($user, $request)
+	{
+		$posts = $user->savePosts()->with($this->with('post', ['post']))->paginate(10);	
+
+		return $posts;
 	}
 
 	public function createDiscover($request)
@@ -61,9 +95,16 @@ class PostService
 		return $this->paginate(...$args);
 	}
 
+	public function both(...$args)
+	{
+		$this->init = $this->model();
+
+		return $this->paginate(...$args);
+	}
+
 	public function paginate($num=10, $request=false)
 	{
-		$posts = $this->init ?? $this->model();
+		$posts = $this->init ?? $this->emptyModel();
 
 		if($request) {
 			$req_search = $request['search'] ?? null;
@@ -82,6 +123,12 @@ class PostService
 
 				$posts = $posts->whereHas('tags', function($q) use($tag_id) {
 					$q = $q->whereTagId($tag_id);
+				});
+			}
+
+			if(isset($request->username)) {
+				$posts = $posts->whereHas('user', function($query) use($request) {
+					return $query->whereUsername($request->username);
 				});
 			}
 		}
@@ -160,6 +207,9 @@ class PostService
 						->select('row_id', DB::raw('count(row_id) as total'))
 						->orderBy('total', 'desc')
 						->with('post')
+						->whereHas('post', function($query) {
+							return $query->whereNull('type');
+						})
 						->take($take)
 						->get();
 

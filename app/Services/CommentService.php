@@ -32,9 +32,9 @@ class CommentService
 		return $this->model()->orderBy('created_at', 'desc')->take($limit)->get();
 	}
 
-	public function mine()
+	public function mine($id)
 	{
-		return $this->model()->whereUserId(auth()->user()->id)->orderBy('created_at', 'desc')->paginate(10);
+		return $this->model()->whereUserId($id)->orderBy('created_at', 'desc')->paginate(10);
 	}
 
 	// // move to eloquent soon
