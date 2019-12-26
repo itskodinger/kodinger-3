@@ -66,9 +66,12 @@ class PostController extends Controller
 
 	public function storeDiscover(PostDiscoverCreateRequest $request)
 	{
-		$this->postService->createDiscover($request);
+		$post = $this->postService->createDiscover($request);
 
-		return response(['status' => 'ok'], 200);
+        return response()->json([
+            'status' => 'ok',
+            'data'   => $post
+        ], 200, [], JSON_PRETTY_PRINT);
 	}
 
 	public function update($id, PostUpdateRequest $request)
