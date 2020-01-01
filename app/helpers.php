@@ -273,8 +273,7 @@ function search_types()
 {
 	return [
 		'post' => 'Post',
-		'community' => 'Komunitas',
 		'discover' => 'Discover',
-		'user' => 'User'
+		'community' => 'Komunitas',
 	];
 }

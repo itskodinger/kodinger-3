@@ -51,6 +51,9 @@
                     </div>
                     <div class="ml-auto w-full sm:w-auto flex items-center">
                         <form action="@route('search')" autocomplete="off" class="mx-4 sm:mx-0 w-full sm:w-auto">
+                        	@if(request()->has('type'))
+                        	<input type="hidden" name="type" value="{{ request()->type }}">
+                        	@endif
                             <input type="text" name="q" class="bg-search focus:outline-none pl-10 border-2 border-gray-200 focus:border-indigo-600 py-3 px-4 sm:mr-2 rounded text-sm sm:w-64 w-full" placeholder="Pencarian" value="{{ request()->q }}">
                         </form>
                         <div class="w-px h-6 mx-6 mr-8 bg-gray-200 hidden sm:block"></div>

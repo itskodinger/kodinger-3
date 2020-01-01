@@ -345,7 +345,7 @@ Kodinger.API.Post = (function() {
 		templates: {
 			community: function({post: community, options}) {
 				let tpl = `
-		    		<div class="bg-white rounded border-2 border-gray-200">
+		    		<div class="bg-white rounded border-2 border-gray-200 w-full">
 		    			<div class="pb-8 pt-6 px-6">
 		    				<div class="float-right">
 		    					<a target="_blank" href="${ community.website }" class="flex leading-relaxed items-center hover:bg-indigo-600 hover:text-white hover:border-indigo-600 border-2 border-gray-200 uppercase text-xs font-semibold tracking-wider py-1 px-3 rounded-full">
@@ -394,7 +394,7 @@ Kodinger.API.Post = (function() {
 
 			communityShimmer: function(shi_class) {
 				let tpl = `
-			    	<div class="${shi_class} sm:px-4 px-0 lg:w-3/12 md:w-6/12 mb-6 w-full">
+			    	<div class="${shi_class} w-full">
 			    		<div class="bg-white rounded border-2 border-gray-200">
 			    			<div class="pb-8 pt-6 px-6">
 			    				<div class="float-right">
@@ -794,12 +794,12 @@ Kodinger.API.Post = (function() {
 				return element;
 			}
 
-			let checkPost = function(post, tolerance) {
-				if(!tolerance && "post" in post) {
-					return false;
+			let checkPost = function(post) {
+				if("post" in post) {
+					return true;
 				}
 
-				return true;
+				return false;
 			}
 
 			return new Promise(function(resolve, reject) {
@@ -812,11 +812,8 @@ Kodinger.API.Post = (function() {
 					// if `posts` has many post data
 					// then iterate it
 					posts.forEach(function(post) {
-						if(!checkPost(post)) {
+						if(checkPost(post)) {
 							post = post.post;
-
-							if(!checkPost(post))
-								return reject('Bad schema data');
 						}
 
 						appendingTemplate(post);
@@ -992,7 +989,8 @@ Kodinger.API.Post = (function() {
 	const post = {
 		TYPE: {
 			COMMUNITY: 'community',
-			POST: 'post'
+			POST: 'post',
+			DISCOVER: 'post',
 		},
 		init: function(target, opts) {
 			// set target element

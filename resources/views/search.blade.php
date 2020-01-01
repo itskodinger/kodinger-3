@@ -10,7 +10,7 @@
             	<h1 class="text-xl font-semibold">Pencarian</h1>
             	<div class="flex overflow-x-auto flex-no-wrap mt-2">
             		@foreach($types as $k => $t)
-            		<a href="@current(['type' => $k])" class="hover:border-indigo-600 hover:text-indigo-600 border-gray-200 text-gray-600 text-sm border-2 py-2 px-6 rounded-full mr-2">{{ $t }}</a>
+            		<a href="@current(['type' => $k])" class="{{ $k == $type ? 'border-indigo-600 text-indigo-600' : ''}} hover:border-indigo-600 hover:text-indigo-600 border-gray-200 text-gray-600 text-sm border-2 py-2 px-6 rounded-full mr-2">{{ $t }}</a>
             		@endforeach
             	</div>
 
@@ -24,3 +24,17 @@
         </div>
     </div>
 @stop
+
+@push('js')
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+    <script src="{{ asset('js/post.js') }}"></script>
+	
+    @stack('search_js')
+
+    <script>
+    	const search = '{{ request()->q }}', 
+    		  tag = '{{ request()->tag }}';
+    </script>
+    
+    <script src="{{ asset('js/search.js') }}"></script>
+@endpush

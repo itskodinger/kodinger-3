@@ -2,8 +2,8 @@
 
 @push('search_js')
 	<script>
-		const type = Kodinger.API.Post.TYPE.COMMUNITY,
-			  url = routes.communities,
+		const type = Kodinger.API.Post.TYPE.DISCOVER,
+			  url = routes.discover,
 			  lazyimage = false;
 	</script>
 @endpush
