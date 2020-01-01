@@ -47,6 +47,11 @@ function getMultipleInputValue(form) {
  return names;
 }
 
+/**
+ * URL string validation
+ * @param  {String} value The string to be tested
+ * @return {Boolean}
+ */
 function validateUrl(value) {
  return /^(?:(?:(?:https?):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(value);
 }
@@ -57,11 +62,21 @@ $('body').addEventListener('click', function(e) {
      $('.user-dropdown-menu').classList.add('hidden');
 });
 
+/**
+ * Is this video?
+ * @param  {String}  str The string to be tested
+ * @return {Boolean}     
+ */
 function isVideo(str)
 {
 	return str.indexOf('.mp4') > -1 ? true : false;
 }
 
+/**
+ * Equvalent to jQuery's $.extends()
+ * @param  {Object} out Object you want to extend
+ * @return {Object}     Extended object
+ */
 let objExtend = function(out) {
 	out = out || {};
 
@@ -78,6 +93,11 @@ let objExtend = function(out) {
 	return out;
 };
 
+/**
+ * Get hostname from the URL string
+ * @param  {String} url Target string
+ * @return {String}     The hostname
+ */
 let getHostname = function(url) {
 	let a = document.createElement('a');
 	    a.href = url;
@@ -86,16 +106,33 @@ let getHostname = function(url) {
 
 }
 
+/**
+ * Equivalent to jQuery's $.fn.find()
+ * @param  {Node} 	parent 	Parent Node
+ * @param  {String} query  	Query string
+ * @return {Node}        	DOM Node
+ */
 let find = function(parent, query)
 {
 	return parent.querySelector(query);
 }
 
+/**
+ * Equivalent to jQuery's $.fn.find()
+ * @param  {Node} 	parent 	Parent Node
+ * @param  {String} query  	Query string
+ * @return {Node}        	DOM Node
+ */
 let finds = function(parent, query)
 {
 	return parent.querySelectorAll(query);
 }
 
+/**
+ * Convert DOM Node to HTML string
+ * @param  {Node} 	dom DOM object or DOM Node
+ * @return {String}     HTML string
+ */
 let dom2str = function(dom)
 {
 	let div = document.createElement('div');
@@ -104,6 +141,12 @@ let dom2str = function(dom)
 	return div.innerHTML;
 }
 
+/**
+ * Find and remove element (not sure; i forgot)
+ * @param  {Node} 	dom   Target element
+ * @param  {String} query Query string
+ * @return {String}       Removed
+ */
 let findRemove = function(dom, query)
 {
 	let div = document.createElement('div');
@@ -114,6 +157,11 @@ let findRemove = function(dom, query)
 	return div.innerHTML;
 }
 
+/**
+ * Convert HTML string to DOM node
+ * @param  {String} str Raw HTML string
+ * @return {Node}     DOM Node
+ */
 let str2dom = function(str)
 {
 	let div = document.createElement('div');
@@ -122,6 +170,13 @@ let str2dom = function(str)
 	return div.children[0];
 }
 
+/**
+ * Alternative to the `.remove` method. 
+ * You can remove multiple string at once
+ * @param  {Object} me  Target
+ * @param  {String} str String you want to remove
+ * @return {String}     
+ */
 let removes = function(me, str)
 {
 	str = str.split(' ');
@@ -133,6 +188,13 @@ let removes = function(me, str)
 	return str;
 }
 
+/**
+ * Alternative to the `.add` method. 
+ * You can add multiple string at once
+ * @param  {Object} me  Target
+ * @param  {String} str String you want to add
+ * @return {String}     
+ */
 let adds = function(me, str)
 {
 	str = str.split(' ');
@@ -144,6 +206,9 @@ let adds = function(me, str)
 	return str;
 }
 
+/**
+ * Sidebar toggle (mobile only)
+ */
 $$('.side-toggle').forEach(function(item) {
 	const original_html = item.innerHTML;
 	item.addEventListener('click', function(e) {
@@ -175,6 +240,6 @@ $$('.side-toggle').forEach(function(item) {
 	});
 });
 
-// Initialize Kodinger API
+// Initialize Kodinger API (creating empty object without "hassle")
 const Kodinger = Object.create(null);
 Kodinger.API = Object.create(null);
