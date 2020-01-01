@@ -11,14 +11,6 @@
 |
 */
 
-Route::get('blurry/{image}', function($image) {
-	$m = Intervention\Image\ImageManagerStatic::make(str_replace(' ', '%20', $image));
-
-	$m->resize(5, 5);
-
-	return $m->response('png');
-})->name('blurry')->where('image', '(.+?)');
-
 Route::get('leave', RedirectorPageController::class)->name('leave.kodinger');
 Route::get('privacy-policy', function() {
 	return view('privacy-policy');

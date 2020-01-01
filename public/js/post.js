@@ -1,12 +1,20 @@
 /**
- * Post API
+ * Post API with IIFE
  *
- * flow: init -> run -> fetching -> templating -> attach event -> append -> rendered
+ * Flow: init -> run -> fetching -> templating (& attach event) -> append -> rendered
  */
 
 Kodinger.API.Post = (function() {
+	/**
+	 * Private API
+	 * @type {Object}
+	 */
 	let api = {
 		vars: {
+			/**
+			 * Share URIs
+			 * @type {Array}
+			 */
 			uris: [
 				{
 					uri: 'https://www.facebook.com/sharer.php?u=',
@@ -41,13 +49,25 @@ Kodinger.API.Post = (function() {
 				},
 			]
 		},
+		/**
+		 * Element Interaction APIs
+		 * @type {Object}
+		 */
 		interactions: {
+			/**
+			 * Lazy-load Image Using Intersection Observer
+			 * @param  {Node} element Target element
+			 */
 			lazyimage: function(element) {
 				const { io } = api;
 
 				io.observe(find(element, '.lazy-image'));
 			},
 
+			/**
+			 * Attach carousel (Siema) to the element
+			 * @param  {Node} element Target element
+			 */
 			carousel: function(element) {
 				try {
 		            var cr = new Siema({
@@ -64,6 +84,10 @@ Kodinger.API.Post = (function() {
 				}
 			},
 
+			/**
+			 * Save buttons
+			 * @param  {Node} parent Target element
+			 */
 			save: function(parent) {
 				let ic_save = '<svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="bookmark"><rect width="24" height="24" opacity="0"/><path d="M6.09 21.06a1 1 0 0 1-1-1L4.94 5.4a2.26 2.26 0 0 1 2.18-2.35L16.71 3a2.27 2.27 0 0 1 2.23 2.31l.14 14.66a1 1 0 0 1-.49.87 1 1 0 0 1-1 0l-5.7-3.16-5.29 3.23a1.2 1.2 0 0 1-.51.15zm5.76-5.55a1.11 1.11 0 0 1 .5.12l4.71 2.61-.12-12.95c0-.2-.13-.34-.21-.33l-9.6.09c-.08 0-.19.13-.19.33l.12 12.9 4.28-2.63a1.06 1.06 0 0 1 .51-.14z"/></g></g></svg>',
 				    ic_unsave = '<svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="bookmark"><rect width="24" height="24" opacity="0"/><path d="M6 21a1 1 0 0 1-.49-.13A1 1 0 0 1 5 20V5.33A2.28 2.28 0 0 1 7.2 3h9.6A2.28 2.28 0 0 1 19 5.33V20a1 1 0 0 1-.5.86 1 1 0 0 1-1 0l-5.67-3.21-5.33 3.2A1 1 0 0 1 6 21z"/></g></g></svg>',
@@ -140,6 +164,10 @@ Kodinger.API.Post = (function() {
 				});
 			},
 			
+			/**
+			 * Love buttons
+			 * @param  {Node} parent Target element
+			 */
 			love: function(parent) {
 				let ic_love = '<svg class="stroke-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>',
 					ic_unlove = '<svg class="fill-current text-red-600" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>';
@@ -211,6 +239,10 @@ Kodinger.API.Post = (function() {
 				});
 			},
 
+			/**
+			 * Share button
+			 * @param  {Node} parent Target element
+			 */
 			share: function(parent) {
 				const { uris } = api.vars;
 
@@ -311,15 +343,22 @@ Kodinger.API.Post = (function() {
 				});
 			}
 		},
+
+		/**
+		 * API Lifecycle
+		 * @type {Object}
+		 */
 		lifecycle: {
 			onStartImplementing: function({io}) {
 				// init observer
 				io.init();
 
 			},
+
 			onContentCollected: function({dom, interactions}) {
 				// do stuff here
 			},
+			
 			onContentLoaded: function() {
 				// do stuff here
 			},
@@ -342,7 +381,18 @@ Kodinger.API.Post = (function() {
 				}
 			}
 		},
+
+		/**
+		 * Template collection
+		 * @type {Object}
+		 */
 		templates: {
+			/**
+			 * Community template
+			 * @param  {Object} options.post:   community     Post data
+			 * @param  {Object} options.options Instance options
+			 * @return {String}                 Interpolated template string
+			 */
 			community: function({post: community, options}) {
 				let tpl = `
 		    		<div class="bg-white rounded border-2 border-gray-200 w-full">
@@ -392,6 +442,11 @@ Kodinger.API.Post = (function() {
 		    	return tpl;
 			},
 
+			/**
+			 * Community shimmer template
+			 * @param  {String} shi_class Generated unique shimmer class 
+			 * @return {String}           Interpolated template string
+			 */
 			communityShimmer: function(shi_class) {
 				let tpl = `
 			    	<div class="${shi_class} w-full">
@@ -424,6 +479,12 @@ Kodinger.API.Post = (function() {
 				return tpl;
 			},
 
+			/**
+			 * Post template
+			 * @param  {Object} options.post    Post data
+			 * @param  {Object} options.options Instance options
+			 * @return {String}                 Interpolated template string
+			 */
 			post: function({post, options}) {
 				let tpl = `
 				<div class="bg-white rounded border-2 border-gray-200 mb-10">
@@ -555,6 +616,11 @@ Kodinger.API.Post = (function() {
 				return tpl;
 			},
 
+			/**
+			 * Post shimmer template
+			 * @param  {String} shi_class Generated unique shimmer class
+			 * @return {String}           Interpolated template string
+			 */
 			postShimmer: function(shi_class) {
 				let tpl = `
 					<div class="${shi_class} bg-white rounded border-2 border-gray-200 mb-10">
@@ -599,8 +665,18 @@ Kodinger.API.Post = (function() {
 			}
 		},
 
+		/**
+		 * Target element instance
+		 * @type Node
+		 * @default Undefined
+		 */
 		elem: undefined,
 
+		/**
+		 * Set element target method
+		 * @param  {String} elem Target selector
+		 * @return {Node}      	 Target element node
+		 */
 		set target(elem) {
 			if($(elem) !== null) {
 				return this.elem = $(elem);
@@ -609,20 +685,37 @@ Kodinger.API.Post = (function() {
 			return this.elem = false;
 		},
 
+		/**
+		 * Init page number for query
+		 * @param  {Number} num Number of a page
+		 */
 		set initPage(num) {
 			api.vars.__page__ = num;
 		},
 
+		/**
+		 * Increment page method
+		 * @return {Number} Current page number
+		 */
 		incrementPage: function() {
 			api.vars.__page__ += 1;
 
 			return api.page;
 		},
 
+		/**
+		 * Get current page
+		 * @return {Number} Current page number
+		 */
 		get page() {
 			return api.vars.__page__;
 		},
 
+		/**
+		 * Build parameters method
+		 * @param  {Object} defParams Default parameters object
+		 * @return {String}           Generated URL parameter string
+		 */
 		buildParams: function(defParams) {
 			const { params } = api.options;
 
@@ -644,14 +737,26 @@ Kodinger.API.Post = (function() {
 			return (url ? '?' + url : '');
 		},
 
+		/**
+		 * Query/Fetch method
+		 * @param  {Number} options.page         	Current page number
+		 * @param  {Object} options.queryPending 	Query pending object
+		 * @param  {String} options.url          	Target URL endpoint
+		 * @param  {Function} options.buildParams  	Build params method
+		 * @param  {Function} init                 	Function callback
+		 * @return {Promise}                      	Resolve or reject; idk
+		 */
 		query: async function({page, queryPending, url, buildParams}, init) {
+			/** Check current query pending status */
 			if(queryPending.status == true) {
 				return false;
 			}
 
+			/** Calling init callback */
 			if(init)
 				init.call(this);
 
+			/** Init query pending */
 			queryPending.init();
 
 			let objParams = {
@@ -676,19 +781,31 @@ Kodinger.API.Post = (function() {
 				return Promise.reject(http);
 		},
 
+		/**
+		 * Query pending is an object to check if there is a current request
+		 * @type {Object}
+		 */
 		queryPending: {
+			/** Start query pending */
 			init: function() {
 				api.vars.__queryPending__ = true;
 			},
+
+			/** Stop query pending; when the HTTP request is complete (failed or success) */
 			dispose: function() {
 				api.vars.__queryPending__ = false;
 			},
+
+			/** Current query pending status */
 			get status() {
 				return api.vars.__queryPending__;
 			}
 		},
 
-		// default options
+		/**
+		 * Default instance options
+		 * @type {Object}
+		 */
 		defOptions: {
 			first: false,
 			carousel: false,
@@ -703,14 +820,28 @@ Kodinger.API.Post = (function() {
 			wrap: ''
 		},
 
+		/**
+		 * Instance Options
+		 * @type {Object}
+		 */
 		options: {},
 
+		/**
+		 * Set options method
+		 * @param  {Object} options Object to be set
+		 */
 		set opts(options) {
 			this.options = objExtend(this.defOptions, options);			
 		},
 
-		// intersection observer
+		/**
+		 * Intersection observer
+		 * @type {Object}
+		 */
 		io: {
+			/**
+			 * Initialize IO
+			 */
 			init: function() {
 				api.vars.io = new IntersectionObserver(function(entries) {
 					entries.forEach(function(entry) {
@@ -730,12 +861,28 @@ Kodinger.API.Post = (function() {
 					io.observe(image);
 				});
 			},
+
+			/**
+			 * Observe element
+			 * @param  {Node} element Target element to be observe
+			 * @return {IntersectionObserver}
+			 */
 			observe: function(element) {
 				return api.vars.io.observe(element);
 			}
 		},
 
+		/**
+		 * Events method
+		 * @type {Object}
+		 */
 		events: {
+			/**
+			 * Attach a few events before the target element to be appended
+			 * @param  {Node} options.element      		Target element
+			 * @param  {Object} options.interactions 	List of interactions we have
+			 * @param  {Object} options.options      	Instance Options
+			 */
 			attach: function({element, interactions, options}) {
 				const { TYPE } = post;
 
@@ -753,6 +900,17 @@ Kodinger.API.Post = (function() {
 			}
 		},
 
+		/**
+		 * Templating method; get template string, pass an object to it; 
+		 * attach a few events 
+		 * @param  {Object}    data:res     		Post data
+		 * @param  {Object}    options.options      Instance options
+		 * @param  {Object}    options.templates    List of template literal we have
+		 * @param  {Object}    options.interactions List of interaction we have
+		 * @param  {Object}    options.events       Call the event object
+		 * @param  {Object}    options.args         Spread operator
+		 * @return {Promise}                        Resolve or Reject
+		 */
 		templating: function({data:res, options, templates, interactions, events, ...args}) {
 			const { data:posts } = res;
 
@@ -824,18 +982,34 @@ Kodinger.API.Post = (function() {
 			});
 		},
 
+		/**
+		 * Last data from query method
+		 * @type {Object}
+		 */
 		lastData: {
+			/** Set the data */
 			set function(value) {
 				api.vars.__lastData__ = value;
 			},
+
+			/** Get current data */
 			get function() {
 				return api.vars.__lastData__;
 			},
+
+			/** Remove the data */
 			dispose: function() {
 				api.vars.__lastData__ = '';
 			}
 		},
 
+		/**
+		 * Called when element has been appended
+		 * @param  {Node}    options.elem 	Target element
+		 * @param  {Node}    options.dom  	Current element to be appended
+		 * @param  {Object}  options.args 	More args
+		 * @return {Promise}                Resolve or reject
+		 */
 		render: function({elem, dom, ...args}) {
 			return new Promise(function(resolve, reject) {
 				elem.appendChild(
@@ -846,6 +1020,12 @@ Kodinger.API.Post = (function() {
 			});
 		},
 
+		/**
+		 * Load more method
+		 * @param  {Function}    options.run       	Run method
+		 * @param  {Object}    	 options.endOfPage 	EndOfPage method
+		 * @param  {Object} 	 options.args      	More args
+		 */
 		loadMore: function({run, endOfPage, ...args}) {
 			// do more stuff here
 
@@ -853,7 +1033,18 @@ Kodinger.API.Post = (function() {
 				run({...args});
 		},
 
+		/**
+		 * Shimmer method
+		 * @type {Object}
+		 */
 		shimmer: {
+			/**
+			 * Add shimmer element to the target element instance
+			 * @param {Node} 	options.elem      		Target element instance
+			 * @param {Object} 	options.templates 		List of template literal we have
+			 * @param {Object} 	options.options   		Instance options
+			 * @param {String} 	options.position  		Element position (see insertAdjacentHTML API)
+			 */
 			add: function({elem, templates, options, position='beforeEnd'}) {
 				let shi_class = 'shimmer-' + new Date().valueOf();
 
@@ -878,34 +1069,77 @@ Kodinger.API.Post = (function() {
 			}
 		},
 
-		// is end of page?
+		/**
+		 * End of page is an object to check whether the last page
+		 * @type {Object}
+		 */
 		endOfPage: {
+			/**
+			 * Set end of page to false
+			 */
 			start: function() {
 				api.vars.__endOfPage__ = false;
 			},
+
+			/**
+			 * Init method
+			 */
 			init: function() {
 				api.vars.__endOfPage__ = true;
 			},
+
+			/**
+			 * Delete value
+			 */
 			dispose: function() {
 				api.vars.__endOfPage__ = false;
 			},
+
+			/**
+			 * Get current status
+			 * @return {Boolean}
+			 */
 			get status() {
 				return api.vars.__endOfPage__;
 			}
 		},
 
+		/**
+		 * End method; start end of page
+		 */
 		end: function() {
 			const { endOfPage } = api;
 
 			endOfPage.init();
 		},
 
+		/**
+		 * List of exception or error handler
+		 * @type {Object}
+		 */
 		exception: {
+			/**
+			 * When data is empty
+			 * @param  {Node} options.elem Target element
+			 */
 			empty: function({elem}) {
 				elem.insertAdjacentHTML('beforeEnd', '<p>Nggak ada isinya 😭</p>');
 			}
 		},
 
+		/**
+		 * Run instance (fetching, templating, attaching events, appending, rendering)
+		 * @param  {Node}    	options.elem         Target element
+		 * @param  {Function} 	options.end          End function
+		 * @param  {Object}    	options.options      Instance options
+		 * @param  {Object}    	options.lastData     Lastdata object
+		 * @param  {Function}   options.buildParams  BuildParams method
+		 * @param  {Object}    	options.shimmer      Shimmer object
+		 * @param  {Object}    	options.queryPending QueryPending object
+		 * @param  {Function}   options.query        Query method
+		 * @param  {Object} 	options.args         More args
+		 * @return {Promise}                         Resolve or reject
+		 */
 		run: function({elem, end, options, lastData, buildParams, shimmer, queryPending, query, ...args}) {
 			// get new page (don't retrieve from the argument)
 			const {page, incrementPage} = api;
@@ -986,12 +1220,27 @@ Kodinger.API.Post = (function() {
 		},
 	}
 
+	/**
+	 * Public Object
+	 * @type {Object}
+	 */
 	const post = {
+		/**
+		 * Post types
+		 * @type {Object}
+		 */
 		TYPE: {
 			COMMUNITY: 'community',
 			POST: 'post',
 			DISCOVER: 'post',
 		},
+
+		/**
+		 * Initialize 
+		 * @param  {Node} 	target Target element
+		 * @param  {Object} opts   Options given
+		 * @return {Object}        Public API
+		 */
 		init: function(target, opts) {
 			// set target element
 			api.target = target;

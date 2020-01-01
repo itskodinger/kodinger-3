@@ -2,6 +2,61 @@
  * Helpers
  */
 
+// https://codepen.io/gabrieleromanato/pen/LpLVeQ
+function toJSONString( form ) {
+ var obj = {};
+ var elements = form.querySelectorAll( "input, select, textarea" );
+ for( var i = 0; i < elements.length; ++i ) {
+     var element = elements[i];
+     var name = element.name;
+     var value = element.value;
+
+     if( name ) {
+         obj[ name ] = value;
+     }
+ }
+
+ return JSON.stringify( obj );
+}
+
+// https://stackoverflow.com/questions/5866169/how-to-get-all-selected-values-of-a-multiple-select-box/39363742
+function getSelectValues(select) {
+ var result = [];
+ var options = select && select.options;
+ var opt;
+
+ for (var i=0, iLen=options.length; i<iLen; i++) {
+     opt = options[i];
+
+     if (opt.selected) {
+         result.push(opt.value || opt.text);
+     }
+ }
+ return result;
+}
+
+
+// https://stackoverflow.com/questions/14321862/javascript-get-value-from-multiple-inputs-in-an-array
+function getMultipleInputValue(form) {
+ var inputs = form.querySelectorAll('input, select, textarea'),
+     names  = [].map.call(inputs, function( input ) {
+         if(input.value.trim().length > 0) 
+             return input.value;
+     });
+
+ return names;
+}
+
+function validateUrl(value) {
+ return /^(?:(?:(?:https?):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(value);
+}
+
+$('body').addEventListener('click', function(e) {
+ // close dropdown
+ if(e.target && !e.target.classList.contains('user-dropdown') && $('.user-dropdown-menu'))
+     $('.user-dropdown-menu').classList.add('hidden');
+});
+
 function isVideo(str)
 {
 	return str.indexOf('.mp4') > -1 ? true : false;
