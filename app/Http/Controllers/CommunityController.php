@@ -61,4 +61,15 @@ class CommunityController extends Controller
 
 		return redirect()->route('community.index');
 	}
+
+	/**
+	 * Community AJAX
+	 * @return JSON
+	 */
+	public function communities(Request $request)
+	{
+		$communities = $this->communityService->paginate(10);
+
+		return response()->json($communities);
+	}
 }

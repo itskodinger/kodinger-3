@@ -182,7 +182,9 @@ body {
 		@apply
 			static
 			bg-transparent
-			block;
+			block
+			h-auto
+			overflow-hidden;
 	}
 }
 

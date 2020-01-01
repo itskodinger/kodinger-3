@@ -19,7 +19,7 @@ use App\Services\Pipeline\DiscoverPost\{
 use App\Contracts\Post\DiscoverPost;
 use Illuminate\Pipeline\Pipeline;
 
-class FetchDiscoverUrlPreview implements ShouldQueue
+class FetchDiscoverUrlPreview
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 

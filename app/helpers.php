@@ -268,3 +268,13 @@ function user_js()
 		])
 		->toJson();
 }
+
+function search_types() 
+{
+	return [
+		'post' => 'Post',
+		'community' => 'Komunitas',
+		'discover' => 'Discover',
+		'user' => 'User'
+	];
+}

@@ -50,8 +50,8 @@
                         </a>
                     </div>
                     <div class="ml-auto w-full sm:w-auto flex items-center">
-                        <form action="{{ $search ?? url('') }}" autocomplete="off" class="mx-4 sm:mx-0 w-full sm:w-auto">
-                            <input type="text" name="search" class="bg-search focus:outline-none pl-10 border-2 border-gray-200 focus:border-indigo-600 py-3 px-4 sm:mr-2 rounded text-sm sm:w-64 w-full" placeholder="Pencarian" value="{{ request()->search }}">
+                        <form action="@route('search')" autocomplete="off" class="mx-4 sm:mx-0 w-full sm:w-auto">
+                            <input type="text" name="q" class="bg-search focus:outline-none pl-10 border-2 border-gray-200 focus:border-indigo-600 py-3 px-4 sm:mr-2 rounded text-sm sm:w-64 w-full" placeholder="Pencarian" value="{{ request()->q }}">
                         </form>
                         <div class="w-px h-6 mx-6 mr-8 bg-gray-200 hidden sm:block"></div>
                         @guest
@@ -160,6 +160,7 @@
                 discover: '@route('post.discover')',
                 base_url: '{{ url('') }}',
                 single: '@route('single')/',
+                blurry: '@route('blurry', '')/',
                 post_store_discover: '@route('post.store_discover')',
                 post_tags: '@route('post.tags')',
                 post_link_info: '@route('post.getLinkInfo')',
@@ -171,6 +172,7 @@
                 contribute_links: '@route('contribute.links', ['post_id', 'col'])',
                 profile_loves: '@route('loves', 'slug')',
                 profile_saves: '@route('saves')',
+                communities: '@route('community.communities')'
             },
             user = {!! user_js() !!},
             $ = document.querySelector.bind(document),

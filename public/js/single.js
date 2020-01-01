@@ -4,6 +4,7 @@ let mypost = Kodinger.API.Post.init('.post', {
 	}),
     url: routes.single + post_data.slug,
     carousel: true,
+    lazyimage: false,
     first: true
 });
 
@@ -28,8 +29,8 @@ mypost.onRender.then(function({lastData: {data}}) {
 	                			<div class="text-indigo-600 font-semibold title truncate"></div>
 		                		<span class="text-xs text-gray-700 truncate">${page}</span>
 	                		</div>
-	                	</a>`
-	                })
+	                	</a>`;
+	                }).join('')
 	            : // else
 	            `
 	            <div class="px-5 py-4 border-b border-gray-100 text-center text-sm">

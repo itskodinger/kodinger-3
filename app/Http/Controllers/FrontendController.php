@@ -18,7 +18,13 @@ class FrontendController extends Controller
 	protected $commentService;
 	protected $communityService;
 
-	public function __construct(PostService $postService, UserService $userService, ContributeService $contributeService, CommentService $commentService, CommunityService $communityService)
+	public function __construct(
+		PostService $postService, 
+		UserService $userService, 
+		ContributeService $contributeService, 
+		CommentService $commentService, 
+		CommunityService $communityService
+	)
 	{
 		$this->postService = $postService;
 		$this->userService = $userService;
@@ -145,5 +151,17 @@ class FrontendController extends Controller
 		$contributes = $this->contributeService->byUser($slug);
 
 		return view('contributes', compact('contributes', 'user'));
+	}
+
+	/**
+	 * Search Page
+	 * @return view
+	 */
+	public function search(Request $request)
+	{
+		$types = search_types();
+		$type = $request->type ?? 'post';
+
+		return view('search', compact('types', 'type'));
 	}
 }

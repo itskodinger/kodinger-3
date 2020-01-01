@@ -8,7 +8,8 @@ use App\Save;
 use App\Post;
 use App\PostTag;
 use App\Contribute;
-use App\Events\Post\Discover\DiscoverPostCreated;
+// use App\Events\Post\Discover\DiscoverPostCreated;
+use App\Jobs\FetchDiscoverUrlPreview;
 use Services\UserService;
 
 class PostService
@@ -81,9 +82,12 @@ class PostService
 
 		$post = $this->create($request, $adds);
 
-		event(
-			new DiscoverPostCreated($post)
-		);
+		// pusher is too expensive
+		// event(
+		// 	new DiscoverPostCreated($post)
+		// );
+		
+		dd(FetchDiscoverUrlPreview::dispatch($post));
 
 		return $post;
 	}

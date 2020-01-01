@@ -11,6 +11,14 @@
 |
 */
 
+Route::get('blurry/{image}', function($image) {
+	$m = Intervention\Image\ImageManagerStatic::make(str_replace(' ', '%20', $image));
+
+	$m->resize(5, 5);
+
+	return $m->response('png');
+})->name('blurry')->where('image', '(.+?)');
+
 Route::get('leave', RedirectorPageController::class)->name('leave.kodinger');
 Route::get('privacy-policy', function() {
 	return view('privacy-policy');
@@ -23,15 +31,19 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.'], function()
 	Route::get('/', 'DashboardController@index')->name('index')->middleware('permission:dashboard');
 });
 
-Route::group(['prefix' => 'communities', 'as' => 'community.', 'middleware' => 'auth'], function() 
+Route::group(['prefix' => 'communities', 'as' => 'community.'], function() 
 {
-	Route::get('/create', 'CommunityController@create')->name('create')->middleware('permission:community-create');
-	Route::get('/', 'CommunityController@index')->name('index')->middleware('permission:community-list');
-	Route::get('/{id}/edit', 'CommunityController@edit')->name('edit')->middleware('permission:community-update');
-	Route::put('/{id}/edit', 'CommunityController@update')->name('update')->middleware('permission:community-update');
-	Route::patch('/{id}/edit', 'CommunityController@update')->name('update')->middleware('permission:community-update');
-	Route::delete('/{id}/delete', 'CommunityController@destroy')->name('delete')->middleware('permission:community-delete');
-	Route::post('/', 'CommunityController@store')->name('store')->middleware('permission:community-create');
+	Route::group(['middleware' => 'auth'], function() {
+		Route::get('/create', 'CommunityController@create')->name('create')->middleware('permission:community-create');
+		Route::get('/', 'CommunityController@index')->name('index')->middleware('permission:community-list');
+		Route::get('/{id}/edit', 'CommunityController@edit')->name('edit')->middleware('permission:community-update');
+		Route::put('/{id}/edit', 'CommunityController@update')->name('update')->middleware('permission:community-update');
+		Route::patch('/{id}/edit', 'CommunityController@update')->name('update')->middleware('permission:community-update');
+		Route::delete('/{id}/delete', 'CommunityController@destroy')->name('delete')->middleware('permission:community-delete');
+		Route::post('/', 'CommunityController@store')->name('store')->middleware('permission:community-create');
+	});
+
+	Route::get('/communities', 'CommunityController@communities')->name('communities');
 });
 
 Route::group(['prefix' => 'posts', 'as' => 'post.'], function() 
@@ -91,6 +103,7 @@ Route::group(['prefix' => 'comments', 'as' => 'comment.'], function()
 
 Route::get('/', 'FrontendController@index')->name('index');
 Route::get('/community', 'FrontendController@community')->name('community');
+Route::get('/search', 'FrontendController@search')->name('search');
 Route::get('/about', 'FrontendController@about')->name('about');
 Route::get('/contact', 'FrontendController@contact')->name('contact');
 Route::get('/discover/{tag?}', 'FrontendController@discover')->name('discover');

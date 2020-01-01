@@ -12183,6 +12183,8 @@ body {
     position: static;
     background-color: transparent;
     display: block;
+    height: auto;
+    overflow: hidden;
   }
 }
 
