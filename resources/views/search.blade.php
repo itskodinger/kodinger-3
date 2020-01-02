@@ -11,7 +11,10 @@
 	            	<h1 class="text-xl font-semibold">Pencarian</h1>
 	            	<div class="flex overflow-x-auto flex-no-wrap mt-6">
 	            		@foreach($types as $k => $t)
-		            		<a href="@current(['type' => $k])" class="{{ $k == $type ? 'border-indigo-600 text-indigo-600 font-semibold' : ''}} hover:border-indigo-600 hover:text-indigo-600 text-gray-600 text-sm border-b-2 py-4 border-transparent mr-8 mr-2">{{ $t }}</a>
+		            		<a href="@current(['type' => $k])" class="{{ $k == $type ? 'border-indigo-600 text-indigo-600 font-semibold' : ''}} flex items-center hover:border-indigo-600 hover:text-indigo-600 text-gray-600 text-sm border-b-2 py-4 border-transparent mr-8 mr-2">
+	            				{!! type_icons($k) !!}
+		            			{{ $t }}
+		            		</a>
 	            		@endforeach
 	            	</div>
             	</div>
