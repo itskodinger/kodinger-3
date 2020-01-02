@@ -597,7 +597,7 @@ Kodinger.API.Post = (function() {
 				        }).join('')}
 
 				        <div class="mt-8">
-				            <div class="flex w-full">
+				            <div class="flex w-full items-center">
 				                <a data-love="${ post.id }" ${ post.is_post_loved ? 'data-loved' : '' } class="w-12 h-12 hover:bg-gray-100 rounded-full text-gray-600 flex items-center justify-center border-2 border-gray-200" href="#">
 				                    <span></span>
 				                </a>
@@ -608,6 +608,12 @@ Kodinger.API.Post = (function() {
 				                    <svg class="stroke-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
 				                </a>
 				                <a class="ml-2 w-12 h-12 hover:bg-gray-100 rounded-full text-gray-600 flex items-center justify-center border-2 border-gray-200" data-save="${ post.id }" ${ post.is_post_saved ? 'data-saved' : '' } href="#"></a>
+
+			                	${post.is_mine ? 
+					                `<div class="ml-auto">
+					                	<a href="${routes.delete_post.replace(/slug/g, post.slug)}" class="text-red-600">Delete</a>
+					                </div>`
+				                : ''}
 				            </div>
 				        </div>
 				    </div>

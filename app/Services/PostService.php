@@ -63,7 +63,7 @@ class PostService
 			});
 		}
 
-		$tag = $request->tag;
+		$tag = $request->tag ?? null;
 		if($tag) {
 			$tag = Tag::whereName($tag)->first();
 

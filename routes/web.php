@@ -102,6 +102,7 @@ Route::get('/discover/{tag?}', 'FrontendController@discover')->name('discover');
 Route::get('/{slug}/loves', 'FrontendController@profileLoves')->name('loves');
 Route::get('/saves', 'FrontendController@profileSaves')->name('saves');
 Route::get('/{slug?}/contributes', 'FrontendController@contributes')->name('contributes');
+Route::get('/{slug?}/delete', 'FrontendController@deletePost')->name('deletePost');
 Route::get('/{slug}/discuss', 'FrontendController@discuss')->name('discuss');
 Route::get('/setting', 'FrontendController@setting')->name('setting');
 Route::post('/setting', 'FrontendController@settingUpdate')->name('setting_update');

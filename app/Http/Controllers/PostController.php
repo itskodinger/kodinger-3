@@ -107,6 +107,9 @@ class PostController extends Controller
 
 		flash('Post deleted successfully')->success();
 
+		if(!auth()->user()->hasRole('admin'))
+			return redirect()->route('single', auth()->user()->the_username);
+
 		return redirect()->route('post.index');
 	}
 

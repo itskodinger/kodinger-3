@@ -179,4 +179,12 @@ class FrontendController extends Controller
 
 		return view('search', compact('types', 'type', 'tags', 'tag'));
 	}
+
+	public function deletePost($slug)
+	{
+		$post = $this->postService->findBySlug($slug);
+		$post_card = $post->post_card->toArray();
+
+		return view('delete_post', compact('post', 'post_card'));
+	}
 }

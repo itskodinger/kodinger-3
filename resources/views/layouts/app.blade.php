@@ -159,6 +159,7 @@
         const routes = {
                 save: '@route('saves.store')',
                 post: '@route('post.posts')',
+                delete_post: '@route('deletePost', 'slug')',
                 post_both: '@route('post.both')',
                 discover: '@route('post.discover')',
                 base_url: '{{ url('') }}',
