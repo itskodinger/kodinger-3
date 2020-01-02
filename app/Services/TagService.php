@@ -41,8 +41,15 @@ class TagService
 		if(is_numeric($method_or_take))
 			$tags = $tags->take($method_or_take)->get();
 
+		else if(is_array($method_or_take))
+			$tags = $tags->offset($method_or_take[0])->take($method_or_take[1])->get();
+
+		else if($method_or_take === false)
+			return $tags;
+
 		else if($method_or_take)
 			$tags = $tags->{$method_or_take}($args);
+
 
 		return $tags;
 	}

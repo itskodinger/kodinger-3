@@ -174,7 +174,8 @@
                 contribute_links: '@route('contribute.links', ['post_id', 'col'])',
                 profile_loves: '@route('loves', 'slug')',
                 profile_saves: '@route('saves')',
-                communities: '@route('community.communities')'
+                communities: '@route('community.communities')',
+                search: '@route('search')',
             },
             user = {!! user_js() !!},
             $ = document.querySelector.bind(document),

@@ -7,12 +7,31 @@
                 @sidebar
             </div>
             <div class="lg:w-6/12 px-4 md:w-8/12 w-full">
-            	<h1 class="text-xl font-semibold">Pencarian</h1>
-            	<div class="flex overflow-x-auto flex-no-wrap mt-2">
-            		@foreach($types as $k => $t)
-            		<a href="@current(['type' => $k])" class="{{ $k == $type ? 'border-indigo-600 text-indigo-600' : ''}} hover:border-indigo-600 hover:text-indigo-600 border-gray-200 text-gray-600 text-sm border-2 py-2 px-6 rounded-full mr-2">{{ $t }}</a>
-            		@endforeach
+            	<div class="border-2 border-gray-200 p-6 rounded pb-0">
+	            	<h1 class="text-xl font-semibold">Pencarian</h1>
+	            	<div class="flex overflow-x-auto flex-no-wrap mt-6">
+	            		@foreach($types as $k => $t)
+		            		<a href="@current(['type' => $k])" class="{{ $k == $type ? 'border-indigo-600 text-indigo-600 font-semibold' : ''}} hover:border-indigo-600 hover:text-indigo-600 text-gray-600 text-sm border-b-2 py-4 border-transparent mr-8 mr-2">{{ $t }}</a>
+	            		@endforeach
+	            	</div>
             	</div>
+
+            	<div class="flex mt-6 items-center">
+	        		<div class="w-full hidden tag-search relative z-10">
+	        			<input type="text" name="tag" class="w-64 border-2 border-gray-200 px-6 py-2 mr-2 text-sm focus:outline-none focus:border-indigo-600 rounded-full" placeholder="Cari tag">
+	        		</div>
+	            	<div class="flex flex-no-wrap overflow-x-auto tags">
+	            		@foreach($tags as $r)
+	            		<a href="{!! !isset($r['search']) ? request()->fullUrlWithQuery(['tag' => $r['name']]) : '#search' !!}" class="{{ $r['name'] == $tag ? 'border-indigo-600 text-indigo-600 font-semibold' : ''}} flex items-center hover:border-indigo-600 hover:text-indigo-600 border-gray-200 text-gray-600 text-sm border-2 py-2 px-6 flex-shrink-0 rounded-full mr-2 tag">
+		            		{!! 
+		            			!isset($r['search']) ? '#' . $r['name'] 
+		            			: 
+			            		'<svg xmlns="http://www.w3.org/2000/svg" class="stroke-current mr-2 w-4" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>' . $r['name'] 
+			            	!!}
+		            	</a>
+		            	@endforeach
+	            	</div>
+	            </div>
 
             	<div class="mt-8">
 	                @include('search_' . $type)

@@ -19,6 +19,32 @@ function toJSONString( form ) {
  return JSON.stringify( obj );
 }
 
+/**
+ * Laravel's Request's fullUrlWithQuery method
+ * @param  {Object} newQuery New query
+ * @return {String}          Generated URL
+ */
+function fullUrlWithQuery(newQuery)
+{
+	// get current URL params
+	let params = window.location.search;
+
+	if(params.substr(0, 1) === '?')
+		params = params.substr(1, params.length);
+
+	params = JSON.parse('{"' + decodeURI(params.replace(/&/g, "\",\"").replace(/=/g,"\":\"")) + '"}');
+
+	if(newQuery)  {
+		if(typeof newQuery === 'object' && Object.prototype.toString.call(newQuery) !== '[object Array]') {
+			params = objExtend(params, newQuery);
+		}else{
+			return console.warn('New Query is not an object; value given:', newQuery);
+		}
+	}
+
+	return '?' + (new URLSearchParams(params).toString());
+}
+
 // https://stackoverflow.com/questions/5866169/how-to-get-all-selected-values-of-a-multiple-select-box/39363742
 function getSelectValues(select) {
  var result = [];

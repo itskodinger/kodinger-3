@@ -395,7 +395,7 @@ Kodinger.API.Post = (function() {
 			 */
 			community: function({post: community, options}) {
 				let tpl = `
-		    		<div class="bg-white rounded border-2 border-gray-200 w-full">
+		    		<div class="bg-white rounded border-2 border-gray-200 w-full mb-10">
 		    			<div class="pb-8 pt-6 px-6">
 		    				<div class="float-right">
 		    					<a target="_blank" href="${ community.website }" class="flex leading-relaxed items-center hover:bg-indigo-600 hover:text-white hover:border-indigo-600 border-2 border-gray-200 uppercase text-xs font-semibold tracking-wider py-1 px-3 rounded-full">
@@ -412,7 +412,7 @@ Kodinger.API.Post = (function() {
 		    			<div class="flex px-6 pb-6">
 		    				<div class="flex text-sm items-center">
 		    					<svg class="w-5 mr-1 fill-current text-gray-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="person"><rect width="24" height="24" opacity="0"/><path d="M12 11a4 4 0 1 0-4-4 4 4 0 0 0 4 4z"/><path d="M18 21a1 1 0 0 0 1-1 7 7 0 0 0-14 0 1 1 0 0 0 1 1z"/></g></g></svg>
-		    					${ community.member }+
+		    					${ community.formatted_member }+
 		    				</div>
 		        			<div class="inline-flex ml-auto">
 		        				${ community.facebook ? `

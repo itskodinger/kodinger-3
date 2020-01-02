@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Services\PostService;
 use Services\UserService;
+use Services\TagService;
 use Services\ContributeService;
 use Services\CommentService;
 use Services\CommunityService;
@@ -17,13 +18,15 @@ class FrontendController extends Controller
 	protected $contributeService;
 	protected $commentService;
 	protected $communityService;
+	protected $tagService;
 
 	public function __construct(
 		PostService $postService, 
 		UserService $userService, 
 		ContributeService $contributeService, 
 		CommentService $commentService, 
-		CommunityService $communityService
+		CommunityService $communityService,
+		TagService $tagService
 	)
 	{
 		$this->postService = $postService;
@@ -31,6 +34,7 @@ class FrontendController extends Controller
 		$this->contributeService = $contributeService;
 		$this->commentService = $commentService;
 		$this->communityService = $communityService;
+		$this->tagService = $tagService;
 	}
 
 	public function index(Request $request, $tag = false)
@@ -161,7 +165,18 @@ class FrontendController extends Controller
 	{
 		$types = search_types();
 		$type = $request->type ?? 'post';
+		$search = [['name' => 'Search', 'search' => true]];
+		$tags = $this->tagService->popular([5, 5]);
 
-		return view('search', compact('types', 'type'));
+		$pluck = $tags->pluck('name')->all();
+		$tag = $request->tag;
+		if($tag && !in_array($tag, $pluck))
+			$tags = array_merge([['name' => $tag]], $tags->toArray());
+		else
+			$tags = $tags->toArray();
+
+		$tags = array_merge($search, $tags);
+
+		return view('search', compact('types', 'type', 'tags', 'tag'));
 	}
 }
