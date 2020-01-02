@@ -32,7 +32,10 @@ function fullUrlWithQuery(newQuery)
 	if(params.substr(0, 1) === '?')
 		params = params.substr(1, params.length);
 
-	params = JSON.parse('{"' + decodeURI(params.replace(/&/g, "\",\"").replace(/=/g,"\":\"")) + '"}');
+	if(params)
+		params = JSON.parse('{"' + decodeURI(params.replace(/&/g, "\",\"").replace(/=/g,"\":\"")) + '"}');
+	else
+		params = {};
 
 	if(newQuery)  {
 		// if object given
@@ -52,7 +55,9 @@ function fullUrlWithQuery(newQuery)
 		}
 	}
 
-	return '?' + (new URLSearchParams(params).toString());
+	params = (new URLSearchParams(params).toString());
+
+	return params ? '?' + params : '';
 }
 
 // https://stackoverflow.com/questions/5866169/how-to-get-all-selected-values-of-a-multiple-select-box/39363742
