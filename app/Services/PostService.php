@@ -63,6 +63,20 @@ class PostService
 			});
 		}
 
+		$tag = $request->tag;
+		if($tag) {
+			$tag = Tag::whereName($tag)->first();
+
+			if(!$tag) 
+				return false;
+
+			$tag_id = $tag->id;
+
+			$discover = $discover->whereHas('tags', function($q) use($tag_id) {
+				$q = $q->whereTagId($tag_id);
+			});
+		}
+
 		return $discover->orderBy('created_at', 'desc')->paginate($num);
 	}
 
