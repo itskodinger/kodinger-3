@@ -22,12 +22,23 @@
 	        		</div>
 	            	<div class="flex flex-no-wrap overflow-x-auto tags">
 	            		@foreach($tags as $r)
-	            		<a href="{!! !isset($r['search']) ? request()->fullUrlWithQuery(['tag' => $r['name']]) : '#search' !!}" class="{{ $r['name'] == $tag ? 'border-indigo-600 text-indigo-600 font-semibold' : ''}} flex items-center hover:border-indigo-600 hover:text-indigo-600 border-gray-200 text-gray-600 text-sm border-2 py-2 px-6 flex-shrink-0 rounded-full mr-2 tag">
+	            		<a 
+	            			{!! $r['name'] !== $tag ? 'href="' . (!isset($r['search']) ? request()->fullUrlWithQuery(['tag' => $r['name']]) : '#search') . '"' : '' !!} 
+	            			class="{{ $r['name'] == $tag ? 'border-indigo-600 text-indigo-600 font-semibold pr-8' : ''}} relative flex items-center hover:border-indigo-600 hover:text-indigo-600 border-gray-200 text-gray-600 text-sm border-2 py-2 px-6 flex-shrink-0 rounded-full mr-2 tag"
+	            		>
 		            		{!! 
 		            			!isset($r['search']) ? '#' . $r['name'] 
 		            			: 
 			            		'<svg xmlns="http://www.w3.org/2000/svg" class="stroke-current mr-2 w-4" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>' . $r['name'] 
 			            	!!}
+
+			            	@if($r['name'] == $tag)
+			            		<div class="text-lg absolute right-0">
+			            			<span class="mr-3 cursor-pointer text-red-600" onclick="window.location.href=fullUrlWithQuery(['tag'])">
+			            				&times;
+			            			</span>
+			            		</div>
+			            	@endif
 		            	</a>
 		            	@endforeach
 	            	</div>

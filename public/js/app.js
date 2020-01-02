@@ -20,7 +20,7 @@ function toJSONString( form ) {
 }
 
 /**
- * Laravel's Request's fullUrlWithQuery method
+ * Laravel-like Request's fullUrlWithQuery method
  * @param  {Object} newQuery New query
  * @return {String}          Generated URL
  */
@@ -35,10 +35,20 @@ function fullUrlWithQuery(newQuery)
 	params = JSON.parse('{"' + decodeURI(params.replace(/&/g, "\",\"").replace(/=/g,"\":\"")) + '"}');
 
 	if(newQuery)  {
+		// if object given
 		if(typeof newQuery === 'object' && Object.prototype.toString.call(newQuery) !== '[object Array]') {
+			// then extend with current URL params
 			params = objExtend(params, newQuery);
 		}else{
-			return console.warn('New Query is not an object; value given:', newQuery);
+			// if array given
+			if(Object.prototype.toString.call(newQuery) === '[object Array]') {
+				// then delete keys from object
+				newQuery.forEach(function(q) {
+					delete params[q];
+				});
+			}else{
+				return console.warn('Not valid datatype; value given:', newQuery);
+			}
 		}
 	}
 
