@@ -4,7 +4,7 @@
     <div class="container py-12 mx-auto px-4 sm:px-0">
         <h1 class="text-indigo-600 text-xl font-semibold">{{request()->search ? 'Mencari Komunitas' : 'Komunitas'}}</h1>
         <p class="mt-1 text-gray-600">
-        	Temukan komunitas di sekitar kamu di sini
+        	Komunitas akan membantu kamu berkembang bersama-sama.
         </p>
 
         <div class="block sm:hidden">

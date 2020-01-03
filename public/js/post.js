@@ -444,12 +444,11 @@ Kodinger.API.Post = (function() {
 
 			/**
 			 * Community shimmer template
-			 * @param  {String} shi_class Generated unique shimmer class 
 			 * @return {String}           Interpolated template string
 			 */
-			communityShimmer: function(shi_class) {
+			communityShimmer: function() {
 				let tpl = `
-			    	<div class="${shi_class} w-full">
+			    	<div class="w-full">
 			    		<div class="bg-white rounded border-2 border-gray-200">
 			    			<div class="pb-8 pt-6 px-6">
 			    				<div class="float-right">
@@ -549,12 +548,18 @@ Kodinger.API.Post = (function() {
 				    <div class="relative${post.images.length > 1 ? ' carousel-outer w-full' : ''}"> 
 				        <div class="${post.images.length > 1 ? 'carousel w-full' : ''}">
 				            
-				            ${'carousel' in options && options.carousel == false ? `
-				                <a href="${routes.single + post.slug}">
-				                    <img data-src="${post.images[0]}" class="lazy-image h-64 object-cover w-full">
-				                </a>` 
+				            ${'carousel' in options && options.carousel == false ? 
+				            	(isVideo(post.images[0]) ?
+				                    `<video controls="">
+				                        <source src="${post.images[0]}" type="video/mp4">
+				                    </video>`
+				            		:
+					            	`<a href="${routes.single + post.slug}">
+					                    <img data-src="${post.images[0]}" class="lazy-image h-64 object-cover w-full">
+					                </a>`
 
-				                : // else
+				                )
+			                : // else
 				                
 				                post.images.map(function(img) {
 				                    if(isVideo(img)) {
@@ -588,7 +593,7 @@ Kodinger.API.Post = (function() {
 
 				        ${post.tags.map(function(tag) {
 				        	if(tag.tag !== null) {
-			                    return `<a class="border border-gray-300 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded-full py-2 px-4 text-xs" href="#">
+			                    return `<a class="border border-gray-300 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded-full py-2 px-4 text-xs" href="${routes.search + fullUrlWithQuery({tag: tag.tag.name})}">
 			                        #${ tag.tag.name }
 			                    </a>`;			        		
 				        	}else {
@@ -874,6 +879,9 @@ Kodinger.API.Post = (function() {
 			 * @return {IntersectionObserver}
 			 */
 			observe: function(element) {
+				if(!element)
+					return false;
+
 				return api.vars.io.observe(element);
 			}
 		},
@@ -936,14 +944,7 @@ Kodinger.API.Post = (function() {
 				let wrap = options.wrap;
 				if(wrap && typeof wrap == 'object') {
 					// then wrap the element template
-					let wrapping = document.createElement(wrap.tag);
-					Object.keys(wrap.attrs).forEach(function(key) {
-						wrapping[key] = wrap.attrs[key];
-					});
-
-					wrapping.appendChild(element);
-					
-					element = wrapping;
+					element = wrapNode(wrap, element);
 				}
 
 				// just to make sure
@@ -1049,17 +1050,26 @@ Kodinger.API.Post = (function() {
 			 * @param {Node} 	options.elem      		Target element instance
 			 * @param {Object} 	options.templates 		List of template literal we have
 			 * @param {Object} 	options.options   		Instance options
-			 * @param {String} 	options.position  		Element position (see insertAdjacentHTML API)
 			 */
-			add: function({elem, templates, options, position='beforeEnd'}) {
+			add: function({elem, templates, options}) {
 				let shi_class = 'shimmer-' + new Date().valueOf();
 
-				let tpl = templates[options.type + 'Shimmer'](
+				let tpl = str2dom(templates[options.type + 'Shimmer'](
 					shi_class
-				);
+				));
 
-				for(let i = 0; i < options.shimmer; i++)
-					elem.insertAdjacentHTML(position, tpl);
+				// if wrap option defined
+				let wrap = options.shimmerWrap;
+				if(wrap && typeof wrap == 'object') {
+					// then wrap the element template					
+					tpl = wrapNode(wrap, tpl);
+				}
+
+				tpl.classList.add(shi_class);
+
+				for(let i = 0; i < options.shimmer; i++) {
+					elem.appendChild(tpl.cloneNode(true));
+				}
 
 				return {
 					dispose: function() {

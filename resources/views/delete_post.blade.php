@@ -15,10 +15,10 @@
 
 	            		<p class="mb-2 text-gray-600">Post Terkait</p>
                         <a href="" class="flex bg-gray-100 hover:bg-gray-200 hover:border-gray-300 border border-gray-200 mb-8 p-3 rounded">
-	            			<div class="bg-cover w-24 rounded flex-shrink-0" style="background-image: url({{$post_card['thumbnail']}});"></div>	
+	            			<div class="bg-cover w-24 rounded flex-shrink-0" style="background-image: url({{$post_card['thumbnail'] ?? ''}});"></div>	
 	            			<div class="ml-4 w-full">
-	            				<h4 class="font-semibold text-indigo-600">{{ $post_card['title'] }}</h4>
-	            				<p class="text-sm text-gray-600 mt-1">{{ $post_card['description'] }}</p>
+	            				<h4 class="font-semibold text-indigo-600">{{ $post_card['title'] ?? '' }}</h4>
+	            				<p class="text-sm text-gray-600 mt-1">{{ $post_card['description'] ?? '' }}</p>
 	            			</div>
 	            		</a>
 

@@ -9,5 +9,11 @@ let communities = Kodinger.API.Post.init('.communities', {
     	attrs: {
     		className: 'sm:px-4 px-0 lg:w-3/12 md:w-6/12 mb-6 w-full'
     	}
+    },
+    shimmerWrap: {
+    	tag: 'div',
+    	attrs: {
+    		className: 'sm:px-4 px-0 lg:w-3/12 md:w-6/12 mb-6 w-full'
+    	}
     }
 });

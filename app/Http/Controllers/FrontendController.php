@@ -183,6 +183,10 @@ class FrontendController extends Controller
 	public function deletePost($slug)
 	{
 		$post = $this->postService->findBySlug($slug);
+
+		if(!$post->is_mine)
+			return abort(404);
+
 		$post_card = $post->post_card->toArray();
 
 		return view('delete_post', compact('post', 'post_card'));
