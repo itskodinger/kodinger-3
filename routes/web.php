@@ -34,8 +34,6 @@ Route::group(['prefix' => 'communities', 'as' => 'community.'], function()
 		Route::delete('/{id}/delete', 'CommunityController@destroy')->name('delete')->middleware('permission:community-delete');
 		Route::post('/', 'CommunityController@store')->name('store')->middleware('permission:community-create');
 	});
-
-	Route::get('/communities', 'CommunityController@communities')->name('communities');
 });
 
 Route::group(['prefix' => 'posts', 'as' => 'post.'], function() 
@@ -52,13 +50,6 @@ Route::group(['prefix' => 'posts', 'as' => 'post.'], function()
 		Route::post('/', 'PostController@store')->name('store')->middleware('permission:post-create');
 		Route::post('/discover', 'PostController@storeDiscover')->name('store_discover');
 	});
-
-	// AJAX
-	Route::post('/link-info', 'PostController@getLinkInfo')->name('getLinkInfo');
-	Route::get('/tags', 'PostController@tags')->name('tags');
-	Route::get('/posts', 'PostController@posts')->name('posts');
-	Route::get('/both', 'PostController@both')->name('both');
-	Route::get('/discover', 'PostController@discover')->name('discover');
 });
 
 Route::group(['prefix' => 'contributes', 'as' => 'contribute.', 'middleware' => 'auth'], function() 
@@ -90,7 +81,6 @@ Route::group(['prefix' => 'comments', 'as' => 'comment.'], function()
 		Route::post('/', 'CommentController@store')->name('store');
 		Route::delete('/delete', 'CommentController@destroy')->name('destroy');
 	});
-	Route::get('/{post_id?}', 'CommentController@ajax')->name('ajax');
 });
 
 Route::get('/', 'FrontendController@index')->name('index');

@@ -29,7 +29,7 @@
         </div>
     </div>
     <div id="app">
-        <nav class="bg-white border-b-2 border-indigo-600 shadow mb-4 py-3 fixed left-0 w-full z-10">
+        <nav class="bg-white border-b-2 border-indigo-600 shadow mb-4 py-3 fixed left-0 w-full z-50">
             <div class="container mx-auto sm:px-6 px-4 md:px-0">
                 <div class="flex items-center justify-center">
                     <a href="{{ url('/') }}" class="text-lg flex-shrink-0 font-semibold text-indigo-600 no-underline">
@@ -158,16 +158,17 @@
     <script>
         const routes = {
                 save: '@route('saves.store')',
-                post: '@route('post.posts')',
+                post: '@api('post.posts')',
                 delete_post: '@route('deletePost', 'slug')',
-                post_both: '@route('post.both')',
-                discover: '@route('post.discover')',
+                post_both: '@api('post.both')',
+                discover: '@api('post.discover')',
                 base_url: '{{ url('') }}',
                 single: '@route('single')/',
+                post_show: '@api('post.show', 'slug')/',
                 post_store_discover: '@route('post.store_discover')',
-                post_tags: '@route('post.tags')',
-                post_link_info: '@route('post.getLinkInfo')',
-                comment_ajax: '@route('comment.ajax')/',
+                post_tags: '@api('tag.search')',
+                post_link_info: '@api('post.getLinkInfo')',
+                comment_ajax: '@api('comment.index')/',
                 comment_store: '@route('comment.store')',
                 comment_destory: '@route('comment.destroy')',
                 contribute: '@route('contributes', ['slug' => 'slug'])',
@@ -175,7 +176,7 @@
                 contribute_links: '@route('contribute.links', ['post_id', 'col'])',
                 profile_loves: '@route('loves', 'slug')',
                 profile_saves: '@route('saves')',
-                communities: '@route('community.communities')',
+                communities: '@api('community.index')',
                 search: '@route('search')',
             },
             user = {!! user_js() !!},

@@ -237,7 +237,7 @@ let take = 10,
     offset = 0;
 function comment_load(done)
 {
-    fetch(routes.comment_ajax + post_id + '??take=' + take + '&offset=' + offset)
+    fetch(routes.comment_ajax + post_id + '?take=' + take + '&offset=' + offset)
     .then(res => res.json())
     .then(function(res) {
         remove_load_more();

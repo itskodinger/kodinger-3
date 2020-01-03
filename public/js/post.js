@@ -555,7 +555,7 @@ Kodinger.API.Post = (function() {
 				                    </video>`
 				            		:
 					            	`<a href="${routes.single + post.slug}">
-					                    <img data-src="${post.images[0]}" src="${post.blurry_image}" class="lazy-image h-64 object-cover w-full">
+					                    <div data-src="${post.images[0]}" class="lazy-image w-full bg-gray-200 bg-cover" style="height: 450px;background-image: url(${post.blurry_image});"></div>
 					                </a>`
 
 				                )
@@ -857,13 +857,14 @@ Kodinger.API.Post = (function() {
 				api.vars.io = new IntersectionObserver(function(entries) {
 					entries.forEach(function(entry) {
 						if(entry.isIntersecting) {
-							let the_image = entry.target;
-							the_image.src = the_image.dataset.src;
-							the_image.classList.remove('lazy-image');
-							// temp
-							the_image.classList.remove('h-64');
+							let target = entry.target;
+							let image = document.createElement('img');
+							image.src = target.dataset.src;
+							image.className = 'w-full';
+							target.parentNode.appendChild(image);
+							api.vars.io.unobserve(target);
 
-							api.vars.io.unobserve(the_image);
+							target.remove();
 						}
 					});
 				});
