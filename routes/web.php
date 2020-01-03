@@ -11,31 +11,6 @@
 |
 */
 
-use Intervention\Image\ImageManagerStatic as Image;
-
-Route::get('/image', function() {
-	$s = Storage::disk('spaces');
-
-	$files = $s->files();
-
-	dd($files);
-
-	$log = '';
-
-	foreach($files as $file)
-	{
-		$file = env('DO_SPACES_BASEURL') . '/' . $file;
-		$image = Image::make($file);
-		$resize = $image->fit(10,10)->encode('png');
-
-		Storage::disk('spaces')->put('bulma-px.png', $resize->__toString(), 'public');
-
-		$log .= 'Load: ' . $file . "\n";
-	}
-
-	dd($log);
-});
-
 Route::get('leave', RedirectorPageController::class)->name('leave.kodinger');
 Route::get('privacy-policy', function() {
 	return view('privacy-policy');

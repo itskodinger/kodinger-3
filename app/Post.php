@@ -31,6 +31,7 @@ class Post extends Model
 
     protected $appends = [
     	'time', 
+        'blurry_image',
     	'markdown', 
     	'markdown_truncate', 
     	'is_mine', 
@@ -112,6 +113,20 @@ class Post extends Model
 	{
 		return $this->hasMany('App\PostTag');
 	}
+
+    public function getBlurryImageAttribute()
+    {
+        if(isset($this->images[0]))
+        {
+            $image = $this->images[0];
+
+            $filename = pathinfo($image, PATHINFO_FILENAME);
+            $extension = pathinfo($image, PATHINFO_EXTENSION);
+            $dir = pathinfo($image, PATHINFO_DIRNAME);
+
+            return $dir . '/px/' . $filename .'.'. $extension;
+        }
+    }
 
 	public function user()
 	{

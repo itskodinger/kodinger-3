@@ -545,8 +545,8 @@ Kodinger.API.Post = (function() {
 
 				    ${ post.type !== 'link' ? `
 				    
-				    <div class="relative${post.images.length > 1 ? ' carousel-outer w-full' : ''}"> 
-				        <div class="${post.images.length > 1 ? 'carousel w-full' : ''}">
+				    <div class="relative${post.images.length > 1 && options.carousel ? ' carousel-outer w-full' : ''}"> 
+				        <div class="${post.images.length > 1 && options.carousel ? 'carousel w-full' : ''}">
 				            
 				            ${'carousel' in options && options.carousel == false ? 
 				            	(isVideo(post.images[0]) ?
@@ -555,7 +555,7 @@ Kodinger.API.Post = (function() {
 				                    </video>`
 				            		:
 					            	`<a href="${routes.single + post.slug}">
-					                    <img data-src="${post.images[0]}" class="lazy-image h-64 object-cover w-full">
+					                    <img data-src="${post.images[0]}" src="${post.blurry_image}" class="lazy-image h-64 object-cover w-full">
 					                </a>`
 
 				                )
