@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Services\PostService;
 use Services\TagService;
-use Requests\PostDiscoverCreateRequest;
 use Requests\PostCreateRequest;
 use Requests\PostUpdateRequest;
 

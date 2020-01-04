@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
+use Requests\PostDiscoverCreateRequest;
 use App\Http\Controllers\Controller;
 use Services\PostService;
 
@@ -49,6 +50,13 @@ class PostApiController extends Controller
 		$posts = $this->postService->discover(10, $request);
 
 		return response()->json($posts);
+	}
+
+	public function storeDiscover(PostDiscoverCreateRequest $request)
+	{
+		$post = $this->postService->createDiscover($request);
+
+		return response()->json($post);
 	}
 
 	public function show($slug, Request $request)
