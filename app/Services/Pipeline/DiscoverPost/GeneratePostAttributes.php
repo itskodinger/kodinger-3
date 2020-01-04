@@ -77,8 +77,16 @@ class GeneratePostAttributes {
             // should the exception be logged somehow?
 
             return $next($passable);
+
+        } catch(\Throwable $t) {
+
+            dd($t);
+
+        } finally {
+
+            return $next($passable);
+
         }
 
-        return $next($passable);
     }
 }
