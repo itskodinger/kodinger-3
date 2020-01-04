@@ -26,4 +26,4 @@ Kodinger 3 merupakan project dari tim Kodinger untuk refactoring website utama K
 - Lazy-load image (done)
 - Search (done)
 - Off-canvasify overflow (bug) (done)
-- Ajax to REST (endpoint)
+- Ajax to REST (endpoint) (done)

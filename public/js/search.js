@@ -2,6 +2,10 @@ if(typeof lazyimage == 'undefined') {
 	lazyimage = true;
 }
 
+if(typeof wrap == 'undefined') {
+	wrap = undefined;
+}
+
 let posts = Kodinger.API.Post.init('.posts', {
     url: url,
     carousel: false,
@@ -12,7 +16,8 @@ let posts = Kodinger.API.Post.init('.posts', {
 		...params,
 		search,
 		tag
-    })
+    }),
+    wrap
 });
 
 let tagSearch = function() {
