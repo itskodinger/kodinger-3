@@ -2,11 +2,19 @@
 
 namespace App\Providers;
 
+use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
 {
+    /**
+     * Kodinger's Token Name
+     *
+     * @var  string
+     */
+    protected const TOKEN_NAME = 'kodinger_token';
+
     /**
      * The policy mappings for the application.
      *
@@ -25,6 +33,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Passport::routes();
+        Passport::cookie(self::TOKEN_NAME);
     }
 }
