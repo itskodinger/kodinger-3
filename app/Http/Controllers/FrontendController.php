@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Services\PostService;
 use Services\UserService;
+use Services\TagService;
 use Services\ContributeService;
 use Services\CommentService;
 use Services\CommunityService;
@@ -17,14 +18,23 @@ class FrontendController extends Controller
 	protected $contributeService;
 	protected $commentService;
 	protected $communityService;
+	protected $tagService;
 
-	public function __construct(PostService $postService, UserService $userService, ContributeService $contributeService, CommentService $commentService, CommunityService $communityService)
+	public function __construct(
+		PostService $postService, 
+		UserService $userService, 
+		ContributeService $contributeService, 
+		CommentService $commentService, 
+		CommunityService $communityService,
+		TagService $tagService
+	)
 	{
 		$this->postService = $postService;
 		$this->userService = $userService;
 		$this->contributeService = $contributeService;
 		$this->commentService = $commentService;
 		$this->communityService = $communityService;
+		$this->tagService = $tagService;
 	}
 
 	public function index(Request $request, $tag = false)
@@ -77,10 +87,6 @@ class FrontendController extends Controller
 			$posts = $user->posts()->paginate(10);
 
 			return view('profile', compact('user', 'posts'));
-		}
-
-		if($request->ajax) {
-			return response()->json(['data' => $post]);
 		}
 
 		return view('single', compact('post'));
@@ -145,5 +151,40 @@ class FrontendController extends Controller
 		$contributes = $this->contributeService->byUser($slug);
 
 		return view('contributes', compact('contributes', 'user'));
+	}
+
+	/**
+	 * Search Page
+	 * @return view
+	 */
+	public function search(Request $request)
+	{
+		$types = search_types();
+		$type = $request->type ?? 'post';
+		$search = [['name' => 'Search', 'search' => true]];
+		$tags = $this->tagService->popular([5, 5]);
+
+		$pluck = $tags->pluck('name')->all();
+		$tag = $request->tag;
+		if($tag && !in_array($tag, $pluck))
+			$tags = array_merge([['name' => $tag]], $tags->toArray());
+		else
+			$tags = $tags->toArray();
+
+		$tags = array_merge($search, $tags);
+
+		return view('search', compact('types', 'type', 'tags', 'tag'));
+	}
+
+	public function deletePost($slug)
+	{
+		$post = $this->postService->findBySlug($slug);
+
+		if(!$post->is_mine)
+			return abort(404);
+
+		$post_card = $post->post_card->toArray();
+
+		return view('delete_post', compact('post', 'post_card'));
 	}
 }

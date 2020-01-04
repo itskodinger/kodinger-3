@@ -49,14 +49,14 @@
 		])
 
 		@isset($community)
-		<img src="{{ logo($community->logo) }}" width="100">
+		<img src="{{ $community->logo }}" width="100">
 		@endif
 
 		@field([
 			'name' => 'logo_bg',
 			'label' => 'Logo Background',
 			'type' => 'text',
-			'value' => $community->logo_bg,
+			'value' => $community->logo_bg ?? '',
 			'help' => 'Opsional. Kode HEX warna untuk background logo.'
 		])
 

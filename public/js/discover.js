@@ -1,29 +1,9 @@
 let posts = Kodinger.API.Post.init('.posts', {
     url: routes.discover,
     carousel: false,
-    truncate_content: true
+    truncate_content: true,
+    lazyimage: false
 });
-
-
-// Enable pusher logging - don't include this in production
-Pusher.logToConsole = true;
-
-var pusher = new Pusher('7c229895dc6ebac97025', {
-  cluster: 'ap1',
-  useTLS: true
-});
-
-var channel = pusher.subscribe(`discover.created.${user.id}`);
-channel.bind('App\\Events\\Post\\Discover\\DiscoverPostCreated', function(data) {
-  console.log('yesss ', data);
-});
-channel.bind('DiscoverPostCreated', function(data) {
-  console.log('aaayesss ', data);
-});
-channel.bind('pusher:subscription_succeeded', function(data) {
-  console.log('aaaa ', data);
-});
-
 
 let tagify = new Tagify($('.tags'), {
     enforceWhitelist : true,

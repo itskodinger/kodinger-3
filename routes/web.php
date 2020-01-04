@@ -23,15 +23,17 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.'], function()
 	Route::get('/', 'DashboardController@index')->name('index')->middleware('permission:dashboard');
 });
 
-Route::group(['prefix' => 'communities', 'as' => 'community.', 'middleware' => 'auth'], function() 
+Route::group(['prefix' => 'communities', 'as' => 'community.'], function() 
 {
-	Route::get('/create', 'CommunityController@create')->name('create')->middleware('permission:community-create');
-	Route::get('/', 'CommunityController@index')->name('index')->middleware('permission:community-list');
-	Route::get('/{id}/edit', 'CommunityController@edit')->name('edit')->middleware('permission:community-update');
-	Route::put('/{id}/edit', 'CommunityController@update')->name('update')->middleware('permission:community-update');
-	Route::patch('/{id}/edit', 'CommunityController@update')->name('update')->middleware('permission:community-update');
-	Route::delete('/{id}/delete', 'CommunityController@destroy')->name('delete')->middleware('permission:community-delete');
-	Route::post('/', 'CommunityController@store')->name('store')->middleware('permission:community-create');
+	Route::group(['middleware' => 'auth'], function() {
+		Route::get('/create', 'CommunityController@create')->name('create')->middleware('permission:community-create');
+		Route::get('/', 'CommunityController@index')->name('index')->middleware('permission:community-list');
+		Route::get('/{id}/edit', 'CommunityController@edit')->name('edit')->middleware('permission:community-update');
+		Route::put('/{id}/edit', 'CommunityController@update')->name('update')->middleware('permission:community-update');
+		Route::patch('/{id}/edit', 'CommunityController@update')->name('update')->middleware('permission:community-update');
+		Route::delete('/{id}/delete', 'CommunityController@destroy')->name('delete')->middleware('permission:community-delete');
+		Route::post('/', 'CommunityController@store')->name('store')->middleware('permission:community-create');
+	});
 });
 
 Route::group(['prefix' => 'posts', 'as' => 'post.'], function() 
@@ -48,13 +50,6 @@ Route::group(['prefix' => 'posts', 'as' => 'post.'], function()
 		Route::post('/', 'PostController@store')->name('store')->middleware('permission:post-create');
 		Route::post('/discover', 'PostController@storeDiscover')->name('store_discover');
 	});
-
-	// AJAX
-	Route::post('/link-info', 'PostController@getLinkInfo')->name('getLinkInfo');
-	Route::get('/tags', 'PostController@tags')->name('tags');
-	Route::get('/posts', 'PostController@posts')->name('posts');
-	Route::get('/both', 'PostController@both')->name('both');
-	Route::get('/discover', 'PostController@discover')->name('discover');
 });
 
 Route::group(['prefix' => 'contributes', 'as' => 'contribute.', 'middleware' => 'auth'], function() 
@@ -86,17 +81,18 @@ Route::group(['prefix' => 'comments', 'as' => 'comment.'], function()
 		Route::post('/', 'CommentController@store')->name('store');
 		Route::delete('/delete', 'CommentController@destroy')->name('destroy');
 	});
-	Route::get('/{post_id?}', 'CommentController@ajax')->name('ajax');
 });
 
 Route::get('/', 'FrontendController@index')->name('index');
 Route::get('/community', 'FrontendController@community')->name('community');
+Route::get('/search', 'FrontendController@search')->name('search');
 Route::get('/about', 'FrontendController@about')->name('about');
 Route::get('/contact', 'FrontendController@contact')->name('contact');
 Route::get('/discover/{tag?}', 'FrontendController@discover')->name('discover');
 Route::get('/{slug}/loves', 'FrontendController@profileLoves')->name('loves');
 Route::get('/saves', 'FrontendController@profileSaves')->name('saves');
 Route::get('/{slug?}/contributes', 'FrontendController@contributes')->name('contributes');
+Route::get('/{slug?}/delete', 'FrontendController@deletePost')->name('deletePost');
 Route::get('/{slug}/discuss', 'FrontendController@discuss')->name('discuss');
 Route::get('/setting', 'FrontendController@setting')->name('setting');
 Route::post('/setting', 'FrontendController@settingUpdate')->name('setting_update');

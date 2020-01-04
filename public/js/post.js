@@ -1,12 +1,20 @@
 /**
- * Post API
+ * Post API with IIFE
  *
- * flow: init -> run -> fetching -> templating -> attach event -> append -> rendered
+ * Flow: init -> run -> fetching -> templating (& attach event) -> append -> rendered
  */
 
 Kodinger.API.Post = (function() {
+	/**
+	 * Private API
+	 * @type {Object}
+	 */
 	let api = {
 		vars: {
+			/**
+			 * Share URIs
+			 * @type {Array}
+			 */
 			uris: [
 				{
 					uri: 'https://www.facebook.com/sharer.php?u=',
@@ -41,7 +49,45 @@ Kodinger.API.Post = (function() {
 				},
 			]
 		},
+		/**
+		 * Element Interaction APIs
+		 * @type {Object}
+		 */
 		interactions: {
+			/**
+			 * Lazy-load Image Using Intersection Observer
+			 * @param  {Node} element Target element
+			 */
+			lazyimage: function(element) {
+				const { io } = api;
+
+				io.observe(find(element, '.lazy-image'));
+			},
+
+			/**
+			 * Attach carousel (Siema) to the element
+			 * @param  {Node} element Target element
+			 */
+			carousel: function(element) {
+				try {
+		            var cr = new Siema({
+		                selector: find(element, '.carousel'),
+		                  perPage: {
+						    0: 1,
+						  },
+		            });
+
+		            find(element, '.prev').addEventListener('click', () => cr.prev());
+		            find(element, '.next').addEventListener('click', () => cr.next());
+				} catch(e) {
+					console.warn('Failed when attaching carousel: ', e);
+				}
+			},
+
+			/**
+			 * Save buttons
+			 * @param  {Node} parent Target element
+			 */
 			save: function(parent) {
 				let ic_save = '<svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="bookmark"><rect width="24" height="24" opacity="0"/><path d="M6.09 21.06a1 1 0 0 1-1-1L4.94 5.4a2.26 2.26 0 0 1 2.18-2.35L16.71 3a2.27 2.27 0 0 1 2.23 2.31l.14 14.66a1 1 0 0 1-.49.87 1 1 0 0 1-1 0l-5.7-3.16-5.29 3.23a1.2 1.2 0 0 1-.51.15zm5.76-5.55a1.11 1.11 0 0 1 .5.12l4.71 2.61-.12-12.95c0-.2-.13-.34-.21-.33l-9.6.09c-.08 0-.19.13-.19.33l.12 12.9 4.28-2.63a1.06 1.06 0 0 1 .51-.14z"/></g></g></svg>',
 				    ic_unsave = '<svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="bookmark"><rect width="24" height="24" opacity="0"/><path d="M6 21a1 1 0 0 1-.49-.13A1 1 0 0 1 5 20V5.33A2.28 2.28 0 0 1 7.2 3h9.6A2.28 2.28 0 0 1 19 5.33V20a1 1 0 0 1-.5.86 1 1 0 0 1-1 0l-5.67-3.21-5.33 3.2A1 1 0 0 1 6 21z"/></g></g></svg>',
@@ -118,6 +164,10 @@ Kodinger.API.Post = (function() {
 				});
 			},
 			
+			/**
+			 * Love buttons
+			 * @param  {Node} parent Target element
+			 */
 			love: function(parent) {
 				let ic_love = '<svg class="stroke-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>',
 					ic_unlove = '<svg class="fill-current text-red-600" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>';
@@ -189,6 +239,10 @@ Kodinger.API.Post = (function() {
 				});
 			},
 
+			/**
+			 * Share button
+			 * @param  {Node} parent Target element
+			 */
 			share: function(parent) {
 				const { uris } = api.vars;
 
@@ -289,52 +343,35 @@ Kodinger.API.Post = (function() {
 				});
 			}
 		},
+
+		/**
+		 * API Lifecycle
+		 * @type {Object}
+		 */
 		lifecycle: {
-			onContentCollected: function({dom, interactions}) {
-				interactions.save(dom);
-				interactions.love(dom);
-				interactions.share(dom);
+			onStartImplementing: function({io}) {
+				// init observer
+				io.init();
+
 			},
+
+			onContentCollected: function({dom, interactions}) {
+				// do stuff here
+			},
+			
 			onContentLoaded: function() {
+				// do stuff here
+			},
+
+			firstContentLoaded: function() {
 				const { loadMore, options } = api;
 
-				if(!options.first) {
-					
+				if(!options.first) {			
 					let scrollReachBottom = (function(reach) {
-						let calling = false, 
-							old_scroll, 
-							is_scroll_up = false,
-							is_scroll_down = false;
-
 						window.onscroll = function(e) {
 							if ((window.innerHeight + window.scrollY) >= $('#app').offsetHeight) {
-								if(calling == false) {
-									reach.call(this);
-
-									calling = true;
-								}
+								reach.call(this);
 						    }
-
-						    // scroll up
-						    if (old_scroll > window.scrollY) {
-						    	if(is_scroll_up == false) {
-						    		calling = false;
-
-						    		is_scroll_up = true;
-						    		is_scroll_down = false;	
-						    	}
-
-						   	// scroll down
-						    }else{
-						    	if(is_scroll_down == false) {
-						    		// do stuff here
-
-						    		is_scroll_up = false;
-						    		is_scroll_down = true;
-						    	}
-						    }
-
-						    old_scroll = window.scrollY;
 						}
 					});
 
@@ -342,153 +379,330 @@ Kodinger.API.Post = (function() {
 						loadMore.call(this, api);
 					});
 				}
-
-				if(options.carousel && $('.carousel')) {
-		            var cr = new Siema({
-		                selector: '.carousel',
-		                  perPage: {
-						    0: 1,
-						  },
-		            });
-
-		            document.querySelector('.prev').addEventListener('click', () => cr.prev());
-		            document.querySelector('.next').addEventListener('click', () => cr.next());
-				}
 			}
 		},
-		template: function({post, options}) {
-			let tpl = `
-			<div class="bg-white rounded border-2 border-gray-200 mb-10">
-			    <div class="flex p-6 items-center">
-			        <a href="${routes.single + post.user.the_username}">
-			            <img class="rounded w-12 rounded border" src="${ post.user.the_avatar_sm }">
-			        </a>
-			        <div class="ml-3">
-			            <h4 class="mb-1 font-bold">
-			                <a class="text-indigo-600" href="${ routes.single + post.user.the_username }">
-			                    ${ post.user.name }
-			                </a>
-			            </h4>
-			            <div class="-mx-1 flex items-center text-xs text-gray-500">
-			                <p class="mx-1">${ post.user.the_username }</p>
-			                <p class="mx-1">&bull;</p>
-			                <p class="mx-1 text-blue-500 font-semibold">${ post.time }</p>
-			            </div>
-			        </div>
-			    </div>
 
-			    ${ post.type == 'link' ? `
-				    <div class="px-6 text-sm text-gray-700 leading-loose">
-				        ${post.status == 'CONTAINS_PORNOGRAPHIC' ? `
-				            <div class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 px-4 py-2 mb-4" role="alert">
-				                <p class="font-bold">Hati-hati</p>
-				                <p>Post ini mungkin mengandung konten ponografi</p>
+		/**
+		 * Template collection
+		 * @type {Object}
+		 */
+		templates: {
+			/**
+			 * Empty state template
+			 * @return {String}				Interpolated template string
+			 */
+			empty: function() {
+				let tpl = `
+					<div class="text-center">
+						<svg width="300" class="inline-block" id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200"><defs><style>.cls-1{fill:#e2e2e2;}.cls-2{fill:#f3f3f3;}.cls-3{fill:#d37c59;}.cls-4{fill:#de8e68;}.cls-5{fill:#56cad8;}.cls-6{fill:#74d5de;}.cls-7{fill:#fed385;}.cls-8{fill:#dc8e6c;}.cls-9{fill:#fb836d;}.cls-10{fill:#d3d3d3;}.cls-11,.cls-13,.cls-14,.cls-15,.cls-16{fill:none;}.cls-11{stroke:#d3d3d3;stroke-miterlimit:10;}.cls-11,.cls-14,.cls-15{stroke-width:3.69px;}.cls-12{fill:#fed892;}.cls-13,.cls-14,.cls-16{stroke:#fed385;}.cls-13,.cls-14,.cls-15,.cls-16{stroke-linecap:round;stroke-linejoin:round;}.cls-13{stroke-width:3.84px;}.cls-15{stroke:#74d5de;}.cls-16{stroke-width:2.39px;}</style></defs><title>Artboard 1</title><path class="cls-1" d="M711.1,528.1c0-21.86-47-74.85-84.67-74.85-28.93,0-29.4,15.3-57.59,15.3-43.46,0-75.71-72.66-159.29-72.66-89.05,0-205.41,83.58-205.41,149.14C204.14,638.91,711.1,661.41,711.1,528.1Z"/><path class="cls-2" d="M935.51,849.68c1-102,2.6-265.85,2.6-290.1,0-35.58-52.84-142.15-145.27-142.15-101.26,0-151.3,116.21-217.58,116.21-60.75,0-65.54-30.76-140.74-30.76-49,0-149.82,62.8-149.82,127l67.11,219.75Z"/><ellipse class="cls-3" cx="602.59" cy="679.96" rx="11.73" ry="5.25" transform="translate(-105.6 1249.11) rotate(-87.24)"/><path class="cls-3" d="M590.19,739.68c-.2-1.94,4.32-42.23,7.92-55a16,16,0,0,1,6.71-.94l-.34,39.7-5,18.67Z"/><polygon points="620.7 683.58 589.26 686.18 588.26 679.96 618.52 670.39 620.7 683.58"/><rect class="cls-4" x="544.3" y="999.24" width="13.77" height="11.65"/><rect class="cls-4" x="586.9" y="1001.06" width="13.77" height="11.65"/><path class="cls-5" d="M542.87,805V999.88H559l18.54-104.26S580.09,839.22,542.87,805Z"/><path class="cls-6" d="M596,801.16c.45,5.62,6.06,107.88,6.06,107.88v93.11l-16.55,1.77-10.64-99-32-99.92C547.71,802.34,583.16,797.33,596,801.16Z"/><path class="cls-7" d="M566.51,715.47c31.79,0,33.3,80.83,29.52,85.69s-49,8.17-53.16,3.83S526.9,715.47,566.51,715.47Z"/><ellipse class="cls-4" cx="607.86" cy="679.96" rx="11.73" ry="5.25" transform="translate(-100.59 1254.37) rotate(-87.24)"/><polygon points="585.61 1010.89 585.61 1022.54 618.35 1022.54 618.35 1018.3 601.32 1010.89 585.61 1010.89"/><polygon points="543.87 1009.05 543.87 1020.7 576.61 1020.7 576.61 1016.46 559.58 1009.05 543.87 1009.05"/><rect x="585.55" y="681.34" width="3.86" height="3.86" transform="translate(-98.87 99.39) rotate(-8.92)"/><path class="cls-3" d="M568.84,722.5c0,2.67-12.41,3-12.41,0V696h12.41Z"/><ellipse class="cls-8" cx="568.46" cy="688.32" rx="13.03" ry="19.89"/><path class="cls-9" d="M545.77,680.12c0-6.13,2.67-10,4.84-11.23,4.19-2.4,5.94-1.33,10.16-3.2,4.57-2,8.49-7.84,13.84-7.84,5,0,4.55,2.84,7.94,3.68,2,.49,13.36-2.12,13.36,5.23,0,11.32-12.57,12.24-15.48,13.69a37.43,37.43,0,0,0-1.52-3.83c-2.29,2.36-10.58,4-11.92,4.53-3.1,1.28-4.58,6.13-4.58,9.3s-2.87,3.18-3.59,3.18C552.19,693.63,545.77,689.38,545.77,680.12Z"/><circle class="cls-8" cx="556.67" cy="691.67" r="4.33"/><rect class="cls-10" x="512.81" y="718.34" width="25.14" height="84.61" rx="12.57" ry="12.57"/><ellipse class="cls-11" cx="544.89" cy="751.24" rx="30.38" ry="32.89"/><path class="cls-4" d="M576.84,736.83c2.53,0,15.29.53,20.48,2.4.4-2.53,2.66-38.77,6.51-50.91,1.47-1.62,7.45-1.43,7.45,0s8.51,60.88,0,67.93-37.37-2.4-38.56-3.33S576.84,736.83,576.84,736.83Z"/><path class="cls-12" d="M549.66,734.69c2.82-11.48,28.36-1.93,30.67.69,2.77,3.14-2.18,20.84-6,21.66C568.1,758.39,546,749.58,549.66,734.69Z"/><polygon class="cls-12" points="266.38 341.65 142.64 849.68 390.13 849.68 266.38 341.65"/><polygon class="cls-5" points="169.62 341.65 45.87 893.9 293.36 893.9 169.62 341.65"/><line class="cls-13" x1="170.29" y1="891.44" x2="170.29" y2="395.36"/><line class="cls-13" x1="170.29" y1="558.95" x2="197.18" y2="529.72"/><line class="cls-13" x1="170.29" y1="698.94" x2="210.7" y2="655.02"/><line class="cls-13" x1="170.29" y1="844.98" x2="233.14" y2="776.66"/><line class="cls-13" x1="170.29" y1="558.95" x2="143.4" y2="529.72"/><line class="cls-13" x1="170.29" y1="698.94" x2="129.89" y2="655.02"/><line class="cls-13" x1="170.29" y1="844.98" x2="107.44" y2="776.66"/><rect class="cls-6" x="190.5" y="734.34" width="135.39" height="197.16" rx="67.69" ry="67.69"/><line class="cls-14" x1="258.19" y1="982.94" x2="258.19" y2="795.85"/><path class="cls-14" d="M258.19,875.41c37,0,37-22.28,37-56"/><path class="cls-14" d="M258.19,841.33c-25.65,0-25.65-15.47-25.65-38.84"/><path class="cls-7" d="M1152.37,849.68V667.57a81.52,81.52,0,0,0-81.28-81.28h0a81.65,81.65,0,0,0-13.07,1.06V377.78a55.64,55.64,0,0,0-55.63-55.64h0a55.64,55.64,0,0,0-55.64,55.64v44.86a80.64,80.64,0,0,0-26-4.31h0a81.52,81.52,0,0,0-81.28,81.29V649H804.08a55.7,55.7,0,0,0-55.53,55.53V833.86a55.18,55.18,0,0,0,2.32,15.82Z"/><path class="cls-15" d="M1000.16,740.85c91.61,0,91.61-41,91.61-103"/><path class="cls-15" d="M1000.25,795.48c-50.4,0-50.4-22.56-50.4-56.67"/><line class="cls-15" x1="1000.16" y1="849.68" x2="1000.16" y2="364.17"/><line class="cls-15" x1="1000.16" y1="637.85" x2="949.94" y2="587.62"/><line class="cls-15" x1="1000.16" y1="534.21" x2="1030.55" y2="503.83"/><path class="cls-2" d="M750.49,341.65a47.18,47.18,0,0,0-86.25-35.55,37.43,37.43,0,0,0-52.84,34.1c0,.49,0,1,0,1.45Z"/><path class="cls-2" d="M291.91,268.28a47.18,47.18,0,0,1,86.25-35.55A37.4,37.4,0,0,1,431,266.83c0,.48,0,1,0,1.45Z"/><path class="cls-6" d="M924.33,936.06c-50.28,0-91,21.47-91,48h182.05C1015.35,957.53,974.6,936.06,924.33,936.06Z"/><path class="cls-9" d="M502.76,1006.93c-12.55,0-22.73,8.76-22.73,19.57H525.5C525.5,1015.69,515.32,1006.93,502.76,1006.93Z"/><path class="cls-9" d="M833.3,902.44c-12.56,0-22.73,13-22.73,29.06H856C856,915.45,845.85,902.44,833.3,902.44Z"/><path class="cls-9" d="M120.87,974.57c-20,0-36.16,6.51-36.16,14.53H157C157,981.08,140.84,974.57,120.87,974.57Z"/><path class="cls-9" d="M1030.55,974.57c-20,0-36.16,6.51-36.16,14.53h72.31C1066.7,981.08,1050.52,974.57,1030.55,974.57Z"/><rect class="cls-6" x="838.22" y="746.55" width="87.67" height="127.66" rx="43.83" ry="43.83"/><line class="cls-16" x1="882.06" y1="907.53" x2="882.06" y2="786.38"/><path class="cls-16" d="M882.06,837.9C906,837.9,906,823.47,906,801.64"/><path class="cls-16" d="M882.06,815.83c-16.61,0-16.61-10-16.61-25.16"/><line class="cls-14" x1="331.71" y1="947.65" x2="412.75" y2="947.65"/><line class="cls-14" x1="668.4" y1="893.9" x2="722.14" y2="893.9"/><line class="cls-14" x1="627.87" y1="907.53" x2="681.62" y2="907.53"/><line class="cls-14" x1="116.88" y1="918.64" x2="170.63" y2="918.64"/><line class="cls-14" x1="748.55" y1="999.24" x2="824.1" y2="999.24"/></svg>
+						<h2 class="text-xl font-semibold">Ya ampun! Data tidak ditemukan</h2>
+						<p class="mt-2 leading-loose text-gray-600 text-sm">Apa yang kamu cari sehingga data tidak ditemukan? Tapi, sepertinya ini salah kami memiliki konten yang terlalu sedikit 😿.</p>
+					</div>
+				`;
+
+				return tpl;
+			},
+			/**
+			 * Community template
+			 * @param  {Object} options.post:   community     Post data
+			 * @param  {Object} options.options Instance options
+			 * @return {String}                 Interpolated template string
+			 */
+			community: function({post: community, options}) {
+				let tpl = `
+		    		<div class="bg-white rounded border-2 border-gray-200 w-full">
+		    			<div class="pb-8 pt-6 px-6">
+		    				<div class="float-right">
+		    					<a target="_blank" ${ community.website ? `href="${community.website}" `:'' }class="${!community.website ? 'pointer-events-none opacity-50 ':''}flex leading-relaxed items-center hover:bg-indigo-600 hover:text-white hover:border-indigo-600 border-2 border-gray-200 uppercase text-xs font-semibold tracking-wider py-1 px-3 rounded-full">
+		    						View
+		    						<svg class="ml-1 w-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="arrow-forward"><rect width="24" height="24" transform="rotate(-90 12 12)" opacity="0"/><path d="M5 13h11.86l-3.63 4.36a1 1 0 0 0 1.54 1.28l5-6a1.19 1.19 0 0 0 .09-.15c0-.05.05-.08.07-.13A1 1 0 0 0 20 12a1 1 0 0 0-.07-.36c0-.05-.05-.08-.07-.13a1.19 1.19 0 0 0-.09-.15l-5-6A1 1 0 0 0 14 5a1 1 0 0 0-.64.23 1 1 0 0 0-.13 1.41L16.86 11H5a1 1 0 0 0 0 2z"/></g></g></svg>
+		    					</a>
+		    				</div>
+		    				<div class="rounded p-2 w-16 h-16 flex-shrink-0 flex items-center justify-center border" ${ community.logo_bg ? 'style="background-color: ' + community.logo_bg + ';"' : '' }>
+		    					<img src="${ community.logo }" alt="${ community.name }" class="w-full">
+		    				</div>
+		        			<h2 class="font-bold text-lg mt-4 truncate">${ community.name }</h2>
+		        			<p class="mt-1 text-sm text-gray-600 font-light leading-relaxed h-12">${ community.short_description }</p>
+		    			</div>
+		    			<div class="flex px-6 pb-6">
+		    				<div class="flex text-sm items-center">
+		    					<svg class="w-5 mr-1 fill-current text-gray-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="person"><rect width="24" height="24" opacity="0"/><path d="M12 11a4 4 0 1 0-4-4 4 4 0 0 0 4 4z"/><path d="M18 21a1 1 0 0 0 1-1 7 7 0 0 0-14 0 1 1 0 0 0 1 1z"/></g></g></svg>
+		    					${ community.formatted_member }+
+		    				</div>
+		        			<div class="inline-flex ml-auto">
+		        				${ community.facebook ? `
+		        				<a target="_blank" href="${ community.facebook }">
+		        					<svg class="fill-current text-gray-600 hover:text-indigo-600 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="facebook"><rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"/><path d="M17 3.5a.5.5 0 0 0-.5-.5H14a4.77 4.77 0 0 0-5 4.5v2.7H6.5a.5.5 0 0 0-.5.5v2.6a.5.5 0 0 0 .5.5H9v6.7a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-6.7h2.62a.5.5 0 0 0 .49-.37l.72-2.6a.5.5 0 0 0-.48-.63H13V7.5a1 1 0 0 1 1-.9h2.5a.5.5 0 0 0 .5-.5z"/></g></g></svg>
+		        				</a>` : ''}
+
+		        				${ community.twitter ? `
+		        				<a target="_blank" href="${ community.twitter }">
+									<svg class="fill-current text-gray-600 hover:text-indigo-600 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="twitter"><polyline points="0 0 24 0 24 24 0 24" opacity="0"/><path d="M8.08 20A11.07 11.07 0 0 0 19.52 9 8.09 8.09 0 0 0 21 6.16a.44.44 0 0 0-.62-.51 1.88 1.88 0 0 1-2.16-.38 3.89 3.89 0 0 0-5.58-.17A4.13 4.13 0 0 0 11.49 9C8.14 9.2 5.84 7.61 4 5.43a.43.43 0 0 0-.75.24 9.68 9.68 0 0 0 4.6 10.05A6.73 6.73 0 0 1 3.38 18a.45.45 0 0 0-.14.84A11 11 0 0 0 8.08 20"/></g></g></svg>
+								</a>` : ''}
+
+								${ community.github ? `
+		        				<a target="_blank" href="${ community.github }">
+		        					<svg class="fill-current text-gray-600 hover:text-indigo-600 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"/><path d="M12 1A10.89 10.89 0 0 0 1 11.77 10.79 10.79 0 0 0 8.52 22c.55.1.75-.23.75-.52v-1.83c-3.06.65-3.71-1.44-3.71-1.44a2.86 2.86 0 0 0-1.22-1.58c-1-.66.08-.65.08-.65a2.31 2.31 0 0 1 1.68 1.11 2.37 2.37 0 0 0 3.2.89 2.33 2.33 0 0 1 .7-1.44c-2.44-.27-5-1.19-5-5.32a4.15 4.15 0 0 1 1.11-2.91 3.78 3.78 0 0 1 .11-2.84s.93-.29 3 1.1a10.68 10.68 0 0 1 5.5 0c2.1-1.39 3-1.1 3-1.1a3.78 3.78 0 0 1 .11 2.84A4.15 4.15 0 0 1 19 11.2c0 4.14-2.58 5.05-5 5.32a2.5 2.5 0 0 1 .75 2v2.95c0 .35.2.63.75.52A10.8 10.8 0 0 0 23 11.77 10.89 10.89 0 0 0 12 1" data-name="github"/></g></svg>
+								</a>` : ''}
+
+								${ community.telegram ? `
+		        				<a target="_blank" href="${ community.telegram }">
+		        					<svg class="fill-current text-gray-600 hover:text-indigo-600 w-5" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Telegram icon</title><path d="M23.91 3.79L20.3 20.84c-.25 1.21-.98 1.5-2 .94l-5.5-4.07-2.66 2.57c-.3.3-.55.56-1.1.56-.72 0-.6-.27-.84-.95L6.3 13.7l-5.45-1.7c-1.18-.35-1.19-1.16.26-1.75l21.26-8.2c.97-.43 1.9.24 1.53 1.73z"/></svg>
+								</a>` : ''}
+		        			</div>
+		        		</div>
+		    		</div>
+		    	`;
+
+		    	return tpl;
+			},
+
+			/**
+			 * Community shimmer template
+			 * @return {String}           Interpolated template string
+			 */
+			communityShimmer: function() {
+				let tpl = `
+			    	<div class="w-full">
+			    		<div class="bg-white rounded border-2 border-gray-200">
+			    			<div class="pb-8 pt-6 px-6">
+			    				<div class="float-right">
+			    					<div class="flex py-1 px-3 rounded-full bg-gray-200 w-16 h-6">
+			    					</div>
+			    				</div>
+			    				<div class="rounded p-2 w-16 h-16 flex-shrink-0 bg-gray-100"></div>
+			        			<h2 class="mt-4 w-32 h-6 bg-gray-200 rounded"></h2>
+			        			<div class="mt-3 bg-gray-100 h-3 rounded w-full"></div>
+			        			<div class="mt-2 bg-gray-100 h-3 rounded w-20"></div>
+			    			</div>
+			    			<div class="flex px-6 pb-6">
+			    				<div class="flex text-sm items-center">
+				    				<div class="rounded w-16 h-4 bg-gray-200"></div>
+			    				</div>
+			        			<div class="inline-flex ml-auto">
+				    				<div class="rounded h-4 w-4 bg-gray-100 mr-2"></div>
+				    				<div class="rounded h-4 w-4 bg-gray-100 mr-2"></div>
+				    				<div class="rounded h-4 w-4 bg-gray-100 mr-2"></div>
+				    				<div class="rounded h-4 w-4 bg-gray-100"></div>
+			        			</div>
+			        		</div>
+			    		</div>
+			    	</div>
+				`;
+
+				return tpl;
+			},
+
+			/**
+			 * Post template
+			 * @param  {Object} options.post    Post data
+			 * @param  {Object} options.options Instance options
+			 * @return {String}                 Interpolated template string
+			 */
+			post: function({post, options}) {
+				let tpl = `
+				<div class="bg-white rounded border-2 border-gray-200 mb-10">
+				    <div class="flex p-6 items-center">
+				        <a href="${routes.single + post.user.the_username}">
+				            <img class="rounded w-12 rounded border" src="${ post.user.the_avatar_sm }">
+				        </a>
+				        <div class="ml-3">
+				            <h4 class="mb-1 font-bold">
+				                <a class="text-indigo-600" href="${ routes.single + post.user.the_username }">
+				                    ${ post.user.name }
+				                </a>
+				            </h4>
+				            <div class="-mx-1 flex items-center text-xs text-gray-500">
+				                <p class="mx-1">${ post.user.the_username }</p>
+				                <p class="mx-1">&bull;</p>
+				                <p class="mx-1 text-blue-500 font-semibold">${ post.time }</p>
 				            </div>
-				        `: ''}
-				    </div>
-
-				    <div class="shimmer border rounded mx-6">
-
-				        ${post.post_card.has_embeddable_code ? `
-
-				            <div class="embeddable-frame">
-				                ${post.post_card.embeddable_code}
-				            </div>`
-				        : // else
-				        `
-				        	${post.post_card.thumbnail !== null ? 
-					            `<img src="${post.post_card.thumbnail}" class="w-full h-64 object-cover">`
-				            : // else
-					            `<img src="${post.post_card.default_thumbnail}" class="w-full h-64 object-scale-down">`
-					        }
-				        `}
-
-				        <div class="p-4 border-t bg-gray-100">
-				        
-				            <h2 class="text-lg font-semibold hover:text-indigo-600"><a href="${post.post_card.url}">${post.post_card.title}</a></h2>
-
-				            ${post.post_card.description ? `
-				                <p class="text-gray-600 text-sm break-all">${ post.post_card.description.substr(0, 200)}</p>
-				            ` : ''}
-				            <div class="uppercase tracking-wider text-xs mt-3 text-teal-500 font-semibold">${ getHostname(post.post_card.url) }</div>
 				        </div>
 				    </div>
-			    ` : ``}
 
-			    ${ post.type !== 'link' ? `
-			    
-			    <div class="relative${post.images.length > 1 ? ' carousel-outer w-full' : ''}"> 
-			        <div class="${post.images.length > 1 ? 'carousel w-full' : ''}">
-			            
-			            ${'carousel' in options && options.carousel == false ? `
-			                <a href="${routes.single + post.slug}">
-			                    <img src="${post.images[0]}">
-			                </a>` 
+				    ${ post.type == 'link' ? `
+					    <div class="px-6 text-sm text-gray-700 leading-loose">
+					        ${post.status == 'CONTAINS_PORNOGRAPHIC' ? `
+					            <div class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 px-4 py-2 mb-4" role="alert">
+					                <p class="font-bold">Hati-hati</p>
+					                <p>Post ini mungkin mengandung konten ponografi</p>
+					            </div>
+					        `: ''}
+					    </div>
 
+					    <div class="shimmer border rounded mx-6">
+
+					        ${post.post_card.has_embeddable_code ? `
+
+					            <div class="embeddable-frame">
+					                ${post.post_card.embeddable_code}
+					            </div>`
+					        : // else
+					        `
+					        	${post.post_card.thumbnail !== null ? 
+						            `<img src="${post.post_card.thumbnail}" class="w-full h-64 object-cover">`
+					            : // else
+						            `<img src="${post.post_card.default_thumbnail}" class="w-full h-64 object-scale-down">`
+						        }
+					        `}
+
+					        <div class="p-4 border-t bg-gray-100">
+					        
+					            <h2 class="text-lg font-semibold hover:text-indigo-600"><a href="${post.post_card.url}">${post.post_card.title}</a></h2>
+
+					            ${post.post_card.description ? `
+					                <p class="text-gray-600 text-sm break-all">${ post.post_card.description.substr(0, 200)}</p>
+					            ` : ''}
+					            <div class="uppercase tracking-wider text-xs mt-3 text-teal-500 font-semibold">${ getHostname(post.post_card.url) }</div>
+					        </div>
+					    </div>
+				    ` : ``}
+
+				    ${ post.type !== 'link' ? `
+				    
+				    <div class="relative${post.images.length > 1 && options.carousel ? ' carousel-outer w-full' : ''}"> 
+				        <div class="${post.images.length > 1 && options.carousel ? 'carousel w-full' : ''}">
+				            
+				            ${'carousel' in options && options.carousel == false ? 
+				            	(isVideo(post.images[0]) ?
+				                    `<video controls="">
+				                        <source src="${post.images[0]}" type="video/mp4">
+				                    </video>`
+				            		:
+					            	`<a href="${routes.single + post.slug}">
+					                    <div data-src="${post.images[0]}" class="lazy-image w-full bg-gray-200 bg-cover" style="height: 450px;background-image: url(${post.blurry_image});"></div>
+					                </a>`
+
+				                )
 			                : // else
-			                
-			                post.images.map(function(img) {
-			                    if(isVideo(img)) {
-				                    return `<video controls="">
-				                        <source src="${img}" type="video/mp4">
-				                    </video>`;
-			                    }else{
-			                    	return `<img src="${img}" alt="image">`;
-			                    }
-			                }).join("")
-			            }
-			        </div>
+				                
+				                post.images.map(function(img) {
+				                    if(isVideo(img)) {
+					                    return `<video controls="">
+					                        <source src="${img}" type="video/mp4">
+					                    </video>`;
+				                    }else{
+				                    	return `<img src="${img}" alt="image">`;
+				                    }
+				                }).join("")
+				            }
+				        </div>
 
-			        ${post.images.length > 1 && options.carousel !== false ? `
-				        <button class="prev">&lsaquo;</button>
-				        <button class="next">&rsaquo;</button>`
-			        : ''}
-			    </div>
-			    ` : ''}
+				        ${post.images.length > 1 && options.carousel !== false ? `
+					        <button class="prev">&lsaquo;</button>
+					        <button class="next">&rsaquo;</button>`
+				        : ''}
+				    </div>
+				    ` : ''}
 
-			    <div class="p-6 text-sm text-gray-700 leading-relaxed">
-			        ${post.title ?
-				        `<h4 class="text-lg mb-2 text-black font-bold"><a class="text-indigo-700" href="${routes.single + post.slug}">
-				            ${post.title}
-				        </a></h4>`
-			        : ''}
+				    <div class="p-6 text-sm text-gray-700 leading-relaxed">
+				        ${post.title ?
+					        `<h4 class="text-lg mb-2 text-black font-bold"><a class="text-indigo-700" href="${routes.single + post.slug}">
+					            ${post.title}
+					        </a></h4>`
+				        : ''}
 
-			        ${!options.discover ?
-			        `<div class="mb-5">${options.truncate_content ? post.markdown_truncate : post.markdown}</div>`
-			        : ''}
+				        ${!options.discover ?
+				        `<div class="mb-5">${options.truncate_content ? post.markdown_truncate : post.markdown}</div>`
+				        : ''}
 
-			        ${post.tags.map(function(tag) {
-			        	if(tag.tag !== null) {
-		                    return `<a class="border border-gray-300 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded-full py-2 px-4 text-xs" href="#">
-		                        #${ tag.tag.name }
-		                    </a>`;			        		
-			        	}else {
-			        		return '';
-			        	}
-			        }).join('')}
+				        ${post.tags.map(function(tag) {
+				        	if(tag.tag !== null) {
+			                    return `<a class="border border-gray-300 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded-full py-2 px-4 text-xs" href="${routes.search + fullUrlWithQuery({tag: tag.tag.name})}">
+			                        #${ tag.tag.name }
+			                    </a>`;			        		
+				        	}else {
+				        		return '';
+				        	}
+				        }).join('')}
 
-			        <div class="mt-8">
-			            <div class="flex w-full">
-			                <a data-love="${ post.id }" ${ post.is_post_loved ? 'data-loved' : '' } class="w-12 h-12 hover:bg-gray-100 rounded-full text-gray-600 flex items-center justify-center border-2 border-gray-200" href="#">
-			                    <span></span>
-			                </a>
-			                <a class="ml-2 w-12 h-12 hover:bg-gray-100 rounded-full text-gray-600 flex items-center justify-center border-2 border-gray-200" href="${routes.single + post.slug + '#comments'}">
-			                    <svg class="stroke-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg> 
-			                </a>
-			                <a data-url="${ routes.single + post.slug }" class="share-button ml-2 w-12 h-12 hover:bg-gray-100 rounded-full text-gray-600 flex items-center justify-center border-2 border-gray-200" href="#">
-			                    <svg class="stroke-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-			                </a>
-			                <a class="ml-2 w-12 h-12 hover:bg-gray-100 rounded-full text-gray-600 flex items-center justify-center border-2 border-gray-200" data-save="${ post.id }" ${ post.is_post_saved ? 'data-saved' : '' } href="#"></a>
-			            </div>
-			        </div>
-			    </div>
-			</div>`;
+				        <div class="mt-8">
+				            <div class="flex w-full items-center">
+				                <a data-love="${ post.id }" ${ post.is_post_loved ? 'data-loved' : '' } class="w-12 h-12 hover:bg-gray-100 rounded-full text-gray-600 flex items-center justify-center border-2 border-gray-200" href="#">
+				                    <span></span>
+				                </a>
+				                <a class="ml-2 w-12 h-12 hover:bg-gray-100 rounded-full text-gray-600 flex items-center justify-center border-2 border-gray-200" href="${routes.single + post.slug + '#comments'}">
+				                    <svg class="stroke-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg> 
+				                </a>
+				                <a data-url="${ routes.single + post.slug }" class="share-button ml-2 w-12 h-12 hover:bg-gray-100 rounded-full text-gray-600 flex items-center justify-center border-2 border-gray-200" href="#">
+				                    <svg class="stroke-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+				                </a>
+				                <a class="ml-2 w-12 h-12 hover:bg-gray-100 rounded-full text-gray-600 flex items-center justify-center border-2 border-gray-200" data-save="${ post.id }" ${ post.is_post_saved ? 'data-saved' : '' } href="#"></a>
 
-			return tpl;
+			                	${post.is_mine ? 
+					                `<div class="ml-auto">
+					                	<a href="${routes.delete_post.replace(/slug/g, post.slug)}" class="text-red-600">Delete</a>
+					                </div>`
+				                : ''}
+				            </div>
+				        </div>
+				    </div>
+				</div>`;
+
+				return tpl;
+			},
+
+			/**
+			 * Post shimmer template
+			 * @param  {String} shi_class Generated unique shimmer class
+			 * @return {String}           Interpolated template string
+			 */
+			postShimmer: function(shi_class) {
+				let tpl = `
+					<div class="${shi_class} bg-white rounded border-2 border-gray-200 mb-10">
+					    <div class="flex p-6 items-center">
+						    <div class="w-12 h-12 bg-gray-200 rounded"></div>
+					        <div class="ml-3">
+					            <div class="mb-3 w-32 h-4 bg-gray-200 rounded"></div>
+					            <div class="-mx-1 flex items-center">
+					                <div class="mx-1 h-2 w-12 bg-gray-100 rounded"></div>
+					            </div>
+					        </div>
+					    </div>
+
+					    <div class="bg-gray-100 w-full" style="height: 470px;">
+					    </div>
+					    
+
+					    <div class="p-6">
+					        <div class="mb-4 bg-gray-200 w-64 h-8 rounded-lg"></div>
+
+					        <div class="mb-3 bg-gray-100 w-full h-3 rounded"></div>
+					        <div class="bg-gray-100 w-40 h-3 rounded"></div>
+
+					        <div class="flex">
+						        <div class="border border-gray-200 w-20 h-8 mt-6 rounded-full"></div>
+						        <div class="border border-gray-200 w-20 h-8 mt-6 rounded-full ml-2"></div>
+					        </div>
+
+					        <div class="mt-8">
+					            <div class="flex w-full">
+						            <div class="w-12 h-12 rounded-full bg-gray-200 mr-2"></div>
+						            <div class="w-12 h-12 rounded-full bg-gray-200 mr-2"></div>
+						            <div class="w-12 h-12 rounded-full bg-gray-200 mr-2"></div>
+						            <div class="w-12 h-12 rounded-full bg-gray-200 mr-2"></div>
+					            </div>
+					        </div>
+					    </div>
+					</div>
+				`;
+
+				return tpl;
+			}
 		},
 
+		/**
+		 * Target element instance
+		 * @type Node
+		 * @default Undefined
+		 */
 		elem: undefined,
 
+		/**
+		 * Set element target method
+		 * @param  {String} elem Target selector
+		 * @return {Node}      	 Target element node
+		 */
 		set target(elem) {
 			if($(elem) !== null) {
 				return this.elem = $(elem);
@@ -497,20 +711,37 @@ Kodinger.API.Post = (function() {
 			return this.elem = false;
 		},
 
+		/**
+		 * Init page number for query
+		 * @param  {Number} num Number of a page
+		 */
 		set initPage(num) {
 			api.vars.__page__ = num;
 		},
 
+		/**
+		 * Increment page method
+		 * @return {Number} Current page number
+		 */
 		incrementPage: function() {
 			api.vars.__page__ += 1;
 
 			return api.page;
 		},
 
+		/**
+		 * Get current page
+		 * @return {Number} Current page number
+		 */
 		get page() {
 			return api.vars.__page__;
 		},
 
+		/**
+		 * Build parameters method
+		 * @param  {Object} defParams Default parameters object
+		 * @return {String}           Generated URL parameter string
+		 */
 		buildParams: function(defParams) {
 			const { params } = api.options;
 
@@ -522,25 +753,40 @@ Kodinger.API.Post = (function() {
 				parameters = defParams;
 			}
 
+			Object.keys(parameters).forEach(function(key) {
+				if(parameters[key] == "" || parameters[key] == null) 
+					delete parameters[key]; 
+			});
+
 			let url = new URLSearchParams(parameters).toString();
 
 			return (url ? '?' + url : '');
 		},
 
+		/**
+		 * Query/Fetch method
+		 * @param  {Number} options.page         	Current page number
+		 * @param  {Object} options.queryPending 	Query pending object
+		 * @param  {String} options.url          	Target URL endpoint
+		 * @param  {Function} options.buildParams  	Build params method
+		 * @param  {Function} init                 	Function callback
+		 * @return {Promise}                      	Resolve or reject; idk
+		 */
 		query: async function({page, queryPending, url, buildParams}, init) {
+			/** Check current query pending status */
 			if(queryPending.status == true) {
-				return Promise.reject({
-					continue: false
-				});
+				return false;
 			}
 
+			/** Calling init callback */
 			if(init)
 				init.call(this);
 
+			/** Init query pending */
 			queryPending.init();
 
 			let objParams = {
-				...(page ? {page} : {})
+				...(page ? {page} : {}),
 			}
 
 			const params = buildParams(objParams);
@@ -561,19 +807,31 @@ Kodinger.API.Post = (function() {
 				return Promise.reject(http);
 		},
 
+		/**
+		 * Query pending is an object to check if there is a current request
+		 * @type {Object}
+		 */
 		queryPending: {
+			/** Start query pending */
 			init: function() {
 				api.vars.__queryPending__ = true;
 			},
+
+			/** Stop query pending; when the HTTP request is complete (failed or success) */
 			dispose: function() {
 				api.vars.__queryPending__ = false;
 			},
+
+			/** Current query pending status */
 			get status() {
 				return api.vars.__queryPending__;
 			}
 		},
 
-		// default options
+		/**
+		 * Default instance options
+		 * @type {Object}
+		 */
 		defOptions: {
 			first: false,
 			carousel: false,
@@ -581,35 +839,148 @@ Kodinger.API.Post = (function() {
 			discover: false,
 			page: 1,
 			params: null,
-			url: undefined
+			url: undefined,
+			type: 'post',
+			lazyimage: true,
+			shimmer: 1,
+			wrap: ''
 		},
 
+		/**
+		 * Instance Options
+		 * @type {Object}
+		 */
 		options: {},
 
+		/**
+		 * Set options method
+		 * @param  {Object} options Object to be set
+		 */
 		set opts(options) {
 			this.options = objExtend(this.defOptions, options);			
 		},
 
-		templating: function({data:res, options, template, ...args}) {
+		/**
+		 * Intersection observer
+		 * @type {Object}
+		 */
+		io: {
+			/**
+			 * Initialize IO
+			 */
+			init: function() {
+				api.vars.io = new IntersectionObserver(function(entries) {
+					entries.forEach(function(entry) {
+						if(entry.isIntersecting) {
+							let target = entry.target;
+							let image = document.createElement('img');
+							image.src = target.dataset.src;
+							image.className = 'w-full';
+							target.parentNode.appendChild(image);
+							api.vars.io.unobserve(target);
+
+							target.remove();
+						}
+					});
+				});
+
+				$$('.lazy-image').forEach(function(image) {
+					io.observe(image);
+				});
+			},
+
+			/**
+			 * Observe element
+			 * @param  {Node} element Target element to be observe
+			 * @return {IntersectionObserver}
+			 */
+			observe: function(element) {
+				if(!element)
+					return false;
+
+				return api.vars.io.observe(element);
+			}
+		},
+
+		/**
+		 * Events method
+		 * @type {Object}
+		 */
+		events: {
+			/**
+			 * Attach a few events before the target element to be appended
+			 * @param  {Node} options.element      		Target element
+			 * @param  {Object} options.interactions 	List of interactions we have
+			 * @param  {Object} options.options      	Instance Options
+			 */
+			attach: function({element, interactions, options}) {
+				const { TYPE } = post;
+
+				if(options.type == TYPE.POST) {
+					interactions.love(element);
+					interactions.save(element);
+					interactions.share(element);
+
+					if(options.carousel && find(element, '.carousel'))
+						interactions.carousel(element);
+
+					if(options.lazyimage !== false)
+						interactions.lazyimage(element);
+				}
+			}
+		},
+
+		/**
+		 * Templating method; get template string, pass an object to it; 
+		 * attach a few events 
+		 * @param  {Object}    data:res     		Post data
+		 * @param  {Object}    options.options      Instance options
+		 * @param  {Object}    options.templates    List of template literal we have
+		 * @param  {Object}    options.interactions List of interaction we have
+		 * @param  {Object}    options.events       Call the event object
+		 * @param  {Object}    options.args         Spread operator
+		 * @return {Promise}                        Resolve or Reject
+		 */
+		templating: function({data:res, options, templates, interactions, events, ...args}) {
 			const { data:posts } = res;
 
-			let wrapper = document.createElement('div');
+			let wrapper = document.createDocumentFragment();
 
 			// append post element to the wrapper
 			let appendingTemplate = function(post) {
-				return wrapper.insertAdjacentHTML('beforeEnd',
-					template({
-						post, options
-					})
-				);
-			}
+				// selecting template literal
+				let element = templates[options.type]({
+					post, options
+				});
 
-			let checkPost = function(post, tolerance) {
-				if(!tolerance && "post" in post) {
-					return false;
+				// converting to dom
+				element = str2dom(element);
+
+				// if wrap option defined
+				let wrap = options.wrap;
+				if(wrap && typeof wrap == 'object') {
+					// then wrap the element template
+					element = wrapNode(wrap, element);
 				}
 
-				return true;
+				// just to make sure
+				setTimeout(function() {
+					// attaching events
+					events.attach({element, interactions, options});
+				});
+
+				// appending
+				wrapper.appendChild(element);
+
+				return element;
+			}
+
+			let checkPost = function(post) {
+				if("post" in post) {
+					return true;
+				}
+
+				return false;
 			}
 
 			return new Promise(function(resolve, reject) {
@@ -617,38 +988,51 @@ Kodinger.API.Post = (function() {
 				if(options.first){
 					appendingTemplate(posts);
 				}else{
-					if(!posts.length) return reject({ empty: true, ...args });
+					if(!posts.length) return reject({ templates, empty: true, ...args });
 
 					// if `posts` has many post data
 					// then iterate it
 					posts.forEach(function(post) {
-						if(!checkPost(post)) {
+						if(checkPost(post)) {
 							post = post.post;
-
-							if(!checkPost(post))
-								return reject('Bad schema data');
 						}
 
 						appendingTemplate(post);
 					});
 				}
 
-				return resolve({dom: wrapper, ...args});
+				return resolve({dom: wrapper, templates, interactions, ...args});
 			});
 		},
 
+		/**
+		 * Last data from query method
+		 * @type {Object}
+		 */
 		lastData: {
+			/** Set the data */
 			set function(value) {
 				api.vars.__lastData__ = value;
 			},
+
+			/** Get current data */
 			get function() {
 				return api.vars.__lastData__;
 			},
+
+			/** Remove the data */
 			dispose: function() {
 				api.vars.__lastData__ = '';
 			}
 		},
 
+		/**
+		 * Called when element has been appended
+		 * @param  {Node}    options.elem 	Target element
+		 * @param  {Node}    options.dom  	Current element to be appended
+		 * @param  {Object}  options.args 	More args
+		 * @return {Promise}                Resolve or reject
+		 */
 		render: function({elem, dom, ...args}) {
 			return new Promise(function(resolve, reject) {
 				elem.appendChild(
@@ -659,6 +1043,12 @@ Kodinger.API.Post = (function() {
 			});
 		},
 
+		/**
+		 * Load more method
+		 * @param  {Function}    options.run       	Run method
+		 * @param  {Object}    	 options.endOfPage 	EndOfPage method
+		 * @param  {Object} 	 options.args      	More args
+		 */
 		loadMore: function({run, endOfPage, ...args}) {
 			// do more stuff here
 
@@ -666,109 +1056,150 @@ Kodinger.API.Post = (function() {
 				run({...args});
 		},
 
+		/**
+		 * Shimmer method
+		 * @type {Object}
+		 */
 		shimmer: {
-			add: function({elem, position='beforeEnd'}) {
-				let uq = 'shimmer-' + new Date().valueOf();
+			/**
+			 * Add shimmer element to the target element instance
+			 * @param {Node} 	options.elem      		Target element instance
+			 * @param {Object} 	options.templates 		List of template literal we have
+			 * @param {Object} 	options.options   		Instance options
+			 */
+			add: function({elem, templates, options}) {
+				let shi_class = 'shimmer-' + new Date().valueOf();
 
-				let tpl = `
-				<div class="${uq} bg-white rounded border-2 border-gray-200 mb-10">
-				    <div class="flex p-6 items-center">
-					    <div class="w-12 h-12 bg-gray-200 rounded"></div>
-				        <div class="ml-3">
-				            <div class="mb-3 w-32 h-4 bg-gray-200 rounded"></div>
-				            <div class="-mx-1 flex items-center">
-				                <div class="mx-1 h-2 w-12 bg-gray-100 rounded"></div>
-				            </div>
-				        </div>
-				    </div>
+				let tpl = str2dom(templates[options.type + 'Shimmer'](
+					shi_class
+				));
 
-				    <div class="bg-gray-100 w-full" style="height: 470px;">
-				    </div>
-				    
+				// if wrap option defined
+				let wrap = options.shimmerWrap;
+				if(wrap && typeof wrap == 'object') {
+					// then wrap the element template					
+					tpl = wrapNode(wrap, tpl);
+				}
 
-				    <div class="p-6">
-				        <div class="mb-4 bg-gray-200 w-64 h-8 rounded-lg"></div>
+				tpl.classList.add(shi_class);
 
-				        <div class="mb-3 bg-gray-100 w-full h-3 rounded"></div>
-				        <div class="bg-gray-100 w-40 h-3 rounded"></div>
-
-				        <div class="flex">
-					        <div class="border border-gray-200 w-20 h-8 mt-6 rounded-full"></div>
-					        <div class="border border-gray-200 w-20 h-8 mt-6 rounded-full ml-2"></div>
-				        </div>
-
-				        <div class="mt-8">
-				            <div class="flex w-full">
-					            <div class="w-12 h-12 rounded-full bg-gray-200 mr-2"></div>
-					            <div class="w-12 h-12 rounded-full bg-gray-200 mr-2"></div>
-					            <div class="w-12 h-12 rounded-full bg-gray-200 mr-2"></div>
-					            <div class="w-12 h-12 rounded-full bg-gray-200 mr-2"></div>
-				            </div>
-				        </div>
-				    </div>
-				</div>
-				`;
-
-				elem.insertAdjacentHTML(position, tpl);
+				for(let i = 0; i < options.shimmer; i++) {
+					elem.appendChild(tpl.cloneNode(true));
+				}
 
 				return {
 					dispose: function() {
-						$('.' + uq).remove();
+						$$('.' + shi_class).forEach(function(shimmer) {
+							shimmer.remove();
+						});
 					}
 				}
+			},
+
+			dispose: function(target) {
+				$(target).remove();
 			}
 		},
 
-		// is end of page?
+		/**
+		 * End of page is an object to check whether the last page
+		 * @type {Object}
+		 */
 		endOfPage: {
+			/**
+			 * Set end of page to false
+			 */
 			start: function() {
 				api.vars.__endOfPage__ = false;
 			},
+
+			/**
+			 * Init method
+			 */
 			init: function() {
 				api.vars.__endOfPage__ = true;
 			},
+
+			/**
+			 * Delete value
+			 */
 			dispose: function() {
 				api.vars.__endOfPage__ = false;
 			},
+
+			/**
+			 * Get current status
+			 * @return {Boolean}
+			 */
 			get status() {
 				return api.vars.__endOfPage__;
 			}
 		},
 
+		/**
+		 * End method; start end of page
+		 */
 		end: function() {
 			const { endOfPage } = api;
 
 			endOfPage.init();
 		},
 
+		/**
+		 * List of exception or error handler
+		 * @type {Object}
+		 */
 		exception: {
-			empty: function({elem}) {
-				elem.insertAdjacentHTML('beforeEnd', '<p>Nggak ada isinya 😭</p>');
+			/**
+			 * When data is empty
+			 * @param  {Node} options.elem Target element
+			 */
+			empty: function({elem, templates}) {
+				let tpl = templates.empty();
+
+				elem.insertAdjacentHTML('beforeEnd', tpl);
 			}
 		},
 
+		/**
+		 * Run instance (fetching, templating, attaching events, appending, rendering)
+		 * @param  {Node}    	options.elem         Target element
+		 * @param  {Function} 	options.end          End function
+		 * @param  {Object}    	options.options      Instance options
+		 * @param  {Object}    	options.lastData     Lastdata object
+		 * @param  {Function}   options.buildParams  BuildParams method
+		 * @param  {Object}    	options.shimmer      Shimmer object
+		 * @param  {Object}    	options.queryPending QueryPending object
+		 * @param  {Function}   options.query        Query method
+		 * @param  {Object} 	options.args         More args
+		 * @return {Promise}                         Resolve or reject
+		 */
 		run: function({elem, end, options, lastData, buildParams, shimmer, queryPending, query, ...args}) {
 			// get new page (don't retrieve from the argument)
 			const {page, incrementPage} = api;
 
-			// init the shimmer
-			let shi;
+			return new Promise(function(resolve, reject) {
+				// init the shimmer
+				let shi;
 
-			return new Promise(function(resolve) {
 				// 0. start fetching
-				query({page, queryPending, url: options.url, buildParams}, 
+				query({page, queryPending, url: options.url, buildParams, options}, 
 					function() {
 						// init query callback
 						// show the shimmer
-						shi = shimmer.add({elem})
+						shi = shimmer.add({elem, options, ...args})
 					}
 				)
 				.finally(function() {
 					// dispose shimmer
-					shi.dispose();
+					if(shi)
+						shi.dispose();
 				})
 				// 1. collecting post data
 				.then(function(data) {
+					if(data == false)
+						return;
+
 					// page++
 					incrementPage();
 
@@ -782,57 +1213,68 @@ Kodinger.API.Post = (function() {
 					}
 
 					if(options.first || (!options.first && page <= last_page)){
-						return ({data, lastData, elem, options, ...args});
+						// 2. templating & listen (event listener)
+						(function({templating, ...args}) {
+							// i promise you <3
+							return new Promise(function(resolve) {
+								templating({...args}).then(function(res) {
+									// templating success
+									return resolve(res);
+								}).catch(function({empty, exception, ...args}) {
+									// if empty data
+									if(empty) {
+										exception.empty({...args});
+									}
+								});
+							});
+						})({data, lastData, elem, options, ...args})
+						// 3. appending element
+						.then(function({render, ...args}) {
+							return render({...args});
+						})
+						// 4. rendered
+						.then(function({lifecycle, elem, ...args}) {
+							lifecycle.onContentLoaded();
+
+							return resolve({
+								elem,
+								lastData
+							});
+						});
 					}
 
 				})
-				// 1.1 oh, shit! there was an error! reject, reject, reject!
+				// oh, shit! there was an error! reject, reject, reject!
 				.catch(function(error) {
-					return Promise.reject('Fetching failed with an error ' + error.status);
-				})
-				// 2. templating
-				.then(function({templating, ...args}) {
-					// i promise you <3
-					return new Promise(function(resolve) {
-						templating({...args}).then(function(res) {
-							// templating success
-							return resolve(res);
-						}).catch(function({empty, exception, ...args}) {
-							// if empty data
-							if(empty) {
-								exception.empty({...args});
-							}
-						});
-					});
-				})
-				// 3. attaching event listener
-				.then(function({lifecycle, ...args}) {
-					// just make sure all content are appended/collected correctly
-					setTimeout(function() {
-						// run ASAP
-						lifecycle.onContentCollected({...args});
-					});
+					// do more stuff here
 
-					return {lifecycle, ...args};
-				})
-				// 4. appending element
-				.then(function({render, ...args}) {
-					return render({...args});
-				})
-				// 5. rendered
-				.then(function({lifecycle, elem, ...args}) {
-					lifecycle.onContentLoaded();
-		
-					return resolve({
-						elem,
-						lastData
-					});
+					return reject(error);
 				});
 			});
 		},
 	}
 
+	/**
+	 * Public Object
+	 * @type {Object}
+	 */
 	const post = {
+		/**
+		 * Post types
+		 * @type {Object}
+		 */
+		TYPE: {
+			COMMUNITY: 'community',
+			POST: 'post',
+			DISCOVER: 'post',
+		},
+
+		/**
+		 * Initialize 
+		 * @param  {Node} 	target Target element
+		 * @param  {Object} opts   Options given
+		 * @return {Object}        Public API
+		 */
 		init: function(target, opts) {
 			// set target element
 			api.target = target;
@@ -856,12 +1298,14 @@ Kodinger.API.Post = (function() {
 				elem, 
 				options, 
 				query,
-				template, 
+				templates, 
 				templating,
 				exception, 
 				lifecycle, 
 				loadMore,
 				shimmer,
+				io,
+				events,
 				page,
 				incrementPage,
 				queryPending,
@@ -871,20 +1315,22 @@ Kodinger.API.Post = (function() {
 				buildParams,
 				lastData,
 				onrendered,
-				render
+				render,
 			} = api;
 
 			// start implementing
-			const instance = api.run({
+			const args = {
 				elem,
 				options,
 				query,
-				template,
+				templates,
 				templating,
 				exception,
 				lifecycle,
 				loadMore,
 				shimmer,
+				io,
+				events,
 				page,
 				incrementPage,
 				queryPending,
@@ -895,15 +1341,23 @@ Kodinger.API.Post = (function() {
 				lastData,
 				onrendered,
 				render
+			}
+
+			lifecycle.onStartImplementing.call(this, args);
+
+			const instance = api.run(args);
+
+			instance.then(function() {
+				lifecycle.firstContentLoaded.call(this, args);
 			});
 
-			let events = {
+			let output = {
 				onRender: instance,
 				shimmer,
 				elem
 			};
 
-			return events;
+			return output;
 		}
 	}
 

@@ -35,7 +35,6 @@ class PublishDiscoverPost {
             }
         }
 
-
         return $next($passable);
     }
 }

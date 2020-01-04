@@ -27,27 +27,6 @@ class PostController extends Controller
         return view('posts.index', compact('posts'));
     }
 
-	public function posts(Request $request)
-	{		
-		$posts = $this->postService->content(10, $request);
-
-		return response()->json($posts);
-	}
-
-	public function discover(Request $request)
-	{
-		$posts = $this->postService->discover(10, $request);
-
-		return response()->json($posts);
-	}
-
-	public function both(Request $request)
-	{
-		$posts = $this->postService->both(10, $request);
-
-		return response()->json($posts);
-	}
-
 	public function me(Request $request)
 	{
 		$posts = $this->postService->me(10, $request);
@@ -110,28 +89,9 @@ class PostController extends Controller
 
 		flash('Post deleted successfully')->success();
 
+		if(!auth()->user()->hasRole('admin'))
+			return redirect()->route('single', auth()->user()->the_username);
+
 		return redirect()->route('post.index');
-	}
-
-	public function getLinkInfo(Request $request)
-	{
-		$data = get_data($request->url);
-		
-		$doc = new \DOMDocument();
-		@$doc->loadHTML($data);
-		$nodes = $doc->getElementsByTagName('title');
-		$title = determine_page_title($nodes->item(0)->nodeValue, $request->url);
-
-		return response([
-			'url' => $request->url,
-			'title' => $title
-		], 200);
-	}
-
-	public function tags(Request $request)
-	{
-		$tags = $this->tagService->search($request->value);
-
-		return response($tags->toArray());
 	}
 }

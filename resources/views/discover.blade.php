@@ -30,7 +30,7 @@
                             <div class="flex items-center">
                                 <img class="w-10 h-10 rounded border-gray-200 border" src="{{ auth()->user()->the_avatar_sm }}" alt="{{ auth()->user()->name }}">
                                 <div class="ml-2">
-                                    <div class="text-xs uppercase font-semibold tracking-wide leading-tight text text-gray-500">Dibuplikasi oleh</div>
+                                    <div class="text-xs uppercase font-semibold tracking-wide leading-tight text text-gray-500">Dipublikasi oleh</div>
                                     {{ auth()->user()->name }}
                                 </div>
                             </div>
@@ -56,7 +56,6 @@
 @push('js')
     <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify@3.1.0/dist/tagify.min.js"></script>
-    <script src="https://js.pusher.com/5.0/pusher.min.js"></script>
     <script src="{{ asset('js/post.js') }}"></script>
     <script src="{{ asset('js/discover.js') }}"></script>
 @endpush

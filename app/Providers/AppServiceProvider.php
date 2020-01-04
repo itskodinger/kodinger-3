@@ -45,6 +45,14 @@ class AppServiceProvider extends ServiceProvider
             return "<?php echo route($expression); ?>";
         });
 
+        Blade::directive('api', function($expression) {
+            return "<?php echo route('api.' . $expression); ?>";
+        });
+
+        Blade::directive('current', function($expression) {
+            return "<?php echo request()->fullUrlWithQuery($expression); ?>";
+        });
+
         Paginator::defaultView('pagination::default');
     }
 }

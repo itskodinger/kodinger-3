@@ -15,4 +15,8 @@ class PostAttribute extends Model
         'post_id', 'key', 'value', 'description', 'kind', 'escaped'
     ];
 
+    public function post()
+    {
+    	return $this->belongsTo(Post::class);
+    }
 }

@@ -6,9 +6,11 @@ use DB;
 use App\Tag;
 use App\Save;
 use App\Post;
+use App\PostAttribute;
 use App\PostTag;
 use App\Contribute;
-use App\Events\Post\Discover\DiscoverPostCreated;
+// use App\Events\Post\Discover\DiscoverPostCreated;
+use App\Jobs\FetchDiscoverUrlPreview;
 use Services\UserService;
 
 class PostService
@@ -36,6 +38,7 @@ class PostService
 			($parent ? $parent . '.' : '') . 'tags', 
 			($parent ? $parent . '.' : '') . 'tags.tag', 
 			($parent ? $parent . '.' : '') . 'user', 
+			($parent ? $parent . '.' : '') . 'attributes', 
 		], $arr2);
 	}
 
@@ -49,11 +52,32 @@ class PostService
 		return $this->model()->count();
 	}
 
-	public function discover(...$args)
+	public function discover($num, $request)
 	{
-		$this->init = $this->model()->whereType('link');
+		$discover = $this->model()->whereType('link');
 
-		return $this->paginate(...$args);
+		if(isset($request->search))
+		{
+			$discover = $discover->whereHas('attributes', function($q) use($request) {
+				$q->where('value', 'like',  '%' . $request->search . '%');
+			});
+		}
+
+		$tag = $request->tag ?? null;
+		if($tag) {
+			$tag = Tag::whereName($tag)->first();
+
+			if(!$tag) 
+				return false;
+
+			$tag_id = $tag->id;
+
+			$discover = $discover->whereHas('tags', function($q) use($tag_id) {
+				$q = $q->whereTagId($tag_id);
+			});
+		}
+
+		return $discover->orderBy('created_at', 'desc')->paginate($num);
 	}
 
 	public function myLovesBySlug($user, $request)
@@ -81,9 +105,12 @@ class PostService
 
 		$post = $this->create($request, $adds);
 
-		event(
-			new DiscoverPostCreated($post)
-		);
+		// pusher is too expensive
+		// event(
+		// 	new DiscoverPostCreated($post)
+		// );
+		
+		dd(FetchDiscoverUrlPreview::dispatch($post));
 
 		return $post;
 	}

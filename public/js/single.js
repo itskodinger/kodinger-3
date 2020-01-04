@@ -1,9 +1,7 @@
 let mypost = Kodinger.API.Post.init('.post', {
-	params: (params) => ({
-		ajax: '1'
-	}),
-    url: routes.single + post_data.slug,
+    url: routes.post_show.replace(/slug/g, post_data.slug),
     carousel: true,
+    lazyimage: false,
     first: true
 });
 
@@ -22,14 +20,14 @@ mypost.onRender.then(function({lastData: {data}}) {
             	${ links.length > 0 ?
             		links.map(function(page) {
             		return `
-                		<a data-fetch="${page}" class="flex items-center hover:bg-gray-100 px-5 py-4 border-b border-gray-100" href="${ page }">
+                		<a data-fetch="${page}" target="_blank" class="flex items-center hover:bg-gray-100 px-5 py-4 border-b border-gray-100" href="${ page }">
 	                		<img class="w-8 flex-shrink-0" src="https://s2.googleusercontent.com/s2/favicons?domain_url=${ page }">
 	                		<div class="ml-4 overflow-hidden">
 	                			<div class="text-indigo-600 font-semibold title truncate"></div>
 		                		<span class="text-xs text-gray-700 truncate">${page}</span>
 	                		</div>
-	                	</a>`
-	                })
+	                	</a>`;
+	                }).join('')
 	            : // else
 	            `
 	            <div class="px-5 py-4 border-b border-gray-100 text-center text-sm">
@@ -54,6 +52,39 @@ mypost.onRender.then(function({lastData: {data}}) {
     	el.insertAdjacentHTML('beforeEnd', link_tpl({name: key2str[name], links: data[name], originalName: name}));
     });
 
+    setTimeout(function() {
+        $$('[data-fetch]').forEach(function(item) {
+            let url = item.dataset.fetch;
+
+            if(url) {
+                (async function() {
+                    const res = await fetch(routes.post_link_info, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': token,
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            url
+                        })
+                    });
+
+                    if(res.ok) {
+                        return Promise.resolve(res.json());
+                    }
+                })()
+                .then(function(data) {
+                    if(data) {
+                        const { title } = data;
+
+                        item.querySelector('.title').innerText = title;
+                    }
+                });
+            }
+        });
+    }, 500);
+
     /**
      * Inspiration
      */
@@ -77,40 +108,4 @@ mypost.onRender.then(function({lastData: {data}}) {
 	if(data.keyword) {
 		el.insertAdjacentHTML('beforeEnd', inspi_tpl({keyword: data.keyword}));
 	}
-});
-
-
-/**
- * Link info
- */
-
-$$('[data-fetch]').forEach(function(item) {
-	let url = item.dataset.fetch;
-
-	if(url) {
-    	(async function() {
-    		const res = await fetch(routes.post_link_info, {
-        		method: 'POST',
-        		headers: {
-					'X-CSRF-TOKEN': token,
-					'Content-Type': 'application/json',
-					'Accept': 'application/json'
-				},
-				body: JSON.stringify({
-					url
-				})
-        	});
-
-    		if(res.ok) {
-    			return Promise.resolve(res.json());
-    		}
-    	})()
-    	.then(function(data) {
-    		if(data) {
-        		const { title } = data;
-
-	        	item.querySelector('.title').innerText = title;
-    		}
-    	});
-    }
 });

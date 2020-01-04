@@ -18,14 +18,33 @@ class Community extends Model
     	'member'
     ];
 
+    public $appends = [
+        'formatted_member', 
+        'github', 
+        'website', 
+        'twitter', 
+        'facebook', 
+        'telegram'
+    ];
+
     public function parseUrl()
     {
     	return json_decode($this->links);
     }
 
+    public function getLogoAttribute($logo)
+    {
+    	return logo($logo);
+    }
+
+    public function getFormattedMemberAttribute()
+    {
+        return number_format($this->member, 0);
+    }
+   
     public function getWebsiteAttribute()
     {
-    	return optional($this->parseUrl())->website;
+        return optional($this->parseUrl())->website;
     }
 
     public function getGithubAttribute()
