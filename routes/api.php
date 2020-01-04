@@ -30,6 +30,7 @@ Route::group(['prefix' => 'posts', 'as' => 'post.', 'namespace' => 'Api'], funct
 	Route::get('/both', 'PostApiController@both')->name('both');
 	Route::get('/discover', 'PostApiController@discover')->name('discover');
 	Route::get('/{slug}', 'PostApiController@show')->name('show');
+	Route::post('/discover', 'PostApiController@storeDiscover')->name('store_discover')->middleware(['auth:api']);
 });
 
 Route::group(['prefix' => 'comments', 'as' => 'comment.', 'namespace' => 'Api'], function() 

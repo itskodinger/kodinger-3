@@ -97,11 +97,6 @@ $('#discover-form').addEventListener('submit', function(e) {
     } else {
         adds(btn.classList, 'pointer-events-none opacity-50');
 
-        const shimmer = posts.shimmer.add({
-                elem: posts.elem,
-                position: 'afterBegin'
-        });
-
         const posting = (async function() {
             const res = await fetch(routes.post_store_discover, {
                 method: 'POST',
@@ -121,7 +116,6 @@ $('#discover-form').addEventListener('submit', function(e) {
         // on complete
         .then(function(res) {
             removes(btn.classList, 'pointer-events-none opacity-50');
-            shimmer.dispose();
 
             if(res.ok) {
                 return Promise.resolve(res.json());

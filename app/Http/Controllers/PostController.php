@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Services\PostService;
 use Services\TagService;
-use Requests\PostDiscoverCreateRequest;
 use Requests\PostCreateRequest;
 use Requests\PostUpdateRequest;
 
@@ -53,13 +52,6 @@ class PostController extends Controller
 		flash('Post created successfully');
 
 		return redirect()->route('post.index');
-	}
-
-	public function storeDiscover(PostDiscoverCreateRequest $request)
-	{
-		$post = $this->postService->createDiscover($request);
-
-		return response()->json($post);
 	}
 
 	public function update($id, PostUpdateRequest $request)
