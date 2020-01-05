@@ -61,7 +61,22 @@ Kodinger.API.Post = (function() {
 			lazyimage: function(element) {
 				const { io } = api;
 
-				io.observe(find(element, '.lazy-image'));
+				let the_image = find(element, '.lazy-image'),
+					image = new Image;
+
+				image.src = the_image.dataset.blurry;
+				image.dataset.src = the_image.dataset.src;
+				image.className = 'w-full';
+
+				image.addEventListener('load', function(e) {
+					the_image.parentNode.appendChild(image);
+					the_image.remove();
+
+					io.observe(image);
+				});
+
+				image.addEventListener('error', function(e) {
+				});
 			},
 
 			/**
@@ -570,7 +585,7 @@ Kodinger.API.Post = (function() {
 				                    </video>`
 				            		:
 					            	`<a href="${routes.single + post.slug}">
-					                    <div data-src="${post.images[0]}" class="lazy-image w-full bg-gray-200 bg-cover" style="height: 450px;background-image: url(${post.blurry_image});"></div>
+					                    <div data-blurry="${post.blurry_image}" data-src="${post.images[0]}" class="lazy-image w-full bg-gray-200 bg-cover h-40 sm:h-64"></div>
 					                </a>`
 
 				                )
@@ -873,13 +888,17 @@ Kodinger.API.Post = (function() {
 					entries.forEach(function(entry) {
 						if(entry.isIntersecting) {
 							let target = entry.target;
-							let image = document.createElement('img');
+							let image = new Image;
 							image.src = target.dataset.src;
 							image.className = 'w-full';
-							target.parentNode.appendChild(image);
-							api.vars.io.unobserve(target);
 
-							target.remove();
+							image.addEventListener('load', function() {
+								target.parentNode.appendChild(image);
+							
+								api.vars.io.unobserve(target);
+
+								target.remove();
+							});
 						}
 					});
 				});

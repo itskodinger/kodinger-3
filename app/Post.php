@@ -50,9 +50,19 @@ class Post extends Model
     	return in_array($this->id, user_post_loves());
     }
 
+    public function getRawImagesAttribute()
+    {
+        return array2nl($this->images);
+    }
+
     public function getImagesAttribute($value)
     {
     	return nl_array($value);
+    }
+
+    public function getRawInspirationsAttribute()
+    {
+        return array2nl($this->inspirations);
     }
 
     public function getInspirationsAttribute($value)
@@ -60,9 +70,19 @@ class Post extends Model
     	return nl_array($value);
     }
 
+    public function getRawPagesAttribute()
+    {
+        return array2nl($this->pages);
+    }
+
     public function getPagesAttribute($value)
     {
     	return nl_array($value);
+    }
+
+    public function getRawTutorialsAttribute()
+    {
+        return array2nl($this->tutorials);
     }
 
     public function getTutorialsAttribute($value)
@@ -70,9 +90,19 @@ class Post extends Model
     	return nl_array($value);
     }
 
+    public function getRawHelpsAttribute()
+    {
+        return array2nl($this->helps);
+    }
+
     public function getHelpsAttribute($value)
     {
     	return nl_array($value);
+    }
+
+    public function getRawExamplesAttribute()
+    {
+        return array2nl($this->examples);
     }
 
     public function getExamplesAttribute($value)

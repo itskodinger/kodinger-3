@@ -45,7 +45,7 @@
 			'name' => 'images',
 			'label' => 'Images',
 			'type' => 'textarea',
-			'value' => $post->images ?? '',
+			'value' => $post->raw_images ?? '',
 			'help' => '1 Baris untuk 1 URL gambar. Urutan gambar sesuai dengan urutan URL di atas.'
 		])
 
@@ -53,7 +53,7 @@
 			'name' => 'pages',
 			'label' => 'Pages',
 			'type' => 'textarea',
-			'value' => $post->pages ?? '',
+			'value' => $post->raw_pages ?? '',
 			'help' => 'Halaman web terkait dengan konten'
 		])
 
@@ -61,7 +61,7 @@
 			'name' => 'tutorials',
 			'label' => 'Tutorials',
 			'type' => 'textarea',
-			'value' => $post->tutorials ?? '',
+			'value' => $post->raw_tutorials ?? '',
 			'help' => 'Tutorial implementasi terkait dengan konten. Boleh bahasa Inggris atau Indonesia.'
 		])
 
@@ -69,7 +69,7 @@
 			'name' => 'helps',
 			'label' => 'Helps',
 			'type' => 'textarea',
-			'value' => $post->helps ?? '',
+			'value' => $post->raw_helps ?? '',
 			'help' => 'Halaman komunitas terkait dengan konten, seperti GitHub issue dari repository tersebut, Stack Overflow, Quora atau apapun.'
 		])
 
@@ -77,7 +77,7 @@
 			'name' => 'examples',
 			'label' => 'Examples',
 			'type' => 'textarea',
-			'value' => $post->examples ?? '',
+			'value' => $post->raw_examples ?? '',
 			'help' => 'Contoh situs yang menggunakan library terkait ataupun halaman demo dari library.'
 		])
 

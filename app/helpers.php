@@ -10,6 +10,18 @@ function nl_array($str)
 	return $arr;
 }
 
+function array2nl($array)
+{
+	$nl = '';
+
+	foreach($array as $ar)
+	{
+		$nl .= $ar . "\r\n";
+	}
+
+	return $nl;
+}
+
 function nl_list($str, $class='', $tag='div', $plus=null)
 {
 	$arr = $str;
