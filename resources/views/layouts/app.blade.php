@@ -31,7 +31,7 @@
     @guest
     <div class="login-alert overflow-y-auto fixed top-0 left-0 w-full h-full flex z-20 md:items-center items-start justify-center hidden">
         <div class="fixed bg-black opacity-50 w-screen h-screen"></div>
-        <div class="p-10 m-10 sm:w-4/12 lg:w-4/12 md:w-6/12 w-full h-full md:h-auto bg-white relative md:rounded shadow-lg">
+        <div class="p-10 sm:w-4/12 lg:w-4/12 md:w-6/12 w-full h-full md:h-auto bg-white relative md:rounded shadow-lg">
             <div class="login-alert-close absolute top-0 right-0 bg-red-600 w-10 h-10 rounded-bl text-center cursor-pointer hover:bg-red-700 flex items-center justify-center"><svg class="inline-block w-6 fill-current text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="close"><rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"/><path d="M13.41 12l4.3-4.29a1 1 0 1 0-1.42-1.42L12 10.59l-4.29-4.3a1 1 0 0 0-1.42 1.42l4.3 4.29-4.3 4.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l4.29-4.3 4.29 4.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z"/></g></g></svg></div>
             <h2 class="text-xl font-bold mb-2">Maaf, kamu harus login dulu, Jon!</h2>
             @include('layouts.login_content')

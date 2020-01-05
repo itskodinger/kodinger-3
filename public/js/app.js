@@ -292,14 +292,14 @@ let adds = function(me, str)
 /**
  * Show login element
  */
-let showLoginAlert = function(e)
+let showLoginAlert = function()
 {
 	const el = $('.login-alert');
 
 	if(el) {
 		el.classList.remove('hidden');
 
-		find(el, '.login-alert-close').addEventListener('click', function() {
+		find(el, '.login-alert-close').addEventListener('click', function(e) {
 			el.classList.add('hidden');
 			e.preventDefault();
 		});
