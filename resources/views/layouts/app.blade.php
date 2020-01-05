@@ -21,15 +21,25 @@
     <div class="share-modal overflow-y-auto fixed top-0 left-0 w-full h-full flex z-20 md:items-center items-start justify-center hidden">
         <div class="fixed bg-black opacity-50 w-screen h-screen"></div>
         <div class="p-10 sm:w-4/12 lg:w-4/12 md:w-6/12 w-full h-full md:h-auto bg-white relative md:rounded shadow-lg">
-            <div class="float-right"><svg class="share-modal-close w-6 fill-current text-gray-400 cursor-pointer hover:text-gray-800" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="close"><rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"/><path d="M13.41 12l4.3-4.29a1 1 0 1 0-1.42-1.42L12 10.59l-4.29-4.3a1 1 0 0 0-1.42 1.42l4.3 4.29-4.3 4.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l4.29-4.3 4.29 4.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z"/></g></g></svg></div>
+            <div class="share-modal-close absolute top-0 right-0 bg-red-600 w-10 h-10 rounded-bl text-center cursor-pointer hover:bg-red-700 flex items-center justify-center"><svg class="inline-block w-6 fill-current text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="close"><rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"/><path d="M13.41 12l4.3-4.29a1 1 0 1 0-1.42-1.42L12 10.59l-4.29-4.3a1 1 0 0 0-1.42 1.42l4.3 4.29-4.3 4.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l4.29-4.3 4.29 4.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z"/></g></g></svg></div>
             <h2 class="text-xl font-bold">Berbagi dengan teman</h2>
             <p class="text-sm text-gray-600 mt-2 leading-relaxed">Bagikan konten ini ke sosial media, website atau platform apapun yang kamu miliki.</p>
             <div class="mt-6 share-buttons">
             </div>
         </div>
     </div>
+    @guest
+    <div class="login-alert fixed top-0 left-0 w-full h-full z-20 flex sm:items-center items-end justify-center hidden">
+        <div class="fixed bg-black opacity-50 w-screen h-screen"></div>
+        <div class="p-10 m-10 sm:w-4/12 lg:w-4/12 md:w-6/12 w-full h-full md:h-auto bg-white relative md:rounded shadow-lg">
+            <div class="login-alert-close absolute top-0 right-0 bg-red-600 w-10 h-10 rounded-bl text-center cursor-pointer hover:bg-red-700 flex items-center justify-center"><svg class="inline-block w-6 fill-current text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="close"><rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"/><path d="M13.41 12l4.3-4.29a1 1 0 1 0-1.42-1.42L12 10.59l-4.29-4.3a1 1 0 0 0-1.42 1.42l4.3 4.29-4.3 4.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l4.29-4.3 4.29 4.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z"/></g></g></svg></div>
+            <h2 class="text-xl font-bold mb-2">Maaf, kamu harus login dulu, Jon!</h2>
+            @include('layouts.login_content')
+        </div>
+    </div>
+    @endguest
     <div id="app">
-        <nav class="bg-white border-b-2 border-indigo-600 shadow mb-4 py-3 fixed left-0 w-full z-50">
+        <nav class="bg-white border-b-2 border-indigo-600 shadow mb-4 py-3 fixed left-0 w-full z-10">
             <div class="container mx-auto sm:px-6 px-4 md:px-0">
                 <div class="flex items-center justify-center">
                     <a href="{{ url('/') }}" class="text-lg flex-shrink-0 font-semibold text-indigo-600 no-underline">

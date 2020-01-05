@@ -128,7 +128,7 @@ $('#discover-form').addEventListener('submit', function(e) {
         })
         .catch(function(error) {
             if(error.status == 401)
-                alert('Anda perlu login dulu!')
+                showLoginAlert();
         });
     }
 

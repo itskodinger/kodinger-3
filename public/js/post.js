@@ -171,7 +171,7 @@ Kodinger.API.Post = (function() {
 							toggle_icon_save(false, item);
 
 							if(error.status == 401)
-								alert('Login dulu bro');
+								showLoginAlert();
 						});
 
 						e.preventDefault();
@@ -246,7 +246,7 @@ Kodinger.API.Post = (function() {
 						.catch(function(error) {
 							toggle_icon_love(false, item);
 							if(error.status == 401)
-								alert('Login dulu')
+								showLoginAlert();
 						});
 
 						e.preventDefault();
@@ -617,19 +617,21 @@ Kodinger.API.Post = (function() {
 					        </a></h4>`
 				        : ''}
 
-				        ${!options.discover ?
-				        `<div class="mb-5">${options.truncate_content ? post.markdown_truncate : post.markdown}</div>`
+				        ${!options.discover && (post.markdown_truncate || post.markdown) ?
+					        `<div class="mb-5">${options.truncate_content ? post.markdown_truncate : post.markdown}</div>`
 				        : ''}
 
+				        <div class="flex">
 				        ${post.tags.map(function(tag) {
 				        	if(tag.tag !== null) {
-			                    return `<a class="border border-gray-300 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded-full py-2 px-4 text-xs" href="${routes.search + fullUrlWithQuery({tag: tag.tag.name})}">
+			                    return `<a class="border border-gray-300 bg-gray-100 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded-full py-2 px-4 text-xs" href="${routes.search + fullUrlWithQuery({tag: tag.tag.name})}">
 			                        #${ tag.tag.name }
 			                    </a>`;			        		
 				        	}else {
 				        		return '';
 				        	}
 				        }).join('')}
+				        </div>
 
 				        <div class="mt-8">
 				            <div class="flex w-full items-center">

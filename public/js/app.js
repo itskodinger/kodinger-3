@@ -290,6 +290,23 @@ let adds = function(me, str)
 }
 
 /**
+ * Show login element
+ */
+let showLoginAlert = function(e)
+{
+	const el = $('.login-alert');
+
+	if(el) {
+		el.classList.remove('hidden');
+
+		find(el, '.login-alert-close').addEventListener('click', function() {
+			el.classList.add('hidden');
+			e.preventDefault();
+		});
+	}
+}
+
+/**
  * Sidebar toggle (mobile only)
  */
 $$('.side-toggle').forEach(function(item) {
