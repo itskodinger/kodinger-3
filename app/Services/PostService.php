@@ -110,7 +110,7 @@ class PostService
 		// 	new DiscoverPostCreated($post)
 		// );
 		
-		dd(FetchDiscoverUrlPreview::dispatch($post));
+		FetchDiscoverUrlPreview::dispatch($post);
 
 		return $post;
 	}
