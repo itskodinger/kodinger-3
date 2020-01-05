@@ -54,16 +54,6 @@ class PostController extends Controller
 		return redirect()->route('post.index');
 	}
 
-	public function storeDiscover(PostDiscoverCreateRequest $request)
-	{
-		$post = $this->postService->createDiscover($request);
-
-        return response()->json([
-            'status' => 'ok',
-            'data'   => $post
-        ], 200, [], JSON_PRETTY_PRINT);
-	}
-
 	public function update($id, PostUpdateRequest $request)
 	{
 		$this->postService->findAndUpdate($id, $request);

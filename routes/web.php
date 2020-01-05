@@ -48,6 +48,7 @@ Route::group(['prefix' => 'posts', 'as' => 'post.'], function()
 		Route::patch('/{id}/edit', 'PostController@update')->name('update')->middleware('permission:post-update');
 		Route::delete('/{id}/delete', 'PostController@destroy')->name('delete')->middleware('permission:post-delete');
 		Route::post('/', 'PostController@store')->name('store')->middleware('permission:post-create');
+		Route::post('/discover', 'PostController@storeDiscover')->name('store_discover');
 	});
 });
 
