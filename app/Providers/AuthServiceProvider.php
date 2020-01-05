@@ -34,6 +34,5 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Passport::routes();
-        Passport::cookie(self::TOKEN_NAME);
     }
 }
