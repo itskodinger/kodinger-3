@@ -1,3 +1,5 @@
+console.log(routes.post_show.replace(/slug/g, post_data.slug))
+
 let mypost = Kodinger.API.Post.init('.post', {
     url: routes.post_show.replace(/slug/g, post_data.slug),
     carousel: true,
@@ -5,7 +7,6 @@ let mypost = Kodinger.API.Post.init('.post', {
     first: true
 });
 
-console.log(routes.post_show.replace(/slug/g, post_data.slug))
 
 mypost.onRender.then(function({lastData: {data}}) {
     console.log(data)
