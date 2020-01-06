@@ -6,7 +6,7 @@
         <div class="rounded">
             <img src="{{ $post->popular()->images[0] }}" alt="{{ $post->popular()->title }}" class="rounded-lg">
             <div class="bg-white p-5 rounded-lg mx-4 -mt-16 relative border-2 border-gray-200">
-                <h4 class="text-indigo-500 font-semibold hover:text-indigo-700"><a href="{{ route('single', $post->popular()->slug) }}">{{ $post->popular()->title }}</a></h4>
+                <h4 class="text-indigo-500 font-semibold hover:text-indigo-700"><a href="@route('single', $post->popular()->slug)">{{ $post->popular()->title }}</a></h4>
                 <p class="text-gray-600 text-sm mt-2">{{ $post->popular()->views }} Views</p>
             </div>
         </div>
@@ -15,7 +15,7 @@
         <div class="bg-white rounded border-2 border-gray-200">
             @foreach($post->loved() as $post)
             @isset($post->post)
-            <a class="flex items-center hover:bg-gray-100 px-5 py-4 border-b border-gray-100" href="{{ route('single', $post->post->slug) }}">
+            <a class="flex items-center hover:bg-gray-100 px-5 py-4 border-b border-gray-100" href="@route('single', $post->post->slug)">
                 <div class="text-sm text-gray-600 font-semibold truncate">{{ $post->post->title }}</div>
             </a>
             @endisset

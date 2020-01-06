@@ -15,10 +15,10 @@
         		</div>
         		<div class="mt-2 -mx-3 text-gray-600 text-sm flex">
 	        		<div class="mx-3">{{ $user->created_at->diffForHumans() }}</div>
-	        		<a class="mx-3 text-black" href="{{ route('user.edit', $user->id) }}">Edit</a>
+	        		<a class="mx-3 text-black" href="@route('user.edit', $user->id)">Edit</a>
 	        		@if($user->id !== 1)
 	        		<a class="mx-3 text-red-600 cursor-pointer" onclick="let c = confirm('Are you sure?'); if(!c) return false; else document.getElementById('delete').submit();">Delete</a>
-	        		<form action="{{ route('user.delete', $user->id) }}" method="post" id="delete">
+	        		<form action="@route('user.delete', $user->id)" method="post" id="delete">
 	        			{!! method_field('delete') !!}
 	        			@csrf
 	        		</form>

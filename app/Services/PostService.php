@@ -133,13 +133,20 @@ class PostService
 	{
 		$posts = $this->init ?? $this->emptyModel();
 
+		$req_search = $request['search'] ?? null;
+		$req_type = $request['type'] ?? null;
+		$req_tag = $request['tag'] ?? null;
+		
 		if($request) {
-			$req_search = $request['search'] ?? null;
 			if($req_search) {
 				$posts = $posts->where('title', 'like', '%'. $req_search .'%');
 			}
 
-			$req_tag = $request['tag'] ?? null;
+			if($req_type) {
+				$req_type = $req_type == 'content' ? null : $req_type;
+				$posts = $posts->whereType($req_type);
+			}
+
 			if($req_tag) {
 				$tag = Tag::whereName($req_tag)->first();
 
@@ -161,6 +168,8 @@ class PostService
 		}
 
 		$posts = $posts->orderBy('created_at', 'desc')->paginate($num);
+
+		$posts->appends(['search' => $req_search, 'type' => $req_type]);
 
 		return $posts;
 	}

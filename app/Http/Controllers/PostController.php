@@ -19,9 +19,9 @@ class PostController extends Controller
 		$this->tagService = $tagService;
 	}
 
-    public function index()
+    public function index(Request $request)
     {
-    	$posts = $this->postService->paginate();
+    	$posts = $this->postService->paginate(10, $request);
 
         return view('posts.index', compact('posts'));
     }

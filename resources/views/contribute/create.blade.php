@@ -11,7 +11,7 @@
 	            			<div class="ml-6">
 	            				<h4 class="text-lg font-bold text-gray-800">Rekomendasi Berhasil Disimpan</h4>
 	            				<p class="mt-1 text-gray-600 mb-3">Kontribusi kamu akan kami tinjau terlebih dahulu sebelum kami tambahkan ke konten terkait. Terima kasih sudah berkontribusi!</p>
-	            				<a href="{{ route('contributes', auth()->user()->the_username) }}" class="text-indigo-600">Lihat Semua Rekomendasi</a>
+	            				<a href="@route('contributes', auth()->user()->the_username)" class="text-indigo-600">Lihat Semua Rekomendasi</a>
 	            			</div>
 	            		</div>
 	            		<div class="flex hidden" id="error-message">
@@ -26,7 +26,7 @@
 		            		<h4 class="text-lg font-bold text-gray-600 border-b-2 border-gray-200 pb-4 mb-6">Sarankan Penyuntingan</h4>
 
 		            		<p class="mb-2 text-gray-600">Post Terkait</p>
-		            		<a href="{{ route('single', $post->slug) }}" class="flex items-center bg-gray-100 hover:bg-gray-200 hover:border-gray-300 border border-gray-200 mb-8 p-3 rounded">
+		            		<a href="@route('single', $post->slug)" class="flex items-center bg-gray-100 hover:bg-gray-200 hover:border-gray-300 border border-gray-200 mb-8 p-3 rounded">
 		            			<div class="bg-cover w-16 h-16 rounded" style="background-image: url({{ nl_array_first($post->images) }});"></div>	
 		            			<div class="ml-4">
 		            				<h4 class="font-semibold text-indigo-600">{{ $post->title }}</h4>

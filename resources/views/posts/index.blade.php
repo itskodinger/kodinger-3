@@ -2,6 +2,10 @@
 
 @section('dash_content')
 	<h2 class="mb-2 text-gray-600 text-lg flex items-center">Semua Content
+        <span class="ml-6">
+            <a class="text-indigo-600" href="@current(['type' => 'link'])">Discover</a> | 
+            <a class="text-indigo-600" href="@current(['type' => 'content'])">Content</a>
+        </span>
 		@button(['tag' => 'a', 'href' => route('post.create'), 'class' => 'text-sm ml-auto'])
 			Tambah Konten
 		@endbutton
@@ -13,16 +17,16 @@
         		<div class="py-1 px-2 mr-1 rounded text-xs inline-block text-white capitalize {{ $post->status == 'publish' ? 'bg-green-500' : 'bg-orange-500' }}">
         			{{ $post->status }}
         		</div>
-        		{{ $post->title }}
+        		{{ $post->title ?? $post->raw_pages }}
     		</div>
     		<div class="mt-2 -mx-3 text-gray-600 text-sm flex">
         		<div class="mx-3">{{ $post->created_at->diffForHumans() }}</div>
         		@if($post->status == 'draft')
-        		<a class="mx-3 text-green-500" href="{{ route('post.publish', $post->id) }}">Publish</a>
+        		<a class="mx-3 text-green-500" href="@route('post.publish', $post->id)">Publish</a>
         		@endif
-        		<a class="mx-3 text-black" href="{{ route('post.edit', $post->id) }}">Edit</a>
+        		<a class="mx-3 text-black" href="@route('post.edit', $post->id)">Edit</a>
         		<a class="mx-3 text-red-600 cursor-pointer" onclick="let c = confirm('Are you sure?'); if(!c) return false; else document.getElementById('delete').submit();">Delete</a>
-        		<form action="{{ route('post.delete', $post->id) }}" method="post" id="delete">
+        		<form action="@route('post.delete', $post->id)" method="post" id="delete">
         			{!! method_field('delete') !!}
         			@csrf
         		</form>

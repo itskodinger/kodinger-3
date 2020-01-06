@@ -3,7 +3,7 @@
 @section('profile_content')
     <h1 class="mb-4 text-lg flex items-center">Pengaturan</h1>
     @include('flash::message')
-    <form enctype="multipart/form-data" method="post" action="{{ route('setting_update') }}">
+    <form enctype="multipart/form-data" method="post" action="@route('setting_update')">
         @csrf
         @card
             <h4 class="mb-1 text-lg font-semibold text-indigo-500">Pengaturan Avatar</h4>

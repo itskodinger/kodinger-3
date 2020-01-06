@@ -10,7 +10,7 @@
                         {{ __('Register') }}
                     </div>
 
-                    <form class="w-full p-6" method="POST" action="{{ route('register') }}">
+                    <form class="w-full p-6" method="POST" action="@route('register')">
                         @csrf
 
                         <div class="flex flex-wrap mb-6">
@@ -70,7 +70,7 @@
 
                             <p class="w-full text-xs text-center text-gray-700 mt-8 -mb-4">
                                 Already have an account?
-                                <a class="text-blue-500 hover:text-blue-700 no-underline" href="{{ route('login') }}">
+                                <a class="text-blue-500 hover:text-blue-700 no-underline" href="@route('login')">
                                     Login
                                 </a>
                             </p>
