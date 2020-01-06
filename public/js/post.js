@@ -621,7 +621,7 @@ Kodinger.API.Post = (function() {
 					        `<div class="mb-5">${options.truncate_content ? post.markdown_truncate : post.markdown}</div>`
 				        : ''}
 
-				        <div class="flex">
+				        <div class="flex flex-wrap">
 				        ${post.tags.map(function(tag) {
 				        	if(tag.tag !== null) {
 			                    return `<a class="border border-gray-300 bg-gray-100 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded-full py-2 px-4 text-xs" href="${routes.search + fullUrlWithQuery({tag: tag.tag.name})}">
