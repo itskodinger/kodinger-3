@@ -192,6 +192,7 @@
             user = {!! user_js() !!},
             $ = document.querySelector.bind(document),
             $$ = document.querySelectorAll.bind(document),
+            auth = {{ auth()->check() ? 1 : 0 }},
             token = $('[name=csrf-token]').getAttribute('content');
     </script>
     <script src="{{ asset('js/app.js') }}"></script>

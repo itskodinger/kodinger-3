@@ -27,15 +27,15 @@ function comment_add(obj, classes, method, target)
     if(!method) method = 'append';
 
     let item = comment_tmp.replace(/{content}/g, obj.content);
-    item = item.replace(/{currentUrl}/g, window.location.href)
-    item = item.replace(/{avatar}/g, obj.avatar)
-    item = item.replace(/{name}/g, obj.name)
-    item = item.replace(/{username}/g, obj.username)
-    item = item.replace(/{time}/g, obj.time)
+    item = item.replace(/{currentUrl}/g, window.location.href);
+    item = item.replace(/{avatar}/g, obj.avatar);
+    item = item.replace(/{name}/g, obj.name);
+    item = item.replace(/{username}/g, obj.username);
+    item = item.replace(/{time}/g, obj.time);
     if(obj.id)
-        item = item.replace(/{id}/g, obj.id)
-    item = item.replace(/{is_mine}/g, obj.is_mine ? '<a onclick="let c = confirm(\'are you sure?\'); if(c){comment_remove('+obj.id+', event)}" class="mt-5 text-red-600 cursor-pointer text-xs mr-3">Delete</a>' : '')
-    item = item.replace(/{quote}/g, '<a onclick="quote('+obj.id+', event)" class="mt-5 hover:text-indigo-600 cursor-pointer text-xs mr-3">Quote</a>')
+        item = item.replace(/{id}/g, obj.id);
+    item = item.replace(/{is_mine}/g, obj.is_mine ? '<a onclick="let c = confirm(\'are you sure?\'); if(c){comment_remove('+obj.id+', event)}" class="mt-5 text-red-600 cursor-pointer text-xs mr-3">Delete</a>' : '');
+    item = item.replace(/{quote}/g, auth ? '<a onclick="quote('+obj.id+', event)" class="mt-5 hover:text-indigo-600 cursor-pointer text-xs mr-3">Quote</a>' : '');
 
     // if has reply
     if("reply" in obj && obj.reply) {
