@@ -5,7 +5,10 @@ let mypost = Kodinger.API.Post.init('.post', {
     first: true
 });
 
+console.log(routes.post_show.replace(/slug/g, post_data.slug))
+
 mypost.onRender.then(function({lastData: {data}}) {
+    console.log(data)
 	$('#comment-box').classList.remove('hidden');
 
 	/**
