@@ -174,7 +174,7 @@
                 discover: '@api('post.discover')',
                 base_url: '{{ url('') }}',
                 single: '@route('single')/',
-                post_show: '@api('post.show', 'slug')/',
+                post_show: '@api('post.show', 'slug')',
                 post_store_discover: '@api('post.store_discover')',
                 post_tags: '@api('tag.search')',
                 post_link_info: '@api('post.getLinkInfo')',
