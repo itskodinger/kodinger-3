@@ -348,6 +348,45 @@ $('body').addEventListener('click', function(e) {
 	}
 });
 
+(function() {
+	let scroll, scroll_up = false, scroll_down = false;
+	$('.primary-nav').style.transition = 'all .5s';
+
+	let showNavbar = function() {
+		let navbar = $('.primary-nav');
+		navbar.style.top = 0;
+	}
+
+	let hideNavbar = function() {
+		let navbar = $('.primary-nav');
+		navbar.style.top = -navbar.clientHeight + 'px';
+	}
+
+	window.addEventListener('scroll', function(e) {
+		if(scroll){
+			if(window.scrollY < scroll && !scroll_up) {
+				showNavbar();
+
+				scroll_up = true;
+				scroll_down = false;
+			}
+
+			if(window.scrollY > scroll && !scroll_down) {
+				scroll_up = false;
+			}
+
+			if(window.scrollY > scroll && window.scrollY > 300 && !scroll_down) {
+				hideNavbar();
+				
+				scroll_up = false;
+				scroll_down = true;
+			}
+		}
+
+		scroll = window.scrollY;
+	});
+})();
+
 // Initialize Kodinger API (creating empty object without "hassle")
 const Kodinger = Object.create(null);
 Kodinger.API = Object.create(null);

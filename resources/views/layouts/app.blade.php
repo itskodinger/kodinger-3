@@ -39,7 +39,7 @@
     </div>
     @endguest
     <div id="app">
-        <nav class="bg-white border-b-2 border-indigo-600 shadow mb-4 py-3 fixed left-0 w-full z-10">
+        <nav class="primary-nav bg-white border-b-2 border-indigo-600 top-0 shadow mb-4 py-3 fixed left-0 w-full z-10">
             <div class="container mx-auto sm:px-6 px-4 md:px-0">
                 <div class="flex items-center justify-center">
                     <a href="{{ url('/') }}" class="text-lg flex-shrink-0 font-semibold text-indigo-600 no-underline">

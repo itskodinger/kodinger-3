@@ -383,11 +383,11 @@ Kodinger.API.Post = (function() {
 
 				if(!options.first) {			
 					let scrollReachBottom = (function(reach) {
-						window.onscroll = function(e) {
+						window.addEventListener('scroll', function(e) {
 							if ((window.innerHeight + window.scrollY) >= $('#app').offsetHeight) {
 								reach.call(this);
 						    }
-						}
+						});
 					});
 
 					scrollReachBottom(function() {
