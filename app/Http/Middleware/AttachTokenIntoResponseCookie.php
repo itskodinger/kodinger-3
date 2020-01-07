@@ -53,7 +53,6 @@ class AttachTokenIntoResponseCookie
 
         }
 
-
-        return  $next($request);
+        return $response;
     }
 }
