@@ -25,8 +25,8 @@
         		<a class="mx-3 text-green-500" href="@route('post.publish', $post->id)">Publish</a>
         		@endif
         		<a class="mx-3 text-black" href="@route('post.edit', $post->id)">Edit</a>
-        		<a class="mx-3 text-red-600 cursor-pointer" onclick="let c = confirm('Are you sure?'); if(!c) return false; else document.getElementById('delete').submit();">Delete</a>
-        		<form action="@route('post.delete', $post->id)" method="post" id="delete">
+        		<a class="mx-3 text-red-600 cursor-pointer" onclick="let c = confirm('Are you sure?'); if(!c) return false; else document.getElementById('delete-{{$post->id}}').submit();">Delete</a>
+        		<form action="@route('post.delete', $post->id)" method="post" id="delete-{{$post->id}}">
         			{!! method_field('delete') !!}
         			@csrf
         		</form>

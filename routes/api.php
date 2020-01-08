@@ -36,9 +36,21 @@ Route::group(['prefix' => 'posts', 'as' => 'post.', 'namespace' => 'Api'], funct
 Route::group(['prefix' => 'comments', 'as' => 'comment.', 'namespace' => 'Api'], function() 
 {
 	Route::get('/{post_id?}', 'CommentApiController@index')->name('index');
+
+	Route::group(['middleware' => 'auth:api'], function() 
+	{
+		Route::post('/', 'CommentApiController@store')->name('store');
+		Route::delete('/delete', 'CommentApiController@destroy')->name('delete');
+	});
 });
 
 Route::group(['prefix' => 'communities', 'as' => 'community.', 'namespace' => 'Api'], function() 
 {
 	Route::get('/', 'CommunityApiController@index')->name('index');
 });
+
+Route::group(['middleware' => 'auth:api', 'prefix' => 'saves', 'as' => 'saves.', 'namespace' => 'Api'], function() 
+{
+	Route::post('/', 'SaveApiController@store')->name('store');
+});
+

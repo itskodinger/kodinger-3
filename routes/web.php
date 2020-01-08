@@ -78,8 +78,7 @@ Route::group(['prefix' => 'comments', 'as' => 'comment.'], function()
 	Route::group(['middleware' => 'auth'], function() 
 	{
 		Route::get('/', 'CommentController@index')->name('index');
-		Route::post('/', 'CommentController@store')->name('store');
-		Route::delete('/delete', 'CommentController@destroy')->name('destroy');
+		Route::delete('/{id}/delete', 'CommentController@destroy')->name('delete');
 	});
 });
 
@@ -102,8 +101,3 @@ Route::get('/tag/{slug}', 'FrontendController@index')->name('tag');
 
 Route::get('auth/{provider}', 'Auth\AuthController@redirectToProvider')->name('auth');
 Route::get('auth/{provider}/callback', 'Auth\AuthController@handleProviderCallback');
-
-Route::group(['middleware' => 'auth', 'prefix' => 'saves', 'as' => 'saves.'], function() 
-{
-	Route::post('/', 'SaveController@store')->name('store');
-});

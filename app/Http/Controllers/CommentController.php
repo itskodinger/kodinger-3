@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Services\CommentService;
-use Requests\CommentCreateRequest;
 
 class CommentController extends Controller
 {
@@ -22,30 +21,20 @@ class CommentController extends Controller
         return view('comments.index', compact('comments'));
     }
 
-    public function store(CommentCreateRequest $request)
+    public function destroy($id)
     {
-    	$comment = $this->commentService->create($request);
-    	$comment->time = $comment->created_at->diffForHumans();
+    	$comment = $this->commentService->model()->find($id);
 
-    	return response([
-    		'data' => $comment
-    	], 200);
-    }
+        if(!$comment)
+        {
+            flash('Comment not found')->error();
+            return redirect()->back();
+        }
 
-    public function destroy(Request $request)
-    {
-    	$comment = $this->commentService->find($request->id);
+		$comment->delete();
 
-    	if($comment->user_id == auth()->user()->id) {
-    		$comment->delete();
+        flash('Comment deleted successfully')->success();
 
-    		return response([
-    			'status' => true
-    		], 200);
-    	}
-
-    	return response([
-    		'status' => false
-    	], 200);
+        return redirect()->back();
     }
 }

@@ -167,7 +167,7 @@
     <!-- Scripts -->
     <script>
         const routes = {
-                save: '@route('saves.store')',
+                save: '@api('saves.store')',
                 post: '@api('post.posts')',
                 delete_post: '@route('deletePost', 'slug')',
                 post_both: '@api('post.both')',
@@ -179,8 +179,8 @@
                 post_tags: '@api('tag.search')',
                 post_link_info: '@api('post.getLinkInfo')',
                 comment_ajax: '@api('comment.index')/',
-                comment_store: '@route('comment.store')',
-                comment_destory: '@route('comment.destroy')',
+                comment_store: '@api('comment.store')',
+                comment_delete: '@api('comment.delete')',
                 contribute: '@route('contributes', ['slug' => 'slug'])',
                 contribute_create: '@route('contribute.create', 'slug')',
                 contribute_links: '@route('contribute.links', ['post_id', 'col'])',

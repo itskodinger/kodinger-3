@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Services\SaveService;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class SaveController extends Controller
+class SaveApiController extends Controller
 {
     public $saveService;
 

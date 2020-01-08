@@ -110,7 +110,7 @@ function comment_remove(id, event)
     const cmt = $('.cmt-' + id);
     adds(cmt.classList, 'opacity-50 pointer-events-none');
 
-    fetch(routes.comment_destory, {
+    fetch(routes.comment_delete, {
         headers: {
             'X-CSRF-TOKEN': token,
             'Content-Type': 'application/json',

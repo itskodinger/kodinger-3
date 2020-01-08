@@ -6,6 +6,13 @@
                 pada {{ $comment->time }}
             </div>
             <div class="text-sm text-gray-700 py-3 px-6 bg-gray-100 rounded-bl rounded-br comment-msg"> 
+                <div class="float-right">
+                    <a class="mx-3 text-red-600 cursor-pointer" onclick="let c = confirm('Are you sure?'); if(!c) return false; else document.getElementById('delete-{{$comment->id}}').submit();">Delete</a>
+                    <form action="@route('comment.delete', $comment->id)" method="post" id="delete-{{ $comment->id }}">
+                        {!! method_field('delete') !!}
+                        @csrf
+                    </form>
+                </div>
                 {!! $comment->markdown !!}
             </div>
         </div>
