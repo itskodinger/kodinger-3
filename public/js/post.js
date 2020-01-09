@@ -6,6 +6,25 @@
 
 Kodinger.API.Post = (function() {
 	/**
+	 * Post types constant
+	 * @type {Object}
+	 */
+	const types = {
+		COMMUNITY: {
+			template: 'community',
+			shimmer: 'community'
+		},
+		POST: {
+			template: 'post',
+			shimmer: 'post',
+		},
+		DISCOVER: {
+			template: 'post',
+			shimmer: 'discover',
+		},
+	}
+
+	/**
 	 * Private API
 	 * @type {Object}
 	 */
@@ -705,6 +724,205 @@ Kodinger.API.Post = (function() {
 				`;
 
 				return tpl;
+			},
+
+			/**
+			 * Discover template
+			 * @param  {Object} options.post    Post data
+			 * @param  {Object} options.options Instance options
+			 * @return {String}                 Interpolated template string
+			 */
+			discover: function({post, options}) {
+				let tpl = `
+				<div class="bg-white rounded border-2 border-gray-200 mb-10">
+				    <div class="flex p-6 items-center">
+				        <a href="${routes.single + post.user.the_username}">
+				            <img class="rounded w-12 rounded border" src="${ post.user.the_avatar_sm }">
+				        </a>
+				        <div class="ml-3">
+				            <h4 class="mb-1 font-bold">
+				                <a class="text-indigo-600" href="${ routes.single + post.user.the_username }">
+				                    ${ post.user.name }
+				                </a>
+				            </h4>
+				            <div class="-mx-1 flex items-center text-xs text-gray-500">
+				                <p class="mx-1">${ post.user.the_username }</p>
+				                <p class="mx-1">&bull;</p>
+				                <p class="mx-1 text-blue-500 font-semibold">${ post.time }</p>
+				            </div>
+				        </div>
+				    </div>
+
+				    ${ post.type == 'link' ? `
+					    <div class="px-6 text-sm text-gray-700 leading-loose">
+					        ${post.status == 'CONTAINS_PORNOGRAPHIC' ? `
+					            <div class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 px-4 py-2 mb-4" role="alert">
+					                <p class="font-bold">Hati-hati</p>
+					                <p>Post ini mungkin mengandung konten ponografi</p>
+					            </div>
+					        `: ''}
+					    </div>
+
+					    <div class="shimmer border rounded mx-6">
+
+					        ${post.post_card.has_embeddable_code ? `
+
+					            <div class="embeddable-frame">
+					                ${post.post_card.embeddable_code}
+					            </div>`
+					        : // else
+					        `
+					        	${post.post_card.thumbnail !== null ? 
+						            `<img src="${post.post_card.thumbnail}" class="w-full h-64 object-cover">`
+					            : // else
+						            `<img src="${post.post_card.default_thumbnail}" class="w-full h-64 object-scale-down">`
+						        }
+					        `}
+
+					        <div class="p-4 border-t bg-gray-100">					        
+					            <h2 class="text-lg font-semibold hover:text-indigo-600"><a href="${post.post_card.url}">${post.post_card.title}</a></h2>
+					            ${post.post_card.description ? `
+					                <p class="text-gray-600 text-sm break-all">${ post.post_card.description.substr(0, 200)}</p>
+					            ` : ''}
+					            <div class="uppercase tracking-wider text-xs mt-3 text-teal-500 font-semibold">${ getHostname(post.post_card.url) }</div>
+					        </div>
+					    </div>
+				    ` : ``}
+
+				    ${ post.type !== 'link' ? `
+				    
+				    <div class="relative${post.images.length > 1 && options.carousel ? ' carousel-outer w-full' : ''}"> 
+				        <div class="${post.images.length > 1 && options.carousel ? 'carousel w-full' : ''}">
+				            
+				            ${'carousel' in options && options.carousel == false ? 
+				            	(isVideo(post.images[0]) ?
+				                    `<video controls="">
+				                        <source src="${post.images[0]}" type="video/mp4">
+				                    </video>`
+				            		:
+					            	`<a href="${routes.single + post.slug}">
+					                    <div data-blurry="${post.blurry_image}" data-src="${post.images[0]}" class="lazy-image w-full bg-gray-200 bg-cover h-40 sm:h-64"></div>
+					                </a>`
+
+				                )
+			                : // else
+				                
+				                post.images.map(function(img) {
+				                    if(isVideo(img)) {
+					                    return `<video controls="">
+					                        <source src="${img}" type="video/mp4">
+					                    </video>`;
+				                    }else{
+				                    	return `<img src="${img}" alt="image">`;
+				                    }
+				                }).join("")
+				            }
+				        </div>
+
+				        ${post.images.length > 1 && options.carousel !== false ? `
+					        <button class="prev">&lsaquo;</button>
+					        <button class="next">&rsaquo;</button>`
+				        : ''}
+				    </div>
+				    ` : ''}
+
+				    <div class="p-6 text-sm text-gray-700 leading-relaxed">
+				        ${post.title ?
+					        `<h4 class="text-lg mb-2 text-black font-bold"><a class="text-indigo-700" href="${routes.single + post.slug}">
+					            ${post.title}
+					        </a></h4>`
+				        : ''}
+
+				        ${!options.discover && (post.markdown_truncate || post.markdown) ?
+					        `<div class="mb-5">${options.truncate_content ? post.markdown_truncate : post.markdown}</div>`
+				        : ''}
+
+				        <div class="flex flex-wrap">
+				        ${post.tags.map(function(tag) {
+				        	if(tag.tag !== null) {
+			                    return `<a class="border border-gray-300 bg-gray-100 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded-full py-2 px-4 text-xs" href="${routes.search + fullUrlWithQuery({tag: tag.tag.name})}">
+			                        #${ tag.tag.name }
+			                    </a>`;			        		
+				        	}else {
+				        		return '';
+				        	}
+				        }).join('')}
+				        </div>
+
+				        <div class="mt-8">
+				            <div class="flex w-full items-center">
+				                <a data-love="${ post.id }" ${ post.is_post_loved ? 'data-loved' : '' } class="w-12 h-12 hover:bg-gray-100 rounded-full text-gray-600 flex items-center justify-center border-2 border-gray-200" href="#">
+				                    <span></span>
+				                </a>
+				                <a class="ml-2 w-12 h-12 hover:bg-gray-100 rounded-full text-gray-600 flex items-center justify-center border-2 border-gray-200" href="${routes.single + post.slug + '#comments'}">
+				                    <svg class="stroke-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg> 
+				                </a>
+				                <a data-url="${ routes.single + post.slug }" class="share-button ml-2 w-12 h-12 hover:bg-gray-100 rounded-full text-gray-600 flex items-center justify-center border-2 border-gray-200" href="#">
+				                    <svg class="stroke-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+				                </a>
+				                <a class="ml-2 w-12 h-12 hover:bg-gray-100 rounded-full text-gray-600 flex items-center justify-center border-2 border-gray-200" data-save="${ post.id }" ${ post.is_post_saved ? 'data-saved' : '' } href="#"></a>
+
+			                	${post.is_mine ? 
+					                `<div class="ml-auto">
+					                	<a href="${routes.delete_post.replace(/slug/g, post.slug)}" class="text-red-600">Delete</a>
+					                </div>`
+				                : ''}
+				            </div>
+				        </div>
+				    </div>
+				</div>`;
+
+				return tpl;
+			},
+
+			/**
+			 * Discover shimmer template
+			 * @param  {String} shi_class Generated unique shimmer class
+			 * @return {String}           Interpolated template string
+			 */
+			discoverShimmer: function(shi_class) {
+				let tpl = `
+					<div class="${shi_class} bg-white rounded border-2 border-gray-200 mb-10">
+					    <div class="flex p-6 items-center">
+						    <div class="w-12 h-12 bg-gray-200 rounded"></div>
+					        <div class="ml-3">
+					            <div class="mb-3 w-32 h-4 bg-gray-200 rounded"></div>
+					            <div class="-mx-1 flex items-center">
+					                <div class="mx-1 h-2 w-12 bg-gray-100 rounded"></div>
+					            </div>
+					        </div>
+					    </div>
+
+					    <div class="mx-6 border border-gray-200 rounded">
+						    <div class="bg-gray-100 w-full h-64">
+						    </div>
+					        <div class="p-4 border-t">
+					            <h2 class="w-64 h-6 rounded bg-gray-300 mb-4"></h2>
+				                <p class="h-3 w-full rounded bg-gray-200 mb-3"></p>
+				                <p class="h-3 w-40 rounded bg-gray-200"></p>
+					            <div class="rounded bg-gray-200 h-4 w-20 bg-gray-300 mt-10"></div>
+					        </div>
+					    </div>
+
+					    <div class="p-6">
+					        <div class="flex">
+						        <div class="border border-gray-200 w-20 h-8 rounded-full"></div>
+						        <div class="border border-gray-200 w-20 h-8 rounded-full ml-2"></div>
+					        </div>
+
+					        <div class="mt-8">
+					            <div class="flex w-full">
+						            <div class="w-12 h-12 rounded-full bg-gray-200 mr-2"></div>
+						            <div class="w-12 h-12 rounded-full bg-gray-200 mr-2"></div>
+						            <div class="w-12 h-12 rounded-full bg-gray-200 mr-2"></div>
+						            <div class="w-12 h-12 rounded-full bg-gray-200 mr-2"></div>
+					            </div>
+					        </div>
+					    </div>
+					</div>
+				`;
+
+				return tpl;
 			}
 		},
 
@@ -857,7 +1075,7 @@ Kodinger.API.Post = (function() {
 			page: 1,
 			params: null,
 			url: undefined,
-			type: 'post',
+			type: types.POST,
 			lazyimage: true,
 			shimmer: 1,
 			wrap: ''
@@ -937,7 +1155,8 @@ Kodinger.API.Post = (function() {
 			attach: function({element, interactions, options}) {
 				const { TYPE } = post;
 
-				if(options.type == TYPE.POST) {
+				// if post type is discover or post
+				if(options.type == TYPE.POST || options.type == TYPE.DISCOVER) {
 					interactions.love(element);
 					interactions.save(element);
 					interactions.share(element);
@@ -962,15 +1181,17 @@ Kodinger.API.Post = (function() {
 		 * @param  {Object}    options.args         Spread operator
 		 * @return {Promise}                        Resolve or Reject
 		 */
-		templating: function({data:res, options, templates, interactions, events, ...args}) {
+		templating: function({data:res, direct, prepend, render, options, templates, interactions, events, ...args}) {
 			const { data:posts } = res;
 
 			let wrapper = document.createDocumentFragment();
 
 			// append post element to the wrapper
 			let appendingTemplate = function(post) {
+				if(!(options.type.template in templates)) return Promise.reject('Template not found: ' + options.type.template);
+
 				// selecting template literal
-				let element = templates[options.type]({
+				let element = templates[options.type.template]({
 					post, options
 				});
 
@@ -1006,7 +1227,7 @@ Kodinger.API.Post = (function() {
 
 			return new Promise(function(resolve, reject) {
 				// if `posts`` has only one data 
-				if(options.first){
+				if(options.first || direct){
 					appendingTemplate(posts);
 				}else{
 					if(!posts.length) return reject({ templates, empty: true, ...args });
@@ -1022,7 +1243,15 @@ Kodinger.API.Post = (function() {
 					});
 				}
 
-				return resolve({dom: wrapper, templates, interactions, ...args});
+				if(direct) {
+					render({
+						dom: wrapper,
+						...args,
+						prepend
+					});
+				}
+
+				return resolve({dom: wrapper, render, templates, interactions, ...args});
 			});
 		},
 
@@ -1054,11 +1283,13 @@ Kodinger.API.Post = (function() {
 		 * @param  {Object}  options.args 	More args
 		 * @return {Promise}                Resolve or reject
 		 */
-		render: function({elem, dom, ...args}) {
+		render: function({elem, dom, prepend, ...args}) {
 			return new Promise(function(resolve, reject) {
-				elem.appendChild(
-					dom
-				);
+				if(prepend) {
+					elem.prepend(dom);
+				}else{
+					elem.appendChild(dom);
+				}
 
 				return resolve({elem, ...args});
 			});
@@ -1088,10 +1319,12 @@ Kodinger.API.Post = (function() {
 			 * @param {Object} 	options.templates 		List of template literal we have
 			 * @param {Object} 	options.options   		Instance options
 			 */
-			add: function({elem, templates, options}) {
+			add: function() {
+				const {elem, templates, options} = api;
+
 				let shi_class = 'shimmer-' + new Date().valueOf();
 
-				let tpl = str2dom(templates[options.type + 'Shimmer'](
+				let tpl = str2dom(templates[options.type.shimmer + 'Shimmer'](
 					shi_class
 				));
 
@@ -1105,7 +1338,7 @@ Kodinger.API.Post = (function() {
 				tpl.classList.add(shi_class);
 
 				for(let i = 0; i < options.shimmer; i++) {
-					elem.appendChild(tpl.cloneNode(true));
+					elem.prepend(tpl.cloneNode(true));
 				}
 
 				return {
@@ -1208,7 +1441,7 @@ Kodinger.API.Post = (function() {
 					function() {
 						// init query callback
 						// show the shimmer
-						shi = shimmer.add({elem, options, ...args})
+						shi = shimmer.add();
 					}
 				)
 				.finally(function() {
@@ -1284,11 +1517,7 @@ Kodinger.API.Post = (function() {
 		 * Post types
 		 * @type {Object}
 		 */
-		TYPE: {
-			COMMUNITY: 'community',
-			POST: 'post',
-			DISCOVER: 'post',
-		},
+		TYPE: types, // ini kenapa gw pake uppercase
 
 		/**
 		 * Initialize 
@@ -1372,10 +1601,20 @@ Kodinger.API.Post = (function() {
 				lifecycle.firstContentLoaded.call(this, args);
 			});
 
+			let append = function(data, prepend) {
+				templating({
+					data,
+					direct: true,
+					prepend,
+					...args
+				});
+			}
+
 			let output = {
 				onRender: instance,
 				shimmer,
-				elem
+				elem,
+				append
 			};
 
 			return output;

@@ -17,10 +17,6 @@ Route::get('/test', function(){
     dd('test auth', auth()->user());
 });
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::get('tags', 'Api\TagApiController@index')->name('tags');
 Route::group(['prefix' => 'tags', 'as' => 'tag.', 'namespace' => 'Api'], function() 
 {
@@ -34,18 +30,15 @@ Route::group(['prefix' => 'posts', 'as' => 'post.', 'namespace' => 'Api'], funct
 	Route::get('/both', 'PostApiController@both')->name('both');
 	Route::get('/discover', 'PostApiController@discover')->name('discover');
 	Route::get('/{slug}', 'PostApiController@show')->name('show');
-	Route::post('/discover', 'PostApiController@storeDiscover')->name('store_discover')->middleware('auth:api');
+	Route::post('/discover', 'PostApiController@storeDiscover')->name('store_discover');
 });
 
 Route::group(['prefix' => 'comments', 'as' => 'comment.', 'namespace' => 'Api'], function() 
 {
 	Route::get('/{post_id?}', 'CommentApiController@index')->name('index');
 
-	Route::group(['middleware' => 'auth:api'], function() 
-	{
-		Route::post('/', 'CommentApiController@store')->name('store');
-		Route::delete('/delete', 'CommentApiController@destroy')->name('delete');
-	});
+	Route::post('/', 'CommentApiController@store')->name('store');
+	Route::delete('/delete', 'CommentApiController@destroy')->name('delete');
 });
 
 Route::group(['prefix' => 'communities', 'as' => 'community.', 'namespace' => 'Api'], function() 
@@ -53,7 +46,7 @@ Route::group(['prefix' => 'communities', 'as' => 'community.', 'namespace' => 'A
 	Route::get('/', 'CommunityApiController@index')->name('index');
 });
 
-Route::group(['middleware' => 'auth:api', 'prefix' => 'saves', 'as' => 'saves.', 'namespace' => 'Api'], function() 
+Route::group(['prefix' => 'saves', 'as' => 'saves.', 'namespace' => 'Api'], function() 
 {
 	Route::post('/', 'SaveApiController@store')->name('store');
 });

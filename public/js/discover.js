@@ -2,7 +2,8 @@ let posts = Kodinger.API.Post.init('.posts', {
     url: routes.discover,
     carousel: false,
     truncate_content: true,
-    lazyimage: false
+    lazyimage: false,
+    type: Kodinger.API.Post.TYPE.DISCOVER
 });
 
 let tagify = new Tagify($('.tags'), {
@@ -81,8 +82,11 @@ function onInput( e ){
 
 $('#discover-form').addEventListener('submit', function(e) {
     let link = $('.input-link'),
+        form = this,
         tags = tagify.value,
         btn = $('.publish-button');
+
+    const shimmer = posts.shimmer.add();
 
     let tag_ids = '';
     tags.forEach(function(item){
@@ -96,6 +100,11 @@ $('#discover-form').addEventListener('submit', function(e) {
         tagify.DOM.input.focus();
     } else {
         adds(btn.classList, 'pointer-events-none opacity-50');
+        btn.disabled = true;
+
+        window.scrollTo({
+            top: $('.posts').offsetTop -50
+        });
 
         const posting = (async function() {
             const res = await fetch(routes.post_store_discover, {
@@ -116,6 +125,7 @@ $('#discover-form').addEventListener('submit', function(e) {
         // on complete
         .then(function(res) {
             removes(btn.classList, 'pointer-events-none opacity-50');
+            btn.disabled = false;
 
             if(res.ok) {
                 return Promise.resolve(res.json());
@@ -123,10 +133,21 @@ $('#discover-form').addEventListener('submit', function(e) {
 
             return Promise.reject(res);
         })
-        .then(function(res) {
-            console.log(res);
+        .then(function(res) {            
+            form.reset();
+            tagify.removeAllTags();
+
+            posts.append({
+                data: res
+            }, true).catch(function(err) {
+                console.log(err)
+            });
+
+            shimmer.dispose();
         })
         .catch(function(error) {
+            shimmer.dispose();
+
             if(error.status == 401)
                 showLoginAlert();
         });

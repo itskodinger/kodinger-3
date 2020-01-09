@@ -112,7 +112,7 @@ class PostService
 		
 		FetchDiscoverUrlPreview::dispatch($post);
 
-		return $post;
+		return $post->load($this->with());
 	}
 
 	public function content(...$args)

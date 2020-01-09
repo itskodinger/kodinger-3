@@ -12054,6 +12054,10 @@ video {
  * @import "utilities/skew-transforms";
  */
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: #F7F9FB;
 }
