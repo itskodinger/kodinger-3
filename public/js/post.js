@@ -1338,7 +1338,7 @@ Kodinger.API.Post = (function() {
 				tpl.classList.add(shi_class);
 
 				for(let i = 0; i < options.shimmer; i++) {
-					elem.prepend(tpl.cloneNode(true));
+					elem.appendChild(tpl.cloneNode(true));
 				}
 
 				return {

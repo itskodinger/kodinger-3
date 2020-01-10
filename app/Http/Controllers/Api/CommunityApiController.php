@@ -26,7 +26,7 @@ class CommunityApiController extends Controller
 	 */
 	public function index(Request $request)
 	{
-		$communities = $this->communityService->paginate(10);
+		$communities = $this->communityService->paginate(8);
 
 		return response()->json($communities);
 	}
