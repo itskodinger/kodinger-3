@@ -12,11 +12,21 @@ class CommentApiController extends Controller
 
 	public $commentService;
 
+	/**
+	 * Construct
+	 * @param CommentService $commentService Comment service layer
+	 */
 	public function __construct(CommentService $commentService)
 	{
 		$this->commentService = $commentService;
 	}
 
+	/**
+	 * Index page
+	 * @param  Request 	$request Request
+	 * @param  Integer  $post_id Post ID
+	 * @return JSON
+	 */
 	public function index(Request $request, $post_id)
 	{
 		$comments = $this->commentService->take($post_id, $request->offset ?? 0, $request->take ?? 10);
@@ -28,6 +38,11 @@ class CommentApiController extends Controller
 		], 200);
 	}
 
+	/**
+	 * Store a comment
+	 * @param  CommentCreateRequest $request Form request
+	 * @return JSON
+	 */
     public function store(CommentCreateRequest $request)
     {
     	$comment = $this->commentService->create($request);
@@ -38,6 +53,11 @@ class CommentApiController extends Controller
     	], 200);
     }
 
+    /**
+     * Delete a comment
+     * @param  Request $request Request
+     * @return JSON
+     */
     public function destroy(Request $request)
     {
     	$comment = $this->commentService->find($request->id);

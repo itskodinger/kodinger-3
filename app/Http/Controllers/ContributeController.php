@@ -12,12 +12,21 @@ class ContributeController extends Controller
 	public $contributeService;
 	public $postService;
 
+	/**
+	 * Construct
+	 * @param ContributeService $contributeService Contribute service layer
+	 * @param PostService       $postService       Post service layer
+	 */
 	public function __construct(ContributeService $contributeService, PostService $postService)
 	{
 		$this->contributeService = $contributeService;
 		$this->postService = $postService;
 	}
 
+	/**
+	 * Index page
+	 * @return view
+	 */
 	public function index()
 	{
 		$contributes = $this->contributeService->paginate();
@@ -25,6 +34,12 @@ class ContributeController extends Controller
 		return view('contribute.index', compact('contributes'));
 	}
 
+	/**
+	 * Create contribute
+	 * @param  Request $request Request
+	 * @param  String  $slug    Post slug
+	 * @return view
+	 */
 	public function create(Request $request, $slug)
 	{
 		$col = $request->col;
@@ -39,6 +54,11 @@ class ContributeController extends Controller
 		return view('contribute.create', compact('post', 'col'));
 	}
 
+	/**
+	 * Store contribute
+	 * @param  ContributeCreateRequest $request Form request
+	 * @return redirect
+	 */
 	public function links(ContributeCreateRequest $request)
 	{
 		$links = json_decode($request->links);
@@ -72,6 +92,12 @@ class ContributeController extends Controller
 			], 500);
 	}
 
+	/**
+	 * Merge contribute data
+	 * @param  Request 	$request Request
+	 * @param  Integer  $id     Contribute ID
+	 * @return redirect
+	 */
 	public function merge(Request $request, $id)
 	{
 		$merge = $this->contributeService->merge($id);
@@ -86,6 +112,12 @@ class ContributeController extends Controller
 		return redirect()->back();
 	}
 
+	/**
+	 * Reject contribute request
+	 * @param  Request 	$request Request
+	 * @param  Integer  $id      Contribute ID
+	 * @return redirect
+	 */
 	public function reject(Request $request, $id)
 	{
 		$merge = $this->contributeService->reject($id, $request);
@@ -100,6 +132,11 @@ class ContributeController extends Controller
 		return redirect()->back();
 	}
 
+	/**
+	 * Delete contribute
+	 * @param  Integer $id Contribute ID
+	 * @return redirect
+	 */
 	public function destroy($id)
 	{
 		$this->contributeService->destroy($id);
