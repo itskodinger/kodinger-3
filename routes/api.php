@@ -51,3 +51,7 @@ Route::group(['prefix' => 'saves', 'as' => 'saves.', 'namespace' => 'Api'], func
 	Route::post('/', 'SaveApiController@store')->name('store');
 });
 
+Route::group(['prefix' => 'contributes', 'as' => 'contribute.', 'namespace' => 'Api'], function() 
+{
+	Route::post('{id}/{col}', 'ContributeApiController@store')->name('store');
+});

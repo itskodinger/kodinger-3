@@ -55,44 +55,6 @@ class ContributeController extends Controller
 	}
 
 	/**
-	 * Store contribute
-	 * @param  ContributeCreateRequest $request Form request
-	 * @return redirect
-	 */
-	public function links(ContributeCreateRequest $request)
-	{
-		$links = json_decode($request->links);
-
-		$col = $request->col;
-
-		$linksstr = '';
-		foreach($links as $link)
-		{
-			if($link)
-				$linksstr .= $link . "\r\n";
-		}
-
-		$contribute = $this->contributeService->create([
-			'user_id' => auth()->user()->id,
-			'row_id' => $request->id,
-			'model' => 'App\\Post',
-			'column_name' => $col,
-			'value' => $linksstr,
-			'note' => '',
-			'status' => 'draft'
-		]);
-
-		if($contribute)
-			return response([
-				'success' => true
-			], 200);
-		else
-			return response([
-				'success' => false
-			], 500);
-	}
-
-	/**
 	 * Merge contribute data
 	 * @param  Request 	$request Request
 	 * @param  Integer  $id     Contribute ID

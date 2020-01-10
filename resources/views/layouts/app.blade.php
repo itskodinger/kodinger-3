@@ -183,7 +183,7 @@
                 comment_delete: '@api('comment.delete')',
                 contribute: '@route('contributes', ['slug' => 'slug'])',
                 contribute_create: '@route('contribute.create', 'slug')',
-                contribute_links: '@route('contribute.links', ['post_id', 'col'])',
+                contribute_store: '@api('contribute.store', ['post_id', 'col'])',
                 profile_loves: '@route('loves', 'slug')',
                 profile_saves: '@route('saves')',
                 communities: '@api('community.index')',

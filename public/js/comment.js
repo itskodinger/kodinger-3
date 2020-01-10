@@ -164,11 +164,9 @@ function comment_go(id)
         const el = $(id);
         if(el) {
             window.scrollTo(0, el.offsetTop - 80);
-            el.classList.remove('bg-gray-100');
             el.classList.add('bg-yellow-200');
             setTimeout(function() {
                 el.classList.remove('bg-yellow-200');
-                el.classList.add('bg-gray-100');
             }, 2000);
         }
     }

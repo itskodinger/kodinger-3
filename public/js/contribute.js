@@ -123,7 +123,7 @@ document.getElementById('form').addEventListener('submit', function(e) {
 	submit_btn.classList.add('opacity-75');
 
 	var xhr = new XMLHttpRequest();
-	xhr.open("POST", routes.contribute_links.replace(/post_id/g, post_id).replace(/col/g, col));
+	xhr.open("POST", routes.contribute_store.replace(/post_id/g, post_id).replace(/col/g, col));
     xhr.setRequestHeader("X-CSRF-TOKEN", $('[name=csrf-token]').getAttribute('content'));
 	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	xhr.send("links=" + JSON.stringify(getMultipleInputValue(this)));
