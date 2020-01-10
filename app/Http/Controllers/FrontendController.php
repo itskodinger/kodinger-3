@@ -58,7 +58,7 @@ class FrontendController extends Controller
 		if(!$posts)
 			return abort(404);
 
-		return view('welcome', compact('posts', 'tag'));
+		return view('welcome', compact('posts'));
 	}
 
 	/**
