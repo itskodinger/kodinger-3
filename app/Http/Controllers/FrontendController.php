@@ -53,7 +53,7 @@ class FrontendController extends Controller
 	 */
 	public function index(Request $request)
 	{
-		$posts = $this->postService->content(10, $request;
+		$posts = $this->postService->content(10, $request);
 
 		if(!$posts)
 			return abort(404);
