@@ -9,13 +9,11 @@
 @endpush
 
 @push('js')
-    <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/siema@1.5.1/dist/siema.min.js"></script>
-    <script src="{{ url('js/post.js') }}"></script>
     <script>
     	const post_data = {
     		slug: '{{ $post->slug }}'
     	}
+        const post_id = '{{ $post->id }}';
     	const key2str = {!! json_encode(key2str()) !!};
     </script>
     <script src="{{ url('js/single.js') }}"></script>

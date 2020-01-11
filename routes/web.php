@@ -56,7 +56,6 @@ Route::group(['prefix' => 'contributes', 'as' => 'contribute.', 'middleware' => 
 {
 	Route::get('/', 'ContributeController@index')->name('index');
 	Route::get('/{slug}', 'ContributeController@create')->name('create');
-	Route::post('{id}/{col}/links', 'ContributeController@links')->name('links');
 	Route::delete('{id}', 'ContributeController@destroy')->name('delete');
 	Route::get('{id}/merge', 'ContributeController@merge')->name('merge');
 	Route::post('{id}/reject', 'ContributeController@reject')->name('reject');

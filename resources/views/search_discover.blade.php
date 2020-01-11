@@ -2,8 +2,9 @@
 
 @push('search_js')
 	<script>
-		const type = Kodinger.API.Post.TYPE.DISCOVER,
+		const type = 'DISCOVER',
 			  url = routes.discover,
-			  lazyimage = false;
+			  lazyimage = false,
+			  wrap = false;
 	</script>
 @endpush

@@ -20,6 +20,5 @@
 @stop
 
 @push('js')
-<script src="{{ asset('js/post.js') }}"></script>
-<script src="{{ asset('js/community.js') }}"></script>
+    <script src="{{ mix('js/community.js') }}"></script>
 @endpush

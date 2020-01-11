@@ -1,3 +1,14 @@
 {
-    "/css/app.css": "/css/app.css"
+    "/js/app.js": "/js/app.js?id=ff3f07b5d8b1d9f4ab49",
+    "/css/app.css": "/css/app.css?id=9c83d4d696a06d0527a0",
+    "/js/community.js": "/js/community.js?id=ae47808d046957e5fc34",
+    "/js/contribute.js": "/js/contribute.js?id=2d409d25c5a95de2317f",
+    "/js/discover.js": "/js/discover.js?id=770b7efa52e497f0de89",
+    "/js/home.js": "/js/home.js?id=591ced81e27240eab716",
+    "/js/profile.js": "/js/profile.js?id=505058be8843ff96cd01",
+    "/js/profile-loves.js": "/js/profile-loves.js?id=03cb6bee97fe1bb160c0",
+    "/js/profile-saves.js": "/js/profile-saves.js?id=535964eb22ed04bc0734",
+    "/js/search.js": "/js/search.js?id=5186f8bc6973269fe8a0",
+    "/js/setting.js": "/js/setting.js?id=36a12338661b65b4e8b2",
+    "/js/single.js": "/js/single.js?id=ac8b40d7e09b8085dcd9"
 }

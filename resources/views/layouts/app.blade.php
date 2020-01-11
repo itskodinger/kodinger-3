@@ -183,7 +183,7 @@
                 comment_delete: '@api('comment.delete')',
                 contribute: '@route('contributes', ['slug' => 'slug'])',
                 contribute_create: '@route('contribute.create', 'slug')',
-                contribute_links: '@route('contribute.links', ['post_id', 'col'])',
+                contribute_store: '@api('contribute.store', ['post_id', 'col'])',
                 profile_loves: '@route('loves', 'slug')',
                 profile_saves: '@route('saves')',
                 communities: '@api('community.index')',
@@ -195,7 +195,7 @@
             auth = {{ auth()->check() ? 1 : 0 }},
             token = $('[name=csrf-token]').getAttribute('content');
     </script>
-    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ mix('js/app.js') }}"></script>
 
     @stack('js')
 </body>

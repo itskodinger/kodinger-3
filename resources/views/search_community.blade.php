@@ -2,7 +2,7 @@
 
 @push('search_js')
 	<script>
-		const type = Kodinger.API.Post.TYPE.COMMUNITY,
+		const type = 'COMMUNITY',
 			  url = routes.communities,
 			  lazyimage = false,
 			  wrap = {

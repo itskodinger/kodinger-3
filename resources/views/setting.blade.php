@@ -109,5 +109,5 @@
 @stop
 
 @push('js')
-<script src="{{ asset('js/setting.js') }}"></script>
+<script src="{{ mix('js/setting.js') }}"></script>
 @endpush
