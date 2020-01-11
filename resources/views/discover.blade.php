@@ -54,8 +54,5 @@
 @stop
 
 @push('js')
-    <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify@3.1.0/dist/tagify.min.js"></script>
-    <script src="{{ asset('js/post.js') }}"></script>
-    <script src="{{ asset('js/discover.js') }}"></script>
+    <script src="{{ mix('js/discover.js') }}"></script>
 @endpush

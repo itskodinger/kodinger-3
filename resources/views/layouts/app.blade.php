@@ -195,7 +195,7 @@
             auth = {{ auth()->check() ? 1 : 0 }},
             token = $('[name=csrf-token]').getAttribute('content');
     </script>
-    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ mix('js/app.js') }}"></script>
 
     @stack('js')
 </body>

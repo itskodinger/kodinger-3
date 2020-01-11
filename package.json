@@ -10,9 +10,11 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
+        "@babel/preset-env": "^7.7.7",
         "@fullhuman/postcss-purgecss": "^1.3.0",
         "@tailwindcss/custom-forms": "^0.2.1",
         "axios": "^0.18",
+        "babel-preset-es2015": "^6.24.1",
         "cross-env": "^5.2.1",
         "laravel-mix": "^4.0.14",
         "laravel-mix-purgecss": "^4.2.0",
@@ -23,5 +25,11 @@
         "tailwindcss": "^1.1.3",
         "vue": "^2.5.17",
         "vue-template-compiler": "^2.6.4"
+    },
+    "dependencies": {
+        "@yaireo/tagify": "^3.2.6",
+        "clipboard": "^2.0.4",
+        "list.js": "^1.5.0",
+        "siema": "^1.5.1"
     }
 }

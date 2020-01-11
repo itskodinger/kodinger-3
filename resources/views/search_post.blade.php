@@ -2,7 +2,9 @@
 
 @push('search_js')
 	<script>
-		const type = Kodinger.API.Post.TYPE.POST,
-			  url = routes.post;
+		const type = 'POST',
+			  url = routes.post,
+			  lazyimage = true,
+			  wrap = false;
 	</script>
 @endpush
