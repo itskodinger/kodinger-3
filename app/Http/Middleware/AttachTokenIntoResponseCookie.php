@@ -37,6 +37,14 @@ class AttachTokenIntoResponseCookie
         $tokenCookie = $request->cookie(self::TOKEN_NAME);
         $segments    = $request->segments();
 
+        try {
+            $cookieValue = decrypt($tokenCookie, false);
+
+            if($cookieValue === 'UNAUTHENTICATED') $tokenCookie = NULL;
+        } catch(\Exception $e) {
+
+        }
+
         if(!empty($segments) && in_array($segments[0], $this->except)) {
             return  $next($request);
         }
@@ -45,7 +53,7 @@ class AttachTokenIntoResponseCookie
 
         if($response instanceof Response) {
 
-            if(Auth::check()) {
+            if(Auth::guard('web')->check()) {
                 return $response->cookie(
                     self::TOKEN_NAME, $tokenCookie ?? Auth::user()->createToken('Kodinger HTTP Token')->accessToken
                 );
