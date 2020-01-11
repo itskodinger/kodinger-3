@@ -978,11 +978,13 @@ let api = {
 						image.className = 'w-full';
 
 						image.addEventListener('load', function() {
-							target.parentNode.appendChild(image);
-						
-							api.vars.io.unobserve(target);
+							setTimeout(function() {
+								target.parentNode.appendChild(image);
+							
+								api.vars.io.unobserve(target);
 
-							target.remove();
+								target.remove();
+							});
 						});
 					}
 				});

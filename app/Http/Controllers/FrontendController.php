@@ -259,4 +259,13 @@ class FrontendController extends Controller
 
 		return view('delete_post', compact('post', 'post_card'));
 	}
+
+	/**
+	 * Create a new post
+	 * @return view
+	 */
+	public function post()
+	{
+		return view('post_create');
+	}
 }

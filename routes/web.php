@@ -82,6 +82,7 @@ Route::group(['prefix' => 'comments', 'as' => 'comment.'], function()
 });
 
 Route::get('/', 'FrontendController@index')->name('index');
+Route::get('/post', 'FrontendController@post')->name('post');
 Route::get('/community', 'FrontendController@community')->name('community');
 Route::get('/search', 'FrontendController@search')->name('search');
 Route::get('/about', 'FrontendController@about')->name('about');

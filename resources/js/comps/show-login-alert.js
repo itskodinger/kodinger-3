@@ -1,3 +1,5 @@
+import find from '../utils/find';
+
 /**
  * Show login element
  */

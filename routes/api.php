@@ -30,15 +30,22 @@ Route::group(['prefix' => 'posts', 'as' => 'post.', 'namespace' => 'Api'], funct
 	Route::get('/both', 'PostApiController@both')->name('both');
 	Route::get('/discover', 'PostApiController@discover')->name('discover');
 	Route::get('/{slug}', 'PostApiController@show')->name('show');
-	Route::post('/discover', 'PostApiController@storeDiscover')->name('store_discover');
+
+	Route::group(['middleware' => 'auth:api'], function() 
+	{
+		Route::post('/discover', 'PostApiController@storeDiscover')->name('store_discover');
+	});
 });
 
 Route::group(['prefix' => 'comments', 'as' => 'comment.', 'namespace' => 'Api'], function() 
 {
 	Route::get('/{post_id?}', 'CommentApiController@index')->name('index');
 
-	Route::post('/', 'CommentApiController@store')->name('store');
-	Route::delete('/delete', 'CommentApiController@destroy')->name('delete');
+	Route::group(['middleware' => 'auth:api'], function() 
+	{
+		Route::post('/', 'CommentApiController@store')->name('store');
+		Route::delete('/delete', 'CommentApiController@destroy')->name('delete');
+	});
 });
 
 Route::group(['prefix' => 'communities', 'as' => 'community.', 'namespace' => 'Api'], function() 
@@ -46,12 +53,12 @@ Route::group(['prefix' => 'communities', 'as' => 'community.', 'namespace' => 'A
 	Route::get('/', 'CommunityApiController@index')->name('index');
 });
 
-Route::group(['prefix' => 'saves', 'as' => 'saves.', 'namespace' => 'Api'], function() 
+Route::group(['prefix' => 'saves', 'as' => 'saves.', 'namespace' => 'Api', 'middleware' => 'auth:api'], function() 
 {
 	Route::post('/', 'SaveApiController@store')->name('store');
 });
 
-Route::group(['prefix' => 'contributes', 'as' => 'contribute.', 'namespace' => 'Api'], function() 
+Route::group(['prefix' => 'contributes', 'as' => 'contribute.', 'namespace' => 'Api', 'middleware' => 'auth:api'], function() 
 {
 	Route::post('{id}/{col}', 'ContributeApiController@store')->name('store');
 });

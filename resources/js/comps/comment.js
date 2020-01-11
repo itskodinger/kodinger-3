@@ -70,6 +70,7 @@ let commentActions = {
                 <a class="mt-5 hover:text-indigo-600 cursor-pointer text-xs mr-3">Quote</a>
             `;
         },
+        auth: true,
         listener: {
             on: 'click',
             handler: function(obj, event) {
@@ -142,14 +143,16 @@ function commentAdd(obj, classes, method, target)
     Object.keys(commentActions).forEach(function(action) {
         action = commentActions[action];
 
-        let act = str2dom(
-            typeof action == 'object' ? action.markup.call(obj) : action.call(obj)
-        );
+        if((('auth' in action && action.auth) == auth) || !('auth' in action)) {
+            let act = str2dom(
+                typeof action == 'object' ? action.markup.call(obj) : action.call(obj)
+            );
 
-        if(action.listener)
-            act.addEventListener(action.listener.on, action.listener.handler.bind(this, obj));
+            if(action.listener)
+                act.addEventListener(action.listener.on, action.listener.handler.bind(this, obj));
 
-        find(item, '.cmt-actions').prepend(act);
+            find(item, '.cmt-actions').prepend(act);
+        }
     });
 
     // if has reply
@@ -461,19 +464,20 @@ commentLoad(function(res) {
 });
 
 const message = $('.comment-message');
+if(message) {
+    message.addEventListener('keydown', function(event) {
+        if(event.keyCode == 13 && !event.shiftKey) {
+            event.preventDefault(); 
+            comment(this.value); 
+            this.value = ''; 
+            return false;
+        } 
+    });
 
-message.addEventListener('keydown', function(event) {
-    if(event.keyCode == 13 && !event.shiftKey) {
-        event.preventDefault(); 
-        comment(this.value); 
-        this.value = ''; 
-        return false;
-    } 
-});
-
-message.addEventListener('keyup', function(event) {
-    if(event.shiftKey && event.keyCode == 13 || event.keyCode == 8) {
-        this.style.height='5px';
-        this.style.height=(this.scrollHeight) + 'px';
-    } 
-});
+    message.addEventListener('keyup', function(event) {
+        if(event.shiftKey && event.keyCode == 13 || event.keyCode == 8) {
+            this.style.height='5px';
+            this.style.height=(this.scrollHeight) + 'px';
+        } 
+    });
+}

@@ -37,6 +37,7 @@ class AppServiceProvider extends ServiceProvider
         Blade::include('layouts.sidebar');
         Blade::include('layouts.rightbar');
         Blade::component('components.field', 'fieldblock');
+
         Blade::if('isme', function($user) {
             return $user->isme;
         });
