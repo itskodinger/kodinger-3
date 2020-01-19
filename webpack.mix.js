@@ -17,8 +17,11 @@ mix.webpackConfig({
 });
 
 const jsFiles = glob.sync('resources/js/*.js');
+const reactFiles = [
+	'resources/js/post-form.js'
+];
 jsFiles.forEach(filename => {
-	mix.js(filename, filename.replace(/^resources\//g, 'public/'));
+	mix[reactFiles.includes(filename) ? 'react' : 'js'](filename, filename.replace(/^resources\//g, 'public/'));
 });
 
 mix.postCss('resources/css/app.css', 'public/css', [

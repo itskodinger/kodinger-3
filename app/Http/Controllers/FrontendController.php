@@ -266,6 +266,8 @@ class FrontendController extends Controller
 	 */
 	public function post()
 	{
-		return view('post_create');
+		$type = 'create';
+
+		return view('post_form', compact('type'));
 	}
 }

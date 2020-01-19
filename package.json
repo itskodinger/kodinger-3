@@ -11,6 +11,7 @@
     },
     "devDependencies": {
         "@babel/preset-env": "^7.7.7",
+        "@babel/preset-react": "^7.7.4",
         "@fullhuman/postcss-purgecss": "^1.3.0",
         "@tailwindcss/custom-forms": "^0.2.1",
         "axios": "^0.18",
@@ -19,6 +20,8 @@
         "laravel-mix": "^4.0.14",
         "laravel-mix-purgecss": "^4.2.0",
         "lodash": "^4.17.5",
+        "react": "^16.12.0",
+        "react-dom": "^16.12.0",
         "resolve-url-loader": "^2.3.1",
         "sass": "^1.15.2",
         "sass-loader": "^7.1.0",
@@ -30,6 +33,8 @@
         "@yaireo/tagify": "^3.2.6",
         "clipboard": "^2.0.4",
         "list.js": "^1.5.0",
-        "siema": "^1.5.1"
+        "siema": "^1.5.1",
+        "simplemde": "^1.11.2",
+        "sortablejs": "^1.10.2"
     }
 }

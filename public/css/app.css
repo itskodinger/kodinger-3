@@ -3731,6 +3731,10 @@ video {
   cursor: not-allowed;
 }
 
+.cursor-help {
+  cursor: help;
+}
+
 .block {
   display: block;
 }
@@ -11761,6 +11765,15 @@ video {
   z-index: auto;
 }
 
+.counter {
+  counter-reset: theCounter;
+}
+
+.counter .counter-item::before {
+  counter-increment: theCounter;
+  content: counter(theCounter);
+}
+
 .bg-facebook {
   background-color: #3b5998;
 }
@@ -11790,6 +11803,36 @@ video {
   background-size: 20px;
   background-repeat: no-repeat;
   background-position: 10px center;
+}
+
+.tooltip {
+  position: relative;
+}
+
+.tooltip::before {
+  display: none;
+  position: absolute;
+  z-index: 10;
+  top: 100%;
+  left: 100%;
+  color: #fff;
+  background-color: #000;
+  border-radius: 5px;
+  padding: 10px;
+  content: attr(title);
+}
+
+.tooltip:hover::before {
+  display: block;
+}
+
+.hover\:counter:hover {
+  counter-reset: theCounter;
+}
+
+.hover\:counter:hover .hover\:counter-item:hover::before {
+  counter-increment: theCounter;
+  content: counter(theCounter);
 }
 
 .hover\:bg-facebook:hover {
@@ -11823,6 +11866,27 @@ video {
   background-position: 10px center;
 }
 
+.hover\:tooltip:hover {
+  position: relative;
+}
+
+.hover\:tooltip:hover::before {
+  display: none;
+  position: absolute;
+  z-index: 10;
+  top: 100%;
+  left: 100%;
+  color: #fff;
+  background-color: #000;
+  border-radius: 5px;
+  padding: 10px;
+  content: attr(title);
+}
+
+.hover\:tooltip:hover:hover::before {
+  display: block;
+}
+
 .spin {
   -webkit-animation-name: spin;
           animation-name: spin;
@@ -11851,6 +11915,35 @@ video {
 
   100% {
     transform: rotate(180deg);
+  }
+}
+
+.anim-scale-up {
+  -webkit-animation-name: anim-scale-up;
+          animation-name: anim-scale-up;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+  -webkit-animation-duration: .5s;
+          animation-duration: .5s;
+}
+
+@-webkit-keyframes anim-scale-up {
+  0% {
+    transform: scale(0);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes anim-scale-up {
+  0% {
+    transform: scale(0);
+  }
+
+  100% {
+    transform: scale(1);
   }
 }
 
@@ -15043,6 +15136,10 @@ html {
 
   .sm\:cursor-not-allowed {
     cursor: not-allowed;
+  }
+
+  .sm\:cursor-help {
+    cursor: help;
   }
 
   .sm\:block {
@@ -23075,6 +23172,15 @@ html {
     z-index: auto;
   }
 
+  .sm\:counter {
+    counter-reset: theCounter;
+  }
+
+  .counter .sm\:counter-item::before {
+    counter-increment: theCounter;
+    content: counter(theCounter);
+  }
+
   .sm\:bg-facebook {
     background-color: #3b5998;
   }
@@ -23106,6 +23212,36 @@ html {
     background-position: 10px center;
   }
 
+  .sm\:tooltip {
+    position: relative;
+  }
+
+  .sm\:tooltip::before {
+    display: none;
+    position: absolute;
+    z-index: 10;
+    top: 100%;
+    left: 100%;
+    color: #fff;
+    background-color: #000;
+    border-radius: 5px;
+    padding: 10px;
+    content: attr(title);
+  }
+
+  .sm\:tooltip:hover::before {
+    display: block;
+  }
+
+  .sm\:hover\:counter:hover {
+    counter-reset: theCounter;
+  }
+
+  .hover\:counter:hover .sm\:hover\:counter-item:hover::before {
+    counter-increment: theCounter;
+    content: counter(theCounter);
+  }
+
   .sm\:hover\:bg-facebook:hover {
     background-color: #3b5998;
   }
@@ -23135,6 +23271,27 @@ html {
     background-size: 20px;
     background-repeat: no-repeat;
     background-position: 10px center;
+  }
+
+  .sm\:hover\:tooltip:hover {
+    position: relative;
+  }
+
+  .sm\:hover\:tooltip:hover::before {
+    display: none;
+    position: absolute;
+    z-index: 10;
+    top: 100%;
+    left: 100%;
+    color: #fff;
+    background-color: #000;
+    border-radius: 5px;
+    padding: 10px;
+    content: attr(title);
+  }
+
+  .sm\:hover\:tooltip:hover:hover::before {
+    display: block;
   }
 }
 
@@ -26233,6 +26390,10 @@ html {
 
   .md\:cursor-not-allowed {
     cursor: not-allowed;
+  }
+
+  .md\:cursor-help {
+    cursor: help;
   }
 
   .md\:block {
@@ -34265,6 +34426,15 @@ html {
     z-index: auto;
   }
 
+  .md\:counter {
+    counter-reset: theCounter;
+  }
+
+  .counter .md\:counter-item::before {
+    counter-increment: theCounter;
+    content: counter(theCounter);
+  }
+
   .md\:bg-facebook {
     background-color: #3b5998;
   }
@@ -34296,6 +34466,36 @@ html {
     background-position: 10px center;
   }
 
+  .md\:tooltip {
+    position: relative;
+  }
+
+  .md\:tooltip::before {
+    display: none;
+    position: absolute;
+    z-index: 10;
+    top: 100%;
+    left: 100%;
+    color: #fff;
+    background-color: #000;
+    border-radius: 5px;
+    padding: 10px;
+    content: attr(title);
+  }
+
+  .md\:tooltip:hover::before {
+    display: block;
+  }
+
+  .md\:hover\:counter:hover {
+    counter-reset: theCounter;
+  }
+
+  .hover\:counter:hover .md\:hover\:counter-item:hover::before {
+    counter-increment: theCounter;
+    content: counter(theCounter);
+  }
+
   .md\:hover\:bg-facebook:hover {
     background-color: #3b5998;
   }
@@ -34325,6 +34525,27 @@ html {
     background-size: 20px;
     background-repeat: no-repeat;
     background-position: 10px center;
+  }
+
+  .md\:hover\:tooltip:hover {
+    position: relative;
+  }
+
+  .md\:hover\:tooltip:hover::before {
+    display: none;
+    position: absolute;
+    z-index: 10;
+    top: 100%;
+    left: 100%;
+    color: #fff;
+    background-color: #000;
+    border-radius: 5px;
+    padding: 10px;
+    content: attr(title);
+  }
+
+  .md\:hover\:tooltip:hover:hover::before {
+    display: block;
   }
 }
 
@@ -37423,6 +37644,10 @@ html {
 
   .lg\:cursor-not-allowed {
     cursor: not-allowed;
+  }
+
+  .lg\:cursor-help {
+    cursor: help;
   }
 
   .lg\:block {
@@ -45455,6 +45680,15 @@ html {
     z-index: auto;
   }
 
+  .lg\:counter {
+    counter-reset: theCounter;
+  }
+
+  .counter .lg\:counter-item::before {
+    counter-increment: theCounter;
+    content: counter(theCounter);
+  }
+
   .lg\:bg-facebook {
     background-color: #3b5998;
   }
@@ -45486,6 +45720,36 @@ html {
     background-position: 10px center;
   }
 
+  .lg\:tooltip {
+    position: relative;
+  }
+
+  .lg\:tooltip::before {
+    display: none;
+    position: absolute;
+    z-index: 10;
+    top: 100%;
+    left: 100%;
+    color: #fff;
+    background-color: #000;
+    border-radius: 5px;
+    padding: 10px;
+    content: attr(title);
+  }
+
+  .lg\:tooltip:hover::before {
+    display: block;
+  }
+
+  .lg\:hover\:counter:hover {
+    counter-reset: theCounter;
+  }
+
+  .hover\:counter:hover .lg\:hover\:counter-item:hover::before {
+    counter-increment: theCounter;
+    content: counter(theCounter);
+  }
+
   .lg\:hover\:bg-facebook:hover {
     background-color: #3b5998;
   }
@@ -45515,6 +45779,27 @@ html {
     background-size: 20px;
     background-repeat: no-repeat;
     background-position: 10px center;
+  }
+
+  .lg\:hover\:tooltip:hover {
+    position: relative;
+  }
+
+  .lg\:hover\:tooltip:hover::before {
+    display: none;
+    position: absolute;
+    z-index: 10;
+    top: 100%;
+    left: 100%;
+    color: #fff;
+    background-color: #000;
+    border-radius: 5px;
+    padding: 10px;
+    content: attr(title);
+  }
+
+  .lg\:hover\:tooltip:hover:hover::before {
+    display: block;
   }
 }
 
@@ -48613,6 +48898,10 @@ html {
 
   .xl\:cursor-not-allowed {
     cursor: not-allowed;
+  }
+
+  .xl\:cursor-help {
+    cursor: help;
   }
 
   .xl\:block {
@@ -56645,6 +56934,15 @@ html {
     z-index: auto;
   }
 
+  .xl\:counter {
+    counter-reset: theCounter;
+  }
+
+  .counter .xl\:counter-item::before {
+    counter-increment: theCounter;
+    content: counter(theCounter);
+  }
+
   .xl\:bg-facebook {
     background-color: #3b5998;
   }
@@ -56676,6 +56974,36 @@ html {
     background-position: 10px center;
   }
 
+  .xl\:tooltip {
+    position: relative;
+  }
+
+  .xl\:tooltip::before {
+    display: none;
+    position: absolute;
+    z-index: 10;
+    top: 100%;
+    left: 100%;
+    color: #fff;
+    background-color: #000;
+    border-radius: 5px;
+    padding: 10px;
+    content: attr(title);
+  }
+
+  .xl\:tooltip:hover::before {
+    display: block;
+  }
+
+  .xl\:hover\:counter:hover {
+    counter-reset: theCounter;
+  }
+
+  .hover\:counter:hover .xl\:hover\:counter-item:hover::before {
+    counter-increment: theCounter;
+    content: counter(theCounter);
+  }
+
   .xl\:hover\:bg-facebook:hover {
     background-color: #3b5998;
   }
@@ -56705,5 +57033,26 @@ html {
     background-size: 20px;
     background-repeat: no-repeat;
     background-position: 10px center;
+  }
+
+  .xl\:hover\:tooltip:hover {
+    position: relative;
+  }
+
+  .xl\:hover\:tooltip:hover::before {
+    display: none;
+    position: absolute;
+    z-index: 10;
+    top: 100%;
+    left: 100%;
+    color: #fff;
+    background-color: #000;
+    border-radius: 5px;
+    padding: 10px;
+    content: attr(title);
+  }
+
+  .xl\:hover\:tooltip:hover:hover::before {
+    display: block;
   }
 }

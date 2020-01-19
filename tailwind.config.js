@@ -1,6 +1,10 @@
 module.exports = {
   theme: {
-    extend: {}
+    extend: {
+    	cursor: {
+    		help: 'help'
+    	}
+    }
   },
   variants: {
   	borderColor: ['responsive', 'hover', 'focus', 'focus-within'],
@@ -9,6 +13,13 @@ module.exports = {
   plugins: [
   	function({ addUtilities }) {
   		const classes = {
+  			'.counter': {
+  				counterReset: 'theCounter'
+  			},
+  			'.counter .counter-item::before': {
+  				counterIncrement: 'theCounter',
+  				content: 'counter(theCounter)'
+  			},
 			'.bg-facebook': {
 			  backgroundColor: '#3b5998'
 			},
@@ -32,6 +43,24 @@ module.exports = {
 				backgroundSize: '20px',
 				backgroundRepeat: 'no-repeat',
 				backgroundPosition: '10px center',
+			},
+			'.tooltip': {
+				position: 'relative'
+			},
+			'.tooltip::before': {
+				display: 'none',
+				position: 'absolute',
+				zIndex: '10',
+				top: '100%',
+				left: '100%',
+				color: '#fff',
+				backgroundColor: '#000',
+				borderRadius: '5px',
+				padding: '10px',
+				content: 'attr(title)'
+			},
+			'.tooltip:hover::before': {
+				display: 'block'
 			}
   		}
 
@@ -52,6 +81,20 @@ module.exports = {
   				},
   				'100%': {
   					transform: 'rotate(180deg)',
+  				}
+  			},
+
+  			'.anim-scale-up': {
+  				animationName: 'anim-scale-up',
+  				animationFillMode: 'forwards',
+  				animationDuration: '.5s'
+  			},
+  			'@keyframes anim-scale-up': {
+  				'0%': {
+  					transform: 'scale(0)'
+  				},
+  				'100%': {
+  					transform: 'scale(1)'
   				}
   			}
   		}

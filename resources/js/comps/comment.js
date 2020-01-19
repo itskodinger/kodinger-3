@@ -17,7 +17,7 @@ let commentTemplate = function(data) {
                     <h4 class="mb-1 font-bold text-sm"><a class="text-indigo-600 cmt-name" href="${routes.base_url +'/'+ data.username}">${data.name}</a> <span class="text-gray-600 font-normal">(${data.username})</span></h4>
                     <div class="text-sm text-gray-700">
                         <div class="quoted-cmt-wrapper"></div>
-                        <div class="cmt-content mb-2 text-base">${data.content}</div>
+                        <div class="cmt-content mb-2 text-base break-all">${data.content}</div>
                     </div>
                     <div class="cmt-actions opacity-25 group-hover:opacity-100"></div>
                 </div>
@@ -41,6 +41,7 @@ let commentActions = {
                 <a class="mt-5 text-red-600 cursor-pointer text-xs mr-3">Delete</a>
             `;
         },
+        auth: true,
         listener: {
             on: 'click',
             handler: function(obj, event) {
@@ -89,7 +90,7 @@ let quoteTemplate = function(data) {
     return `
         <div class="quoted-cmt cursor-pointer hover:bg-teal-200 bg-teal-100 border border-teal-200 mb-2 py-2 px-4 text-sm rounded">
             <div class="text-xs text-teal-600">Original by <span class="font-bold">${data.name}</span></div>
-            <div class="overflow-hidden h-22">${data.content}</div>
+            <div class="overflow-hidden h-22 break-all" style="max-height: 40px;">${data.content}</div>
         </div>
     `;
 }

@@ -267,6 +267,33 @@ function skills()
 	return ['beginner', 'intermediate', 'advanced'];
 }
 
+function routes_js()
+{
+	return json_encode([
+        "save" => route('api.saves.store'),
+        "post" => route('api.post.posts'),
+        "delete_post" => route('deletePost', 'slug'),
+        "post_both" => route('api.post.both'),
+        "post_store" => route('api.post.store'),
+        "discover" => route('api.post.discover'),
+        "base_url" => url(''),
+        "single" => route('single') . '/',
+        "post_show" => route('api.post.show', 'slug'),
+        "post_store_discover" => route('api.post.store_discover'),
+        "post_tags" => route('api.tag.search'),
+        "post_link_info" => route('api.post.getLinkInfo'),
+        "comment_ajax" => route('api.comment.index') . '/',
+        "comment_store" => route('api.comment.store'),
+        "comment_delete" => route('api.comment.delete'),
+        "contribute" => route('contributes', ['slug' => 'slug']),
+        "contribute_create" => route('contribute.create', 'slug'),
+        "contribute_store" => route('api.contribute.store', ['post_id', 'col']),
+        "profile_loves" => route('loves', 'slug'),
+        "profile_saves" => route('saves'),
+        "communities" => route('api.community.index'),
+        "search" => route('search'),
+	]);
+}
 
 function user_js()
 {

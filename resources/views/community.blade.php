@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container py-12 mx-auto px-4 sm:px-0">
-        <h1 class="text-indigo-600 text-xl font-semibold">{{request()->search ? 'Mencari Komunitas' : 'Komunitas'}}</h1>
+        <h1 class="text-indigo-600 text-xl font-semibold">Komunitas</h1>
         <p class="mt-1 text-gray-600">
         	Komunitas akan membantu kamu berkembang bersama-sama.
         </p>

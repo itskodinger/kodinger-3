@@ -2498,7 +2498,7 @@ function _typeof(obj) {
  */
 
 var commentTemplate = function commentTemplate(data) {
-  return "\n        <div id=\"discuss-".concat(data.id, "\" class=\"group px-6 py-3 rounded-bl rounded-br cmt-").concat(data.id, "\">\n            <div class=\"flex\">\n                <img class=\"rounded-full w-10 h-10 flex-shrink-0\" src=\"").concat(data.avatar, "\">\n                <div class=\"ml-3 w-full\">\n                    <p class=\"mx-1 text-blue-500 text-xs font-semibold float-right cmt-time\">").concat(data.time, "</p>\n                    <h4 class=\"mb-1 font-bold text-sm\"><a class=\"text-indigo-600 cmt-name\" href=\"").concat(routes.base_url + '/' + data.username, "\">").concat(data.name, "</a> <span class=\"text-gray-600 font-normal\">(").concat(data.username, ")</span></h4>\n                    <div class=\"text-sm text-gray-700\">\n                        <div class=\"quoted-cmt-wrapper\"></div>\n                        <div class=\"cmt-content mb-2 text-base\">").concat(data.content, "</div>\n                    </div>\n                    <div class=\"cmt-actions opacity-25 group-hover:opacity-100\"></div>\n                </div>\n            </div>\n        </div>\n    ");
+  return "\n        <div id=\"discuss-".concat(data.id, "\" class=\"group px-6 py-3 rounded-bl rounded-br cmt-").concat(data.id, "\">\n            <div class=\"flex\">\n                <img class=\"rounded-full w-10 h-10 flex-shrink-0\" src=\"").concat(data.avatar, "\">\n                <div class=\"ml-3 w-full\">\n                    <p class=\"mx-1 text-blue-500 text-xs font-semibold float-right cmt-time\">").concat(data.time, "</p>\n                    <h4 class=\"mb-1 font-bold text-sm\"><a class=\"text-indigo-600 cmt-name\" href=\"").concat(routes.base_url + '/' + data.username, "\">").concat(data.name, "</a> <span class=\"text-gray-600 font-normal\">(").concat(data.username, ")</span></h4>\n                    <div class=\"text-sm text-gray-700\">\n                        <div class=\"quoted-cmt-wrapper\"></div>\n                        <div class=\"cmt-content mb-2 text-base break-all\">").concat(data.content, "</div>\n                    </div>\n                    <div class=\"cmt-actions opacity-25 group-hover:opacity-100\"></div>\n                </div>\n            </div>\n        </div>\n    ");
 };
 /**
  * Comment action buttons
@@ -2515,6 +2515,7 @@ var commentActions = {
     markup: function markup() {
       return "\n                <a class=\"mt-5 text-red-600 cursor-pointer text-xs mr-3\">Delete</a>\n            ";
     },
+    auth: true,
     listener: {
       on: 'click',
       handler: function handler(obj, event) {
@@ -2557,7 +2558,7 @@ var commentActions = {
 };
 
 var quoteTemplate = function quoteTemplate(data) {
-  return "\n        <div class=\"quoted-cmt cursor-pointer hover:bg-teal-200 bg-teal-100 border border-teal-200 mb-2 py-2 px-4 text-sm rounded\">\n            <div class=\"text-xs text-teal-600\">Original by <span class=\"font-bold\">".concat(data.name, "</span></div>\n            <div class=\"overflow-hidden h-22\">").concat(data.content, "</div>\n        </div>\n    ");
+  return "\n        <div class=\"quoted-cmt cursor-pointer hover:bg-teal-200 bg-teal-100 border border-teal-200 mb-2 py-2 px-4 text-sm rounded\">\n            <div class=\"text-xs text-teal-600\">Original by <span class=\"font-bold\">".concat(data.name, "</span></div>\n            <div class=\"overflow-hidden h-22 break-all\" style=\"max-height: 40px;\">").concat(data.content, "</div>\n        </div>\n    ");
 };
 /**
  * Quote template action buttons

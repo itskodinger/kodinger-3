@@ -74,6 +74,10 @@
                                 <span class="inline-block md:hidden">Login</span>
                             </a>
                         @else
+                        	<a href="@route('post')" class="items-center bg-gradient text-white px-4 py-2 text-sm rounded mr-6 shadow-md hover:shadow-none hidden sm:flex">
+                            	<svg class="w-4 mr-2 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="edit-2"><rect width="24" height="24" opacity="0"/><path d="M19 20H5a1 1 0 0 0 0 2h14a1 1 0 0 0 0-2z"/><path d="M5 18h.09l4.17-.38a2 2 0 0 0 1.21-.57l9-9a1.92 1.92 0 0 0-.07-2.71L16.66 2.6A2 2 0 0 0 14 2.53l-9 9a2 2 0 0 0-.57 1.21L4 16.91a1 1 0 0 0 .29.8A1 1 0 0 0 5 18zM15.27 4L18 6.73l-2 1.95L13.32 6zm-8.9 8.91L12 7.32l2.7 2.7-5.6 5.6-3 .28z"/></g></g></svg>
+                        		Buat Post
+                        	</a>
                             <div class="relative flex-shrink-0">
                                 <a onclick="this.nextElementSibling.classList.toggle('hidden');document.body.classList.toggle('overflow-hidden');"><img alt="{{ auth()->user()->name }}" src="{{ auth()->user()->the_avatar_sm }}" class="user-dropdown cursor-pointer rounded border w-10"></a>
                                 <ul class="user-dropdown-menu sm:absolute fixed sm:h-auto h-full hidden bg-white shadow-lg right-0 sm:mt-3 mt-4 border-t sm:border-t-0 sm:rounded sm:w-56 w-full">
@@ -84,6 +88,10 @@
                                     </a></li>
                                     <li class="w-full h-px bg-gray-200"></li>
                                     @endcan
+                                    <li><a class="flex py-3 px-5 text-sm text-gray-800 hover:bg-indigo-100 rounded-tr rounded-tl" href="@route('post')">
+                                    	<svg class="w-4 mr-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="edit-2"><rect width="24" height="24" opacity="0"/><path d="M19 20H5a1 1 0 0 0 0 2h14a1 1 0 0 0 0-2z"/><path d="M5 18h.09l4.17-.38a2 2 0 0 0 1.21-.57l9-9a1.92 1.92 0 0 0-.07-2.71L16.66 2.6A2 2 0 0 0 14 2.53l-9 9a2 2 0 0 0-.57 1.21L4 16.91a1 1 0 0 0 .29.8A1 1 0 0 0 5 18zM15.27 4L18 6.73l-2 1.95L13.32 6zm-8.9 8.91L12 7.32l2.7 2.7-5.6 5.6-3 .28z"/></g></g></svg>
+                                        Buat Post
+                                    </a></li>
                                     <li><a class="flex py-3 px-5 text-sm text-gray-800 hover:bg-indigo-100 rounded-tr rounded-tl" href="@route('single', auth()->user()->the_username)">
                                         <svg class="w-4 mr-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="person"><rect width="24" height="24" opacity="0"/><path d="M12 11a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0-6a2 2 0 1 1-2 2 2 2 0 0 1 2-2z"/><path d="M12 13a7 7 0 0 0-7 7 1 1 0 0 0 2 0 5 5 0 0 1 10 0 1 1 0 0 0 2 0 7 7 0 0 0-7-7z"/></g></g></svg>
                                         Profile
@@ -151,44 +159,22 @@
                 @yield('content')
             </div>
         </div>
-    </div>
 
-    @if(!isset($footer) || (isset($footer) && $footer != false))
-    <div class="py-6 border-t border-gray-200 text-sm hidden sm:block">
-        <div class="container mx-auto flex">
-            <div class="text-gray-600 font-light">Copyright &copy; Kodinger</div>
-            <div class="ml-auto">
-                @include('layouts.links')
-            </div>
-        </div>
+	    @if(!isset($footer) || (isset($footer) && $footer != false))
+	    <div class="py-6 border-t border-gray-200 text-sm hidden sm:block">
+	        <div class="container mx-auto flex">
+	            <div class="text-gray-600 font-light">Copyright &copy; Kodinger</div>
+	            <div class="ml-auto">
+	                @include('layouts.links')
+	            </div>
+	        </div>
+	    </div>
+	    @endif
     </div>
-    @endif
 
     <!-- Scripts -->
     <script>
-        const routes = {
-                save: '@api('saves.store')',
-                post: '@api('post.posts')',
-                delete_post: '@route('deletePost', 'slug')',
-                post_both: '@api('post.both')',
-                discover: '@api('post.discover')',
-                base_url: '{{ url('') }}',
-                single: '@route('single')/',
-                post_show: '@api('post.show', 'slug')',
-                post_store_discover: '@api('post.store_discover')',
-                post_tags: '@api('tag.search')',
-                post_link_info: '@api('post.getLinkInfo')',
-                comment_ajax: '@api('comment.index')/',
-                comment_store: '@api('comment.store')',
-                comment_delete: '@api('comment.delete')',
-                contribute: '@route('contributes', ['slug' => 'slug'])',
-                contribute_create: '@route('contribute.create', 'slug')',
-                contribute_store: '@api('contribute.store', ['post_id', 'col'])',
-                profile_loves: '@route('loves', 'slug')',
-                profile_saves: '@route('saves')',
-                communities: '@api('community.index')',
-                search: '@route('search')',
-            },
+        const routes = {!! routes_js() !!},
             user = {!! user_js() !!},
             $ = document.querySelector.bind(document),
             $$ = document.querySelectorAll.bind(document),

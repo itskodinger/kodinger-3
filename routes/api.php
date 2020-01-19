@@ -26,6 +26,7 @@ Route::group(['prefix' => 'tags', 'as' => 'tag.', 'namespace' => 'Api'], functio
 Route::group(['prefix' => 'posts', 'as' => 'post.', 'namespace' => 'Api'], function() 
 {
 	Route::post('/link-info', 'PostApiController@getLinkInfo')->name('getLinkInfo');
+	Route::post('/', 'PostApiController@store')->name('store');
 	Route::get('/posts', 'PostApiController@posts')->name('posts');
 	Route::get('/both', 'PostApiController@both')->name('both');
 	Route::get('/discover', 'PostApiController@discover')->name('discover');
