@@ -26,9 +26,10 @@ class PostApiController extends Controller
 	 * @param  PostCreateRequest $request [description]
 	 * @return JSON
 	 */
-	public function store(PostCreateRequest $request)
+	public function store(Request $request)
 	{
-		dd($request->all());	
+		sleep(5);
+		return response()->json(['res' => $request->image->getClientOriginalName()]);
 	}
 
 	/**

@@ -86,6 +86,1007 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./node_modules/@yaireo/tagify/dist/tagify.min.js":
+/*!********************************************************!*\
+  !*** ./node_modules/@yaireo/tagify/dist/tagify.min.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+/**
+ * Tagify (v 3.2.6)- tags input component
+ * By Yair Even-Or
+ * Don't sell this code. (c)
+ * https://github.com/yairEO/tagify
+ */
+!function (t, e) {
+   true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (e),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : undefined;
+}(this, function () {
+  "use strict";
+
+  function u(t) {
+    return function (t) {
+      if (Array.isArray(t)) {
+        for (var e = 0, i = new Array(t.length); e < t.length; e++) {
+          i[e] = t[e];
+        }
+
+        return i;
+      }
+    }(t) || function (t) {
+      if (Symbol.iterator in Object(t) || "[object Arguments]" === Object.prototype.toString.call(t)) return Array.from(t);
+    }(t) || function () {
+      throw new TypeError("Invalid attempt to spread non-iterable instance");
+    }();
+  }
+
+  function s(e, t) {
+    var i = Object.keys(e);
+
+    if (Object.getOwnPropertySymbols) {
+      var s = Object.getOwnPropertySymbols(e);
+      t && (s = s.filter(function (t) {
+        return Object.getOwnPropertyDescriptor(e, t).enumerable;
+      })), i.push.apply(i, s);
+    }
+
+    return i;
+  }
+
+  function g(e) {
+    for (var t = 1; t < arguments.length; t++) {
+      var i = null != arguments[t] ? arguments[t] : {};
+      t % 2 ? s(i, !0).forEach(function (t) {
+        n(e, t, i[t]);
+      }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(i)) : s(i).forEach(function (t) {
+        Object.defineProperty(e, t, Object.getOwnPropertyDescriptor(i, t));
+      });
+    }
+
+    return e;
+  }
+
+  function n(t, e, i) {
+    return e in t ? Object.defineProperty(t, e, {
+      value: i,
+      enumerable: !0,
+      configurable: !0,
+      writable: !0
+    }) : t[e] = i, t;
+  }
+
+  function t(t, e) {
+    if (!t) return console.warn("Tagify: ", "invalid input element ", t), this;
+    this.applySettings(t, e || {}), this.state = {
+      editing: {},
+      actions: {},
+      dropdown: {}
+    }, this.value = [], this.listeners = {}, this.DOM = {}, this.extend(this, new this.EventDispatcher(this)), this.build(t), this.getCSSVars(), this.loadOriginalValues(), this.events.customBinding.call(this), this.events.binding.call(this), t.autofocus && this.DOM.input.focus();
+  }
+
+  return t.prototype = {
+    isIE: window.document.documentMode,
+    TEXTS: {
+      empty: "empty",
+      exceed: "number of tags exceeded",
+      pattern: "pattern mismatch",
+      duplicate: "already exists",
+      notAllowed: "not allowed"
+    },
+    DEFAULTS: {
+      delimiters: ",",
+      pattern: null,
+      maxTags: 1 / 0,
+      callbacks: {},
+      addTagOnBlur: !0,
+      duplicates: !1,
+      whitelist: [],
+      blacklist: [],
+      enforceWhitelist: !1,
+      keepInvalidTags: !1,
+      mixTagsAllowedAfter: /,|\.|\:|\s/,
+      mixTagsInterpolator: ["[[", "]]"],
+      backspace: !0,
+      skipInvalid: !1,
+      editTags: 2,
+      transformTag: function transformTag() {},
+      autoComplete: {
+        enabled: !0,
+        rightKey: !1
+      },
+      dropdown: {
+        classname: "",
+        enabled: 2,
+        maxItems: 10,
+        searchKeys: [],
+        fuzzySearch: !0,
+        highlightFirst: !1,
+        closeOnSelect: !0,
+        position: "all"
+      }
+    },
+    templates: {
+      wrapper: function wrapper(t, e) {
+        return '<tags class="tagify '.concat(e.mode ? "tagify--" + e.mode : "", " ").concat(t.className, '"\n                        ').concat(e.readonly ? 'readonly aria-readonly="true"' : 'aria-haspopup="listbox" aria-expanded="false"', '\n                        role="tagslist"\n                        tabIndex="-1">\n                <span contenteditable data-placeholder="').concat(e.placeholder || "&#8203;", '" aria-placeholder="').concat(e.placeholder || "", '"\n                    class="tagify__input"\n                    role="textbox"\n                    aria-controls="dropdown"\n                    aria-autocomplete="both"\n                    aria-multiline="').concat("mix" == e.mode, '"></span>\n            </tags>');
+      },
+      tag: function tag(t, e) {
+        return "<tag title='".concat(e.title || t, "'\n                        contenteditable='false'\n                        spellcheck='false'\n                        tabIndex=\"-1\"\n                        class='tagify__tag ").concat(e["class"] ? e["class"] : "", "'\n                        ").concat(this.getAttributes(e), ">\n                <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>\n                <div>\n                    <span class='tagify__tag-text'>").concat(t, "</span>\n                </div>\n            </tag>");
+      },
+      dropdownItem: function dropdownItem(t) {
+        var e = this.settings.dropdown.mapValueTo,
+            i = ((e ? "function" == typeof e ? e(t) : t[e] : t.value) || t.value || t).replace(/`|'/g, "&#39;");
+        return "<div ".concat(this.getAttributes(t), "\n                        class='tagify__dropdown__item ").concat(t["class"] ? t["class"] : "", '\'\n                        tabindex="0"\n                        role="option"\n                        aria-labelledby="dropdown-label">').concat(i, "</div>");
+      }
+    },
+    customEventsList: ["add", "remove", "invalid", "input", "click", "keydown", "focus", "blur", "edit:input", "edit:updated", "edit:start", "edit:keydown", "dropdown:show", "dropdown:hide", "dropdown:select"],
+    applySettings: function applySettings(i, t) {
+      var s = this;
+      if (this.DEFAULTS.templates = this.templates, this.settings = this.extend({}, this.DEFAULTS, t), this.settings.readonly = i.hasAttribute("readonly"), this.settings.placeholder = i.getAttribute("placeholder") || this.settings.placeholder || "", this.isIE && (this.settings.autoComplete = !1), ["whitelist", "blacklist"].forEach(function (t) {
+        var e = i.getAttribute("data-" + t);
+        e && (e = e.split(s.settings.delimiters)) instanceof Array && (s.settings[t] = e);
+      }), "autoComplete" in t && !this.isObject(t.autoComplete) && (this.settings.autoComplete = this.DEFAULTS.autoComplete, this.settings.autoComplete.enabled = t.autoComplete), i.pattern) try {
+        this.settings.pattern = new RegExp(i.pattern);
+      } catch (t) {}
+      if (this.settings.delimiters) try {
+        this.settings.delimiters = new RegExp(this.settings.delimiters, "g");
+      } catch (t) {}
+      "select" == this.settings.mode && (this.settings.dropdown.enabled = 0), "mix" == this.settings.mode && (this.settings.autoComplete.rightKey = !0);
+    },
+    getAttributes: function getAttributes(t) {
+      if ("[object Object]" != Object.prototype.toString.call(t)) return "";
+      var e,
+          i,
+          s = Object.keys(t),
+          n = "";
+
+      for (i = s.length; i--;) {
+        "class" != (e = s[i]) && t.hasOwnProperty(e) && t[e] && (n += " " + e + (t[e] ? '="'.concat(t[e], '"') : ""));
+      }
+
+      return n;
+    },
+    parseHTML: function parseHTML(t) {
+      return new DOMParser().parseFromString(t.trim(), "text/html").body.firstElementChild;
+    },
+    escapeHTML: function escapeHTML(t) {
+      var e = document.createTextNode(t),
+          i = document.createElement("p");
+      return i.appendChild(e), i.innerHTML;
+    },
+    getCaretGlobalPosition: function getCaretGlobalPosition() {
+      var t = document.getSelection();
+
+      if (t.rangeCount) {
+        var e,
+            i,
+            s = t.getRangeAt(0),
+            n = s.startContainer,
+            a = s.startOffset;
+        if (0 < a) return (i = document.createRange()).setStart(n, a - 1), i.setEnd(n, a), {
+          left: (e = i.getBoundingClientRect()).right,
+          top: e.top,
+          bottom: e.bottom
+        };
+      }
+
+      return {
+        left: -9999,
+        top: -9999
+      };
+    },
+    getCSSVars: function getCSSVars() {
+      var t,
+          e,
+          i,
+          s = getComputedStyle(this.DOM.scope, null);
+      this.CSSVars = {
+        tagHideTransition: (t = function (t) {
+          if (!t) return {};
+          var e = (t = t.trim().split(" ")[0]).split(/\d+/g).filter(function (t) {
+            return t;
+          }).pop().trim();
+          return {
+            value: +t.split(e).filter(function (t) {
+              return t;
+            })[0].trim(),
+            unit: e
+          };
+        }((i = "tag-hide-transition", s.getPropertyValue("--" + i))), e = t.value, "s" == t.unit ? 1e3 * e : e)
+      };
+    },
+    build: function build(t) {
+      var e = this.DOM,
+          i = this.settings.templates.wrapper(t, this.settings);
+      e.originalInput = t, e.scope = this.parseHTML(i), e.input = e.scope.querySelector("[contenteditable]"), t.parentNode.insertBefore(e.scope, t), 0 <= this.settings.dropdown.enabled && this.dropdown.init.call(this);
+    },
+    destroy: function destroy() {
+      this.DOM.scope.parentNode.removeChild(this.DOM.scope), this.dropdown.hide.call(this, !0);
+    },
+    loadOriginalValues: function loadOriginalValues(t) {
+      if (t = t || this.DOM.originalInput.value) if (this.removeAllTags(), "mix" == this.settings.mode) this.parseMixTags(t.trim());else {
+        try {
+          "string" != typeof JSON.parse(t) && (t = JSON.parse(t));
+        } catch (t) {}
+
+        this.addTags(t).forEach(function (t) {
+          return t && t.classList.add("tagify--noAnim");
+        });
+      }
+    },
+    isObject: function isObject(t) {
+      var e = Object.prototype.toString.call(t).split(" ")[1].slice(0, -1);
+      return t === Object(t) && "Array" != e && "Function" != e && "RegExp" != e && "HTMLUnknownElement" != e;
+    },
+    extend: function extend(t, e, i) {
+      var s = this;
+
+      function n(t, e) {
+        for (var i in e) {
+          e.hasOwnProperty(i) && (s.isObject(e[i]) ? s.isObject(t[i]) ? n(t[i], e[i]) : t[i] = Object.assign({}, e[i]) : t[i] = e[i]);
+        }
+      }
+
+      return t instanceof Object || (t = {}), n(t, e), i && n(t, i), t;
+    },
+    cloneEvent: function cloneEvent(t) {
+      var e = {};
+
+      for (var i in t) {
+        e[i] = t[i];
+      }
+
+      return e;
+    },
+    EventDispatcher: function EventDispatcher(s) {
+      var n = document.createTextNode("");
+
+      function i(e, t, i) {
+        i && t.split(/\s+/g).forEach(function (t) {
+          return n[e + "EventListener"].call(n, t, i);
+        });
+      }
+
+      this.off = function (t, e) {
+        return i("remove", t, e), this;
+      }, this.on = function (t, e) {
+        return e && "function" == typeof e && i("add", t, e), this;
+      }, this.trigger = function (t, e) {
+        var i;
+        if (t) if (s.settings.isJQueryPlugin) "remove" == t && (t = "removeTag"), jQuery(s.DOM.originalInput).triggerHandler(t, [e]);else {
+          try {
+            i = new CustomEvent(t, {
+              detail: this.extend({}, e, {
+                tagify: this
+              })
+            });
+          } catch (t) {
+            console.warn(t);
+          }
+
+          n.dispatchEvent(i);
+        }
+      };
+    },
+    loading: function loading(t) {
+      return this.DOM.scope.classList[t ? "add" : "remove"]("tagify--loading"), this;
+    },
+    toggleFocusClass: function toggleFocusClass(t) {
+      this.DOM.scope.classList.toggle("tagify--focus", !!t);
+    },
+    events: {
+      customBinding: function customBinding() {
+        var e = this;
+        this.customEventsList.forEach(function (t) {
+          e.on(t, e.settings.callbacks[t]);
+        });
+      },
+      binding: function binding(t) {
+        var e,
+            i = !(0 < arguments.length && void 0 !== t) || t,
+            s = this.events.callbacks,
+            n = i ? "addEventListener" : "removeEventListener";
+        if (!this.state.mainEvents || !i) for (var a in (this.state.mainEvents = i) && !this.listeners.main && (this.DOM.input.addEventListener(this.isIE ? "keydown" : "input", s[this.isIE ? "onInputIE" : "onInput"].bind(this)), this.settings.isJQueryPlugin && jQuery(this.DOM.originalInput).on("tagify.removeAllTags", this.removeAllTags.bind(this))), e = this.listeners.main = this.listeners.main || {
+          focus: ["input", s.onFocusBlur.bind(this)],
+          blur: ["input", s.onFocusBlur.bind(this)],
+          keydown: ["input", s.onKeydown.bind(this)],
+          click: ["scope", s.onClickScope.bind(this)],
+          dblclick: ["scope", s.onDoubleClickScope.bind(this)]
+        }) {
+          if ("blur" == a && !i) return;
+          this.DOM[e[a][0]][n](a, e[a][1]);
+        }
+      },
+      callbacks: {
+        onFocusBlur: function onFocusBlur(t) {
+          var e = t.target ? t.target.textContent.trim() : "",
+              i = this.settings,
+              s = t.type;
+
+          if (!(t.relatedTarget && t.relatedTarget.classList.contains("tagify__tag") && this.DOM.scope.contains(t.relatedTarget))) {
+            if ("blur" == s && t.relatedTarget === this.DOM.scope) return this.dropdown.hide.call(this), void this.DOM.input.focus();
+            if (!this.state.actions.selectOption || !i.dropdown.enabled && i.dropdown.closeOnSelect) if (this.state.hasFocus = "focus" == s && +new Date(), this.toggleFocusClass(this.state.hasFocus), this.setRangeAtStartEnd(!1), "mix" != i.mode) {
+              if ("focus" == s) return this.trigger("focus", {
+                relatedTarget: t.relatedTarget
+              }), void (0 === i.dropdown.enabled && "select" != i.mode && this.dropdown.show.call(this));
+              "blur" == s && (this.trigger("blur", {
+                relatedTarget: t.relatedTarget
+              }), this.loading(!1), e && !this.state.actions.selectOption && i.addTagOnBlur && this.addTags(e, !0)), this.DOM.input.removeAttribute("style"), this.dropdown.hide.call(this);
+            } else "blur" == t.type && this.dropdown.hide.call(this);
+          }
+        },
+        onKeydown: function onKeydown(t) {
+          var e,
+              i = this,
+              s = t.target.textContent.trim();
+
+          if (this.trigger("keydown", {
+            originalEvent: this.cloneEvent(t)
+          }), "mix" == this.settings.mode) {
+            switch (t.key) {
+              case "Left":
+              case "ArrowLeft":
+                this.state.actions.ArrowLeft = !0;
+                break;
+
+              case "Delete":
+              case "Backspace":
+                var n = document.getSelection();
+                !!navigator.userAgent.match(/firefox/i) && n && 0 == n.anchorOffset && this.removeTag(n.anchorNode.previousSibling);
+                var a = [];
+                e = this.DOM.input.children, setTimeout(function () {
+                  [].forEach.call(e, function (t) {
+                    return a.push(t.getAttribute("value"));
+                  }), i.value = i.value.filter(function (t) {
+                    return -1 != a.indexOf(t.value);
+                  });
+                });
+            }
+
+            return !0;
+          }
+
+          switch (t.key) {
+            case "Backspace":
+              "" != s && 8203 != s.charCodeAt(0) || (!0 === this.settings.backspace ? this.removeTag() : "edit" == this.settings.backspace && setTimeout(this.editTag.bind(this), 0));
+              break;
+
+            case "Esc":
+            case "Escape":
+              if (this.state.dropdown.visible) return;
+              t.target.blur();
+              break;
+
+            case "Down":
+            case "ArrowDown":
+              this.state.dropdown.visible || this.dropdown.show.call(this);
+              break;
+
+            case "ArrowRight":
+              var o = this.state.inputSuggestion || this.state.ddItemData;
+              if (o && this.settings.autoComplete.rightKey) return void this.addTags([o], !0);
+              break;
+
+            case "Tab":
+              if (!s) return !0;
+
+            case "Enter":
+              t.preventDefault(), setTimeout(function () {
+                i.state.actions.selectOption || i.addTags(s, !0);
+              });
+          }
+        },
+        onInput: function onInput(t) {
+          var e = "mix" == this.settings.mode ? this.DOM.input.textContent : this.input.normalize.call(this),
+              i = e.length >= this.settings.dropdown.enabled,
+              s = {
+            value: e,
+            inputElm: this.DOM.input
+          };
+          if ("mix" == this.settings.mode) return this.events.callbacks.onMixTagsInput.call(this, t);
+          e ? this.input.value != e && (s.isValid = this.validateTag(e), this.trigger("input", s), this.input.set.call(this, e, !1), -1 != e.search(this.settings.delimiters) ? this.addTags(e) && this.input.set.call(this) : 0 <= this.settings.dropdown.enabled && this.dropdown[i ? "show" : "hide"].call(this, e)) : this.input.set.call(this, "");
+        },
+        onMixTagsInput: function onMixTagsInput() {
+          var t,
+              e,
+              i,
+              s,
+              n,
+              a = this,
+              o = this.settings;
+          if (this.hasMaxTags()) return !0;
+          window.getSelection && 0 < (t = window.getSelection()).rangeCount && ((e = t.getRangeAt(0).cloneRange()).collapse(!0), e.setStart(window.getSelection().focusNode, 0), (s = (i = e.toString().split(o.mixTagsAllowedAfter))[i.length - 1].match(o.pattern)) && (this.state.actions.ArrowLeft = !1, this.state.tag = {
+            prefix: s[0],
+            value: s.input.split(s[0])[1]
+          }, n = this.state.tag.value.length >= o.dropdown.enabled)), this.update(), setTimeout(function () {
+            a.trigger("input", a.extend({}, a.state.tag, {
+              textContent: a.DOM.input.textContent
+            })), a.state.tag && a.dropdown[n ? "show" : "hide"].call(a, a.state.tag.value);
+          }, 10);
+        },
+        onInputIE: function onInputIE(t) {
+          var e = this;
+          setTimeout(function () {
+            e.events.callbacks.onInput.call(e, t);
+          });
+        },
+        onClickScope: function onClickScope(t) {
+          var e,
+              i = t.target.closest(".tagify__tag"),
+              s = this.settings,
+              n = new Date() - this.state.hasFocus;
+
+          if (t.target != this.DOM.scope) {
+            if (!t.target.classList.contains("tagify__tag__removeBtn")) return i ? (e = this.getNodeIndex(i), this.trigger("click", {
+              tag: i,
+              index: e,
+              data: this.value[e],
+              originalEvent: this.cloneEvent(t)
+            }), void (1 == this.settings.editTags && this.events.callbacks.onDoubleClickScope.call(this, t))) : void (t.target == this.DOM.input && 500 < n ? this.state.dropdown.visible ? this.dropdown.hide.call(this) : 0 === s.dropdown.enabled && "mix" != s.mode && this.dropdown.show.call(this) : "select" == s.mode && (this.state.dropdown.visible || this.dropdown.show.call(this)));
+            this.removeTag(t.target.parentNode);
+          } else this.DOM.input.focus();
+        },
+        onEditTagInput: function onEditTagInput(t, e) {
+          var i = t.closest("tag"),
+              s = this.getNodeIndex(i),
+              n = this.input.normalize.call(this, t),
+              a = n.toLowerCase() == t.originalValue.toLowerCase() || this.validateTag(n);
+          i.classList.toggle("tagify--invalid", !0 !== a), i.isValid = a, n.length >= this.settings.dropdown.enabled && (this.state.editing.value = n, this.dropdown.show.call(this, n)), this.trigger("edit:input", {
+            tag: i,
+            index: s,
+            data: this.extend({}, this.value[s], {
+              newValue: n
+            }),
+            originalEvent: this.cloneEvent(e)
+          });
+        },
+        onEditTagBlur: function onEditTagBlur(t) {
+          if (this.state.hasFocus || this.toggleFocusClass(), this.DOM.scope.contains(t)) {
+            var e = t.closest(".tagify__tag"),
+                i = this.getNodeIndex(e),
+                s = this.input.normalize.call(this, t),
+                n = s || t.originalValue,
+                a = n != t.originalValue,
+                o = e.isValid,
+                r = g({}, this.value[i], {
+              value: n
+            });
+            s ? a ? (this.settings.transformTag.call(this, r), void 0 !== (o = this.validateTag(r.value)) && !0 !== o || this.onEditTagDone(e, r)) : this.onEditTagDone(e) : this.removeTag(e);
+          }
+        },
+        onEditTagkeydown: function onEditTagkeydown(t) {
+          switch (this.trigger("edit:keydown", {
+            originalEvent: this.cloneEvent(t)
+          }), t.key) {
+            case "Esc":
+            case "Escape":
+              t.target.textContent = t.target.originalValue;
+
+            case "Enter":
+            case "Tab":
+              t.preventDefault(), t.target.blur();
+          }
+        },
+        onDoubleClickScope: function onDoubleClickScope(t) {
+          var e,
+              i,
+              s = t.target.closest("tag"),
+              n = this.settings;
+          s && (e = s.classList.contains("tagify__tag--editable"), i = s.hasAttribute("readonly"), "select" == n.mode || n.readonly || e || i || !this.settings.editTags || this.editTag(s), this.toggleFocusClass(!0));
+        }
+      }
+    },
+    editTag: function editTag(t) {
+      var e = this,
+          i = 0 < arguments.length && void 0 !== t ? t : this.getLastTag(),
+          s = i.querySelector(".tagify__tag-text"),
+          n = this.getNodeIndex(i),
+          a = this.value[n],
+          o = this.events.callbacks,
+          r = this;
+
+      if (s) {
+        if (!("editable" in a) || a.editable) return i.classList.add("tagify__tag--editable"), s.originalValue = s.textContent, s.setAttribute("contenteditable", !0), s.addEventListener("blur", function () {
+          setTimeout(o.onEditTagBlur.bind(r), 0, s);
+        }), s.addEventListener("input", o.onEditTagInput.bind(this, s)), s.addEventListener("keydown", function (t) {
+          return o.onEditTagkeydown.call(e, t);
+        }), s.focus(), this.setRangeAtStartEnd(!1, s), this.state.editing = {
+          scope: i,
+          input: i.querySelector("[contenteditable]")
+        }, this.trigger("edit:start", {
+          tag: i,
+          index: n,
+          data: a
+        }), this;
+      } else console.warn("Cannot find element in Tag template: ", ".tagify__tag-text");
+    },
+    onEditTagDone: function onEditTagDone(t, e) {
+      var i = {
+        tag: t,
+        index: this.getNodeIndex(t),
+        data: e
+      };
+      this.trigger("edit:beforeUpdate", i), this.replaceTag(t, e), this.trigger("edit:updated", i);
+    },
+    replaceTag: function replaceTag(t, e) {
+      var i = this,
+          s = t.querySelector(".tagify__tag-text"),
+          n = s.cloneNode(!0),
+          a = this.getNodeIndex(t);
+      this.state.editing.locked || (this.state.editing = {
+        locked: !0
+      }, setTimeout(function () {
+        return delete i.state.editing.locked;
+      }, 500), n.removeAttribute("contenteditable"), t.classList.remove("tagify__tag--editable"), s.parentNode.replaceChild(n, s), e && (n.innerHTML = e.value, n.title = e.value, this.value[a] = e, this.update()));
+    },
+    setRangeAtStartEnd: function setRangeAtStartEnd(e, i) {
+      i = (i = i || this.DOM.input).lastChild || i;
+      var s = document.getSelection();
+      s.rangeCount && ["Start", "End"].forEach(function (t) {
+        return s.getRangeAt(0)["set" + t](i, e ? 0 : i.length);
+      });
+    },
+    input: {
+      value: "",
+      set: function set(t, e) {
+        var i = 0 < arguments.length && void 0 !== t ? t : "",
+            s = !(1 < arguments.length && void 0 !== e) || e,
+            n = this.settings.dropdown.closeOnSelect;
+        this.input.value = i, s && (this.DOM.input.innerHTML = i), !i && n && setTimeout(this.dropdown.hide.bind(this), 20), this.input.autocomplete.suggest.call(this), this.input.validate.call(this);
+      },
+      validate: function validate() {
+        var t = !this.input.value || this.validateTag(this.input.value);
+        "select" == this.settings.mode ? this.DOM.scope.classList.toggle("tagify--invalid", !0 !== t) : this.DOM.input.classList.toggle("tagify__input--invalid", !0 !== t);
+      },
+      normalize: function normalize(t) {
+        var e = t || this.DOM.input,
+            i = [];
+        e.childNodes.forEach(function (t) {
+          return 3 == t.nodeType && i.push(t.nodeValue);
+        }), i = i.join("\n");
+
+        try {
+          i = i.replace(/(?:\r\n|\r|\n)/g, this.settings.delimiters.source.charAt(0));
+        } catch (t) {}
+
+        return i = i.replace(/\s/g, " ").replace(/^\s+/, "");
+      },
+      autocomplete: {
+        suggest: function suggest(t) {
+          if (this.settings.autoComplete.enabled) {
+            "string" == typeof (t = t || {}) && (t = {
+              value: t
+            });
+            var e = t.value || "",
+                i = e.substr(0, this.input.value.length).toLowerCase(),
+                s = e.substring(this.input.value.length);
+            e && this.input.value && i == this.input.value.toLowerCase() ? (this.DOM.input.setAttribute("data-suggest", s), this.state.inputSuggestion = t) : (this.DOM.input.removeAttribute("data-suggest"), delete this.state.inputSuggestion);
+          }
+        },
+        set: function set(t) {
+          var e = this.DOM.input.getAttribute("data-suggest"),
+              i = t || (e ? this.input.value + e : null);
+          return !!i && ("mix" == this.settings.mode ? this.replaceTextWithNode(document.createTextNode(this.state.tag.prefix + i)) : (this.input.set.call(this, i), this.setRangeAtStartEnd()), this.input.autocomplete.suggest.call(this), this.dropdown.hide.call(this), !0);
+        }
+      }
+    },
+    getNodeIndex: function getNodeIndex(t) {
+      var e = 0;
+      if (t) for (; t = t.previousElementSibling;) {
+        e++;
+      }
+      return e;
+    },
+    getTagElms: function getTagElms() {
+      return this.DOM.scope.querySelectorAll(".tagify__tag");
+    },
+    getLastTag: function getLastTag() {
+      var t = this.DOM.scope.querySelectorAll("tag:not(.tagify--hide):not([readonly])");
+      return t[t.length - 1];
+    },
+    isTagDuplicate: function isTagDuplicate(e) {
+      var i = this;
+      return "select" != this.settings.mode && this.value.some(function (t) {
+        return i.isObject(e) ? JSON.stringify(t).toLowerCase() === JSON.stringify(e).toLowerCase() : e.trim().toLowerCase() === t.value.toLowerCase();
+      });
+    },
+    getTagIndexByValue: function getTagIndexByValue(i) {
+      var s = [];
+      return this.getTagElms().forEach(function (t, e) {
+        t.textContent.trim().toLowerCase() == i.toLowerCase() && s.push(e);
+      }), s;
+    },
+    getTagElmByValue: function getTagElmByValue(t) {
+      var e = this.getTagIndexByValue(t)[0];
+      return this.getTagElms()[e];
+    },
+    markTagByValue: function markTagByValue(t, e) {
+      return !!(e = e || this.getTagElmByValue(t)) && (e.classList.add("tagify--mark"), e);
+    },
+    isTagBlacklisted: function isTagBlacklisted(e) {
+      return e = e.toLowerCase().trim(), this.settings.blacklist.filter(function (t) {
+        return e == t.toLowerCase();
+      }).length;
+    },
+    isTagWhitelisted: function isTagWhitelisted(e) {
+      return this.settings.whitelist.some(function (t) {
+        return "string" == typeof e ? e.trim().toLowerCase() === (t.value || t).toLowerCase() : JSON.stringify(t).toLowerCase() === JSON.stringify(e).toLowerCase();
+      });
+    },
+    validateTag: function validateTag(t) {
+      var e = t.trim(),
+          i = this.settings,
+          s = !0;
+      return e ? i.pattern && !i.pattern.test(e) ? s = this.TEXTS.pattern : !i.duplicates && this.isTagDuplicate(e) ? s = this.TEXTS.duplicate : (this.isTagBlacklisted(e) || i.enforceWhitelist && !this.isTagWhitelisted(e)) && (s = this.TEXTS.notAllowed) : s = this.TEXTS.empty, s;
+    },
+    hasMaxTags: function hasMaxTags() {
+      return this.value.length >= this.settings.maxTags && this.TEXTS.exceed;
+    },
+    normalizeTags: function normalizeTags(t) {
+      function i(t) {
+        return t.split(a).filter(function (t) {
+          return t;
+        }).map(function (t) {
+          return {
+            value: t.trim()
+          };
+        });
+      }
+
+      var e,
+          s = this.settings,
+          n = s.whitelist,
+          a = s.delimiters,
+          o = s.mode,
+          r = !!n && n[0] instanceof Object,
+          l = t instanceof Array,
+          d = l && t[0] instanceof Object && "value" in t[0],
+          c = [];
+      if (d) return t = (e = []).concat.apply(e, u(t.map(function (e) {
+        return i(e.value).map(function (t) {
+          return g({}, e, {}, t);
+        });
+      })));
+
+      if ("number" == typeof t && (t = t.toString()), "string" == typeof t) {
+        if (!t.trim()) return [];
+        t = i(t);
+      } else if (l) {
+        var h;
+        t = (h = []).concat.apply(h, u(t.map(function (t) {
+          return i(t);
+        })));
+      }
+
+      return r && (t.forEach(function (e) {
+        var t = n.filter(function (t) {
+          return t.value.toLowerCase() == e.value.toLowerCase();
+        });
+        t[0] ? c.push(t[0]) : "mix" != o && c.push(e);
+      }), t = c), t;
+    },
+    parseMixTags: function parseMixTags(t) {
+      var o = this,
+          e = this.settings,
+          r = e.mixTagsInterpolator,
+          l = e.duplicates,
+          d = e.transformTag,
+          c = e.enforceWhitelist;
+      return t = t.split(r[0]).map(function (t, e) {
+        var i,
+            s,
+            n = t.split(r[1]),
+            a = n[0];
+
+        try {
+          i = JSON.parse(a);
+        } catch (t) {
+          i = o.normalizeTags(a)[0];
+        }
+
+        if (!(1 < n.length) || c && !o.isTagWhitelisted(i.value) || !l && o.isTagDuplicate(i)) {
+          if (t) return e ? r[0] + t : t;
+        } else d.call(o, i), s = o.createTagElem(i), n[0] = s.outerHTML, o.value.push(i);
+
+        return n.join("");
+      }).join(""), this.DOM.input.innerHTML = t, this.DOM.input.appendChild(document.createTextNode("")), this.update(), t;
+    },
+    replaceTextWithNode: function replaceTextWithNode(t, e) {
+      if (this.state.tag || e) {
+        e = e || this.state.tag.prefix + this.state.tag.value;
+        var i,
+            s,
+            n = window.getSelection(),
+            a = n.anchorNode;
+        return a.splitText(n.anchorOffset), i = a.nodeValue.lastIndexOf(e), (s = a.splitText(i)).nodeValue = s.nodeValue.replace(e, ""), a.parentNode.insertBefore(t, s), this.DOM.input.normalize(), s;
+      }
+    },
+    selectTag: function selectTag(t, e) {
+      return this.input.set.call(this, e.value, !0), setTimeout(this.setRangeAtStartEnd.bind(this)), this.getLastTag() ? this.replaceTag(this.getLastTag(), e) : this.appendTag(t), this.value[0] = e, this.trigger("add", {
+        tag: t,
+        data: e
+      }), this.update(), [t];
+    },
+    addEmptyTag: function addEmptyTag() {
+      var t = {
+        value: ""
+      },
+          e = this.createTagElem(t);
+      this.appendTag(e), this.value.push(t), this.update(), this.editTag(e);
+    },
+    addTags: function addTags(t, e, i) {
+      var s,
+          n = this,
+          a = 2 < arguments.length && void 0 !== i ? i : this.settings.skipInvalid,
+          o = [],
+          r = this.settings;
+      return t && 0 != t.length ? (t = this.normalizeTags(t), this.state.editing.scope ? this.onEditTagDone(this.state.editing.scope, t[0]) : "mix" == r.mode ? (r.transformTag.call(this, t[0]), s = this.createTagElem(t[0]), this.replaceTextWithNode(s) || this.DOM.input.appendChild(s), this.DOM.input.appendChild(document.createTextNode("")), t[0].prefix = t[0].prefix || this.state.tag ? this.state.tag.prefix : (r.pattern.source || r.pattern)[0], this.value.push(t[0]), this.update(), this.state.tag = null, this.trigger("add", this.extend({}, {
+        tag: s
+      }, {
+        data: t[0]
+      })), this.DOM.input.appendChild(document.createTextNode("")), s) : ("select" == r.mode && (e = !1), this.DOM.input.removeAttribute("style"), t.forEach(function (t) {
+        var e,
+            i,
+            s = {};
+
+        if (t = Object.assign({}, t), r.transformTag.call(n, t), !0 !== (e = n.hasMaxTags() || n.validateTag(t.value))) {
+          if (a) return;
+          s["aria-invalid"] = !0, s["class"] = (t["class"] || "") + " tagify--notAllowed", s.title = e, n.markTagByValue(t.value);
+        }
+
+        if (s.role = "tag", t.readonly && (s["aria-readonly"] = !0), i = n.createTagElem(n.extend({}, t, s)), o.push(i), "select" == r.mode) return n.selectTag(i, t);
+        n.appendTag(i), !0 === e ? (n.value.push(t), n.update(), n.trigger("add", {
+          tag: i,
+          index: n.value.length - 1,
+          data: t
+        })) : (n.trigger("invalid", {
+          data: t,
+          index: n.value.length,
+          tag: i,
+          message: e
+        }), r.keepInvalidTags || setTimeout(function () {
+          return n.removeTag(i, !0);
+        }, 1e3)), n.dropdown.position.call(n);
+      }), t.length && e && this.input.set.call(this), this.dropdown.refilter.call(this), o)) : ("select" == r.mode && this.removeAllTags(), o);
+    },
+    appendTag: function appendTag(t) {
+      var e = this.DOM.scope.lastElementChild;
+      e === this.DOM.input ? this.DOM.scope.insertBefore(t, e) : this.DOM.scope.appendChild(t);
+    },
+    minify: function minify(t) {
+      return t ? t.replace(/\>[\r\n ]+\</g, "><").replace(/(<.*?>)|\s+/g, function (t, e) {
+        return e || " ";
+      }) : "";
+    },
+    createTagElem: function createTagElem(t) {
+      var e = this.escapeHTML(t.value),
+          i = this.settings.templates.tag.call(this, e, t);
+      return this.settings.readonly && (t.readonly = !0), i = this.minify(i), this.parseHTML(i);
+    },
+    removeTag: function removeTag(t, e, i) {
+      if (t = t || this.getLastTag(), i = i || this.CSSVars.tagHideTransition, "string" == typeof t && (t = this.getTagElmByValue(t)), t instanceof HTMLElement) {
+        var s,
+            n = this,
+            a = this.getNodeIndex(t);
+        "select" == this.settings.mode && (i = 0, this.input.set.call(this)), t.classList.contains("tagify--notAllowed") && (e = !0), i && 10 < i ? (t.style.width = parseFloat(window.getComputedStyle(t).width) + "px", document.body.clientTop, t.classList.add("tagify--hide"), setTimeout(o, i)) : o();
+      }
+
+      function o() {
+        t.parentNode && (t.parentNode.removeChild(t), e ? n.settings.keepInvalidTags && n.trigger("remove", {
+          tag: t,
+          index: a
+        }) : (s = n.value.splice(a, 1)[0], n.update(), n.trigger("remove", {
+          tag: t,
+          index: a,
+          data: s
+        }), n.dropdown.refilter.call(n), n.dropdown.position.call(n)));
+      }
+    },
+    removeAllTags: function removeAllTags() {
+      this.value = [], this.update(), Array.prototype.slice.call(this.getTagElms()).forEach(function (t) {
+        return t.parentNode.removeChild(t);
+      }), this.dropdown.position.call(this), "select" == this.settings.mode && this.input.set.call(this);
+    },
+    preUpdate: function preUpdate() {
+      this.DOM.scope.classList.toggle("tagify--hasMaxTags", this.value.length >= this.settings.maxTags), this.DOM.scope.classList.toggle("tagify--noTags", !this.value.length);
+    },
+    update: function update() {
+      this.preUpdate(), this.DOM.originalInput.value = "mix" == this.settings.mode ? this.getMixedTagsAsString() : this.value.length ? JSON.stringify(this.value) : "";
+    },
+    getMixedTagsAsString: function getMixedTagsAsString() {
+      var e = this,
+          i = "",
+          s = 0,
+          n = this.settings.mixTagsInterpolator;
+      return this.DOM.input.childNodes.forEach(function (t) {
+        1 == t.nodeType && t.classList.contains("tagify__tag") ? i += n[0] + JSON.stringify(e.value[s++]) + n[1] : i += t.textContent;
+      }), i;
+    },
+    getNodeHeight: function getNodeHeight(t) {
+      var e,
+          i = t.cloneNode(!0);
+      return i.style.cssText = "position:fixed; top:-9999px; opacity:0", document.body.appendChild(i), e = i.clientHeight, i.parentNode.removeChild(i), e;
+    },
+    dropdown: {
+      init: function init() {
+        this.DOM.dropdown = this.dropdown.build.call(this), this.DOM.dropdown.content = this.DOM.dropdown.querySelector(".tagify__dropdown__wrapper");
+      },
+      build: function build() {
+        var t = this.settings.dropdown,
+            e = t.position,
+            i = t.classname,
+            s = "".concat("manual" == e ? "" : "tagify__dropdown tagify__dropdown--".concat(e), " ").concat(i).trim();
+        return this.parseHTML('<div class="'.concat(s, '" role="listbox" aria-labelledby="dropdown">\n                        <div class="tagify__dropdown__wrapper"></div>\n                    </div>'));
+      },
+      show: function show(t) {
+        var e,
+            i,
+            s,
+            n,
+            a = this,
+            o = this.settings,
+            r = "manual" == o.dropdown.position;
+
+        if (o.whitelist && o.whitelist.length && !1 !== o.dropdown.enable) {
+          if (this.suggestedListItems = this.dropdown.filterListItems.call(this, t), !this.suggestedListItems.length) return this.input.autocomplete.suggest.call(this), void this.dropdown.hide.call(this);
+          s = (i = this.suggestedListItems[0]).value || i, o.autoComplete && 0 == s.indexOf(t) && this.input.autocomplete.suggest.call(this, i), e = this.dropdown.createListHTML.call(this, this.suggestedListItems), this.DOM.dropdown.content.innerHTML = this.minify(e), (o.enforceWhitelist && !r || o.dropdown.highlightFirst) && this.dropdown.highlightOption.call(this, this.DOM.dropdown.content.children[0]), this.DOM.scope.setAttribute("aria-expanded", !0), this.trigger("dropdown:show", this.DOM.dropdown), this.state.dropdown.visible = t || !0, this.dropdown.position.call(this), document.body.contains(this.DOM.dropdown) || (r || (this.events.binding.call(this, !1), n = this.getNodeHeight(this.DOM.dropdown), this.DOM.dropdown.classList.add("tagify__dropdown--initial"), this.dropdown.position.call(this, n), document.body.appendChild(this.DOM.dropdown), setTimeout(function () {
+            return a.DOM.dropdown.classList.remove("tagify__dropdown--initial");
+          })), setTimeout(this.dropdown.events.binding.bind(this)));
+        }
+      },
+      hide: function hide(t) {
+        var e = this.DOM,
+            i = e.scope,
+            s = e.dropdown,
+            n = "manual" == this.settings.dropdown.position && !t;
+        s && document.body.contains(s) && !n && (window.removeEventListener("resize", this.dropdown.position), this.dropdown.events.binding.call(this, !1), setTimeout(this.events.binding.bind(this), 250), i.setAttribute("aria-expanded", !1), s.parentNode.removeChild(s), this.state.dropdown.visible = !1, this.state.ddItemData = null, this.state.ddItemElm = null, this.trigger("dropdown:hide", s));
+      },
+      refilter: function refilter() {
+        this.suggestedListItems = this.dropdown.filterListItems.call(this, "");
+        var t = this.dropdown.createListHTML.call(this, this.suggestedListItems);
+        this.DOM.dropdown.content.innerHTML = this.minify(t);
+      },
+      position: function position(t) {
+        var e,
+            i,
+            s,
+            n,
+            a,
+            o,
+            r = this.DOM.dropdown;
+        this.state.dropdown.visible && (o = "text" == this.settings.dropdown.position ? (n = (i = this.getCaretGlobalPosition()).bottom, s = i.top, a = i.left, "auto") : (s = (i = this.DOM.scope.getBoundingClientRect()).top, n = i.bottom - 1, a = i.left, i.width + "px"), s = Math.floor(s), n = Math.ceil(n), e = document.documentElement.clientHeight - n < (t || r.clientHeight), r.style.cssText = "left:" + (a + window.pageXOffset) + "px; width:" + o + ";" + (e ? "bottom:" + (document.documentElement.clientHeight - s - window.pageYOffset - 2) + "px;" : "top: " + (n + window.pageYOffset) + "px"), r.setAttribute("placement", e ? "top" : "bottom"));
+      },
+      events: {
+        binding: function binding(t) {
+          var e = !(0 < arguments.length && void 0 !== t) || t,
+              i = this.dropdown.events.callbacks,
+              s = this.listeners.dropdown = this.listeners.dropdown || {
+            position: this.dropdown.position.bind(this),
+            onKeyDown: i.onKeyDown.bind(this),
+            onMouseOver: i.onMouseOver.bind(this),
+            onMouseLeave: i.onMouseLeave.bind(this),
+            onClick: i.onClick.bind(this)
+          },
+              n = e ? "addEventListener" : "removeEventListener";
+          "manual" != this.settings.dropdown.position && (window[n]("resize", s.position), window[n]("keydown", s.onKeyDown)), this.DOM.dropdown[n]("mouseover", s.onMouseOver), this.DOM.dropdown[n]("mouseleave", s.onMouseLeave), this.DOM.dropdown[n]("mousedown", s.onClick), this.DOM[this.listeners.main.click[0]][n]("click", this.listeners.main.click[1]);
+        },
+        callbacks: {
+          onKeyDown: function onKeyDown(t) {
+            var e = this.DOM.dropdown.querySelector("[class$='--active']"),
+                i = e;
+
+            switch (t.key) {
+              case "ArrowDown":
+              case "ArrowUp":
+              case "Down":
+              case "Up":
+                var s;
+                t.preventDefault(), i = (i = i && i[("ArrowUp" == t.key || "Up" == t.key ? "previous" : "next") + "ElementSibling"]) || (s = this.DOM.dropdown.content.children)["ArrowUp" == t.key || "Up" == t.key ? s.length - 1 : 0], this.dropdown.highlightOption.call(this, i, !0);
+                break;
+
+              case "Escape":
+              case "Esc":
+                this.dropdown.hide.call(this);
+                break;
+
+              case "ArrowRight":
+                if (this.state.actions.ArrowLeft) return;
+
+              case "Tab":
+                if (t.preventDefault(), "mix" != this.settings.mode && !this.settings.autoComplete.rightKey) {
+                  try {
+                    var n = i ? i.textContent : this.suggestedListItems[0].value;
+                    this.input.autocomplete.set.call(this, n);
+                  } catch (t) {}
+
+                  return !1;
+                }
+
+              case "Enter":
+                t.preventDefault(), this.dropdown.selectOption.call(this, e);
+                break;
+
+              case "Backspace":
+                if ("mix" == this.settings.mode || this.state.editing.scope) return;
+                var a = this.input.value.trim();
+                "" != a && 8203 != a.charCodeAt(0) || (!0 === this.settings.backspace ? this.removeTag() : "edit" == this.settings.backspace && setTimeout(this.editTag.bind(this), 0));
+            }
+          },
+          onMouseOver: function onMouseOver(t) {
+            var e = t.target.closest(".tagify__dropdown__item");
+            e && this.dropdown.highlightOption.call(this, e);
+          },
+          onMouseLeave: function onMouseLeave() {
+            this.dropdown.highlightOption.call(this);
+          },
+          onClick: function onClick(t) {
+            if (0 == t.button && t.target != this.DOM.dropdown) {
+              var e = t.target.closest(".tagify__dropdown__item");
+              this.dropdown.selectOption.call(this, e);
+            }
+          }
+        }
+      },
+      highlightOption: function highlightOption(t, e) {
+        var i,
+            s = "tagify__dropdown__item--active";
+        if (this.state.ddItemElm && (this.state.ddItemElm.classList.remove(s), this.state.ddItemElm.removeAttribute("aria-selected")), !t) return this.state.ddItemData = null, this.state.ddItemElm = null, void this.input.autocomplete.suggest.call(this);
+        i = this.suggestedListItems[this.getNodeIndex(t)], this.state.ddItemData = i, (this.state.ddItemElm = t).classList.add(s), t.setAttribute("aria-selected", !0), e && (t.parentNode.scrollTop = t.clientHeight + t.offsetTop - t.parentNode.clientHeight), this.settings.autoComplete && (this.input.autocomplete.suggest.call(this, i), "manual" != this.settings.dropdown.position && this.dropdown.position.call(this));
+      },
+      selectOption: function selectOption(t) {
+        var e = this;
+
+        if (t) {
+          this.state.actions.selectOption = !0, setTimeout(function () {
+            return e.state.actions.selectOption = !1;
+          }, 50);
+          var i = this.settings.dropdown.closeOnSelect,
+              s = this.suggestedListItems[this.getNodeIndex(t)] || this.input.value;
+          this.trigger("dropdown:select", s), this.addTags([s], !0), setTimeout(function () {
+            e.DOM.input.focus(), e.toggleFocusClass(!0);
+          }), i && this.dropdown.hide.call(this);
+        }
+      },
+      filterListItems: function filterListItems(t) {
+        var i,
+            e,
+            s,
+            n,
+            a = this,
+            o = this.settings,
+            r = [],
+            l = o.whitelist,
+            d = o.dropdown.maxItems || 1 / 0,
+            c = o.dropdown.searchKeys.concat(["searchBy", "value"]),
+            h = 0;
+        if (!t) return (o.duplicates ? l : l.filter(function (t) {
+          return !a.isTagDuplicate(t.value || t);
+        })).slice(0, d);
+
+        for (; h < l.length && (i = l[h] instanceof Object ? l[h] : {
+          value: l[h]
+        }, s = c.reduce(function (t, e) {
+          return t + " " + (i[e] || "");
+        }, "").toLowerCase().indexOf(t.toLowerCase()), e = o.dropdown.fuzzySearch ? 0 <= s : 0 == s, n = !o.duplicates && this.isTagDuplicate(i.value), e && !n && d-- && r.push(i), 0 != d); h++) {
+          ;
+        }
+
+        return r;
+      },
+      createListHTML: function createListHTML(t) {
+        var e = this.settings.templates.dropdownItem.bind(this);
+        return this.minify(t.map(e).join(""));
+      }
+    }
+  }, t;
+});
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/simplemde/dist/simplemde.min.css":
 /*!***************************************************************************************************************************************!*\
   !*** ./node_modules/css-loader??ref--6-1!./node_modules/postcss-loader/src??ref--6-2!./node_modules/simplemde/dist/simplemde.min.css ***!
@@ -24746,8 +25747,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var sortablejs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! sortablejs */ "./node_modules/sortablejs/modular/sortable.esm.js");
 /* harmony import */ var simplemde_dist_simplemde_min_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! simplemde/dist/simplemde.min.js */ "./node_modules/simplemde/dist/simplemde.min.js");
 /* harmony import */ var simplemde_dist_simplemde_min_js__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(simplemde_dist_simplemde_min_js__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var simplemde_dist_simplemde_min_css__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! simplemde/dist/simplemde.min.css */ "./node_modules/simplemde/dist/simplemde.min.css");
-/* harmony import */ var simplemde_dist_simplemde_min_css__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(simplemde_dist_simplemde_min_css__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _yaireo_tagify__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @yaireo/tagify */ "./node_modules/@yaireo/tagify/dist/tagify.min.js");
+/* harmony import */ var _yaireo_tagify__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_yaireo_tagify__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var simplemde_dist_simplemde_min_css__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! simplemde/dist/simplemde.min.css */ "./node_modules/simplemde/dist/simplemde.min.css");
+/* harmony import */ var simplemde_dist_simplemde_min_css__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(simplemde_dist_simplemde_min_css__WEBPACK_IMPORTED_MODULE_8__);
 function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
 
 function _typeof(obj) {
@@ -24863,52 +25866,7 @@ function _setPrototypeOf(o, p) {
 
 
 
-/**
- * ini harusnya code-splitting wkwkwk
- */
 
-var ImageTemplate = function ImageTemplate(props) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "anim-scale-up w-32 h-32 mx-2 mb-4 rounded border border-gray-200 hover:border-gray-400 relative"
-  }, props.dirty && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    onClick: props.onRemove,
-    className: "cursor-pointer w-5 h-5 flex justify-center items-center bg-red-600 text-white rounded-full absolute top-0 right-0"
-  }, "\xD7"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
-    className: "w-full h-full flex flex-col items-center justify-center cursor-pointer text-sm",
-    htmlFor: 'file-' + props.id
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: 'label-text' + (!props.url ? '' : ' hidden')
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("svg", {
-    className: "mx-auto fill-current text-gray-600 w-8",
-    xmlns: "http://www.w3.org/2000/svg",
-    viewBox: "0 0 24 24"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("g", {
-    "data-name": "Layer 2"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("g", {
-    "data-name": "plus-circle"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("rect", {
-    width: "24",
-    height: "24",
-    opacity: "0"
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("path", {
-    d: "M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("path", {
-    d: "M15 11h-2V9a1 1 0 0 0-2 0v2H9a1 1 0 0 0 0 2h2v2a1 1 0 0 0 2 0v-2h2a1 1 0 0 0 0-2z"
-  })))), "Media"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
-    className: 'w-full h-full object-cover' + (props.url ? '' : ' hidden'),
-    src: props.url ? props.url : null
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("video", {
-    className: "hidden",
-    controls: true
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("source", null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("canvas", {
-    className: "hidden"
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    type: "file",
-    className: "hidden",
-    id: 'file-' + props.id,
-    onChange: props.onChange
-  }));
-};
 
 var Form =
 /*#__PURE__*/
@@ -24925,11 +25883,12 @@ function (_Component) {
       title: '',
       slug: '',
       tags: [],
-      images: [],
-      currentStep: 'basic'
+      images: []
     };
     _this.allowedVideoTypes = ['video/mp4', 'video/webm', 'video/ogg'];
+    _this.allowedVideoTypesReadable = ['mp4', 'webm', 'ogg'];
     _this.allowedImageTypes = ['image/png', 'image/jpeg', 'image/bmp', 'image/png', 'image/webp', 'image/svg+xml'];
+    _this.allowedImageTypesReadable = ['png', 'jpeg', 'bmp', 'png', 'webp', 'svg'];
     _this.allowedMediaTypes = [].concat(_toConsumableArray(_this.allowedImageTypes), _toConsumableArray(_this.allowedVideoTypes));
     _this.maxFileSize = 2000000;
     return _this;
@@ -24943,76 +25902,161 @@ function (_Component) {
         return item.id == id;
       });
 
-      if (images.length > 1 && selected_image.dirty) {
+      if (images.length > 1 && selected_image.isDirty) {
         this.removeImage(id);
       }
     }
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      this.firstMedia = false;
-      this.sortable = null;
-      this.simplemde = null;
+      this.addTagify();
+      this.addSortable();
+      this.addSimplemde();
+      this.addDropzone();
+    }
+  }, {
+    key: "addSortable",
+    value: function addSortable() {
+      var el = document.querySelector('.image-files');
+      if (el) this.sortable = sortablejs__WEBPACK_IMPORTED_MODULE_5__["default"].create(el, {
+        handle: '.handle'
+      });
+    }
+  }, {
+    key: "addSimplemde",
+    value: function addSimplemde() {
+      var el = document.querySelector('.simplemde');
+
+      if (el) {
+        this.simplemde = new simplemde_dist_simplemde_min_js__WEBPACK_IMPORTED_MODULE_6___default.a({
+          element: el,
+          hideIcons: ['image', 'fullscreen', 'side-by-side', 'guide'],
+          status: false
+        });
+      }
+    }
+  }, {
+    key: "addTagify",
+    value: function addTagify() {
+      this.tagify = new _yaireo_tagify__WEBPACK_IMPORTED_MODULE_7___default.a($('.tags'), {
+        enforceWhitelist: true,
+        whitelist: [],
+        maxTags: 5,
+        skipInvalid: true,
+        dropdown: {
+          highlightFirst: true,
+          maxItems: 7
+        },
+        placeholder: 'Pilih maksimal 5 tag',
+        templates: {
+          wrapper: function wrapper(input, settings) {
+            return "<tags class=\"tagify focus-within:border-indigo-600 ".concat(settings.mode ? "tagify--" + settings.mode : "", " ").concat(input.className, "\"\n\t                            ").concat(settings.readonly ? 'readonly aria-readonly="true"' : 'aria-haspopup="listbox" aria-expanded="false"', "\n\t                            role=\"tagslist\">\n\t\t\t\t\t\t            <span contenteditable data-placeholder=\"").concat(settings.placeholder || '&#8203;', "\" aria-placeholder=\"").concat(settings.placeholder || '', "\"\n\t\t\t\t\t                    class=\"tagify__input p-0 m-0 py-1 inline-block\"\n\t\t\t\t\t                    role=\"textbox\"\n\t\t\t\t\t                    aria-controls=\"dropdown\"\n\t\t\t\t\t                    aria-autocomplete=\"both\"\n\t\t\t\t\t                    aria-multiline=\"").concat(settings.mode == 'mix' ? true : false, "\"></span>\n                            </tags>");
+          },
+          tag: function tag(value, tagData) {
+            return "\n\t\t\t                <tag title='".concat(tagData.title || value, "'\n\t\t                                contenteditable='false'\n\t\t                                spellcheck='false'\n\t\t                                class='tagify__tag m-0 mr-2 rounded ").concat(tagData['class'] ? tagData['class'] : "", "'\n\t\t                                ").concat(this.getAttributes(tagData), ">\n\t\t\t                        <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>\n\t\t\t                        <div>\n\t\t                                <span class='tagify__tag-text'>").concat(value, "</span>\n\t\t\t                        </div>\n\t\t\t                </tag>");
+          },
+          dropdownItem: function dropdownItem(item) {
+            var mapValueTo = this.settings.dropdown.mapValueTo,
+                value = (mapValueTo ? typeof mapValueTo == 'function' ? mapValueTo(item) : item[mapValueTo] : item.value) || item.value,
+                sanitizedValue = (value || item).replace(/`|'/g, "&#39;");
+            return "<div ".concat(this.getAttributes(item), "\n\t                            class='tagify__dropdown__item text-sm px-4 ").concat(item['class'] ? item['class'] : "", "'\n\t                            tabindex=\"0\"\n\t                            role=\"option\"\n\t                            aria-labelledby=\"dropdown-label\">").concat(sanitizedValue, "</div>");
+          }
+        }
+      });
+      var controller,
+          tagify = this.tagify;
+      /**
+       * Tagify on input
+       */
+
+      tagify.on('input', onInput);
+      /**
+       * Tagify on input handler
+       * @param  {Object} e Event
+       */
+
+      function onInput(e) {
+        var value = e.detail.value;
+        tagify.settings.whitelist.length = 0;
+        controller && controller.abort();
+        controller = new AbortController();
+        tagify.loading(true).dropdown.hide.call(tagify);
+        fetch(routes.post_tags + '?value=' + value, {
+          signal: controller.signal
+        }).then(function (RES) {
+          return RES.json();
+        }).then(function (whitelist) {
+          var _tagify$settings$whit;
+
+          (_tagify$settings$whit = tagify.settings.whitelist).splice.apply(_tagify$settings$whit, [0, whitelist.length].concat(_toConsumableArray(whitelist)));
+
+          tagify.loading(false).dropdown.show.call(tagify, value);
+        });
+      }
     }
   }, {
     key: "addDropzone",
     value: function addDropzone() {
       var _this2 = this;
 
-      var dropzone_element = document.createElement('div');
-      dropzone_element.className = 'opacity-0 invisible flex justify-center items-center border-4 border-teal-500 fixed z-50 top-0 w-full left-0 h-full dropzone';
-      dropzone_element.style.transition = 'all .5s';
-      dropzone_element.style.backgroundColor = 'rgba(255,255,255,.5)';
-      dropzone_element.innerHTML = "\n\t\t\t<div class=\"p-10 text-2x rounded bg-teal-500 text-white\">\n\t\t\t\tLepaskan gambar atau video yang kamu seret di sini!\n\t\t\t</div>\n\t\t";
-      $('body').appendChild(dropzone_element);
-      Object(_utils_adds__WEBPACK_IMPORTED_MODULE_3__["default"])($('#app').classList, 'border-2 border-gray-200');
-      $('#app').style.transition = 'transform .5s';
+      var dropzone = $('.dropzone');
 
       function onDragover() {
-        Object(_utils_adds__WEBPACK_IMPORTED_MODULE_3__["default"])($('body').classList, 'overflow-hidden');
-        Object(_utils_removes__WEBPACK_IMPORTED_MODULE_4__["default"])($('.dropzone').classList, 'invisible opacity-0');
-        $('#app').style.transform = 'scale(.95)';
-        $('#app').style.filter = 'blur(5px)';
+        Object(_utils_removes__WEBPACK_IMPORTED_MODULE_4__["default"])(dropzone.classList, 'border-gray-300');
+        Object(_utils_adds__WEBPACK_IMPORTED_MODULE_3__["default"])(dropzone.classList, 'border-indigo-600 bg-indigo-100');
       }
 
       function onDragdone() {
-        Object(_utils_removes__WEBPACK_IMPORTED_MODULE_4__["default"])($('body').classList, 'overflow-hidden');
-        Object(_utils_adds__WEBPACK_IMPORTED_MODULE_3__["default"])($('.dropzone').classList, 'invisible opacity-0');
-        $('#app').style.transform = 'scale(1)';
-        $('#app').style.filter = 'blur(0)';
+        Object(_utils_adds__WEBPACK_IMPORTED_MODULE_3__["default"])(dropzone.classList, 'border-gray-300');
+        Object(_utils_removes__WEBPACK_IMPORTED_MODULE_4__["default"])(dropzone.classList, 'border-indigo-600 bg-indigo-100');
       }
 
-      document.querySelector('body').addEventListener('dragover', function (e) {
+      dropzone.addEventListener('dragover', function (e) {
         e.stopPropagation();
         e.preventDefault();
         e.dataTransfer.dropEffect = 'move';
         onDragover();
       });
-      document.querySelector('.dropzone').addEventListener('dragleave', function (e) {
+      dropzone.addEventListener('dragleave', function (e) {
         onDragdone();
       });
-      document.querySelector('.dropzone').addEventListener('drop', function (e) {
+      dropzone.addEventListener('drop', function (e) {
         e.stopPropagation();
         e.preventDefault();
         onDragdone();
-        if (!$('.image-files')) return false;
         var files = e.dataTransfer.files;
 
-        if (files.length > 0) {
-          files = [].slice.call(files);
-          files.forEach(function (file) {
-            _this2.validateImage({
-              selectedFile: file
-            }).then(function () {
-              _this2.addImage('prepend').then(function (_ref) {
-                var id = _ref.id,
-                    node = _ref.node;
+        _this2.isUploadAllowed().then(function () {
+          if (files.length > 0) {
+            files = [].slice.call(files);
+            files.forEach(function (file) {
+              _this2.validateImage({
+                selectedFile: file
+              }).then(function () {
+                _this2.addImage({
+                  file: file
+                }).then(function (_ref) {
+                  var id = _ref.id,
+                      node = _ref.node;
 
-                _this2.handleImage(id, node, file);
+                  _this2.handleImage(id, node, file);
+                });
               });
             });
-          });
+          }
+        });
+      });
+    }
+  }, {
+    key: "isUploadAllowed",
+    value: function isUploadAllowed() {
+      var title = this.state.title;
+      return new Promise(function (resolve, reject) {
+        if (title.trim().length < 1) {
+          return reject('Harap isi judul terlebih dahulu');
         }
+
+        return resolve(true);
       });
     }
   }, {
@@ -25044,50 +26088,25 @@ function (_Component) {
 
   }, {
     key: "addImage",
-    value: function addImage() {
+    value: function addImage(_ref2) {
       var _this3 = this;
 
-      var position = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+      var _ref2$file = _ref2.file,
+          file = _ref2$file === void 0 ? undefined : _ref2$file;
       return new Promise(function (resolve, reject) {
-        var id = _this3.generateID(),
-            empty_images = _this3.state.images.filter(function (image) {
-          return image.file == undefined;
-        }).length; // if there are empty images, reject promise
-
-
-        if (empty_images && !position) return reject();
+        var id = _this3.generateID();
 
         _this3.setState(function (prevState) {
           // collect images from previous state
-          var images = _toConsumableArray(prevState.images),
-              new_image = {
-            id: id
-          };
-
-          if (position == 'prepend') {
-            var array_pos = images.length - 1; // push new_image before last image of an array
-
-            images.splice(array_pos, 0, new_image);
-          } else {
-            images.push(new_image);
-          }
-
+          var images = [{
+            id: id,
+            file: file
+          }].concat(_toConsumableArray(prevState.images));
           return {
             images: images
           };
         }, function () {
-          var node,
-              image_elements = $('.image-files').children,
-              image_elements_length = image_elements.length;
-
-          if (position == 'prepend') {
-            // set node to the before last element
-            node = image_elements[image_elements_length - 2];
-          } else {
-            // set node to the last element
-            node = $('.image-files').lastChild;
-          }
-
+          var node = $('.image-files').firstChild;
           return resolve({
             id: id,
             node: node
@@ -25097,10 +26116,10 @@ function (_Component) {
     }
   }, {
     key: "validateImage",
-    value: function validateImage(_ref2) {
+    value: function validateImage(_ref3) {
       var _this4 = this;
 
-      var selected_file = _ref2.selectedFile;
+      var selected_file = _ref3.selectedFile;
       return new Promise(function (resolve, reject) {
         if (!_this4.allowedMediaTypes.includes(selected_file.type)) {
           return reject('Image type not supported');
@@ -25115,12 +26134,9 @@ function (_Component) {
     }
   }, {
     key: "handleImage",
-    value: function handleImage(id, e, file) {
+    value: function handleImage(id, element, selected_file) {
       var _this5 = this;
 
-      var target = e instanceof Element ? e : e.target.parentNode;
-      var target_file = target.querySelector('input');
-      var selected_file = file instanceof File ? file : target_file.files ? target_file.files[0] : false;
       var selected_file_type = selected_file ? selected_file.type : false;
       this.validateImage({
         selectedFile: selected_file
@@ -25130,14 +26146,12 @@ function (_Component) {
         if (_this5.allowedImageTypes.includes(selected_file_type)) {
           promise_preview = function promise_preview() {
             return new Promise(function (resolve, reject) {
-              var img = target.querySelector('img'); // set selected image into the src attribute via createObjectURL API
+              var img = element.querySelector('img'); // set selected image into the src attribute via createObjectURL API
 
               var url_media = URL.createObjectURL(selected_file);
               img.src = url_media; // show the image
 
-              img.classList.remove('hidden'); // hide the label text element
-
-              target.querySelector('.label-text').classList.add('hidden');
+              img.classList.remove('hidden');
               return resolve(url_media);
             });
           };
@@ -25147,13 +26161,11 @@ function (_Component) {
         if (_this5.allowedVideoTypes.includes(selected_file_type)) {
           promise_preview = function promise_preview() {
             return new Promise(function (resolve, reject) {
-              // hide label-text element
-              target.querySelector('.label-text').classList.add('hidden');
-              var video = target.querySelector('video'),
+              var video = element.querySelector('video'),
                   video_source = video.querySelector('source'),
-                  canvas = target.querySelector('canvas'),
+                  canvas = element.querySelector('canvas'),
                   ctx = canvas.getContext('2d'),
-                  img = target.querySelector('img'); // set selected video to the source
+                  img = element.querySelector('img'); // set selected video to the source
 
               video_source.src = URL.createObjectURL(selected_file); // load the videeo
 
@@ -25181,33 +26193,78 @@ function (_Component) {
               });
             });
           };
-        } // get images data from state
+        }
 
-
-        var images = _this5.state.images; // find current image element in array by given id
-
-        var currentImage = images.find(function (item) {
-          return item.id == id;
-        });
-        var is_dirty = currentImage.dirty;
         promise_preview().then(function (url_media) {
-          Object(_utils_obj_extend__WEBPACK_IMPORTED_MODULE_2__["default"])(currentImage, {
-            id: id,
-            dirty: true,
+          var current_image = _this5.updateImage(id, {
+            isDirty: true,
+            status: 'UPLOADING',
             file: selected_file,
+            isAbort: false,
             url: url_media
-          }); // update it!
+          });
 
-          _this5.setState({
-            images: images
-          }); // if image isn't dirty
-
-
-          if (!is_dirty) {
-            // add another image
-            _this5.addImage()["catch"](function () {});
-          }
+          _this5.uploadImage(current_image);
         });
+      });
+    }
+    /**
+     * Update image state by id
+     * @param  {Integer} id  Image ID
+     * @param  {Object} obj  New object
+     * @return {Object}      Updated object
+     */
+
+  }, {
+    key: "updateImage",
+    value: function updateImage(id, obj) {
+      // get images data from state
+      var images = this.state.images; // find current image element in array by given id
+
+      var current_image = images.find(function (item) {
+        return item.id == id;
+      });
+      Object(_utils_obj_extend__WEBPACK_IMPORTED_MODULE_2__["default"])(current_image, obj);
+      this.setState({
+        images: images
+      });
+      return current_image;
+    }
+  }, {
+    key: "abortImage",
+    value: function abortImage(image) {
+      image.controller.abort();
+      this.removeImage(image.id);
+    }
+  }, {
+    key: "uploadImage",
+    value: function uploadImage(image) {
+      var _this6 = this;
+
+      var form_data = new FormData();
+      form_data.append('image', image.file);
+      image = this.updateImage(image.id, {
+        controller: new AbortController()
+      });
+      fetch(routes.post_store, {
+        method: 'POST',
+        headers: {
+          'X-CSRF-TOKEN': token,
+          'Accept': 'application/json'
+        },
+        body: form_data,
+        signal: image.controller.signal
+      }).then(function (res) {
+        return res.json();
+      })["finally"](function () {}).then(function (data) {
+        console.log(data);
+
+        var current_image = _this6.updateImage(image.id, {
+          status: 'UPLOADED',
+          isAbort: undefined
+        });
+      })["catch"](function (error) {
+        console.log(error);
       });
     }
   }, {
@@ -25239,43 +26296,8 @@ function (_Component) {
       e.preventDefault();
     }
   }, {
-    key: "handleStep",
-    value: function handleStep(step) {
-      this.setState({
-        currentStep: step
-      });
-    }
-  }, {
     key: "componentDidUpdate",
-    value: function componentDidUpdate() {
-      var currentStep = this.state.currentStep;
-
-      if (!this.firstMedia && currentStep == 'media') {
-        this.addDropzone();
-        this.addImage();
-        this.firstMedia = true;
-      }
-
-      if (currentStep == 'caption') {
-        // destroy all libraries
-        if (this.simplemde) {
-          this.simplemde.toTextArea();
-          this.simplemde = null;
-        }
-
-        if (this.sortable) {
-          this.sortable.destroy();
-        } // init all libraries
-
-
-        this.sortable = sortablejs__WEBPACK_IMPORTED_MODULE_5__["default"].create(document.querySelector('.images'));
-        this.simplemde = new simplemde_dist_simplemde_min_js__WEBPACK_IMPORTED_MODULE_6___default.a({
-          element: document.querySelector('.simplemde'),
-          hideIcons: ['image', 'fullscreen', 'side-by-side', 'guide'],
-          status: false
-        });
-      }
-    }
+    value: function componentDidUpdate() {}
   }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {}
@@ -25286,11 +26308,53 @@ function (_Component) {
         title: e.target.value,
         slug: Object(_utils_slugify__WEBPACK_IMPORTED_MODULE_1__["default"])(e.target.value)
       });
+    } // thanks, dude! 
+    // https://stackoverflow.com/a/14919494/3690607
+
+  }, {
+    key: "humanFileSize",
+    value: function humanFileSize(bytes, si) {
+      var thresh = si ? 1000 : 1024;
+
+      if (Math.abs(bytes) < thresh) {
+        return bytes + ' B';
+      }
+
+      var units = si ? ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'] : ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
+      var u = -1;
+
+      do {
+        bytes /= thresh;
+        ++u;
+      } while (Math.abs(bytes) >= thresh && u < units.length - 1);
+
+      return bytes.toFixed(1) + ' ' + units[u];
+    }
+  }, {
+    key: "uploadingImageStatus",
+    value: function uploadingImageStatus() {
+      var images = this.state.images;
+      var uploading_image = images.filter(function (image) {
+        return image.status == 'UPLOADING';
+      });
+      var uploaded_image = images.filter(function (image) {
+        return image.status == 'UPLOADED';
+      });
+      return {
+        uploadingImage: uploading_image.length,
+        totalImage: images.length,
+        uploadedImage: uploaded_image.length
+      };
+    }
+  }, {
+    key: "isUploadingImage",
+    value: function isUploadingImage() {
+      return this.uploadingImageStatus().uploadingImage > 0 ? true : false;
     }
   }, {
     key: "render",
     value: function render() {
-      var _this6 = this;
+      var _this7 = this;
 
       var message = this.props.message;
       var _this$state = this.state,
@@ -25298,15 +26362,20 @@ function (_Component) {
           slug = _this$state.slug,
           images = _this$state.images,
           currentStep = _this$state.currentStep;
+
+      var _this$uploadingImageS = this.uploadingImageStatus(),
+          uploading_image = _this$uploadingImageS.uploadingImage,
+          total_image = _this$uploadingImageS.totalImage,
+          uploaded_image = _this$uploadingImageS.uploadedImage;
+
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container mx-auto px-4 sm:px-0"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "flex py-12 -mx-4 justify-center"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "w-full lg:w-6/12 px-4 md:w-8/12"
-      }, currentStep == 'basic' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
-        className: "border-2 border-gray-200 p-8 rounded",
-        autoComplete: "off"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "border-2 border-gray-200 p-8 rounded"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
         className: "text-indigo-600 text-xl font-semibold"
       }, "Buat Post"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
@@ -25322,85 +26391,100 @@ function (_Component) {
         className: "text-gray-600 border-2 border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600"
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
         className: "mt-2 text-sm text-indigo-600"
-      }, routes.single.replace(/slug/g, '') + slug)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "mb-6"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+      }, routes.single.replace(/slug/g, '') + slug)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
         className: "mb-1 text-sm inline-block text-gray-600"
       }, "Topik"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "text",
         name: "tags[]",
         className: "tags text-gray-600 border-2 border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600"
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-        className: "text-white cursor-pointer hover:bg-indigo-700 bg-indigo-600 p-4 block text-sm rounded shadow-md text-center",
-        onClick: this.handleStep.bind(this, 'media')
-      }, "Simpan & Lanjutkan")), currentStep == 'media' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
-        onSubmit: this.submitMedia.bind(this),
-        className: "border-2 border-gray-200 p-8 rounded",
-        autoComplete: "off"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", {
-        className: "text-indigo-600 text-xl font-semibold"
-      }, "Media"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
-        className: "mt-1 text-sm mb-4 text-gray-600"
-      }, "Pilih ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-        className: "tooltip cursor-help border-b-2 border-dotted border-black",
-        title: this.allowedImageTypes.join('\n')
-      }, "gambar"), " atau ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-        className: "cursor-help border-b-2 border-dotted border-black tooltip",
-        title: this.allowedVideoTypes.join('\n')
-      }, "video"), " yang hendak diunggah. Kamu dapat menentukan urutan media pada langkah berikutnya."), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "mb-6"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "flex image-files -mx-2 flex-wrap justify-center"
-      }, images.map(function (item) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(ImageTemplate, {
-          key: item.id,
-          id: item.id,
-          dirty: item.dirty,
-          onChange: _this6.handleImage.bind(_this6, item.id),
-          onRemove: _this6.handleRemove.bind(_this6, item.id),
-          url: item.url
-        });
-      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-        type: "submit",
-        className: "text-white cursor-pointer hover:bg-indigo-700 bg-indigo-600 p-4 block text-sm rounded shadow-md text-center block w-full"
-      }, "Unggah & Lanjutkan")), currentStep == 'caption' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
-        className: "border-2 border-gray-200 p-8 rounded",
-        autoComplete: "off"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", {
-        className: "text-indigo-600 text-xl font-semibold"
-      }, "Caption"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
-        className: "mt-1 text-sm mb-4 text-gray-600"
-      }, "Buat deskripsi untuk setiap media yang kamu unggah. Kamu juga dapat mengurutkan gambar bila belum sesuai."), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "mb-6"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "images counter flex -mx-1 overflow-auto"
-      }, images.map(function (item, index) {
-        if (item.url) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-            key: item.id,
-            className: "relative mx-1 flex-shrink-0"
-          }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-            className: "w-5 h-5 flex justify-center items-center bg-black text-white rounded-full absolute top-0 left-0 counter-item"
-          }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
-            src: item.url,
-            alt: item.url,
-            className: "w-20 h-20 object-cover rounded border-2 border-gray-200",
-            key: item.id
-          }));
-        }
       }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: ""
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("textarea", {
-        className: "simplemde"
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-        className: "text-white cursor-pointer hover:bg-indigo-700 bg-indigo-600 p-4 block text-sm rounded shadow-md text-center block",
-        onClick: this.handleStep.bind(this, 'caption')
-      }, "Unggah & Lanjutkan"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "mt-4 text-center"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-        onClick: this.handleStep.bind(this, 'media'),
-        className: "text-sm text-indigo-600 cursor-pointer"
-      }, "\u2039 Kembali")))))));
+        className: "border-2 border-gray-200 p-8 rounded mt-10"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", {
+        className: "text-indigo-600 mb-4 text-xl font-semibold"
+      }, "Media"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "mb-6"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "dropzone rounded-lg border-2 border-dashed border-gray-300 w-full flex items-center justify-center mb-4"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "p-20 text-center"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", {
+        className: "text-xl"
+      }, "Tarik gambar atau video kamu ke sini"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+        className: "text-sm mt-2 text-gray-600"
+      }, "Maksimal: 2MB. Format yang didukung: ", [].concat(_toConsumableArray(this.allowedImageTypesReadable), _toConsumableArray(this.allowedVideoTypesReadable)).join(', ')), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+        className: "mt-6 text-indigo-600 font-semibold"
+      }, "Browse"))), images.length > 0 && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "text-xs uppercase font-semibold tracking-wider mb-2 text-gray-600"
+      }, "Media yang dipilih ", this.isUploadingImage() ? '(' + uploaded_image + '/' + total_image + ')' : '')), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "image-files"
+      }, images.map(function (image) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          key: image.id,
+          className: "flex justify-center w-full mb-4 rounded border-2 border-gray-200 hover:border-gray-400"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "handle flex-shrink-0 p-2 items-center flex border-r-2 border-gray-200 bg-gray-100 mr-4 cursor-move"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("svg", {
+          xmlns: "http://www.w3.org/2000/svg",
+          className: "w-4 fill-current text-gray-600",
+          viewBox: "0 0 24 24"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("g", {
+          "data-name": "Layer 2"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("g", {
+          "data-name": "menu"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("rect", {
+          width: "24",
+          height: "24",
+          transform: "rotate(180 12 12)",
+          opacity: "0"
+        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("rect", {
+          x: "3",
+          y: "11",
+          width: "18",
+          height: "2",
+          rx: ".95",
+          ry: ".95"
+        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("rect", {
+          x: "3",
+          y: "16",
+          width: "18",
+          height: "2",
+          rx: ".95",
+          ry: ".95"
+        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("rect", {
+          x: "3",
+          y: "6",
+          width: "18",
+          height: "2",
+          rx: ".95",
+          ry: ".95"
+        }))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "w-16 h-16 mr-4 flex-shrink-0 py-4"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+          className: 'rounded' + (image.url ? '' : ' hidden'),
+          src: image.url ? image.url : null
+        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("video", {
+          className: "hidden",
+          controls: true
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("source", null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("canvas", {
+          className: "hidden"
+        })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "w-full py-4 pr-4"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: 'text-xs float-right font-semibold tracking-wider inline-block' + (image.status == 'UPLOADED' ? ' text-teal-600' : ' text-orange-600')
+        }, image.status), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "text-indigo-600 mb-1"
+        }, image.file.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "text-xs text-gray-600"
+        }, _this7.humanFileSize(image.file.size)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "flex mt-2 text-sm"
+        }, !image.isAbort && image.isAbort !== undefined && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "cursor-pointer text-red-600",
+          onClick: _this7.abortImage.bind(_this7, image)
+        }, "Batalkan"), image.isDirty && image.isAbort == undefined && !image.isAbort && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          onClick: _this7.removeImage.bind(_this7, image.id),
+          className: "text-red-600 cursor-pointer"
+        }, "Hapus"))));
+      }))))))));
     }
   }]);
 
