@@ -11805,6 +11805,11 @@ video {
   background-position: 10px center;
 }
 
+.absolutely-center {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 .tooltip {
   position: relative;
 }
@@ -11864,6 +11869,11 @@ video {
   background-size: 20px;
   background-repeat: no-repeat;
   background-position: 10px center;
+}
+
+.hover\:absolutely-center:hover {
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .hover\:tooltip:hover {
@@ -23212,6 +23222,11 @@ html {
     background-position: 10px center;
   }
 
+  .sm\:absolutely-center {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
   .sm\:tooltip {
     position: relative;
   }
@@ -23271,6 +23286,11 @@ html {
     background-size: 20px;
     background-repeat: no-repeat;
     background-position: 10px center;
+  }
+
+  .sm\:hover\:absolutely-center:hover {
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   .sm\:hover\:tooltip:hover {
@@ -34466,6 +34486,11 @@ html {
     background-position: 10px center;
   }
 
+  .md\:absolutely-center {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
   .md\:tooltip {
     position: relative;
   }
@@ -34525,6 +34550,11 @@ html {
     background-size: 20px;
     background-repeat: no-repeat;
     background-position: 10px center;
+  }
+
+  .md\:hover\:absolutely-center:hover {
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   .md\:hover\:tooltip:hover {
@@ -45720,6 +45750,11 @@ html {
     background-position: 10px center;
   }
 
+  .lg\:absolutely-center {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
   .lg\:tooltip {
     position: relative;
   }
@@ -45779,6 +45814,11 @@ html {
     background-size: 20px;
     background-repeat: no-repeat;
     background-position: 10px center;
+  }
+
+  .lg\:hover\:absolutely-center:hover {
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   .lg\:hover\:tooltip:hover {
@@ -56974,6 +57014,11 @@ html {
     background-position: 10px center;
   }
 
+  .xl\:absolutely-center {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
   .xl\:tooltip {
     position: relative;
   }
@@ -57033,6 +57078,11 @@ html {
     background-size: 20px;
     background-repeat: no-repeat;
     background-position: 10px center;
+  }
+
+  .xl\:hover\:absolutely-center:hover {
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   .xl\:hover\:tooltip:hover {

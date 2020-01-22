@@ -58,8 +58,8 @@ function nl_array_end($str)
 function key2str($k=false)
 {
 	$keys = [
-		'inspirations' => 'Inspirasi',
 		'pages' => 'Halaman Terkait',
+		'inspirations' => 'Inspirasi',
 		'tutorials' => 'Tutorial',
 		'helps' => 'Komunitas',
 		'examples' => 'Demo'

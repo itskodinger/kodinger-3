@@ -44,6 +44,10 @@ module.exports = {
 				backgroundRepeat: 'no-repeat',
 				backgroundPosition: '10px center',
 			},
+			'.absolutely-center': {
+				left: '50%',
+				transform: 'translateX(-50%)'
+			},
 			'.tooltip': {
 				position: 'relative'
 			},

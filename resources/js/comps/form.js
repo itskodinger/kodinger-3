@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import slugify from '../utils/slugify';
 import objExtend from '../utils/obj-extend';
+import Toast from './toast';
 import adds from '../utils/adds';
 import removes from '../utils/removes';
 import Sortable from 'sortablejs';
 import SimpleMDE from 'simplemde/dist/simplemde.min.js';
-import Tagify from '@yaireo/tagify';
 import 'simplemde/dist/simplemde.min.css';
+import Tagify from '@yaireo/tagify';
 
 class Form extends Component {
 
@@ -18,6 +19,13 @@ class Form extends Component {
 			slug: '',
 			tags: [],
 			images: [],
+			pages: [],
+			inspirations: [],
+			tutorials: [],
+			helps: [],
+			examples: [],
+
+			currentLinkKey: Object.keys(key2str)[0],
 		}
 
 		this.allowedVideoTypes = [
@@ -72,8 +80,13 @@ class Form extends Component {
 	componentDidMount() {
 		this.addTagify();
 		this.addSortable();
-		this.addSimplemde();
 		this.addDropzone();
+		this.addToast();
+		this.addSimplemde();
+	}
+
+	addToast() {
+		this.toast = new Toast();
 	}
 
 	addSortable() {
@@ -91,7 +104,7 @@ class Form extends Component {
 		if(el) {
 			this.simplemde = new SimpleMDE({
 				element: el,
-				hideIcons: ['image', 'fullscreen', 'side-by-side', 'guide'],
+				hideIcons: ['image', 'fullscreen', 'side-by-side', 'guide', 'heading-1'],
 				status: false
 			});
 		}
@@ -216,22 +229,41 @@ class Form extends Component {
 
 			let files = e.dataTransfer.files;
 
-			this.isUploadAllowed()
-			.then(() => {
-				if(files.length > 0) {
-					files = [].slice.call(files);
-					files.forEach((file) => {
-						this.validateImage({
-							selectedFile: file
-						})
-						.then(() => {
-							this.addImage({file}).then(({id, node}) => {
-								this.handleImage(id, node, file);
-							});
+			this.handleFiles(files);
+		});
+	}
+
+	handleFiles(files) {
+		if(!(files instanceof FileList))
+			files = files.target.files;
+
+		// check uploader first
+		this.isUploadAllowed()
+		.then(() => {
+			// if dataTransfer contains files
+			if(files.length > 0) {
+				// collect all files into an array
+				files = [].slice.call(files);
+				// iterate it
+				files.forEach((file) => {
+					// validate each file
+					this.validateImage({
+						selectedFile: file
+					})
+					.then(() => {
+						// if file is an valid image file
+						this.addImage({file}).then(({id, node}) => {
+							this.handleImage(id, node, file);
 						});
+					})
+					.catch((error) => {
+						this.toast.add(error);
 					});
-				}
-			});
+				});
+			}
+		})
+		.catch((error) => {
+			this.toast.add(error);
 		});
 	}
 
@@ -240,7 +272,7 @@ class Form extends Component {
 
 		return new Promise((resolve, reject) => {
 			if(title.trim().length < 1) {
-				return reject('Harap isi judul terlebih dahulu');
+				return reject('😢 Harap isi judul terlebih dahulu');
 			}
 
 			return resolve(true);
@@ -277,8 +309,8 @@ class Form extends Component {
 			this.setState(prevState => {
 				// collect images from previous state
 				let images = [
-						{id, file},
 						...prevState.images,
+						{id, file},
 					];
 
 				return {
@@ -298,11 +330,11 @@ class Form extends Component {
 	validateImage({selectedFile: selected_file}) {
 		return new Promise((resolve, reject) => {
 			if(!this.allowedMediaTypes.includes(selected_file.type)) {
-				return reject('Image type not supported');
+				return reject('🚷 Image type not supported');
 			}
 
 			if(selected_file.size > this.maxFileSize) {
-				return reject('Max size is 2 MB');
+				return reject('🐠 Max file size is 2 MB');
 			}
 
 			return resolve();
@@ -390,6 +422,16 @@ class Form extends Component {
 		});
 	}
 
+	findImageById(id) {
+		let images = this.state.images;
+
+		const current_image = images.find((item) => {
+			return item.id == id;
+		});
+
+		return current_image;
+	}
+
 	/**
 	 * Update image state by id
 	 * @param  {Integer} id  Image ID
@@ -401,9 +443,7 @@ class Form extends Component {
 		let images = this.state.images;
 
 		// find current image element in array by given id
-		const current_image = images.find((item) => {
-			return item.id == id;
-		});
+		const current_image = this.findImageById(id);
 
 		objExtend(current_image, obj);
 
@@ -452,40 +492,6 @@ class Form extends Component {
 		.catch(function(error) {
 			console.log(error);
 		});
-	}
-
-	submitMedia(e) {
-		e.preventDefault();
-		return this.handleStep('caption');
-
-		const body = this.state;
-
-		let form_data = new FormData();
-
-		form_data.append('title', body.title);
-		form_data.append('slug', body.slug);
-
-		body.images.forEach(image => {
-			form_data.append('images', image.file);
-		});
-
-		fetch(routes.post_store, {
-			method: 'POST',
-			headers: {
-			    'X-CSRF-TOKEN': token,
-			    'Accept': 'application/json'
-			},
-			body: form_data
-		})
-		.then(res => res.json())
-		.then(function(data) {
-			console.log(data);
-		})
-		.catch(function(error) {
-			console.log(error);
-		});
-
-		e.preventDefault();
 	}
 
 	componentDidUpdate() {
@@ -541,9 +547,112 @@ class Form extends Component {
 		return this.uploadingImageStatus().uploadingImage > 0 ? true : false;
 	}
 
+	/**
+	 * Set caption to the image by id
+	 */
+	setCaptionToImage() {
+		this.updateImage(this.currentImageId, {
+			caption: this.simplemde.value()
+		});
+
+		console.log(this.state.images);
+	}
+
+	/**
+	 * Caption autosave
+	 */
+	autoSaveCaption() {
+		// run auto-save after 2000s (when user has no activity on the textarea)
+		this.autoSaveTimeout = setTimeout(() => {
+			this.setCaptionToImage();
+		}, 2000);
+	}
+
+	/**
+	 * Show caption modal
+	 */
+	showCaptionModal() {
+		const caption_modal = $('.caption-modal');
+		caption_modal.classList.remove('hidden');
+
+		$('body').classList.add('overflow-hidden');
+	}
+
+	/**
+	 * Start captioning
+	 */
+	setCaption(id) {
+		this.currentImageId = id;
+
+		// current image object
+		const current_image = this.findImageById(id);
+
+		// set value
+		setTimeout(() => {
+			if(current_image.caption) this.simplemde.value(current_image.caption);
+			else this.simplemde.value('');
+		}, 0);
+
+		// show the modal first
+		this.showCaptionModal();
+
+		// start auto-saving
+		this.autoSaveCaption();
+		// when user typing
+		this.simplemde.codemirror.on('change', () => {
+			// clear the autosave timeout
+			clearTimeout(this.autoSaveTimeout);
+
+			// start auto-saving again
+			this.autoSaveCaption();
+		});
+	}
+
+	/**
+	 * Close caption modal
+	 */
+	closeCaptionModal() {
+		this.setCaptionToImage();
+
+		delete this.currentImageId;
+
+		clearTimeout(this.autoSaveTimeout);
+
+		const caption_modal = $('.caption-modal');
+		caption_modal.classList.add('hidden');
+
+		$('body').classList.remove('overflow-hidden');
+	}
+
+	/**
+	 * Set key to the current link key
+	 * @param {String} key String given
+	 */
+	setLinkKey(key) {
+		this.setState({
+			currentLinkKey: key
+		});
+	}
+
+	/**
+	 * Add link to the current key
+	 */
+	addLinkToKey() {
+		const {currentLinkKey: current_link_key} = this.state;
+		const current_link_data = this.state[current_link_key];
+
+		const new_link = new Object();
+		new_link[current_link_key] = [
+			...current_link_data,
+			{}
+		];
+
+		this.setState(new_link);
+	}
+
 	render() {
 		const { message } = this.props;
-		const { title, slug, images, currentStep } = this.state;
+		const { title, slug, images, currentLinkKey: current_link_key } = this.state;
 		const { 
 			uploadingImage: uploading_image, 
 			totalImage: total_image,
@@ -552,6 +661,18 @@ class Form extends Component {
 
 		return (
 			<>
+				<div className="caption-modal overflow-y-auto fixed top-0 left-0 w-full h-full flex z-20 items-start justify-center hidden">
+				    <div className="fixed bg-black opacity-50 w-screen h-screen"></div>
+				    <div className="p-10 my-0 md:my-10 sm:w-6/12 lg:w-6/12 md:w-8/12 w-full h-full md:h-auto bg-white relative md:rounded shadow-lg">
+				        <div onClick={this.closeCaptionModal.bind(this)} className="absolute top-0 right-0 bg-red-600 w-10 h-10 rounded-bl text-center cursor-pointer hover:bg-red-700 flex items-center justify-center"><svg className="inline-block w-6 fill-current text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="close"><rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"/><path d="M13.41 12l4.3-4.29a1 1 0 1 0-1.42-1.42L12 10.59l-4.29-4.3a1 1 0 0 0-1.42 1.42l4.3 4.29-4.3 4.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l4.29-4.3 4.29 4.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z"/></g></g></svg></div>
+				        <h2 className="text-xl font-bold">Tentukan Deskripsi</h2>
+				        <p className="text-sm text-gray-600 mt-2 leading-relaxed">Berikan deskripsi pada slide ini. Kamu dapat mengosongkan deskripsi bila tidak ada.</p>
+				        <div className="mt-6">
+				        	<textarea className="simplemde"></textarea>
+				        </div>
+				        <button onClick={this.closeCaptionModal.bind(this)} className="bg-indigo-600 p-6 text-sm text-white font-semibold rounded shadow block w-full text-center" type="button">Simpan Perubahan</button>
+				    </div>
+				</div>
 			    <div className="container mx-auto px-4 sm:px-0">
 			        <div className="flex py-12 -mx-4 justify-center">
 			            <div className="w-full lg:w-6/12 px-4 md:w-8/12">
@@ -574,19 +695,20 @@ class Form extends Component {
 						        <h2 className="text-indigo-600 mb-4 text-xl font-semibold">Media</h2>
 
 								<div className="mb-6">
-									<div className="dropzone rounded-lg border-2 border-dashed border-gray-300 w-full flex items-center justify-center mb-4">
+									<div className="dropzone rounded-lg border-2 border-dashed border-gray-300 w-full flex items-center justify-center">
 										<div className="p-20 text-center">
 											<h4 className="text-xl">Tarik gambar atau video kamu ke sini</h4>
 											<p className="text-sm mt-2 text-gray-600">
 												Maksimal: 2MB. Format yang didukung: {[...this.allowedImageTypesReadable, ...this.allowedVideoTypesReadable].join(', ')}
 											</p>
-											<p className="mt-6 text-indigo-600 font-semibold">Browse</p>
+											<label className="mt-6 text-indigo-600 font-semibold inline-block cursor-pointer" htmlFor="images-input">Browse</label>
+											<input type="file" multiple id="images-input" className="hidden" onChange={this.handleFiles.bind(this)} />
 										</div>
 									</div>
 
 									{images.length > 0 && (
 										<>
-											<div className="text-xs uppercase font-semibold tracking-wider mb-2 text-gray-600">
+											<div className="mt-6 text-xs uppercase font-semibold tracking-wider mb-2 text-gray-600">
 												Media yang dipilih { this.isUploadingImage() ? '(' + uploaded_image + '/' + total_image + ')' : '' }
 											</div>
 										</>
@@ -594,7 +716,7 @@ class Form extends Component {
 									<div className="image-files">
 										{ images.map((image) => {
 											return (
-												<div key={image.id} className="flex justify-center w-full mb-4 rounded border-2 border-gray-200 hover:border-gray-400">
+												<div key={image.id} className="bg-white flex justify-center w-full mb-4 rounded border-2 border-gray-200 hover:border-gray-400">
 													<div className="handle flex-shrink-0 p-2 items-center flex border-r-2 border-gray-200 bg-gray-100 mr-4 cursor-move">
 														<svg xmlns="http://www.w3.org/2000/svg" className="w-4 fill-current text-gray-600" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="menu"><rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"/><rect x="3" y="11" width="18" height="2" rx=".95" ry=".95"/><rect x="3" y="16" width="18" height="2" rx=".95" ry=".95"/><rect x="3" y="6" width="18" height="2" rx=".95" ry=".95"/></g></g></svg>
 													</div>
@@ -612,7 +734,10 @@ class Form extends Component {
 															<div className="cursor-pointer text-red-600" onClick={this.abortImage.bind(this, image)}>Batalkan</div>
 														}
 														{(image.isDirty && (image.isAbort == undefined && !image.isAbort)) &&
-															<div onClick={this.removeImage.bind(this, image.id)} className="text-red-600 cursor-pointer">Hapus</div>
+															<>
+																<div onClick={this.removeImage.bind(this, image.id)} className="text-red-600 cursor-pointer">Hapus</div>
+																<div onClick={this.setCaption.bind(this, image.id)} className="text-teal-600 cursor-pointer ml-4">Tentukan Deskripsi</div>
+															</>
 														}
 														</div>
 													</div>
@@ -622,6 +747,39 @@ class Form extends Component {
 									</div>
 								</div>
 							</div>
+							<div className="border-2 border-gray-200 p-8 rounded mt-10">
+						        <h2 className="text-indigo-600 mb-4 text-xl font-semibold">Tautan</h2>
+						        <p className="mb-4 mt-2 text-sm text-gray-600">Lampirkan beberapa tautan yang terkait dengan postingan ini, seperti halaman dokumentasi, demo, komunitas, dan tutorial.</p>
+
+						        <div className="flex mb-4">
+						        	{ Object.keys(key2str).map((name, index) => {
+							        	return (
+							        		<div 
+							        			onClick={this.setLinkKey.bind(this, name)}
+							        			key={name} 
+							        			className={'px-4 py-2 border-t border-r border-b '+ (current_link_key == name ? 'bg-indigo-600 text-white' : 'text-gray-600 hover:bg-gray-100') +' cursor-pointer border-gray-200 text-sm flex-1 justify-center flex items-center text-center' + (index == 0 ? ' border-l rounded-tl rounded-bl' : (index == Object.keys(key2str).length - 1 ? ' rounded-tr rounded-br' : ''))}
+							        		>
+							        			{key2str[name]}
+							        		</div>
+						        		);
+							        })}
+						        </div>
+
+			            		<div className="bg-gray-100 border border-gray-200 rounded p-4">
+		            				<div className="list">
+		            					{ this.state[current_link_key].map((link, index) => {
+				            				return (
+				            					<div key={index} className="bg-white shadow rounded mb-4 text-sm text-blue-500 flex">
+					            					<input tabIndex="2" type="text" name={'link-' + current_link_key} placeholder="Contoh: https://kodinger.com/tutorial-javascript" className="url w-full py-3 px-4 rounded outline-none" />
+					            					<div className="uppercase font-semibold bg-red-500 text-white px-4 flex items-center cursor-pointer hover:bg-red-600 rounded-tr rounded-br">Hapus</div>
+					            				</div>
+			            					);
+				            			})}
+				            		</div>
+
+			            			<div onClick={this.addLinkToKey.bind(this)} tabIndex="1" className="bg-white shadow rounded py-3 px-4 text-sm text-blue-500 text-center cursor-pointer hover:bg-indigo-600 hover:text-white">Tambah URL</div>
+			            		</div>
+					        </div>
 						</div>
 					</div>
 				</div>

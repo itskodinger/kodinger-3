@@ -25742,15 +25742,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _utils_slugify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/slugify */ "./resources/js/utils/slugify.js");
 /* harmony import */ var _utils_obj_extend__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/obj-extend */ "./resources/js/utils/obj-extend.js");
-/* harmony import */ var _utils_adds__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/adds */ "./resources/js/utils/adds.js");
-/* harmony import */ var _utils_removes__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/removes */ "./resources/js/utils/removes.js");
-/* harmony import */ var sortablejs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! sortablejs */ "./node_modules/sortablejs/modular/sortable.esm.js");
-/* harmony import */ var simplemde_dist_simplemde_min_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! simplemde/dist/simplemde.min.js */ "./node_modules/simplemde/dist/simplemde.min.js");
-/* harmony import */ var simplemde_dist_simplemde_min_js__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(simplemde_dist_simplemde_min_js__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _yaireo_tagify__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @yaireo/tagify */ "./node_modules/@yaireo/tagify/dist/tagify.min.js");
-/* harmony import */ var _yaireo_tagify__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_yaireo_tagify__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _toast__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./toast */ "./resources/js/comps/toast.js");
+/* harmony import */ var _utils_adds__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/adds */ "./resources/js/utils/adds.js");
+/* harmony import */ var _utils_removes__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/removes */ "./resources/js/utils/removes.js");
+/* harmony import */ var sortablejs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! sortablejs */ "./node_modules/sortablejs/modular/sortable.esm.js");
+/* harmony import */ var simplemde_dist_simplemde_min_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! simplemde/dist/simplemde.min.js */ "./node_modules/simplemde/dist/simplemde.min.js");
+/* harmony import */ var simplemde_dist_simplemde_min_js__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(simplemde_dist_simplemde_min_js__WEBPACK_IMPORTED_MODULE_7__);
 /* harmony import */ var simplemde_dist_simplemde_min_css__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! simplemde/dist/simplemde.min.css */ "./node_modules/simplemde/dist/simplemde.min.css");
 /* harmony import */ var simplemde_dist_simplemde_min_css__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(simplemde_dist_simplemde_min_css__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _yaireo_tagify__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @yaireo/tagify */ "./node_modules/@yaireo/tagify/dist/tagify.min.js");
+/* harmony import */ var _yaireo_tagify__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_yaireo_tagify__WEBPACK_IMPORTED_MODULE_9__);
 function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
 
 function _typeof(obj) {
@@ -25868,6 +25869,7 @@ function _setPrototypeOf(o, p) {
 
 
 
+
 var Form =
 /*#__PURE__*/
 function (_Component) {
@@ -25883,7 +25885,13 @@ function (_Component) {
       title: '',
       slug: '',
       tags: [],
-      images: []
+      images: [],
+      pages: [],
+      inspirations: [],
+      tutorials: [],
+      helps: [],
+      examples: [],
+      currentLinkKey: Object.keys(key2str)[0]
     };
     _this.allowedVideoTypes = ['video/mp4', 'video/webm', 'video/ogg'];
     _this.allowedVideoTypesReadable = ['mp4', 'webm', 'ogg'];
@@ -25911,14 +25919,20 @@ function (_Component) {
     value: function componentDidMount() {
       this.addTagify();
       this.addSortable();
-      this.addSimplemde();
       this.addDropzone();
+      this.addToast();
+      this.addSimplemde();
+    }
+  }, {
+    key: "addToast",
+    value: function addToast() {
+      this.toast = new _toast__WEBPACK_IMPORTED_MODULE_3__["default"]();
     }
   }, {
     key: "addSortable",
     value: function addSortable() {
       var el = document.querySelector('.image-files');
-      if (el) this.sortable = sortablejs__WEBPACK_IMPORTED_MODULE_5__["default"].create(el, {
+      if (el) this.sortable = sortablejs__WEBPACK_IMPORTED_MODULE_6__["default"].create(el, {
         handle: '.handle'
       });
     }
@@ -25928,9 +25942,9 @@ function (_Component) {
       var el = document.querySelector('.simplemde');
 
       if (el) {
-        this.simplemde = new simplemde_dist_simplemde_min_js__WEBPACK_IMPORTED_MODULE_6___default.a({
+        this.simplemde = new simplemde_dist_simplemde_min_js__WEBPACK_IMPORTED_MODULE_7___default.a({
           element: el,
-          hideIcons: ['image', 'fullscreen', 'side-by-side', 'guide'],
+          hideIcons: ['image', 'fullscreen', 'side-by-side', 'guide', 'heading-1'],
           status: false
         });
       }
@@ -25938,7 +25952,7 @@ function (_Component) {
   }, {
     key: "addTagify",
     value: function addTagify() {
-      this.tagify = new _yaireo_tagify__WEBPACK_IMPORTED_MODULE_7___default.a($('.tags'), {
+      this.tagify = new _yaireo_tagify__WEBPACK_IMPORTED_MODULE_9___default.a($('.tags'), {
         enforceWhitelist: true,
         whitelist: [],
         maxTags: 5,
@@ -26002,13 +26016,13 @@ function (_Component) {
       var dropzone = $('.dropzone');
 
       function onDragover() {
-        Object(_utils_removes__WEBPACK_IMPORTED_MODULE_4__["default"])(dropzone.classList, 'border-gray-300');
-        Object(_utils_adds__WEBPACK_IMPORTED_MODULE_3__["default"])(dropzone.classList, 'border-indigo-600 bg-indigo-100');
+        Object(_utils_removes__WEBPACK_IMPORTED_MODULE_5__["default"])(dropzone.classList, 'border-gray-300');
+        Object(_utils_adds__WEBPACK_IMPORTED_MODULE_4__["default"])(dropzone.classList, 'border-indigo-600 bg-indigo-100');
       }
 
       function onDragdone() {
-        Object(_utils_adds__WEBPACK_IMPORTED_MODULE_3__["default"])(dropzone.classList, 'border-gray-300');
-        Object(_utils_removes__WEBPACK_IMPORTED_MODULE_4__["default"])(dropzone.classList, 'border-indigo-600 bg-indigo-100');
+        Object(_utils_adds__WEBPACK_IMPORTED_MODULE_4__["default"])(dropzone.classList, 'border-gray-300');
+        Object(_utils_removes__WEBPACK_IMPORTED_MODULE_5__["default"])(dropzone.classList, 'border-indigo-600 bg-indigo-100');
       }
 
       dropzone.addEventListener('dragover', function (e) {
@@ -26026,25 +26040,43 @@ function (_Component) {
         onDragdone();
         var files = e.dataTransfer.files;
 
-        _this2.isUploadAllowed().then(function () {
-          if (files.length > 0) {
-            files = [].slice.call(files);
-            files.forEach(function (file) {
-              _this2.validateImage({
-                selectedFile: file
-              }).then(function () {
-                _this2.addImage({
-                  file: file
-                }).then(function (_ref) {
-                  var id = _ref.id,
-                      node = _ref.node;
+        _this2.handleFiles(files);
+      });
+    }
+  }, {
+    key: "handleFiles",
+    value: function handleFiles(files) {
+      var _this3 = this;
 
-                  _this2.handleImage(id, node, file);
-                });
+      if (!(files instanceof FileList)) files = files.target.files; // check uploader first
+
+      this.isUploadAllowed().then(function () {
+        // if dataTransfer contains files
+        if (files.length > 0) {
+          // collect all files into an array
+          files = [].slice.call(files); // iterate it
+
+          files.forEach(function (file) {
+            // validate each file
+            _this3.validateImage({
+              selectedFile: file
+            }).then(function () {
+              // if file is an valid image file
+              _this3.addImage({
+                file: file
+              }).then(function (_ref) {
+                var id = _ref.id,
+                    node = _ref.node;
+
+                _this3.handleImage(id, node, file);
               });
+            })["catch"](function (error) {
+              _this3.toast.add(error);
             });
-          }
-        });
+          });
+        }
+      })["catch"](function (error) {
+        _this3.toast.add(error);
       });
     }
   }, {
@@ -26053,7 +26085,7 @@ function (_Component) {
       var title = this.state.title;
       return new Promise(function (resolve, reject) {
         if (title.trim().length < 1) {
-          return reject('Harap isi judul terlebih dahulu');
+          return reject('😢 Harap isi judul terlebih dahulu');
         }
 
         return resolve(true);
@@ -26089,19 +26121,19 @@ function (_Component) {
   }, {
     key: "addImage",
     value: function addImage(_ref2) {
-      var _this3 = this;
+      var _this4 = this;
 
       var _ref2$file = _ref2.file,
           file = _ref2$file === void 0 ? undefined : _ref2$file;
       return new Promise(function (resolve, reject) {
-        var id = _this3.generateID();
+        var id = _this4.generateID();
 
-        _this3.setState(function (prevState) {
+        _this4.setState(function (prevState) {
           // collect images from previous state
-          var images = [{
+          var images = [].concat(_toConsumableArray(prevState.images), [{
             id: id,
             file: file
-          }].concat(_toConsumableArray(prevState.images));
+          }]);
           return {
             images: images
           };
@@ -26117,16 +26149,16 @@ function (_Component) {
   }, {
     key: "validateImage",
     value: function validateImage(_ref3) {
-      var _this4 = this;
+      var _this5 = this;
 
       var selected_file = _ref3.selectedFile;
       return new Promise(function (resolve, reject) {
-        if (!_this4.allowedMediaTypes.includes(selected_file.type)) {
-          return reject('Image type not supported');
+        if (!_this5.allowedMediaTypes.includes(selected_file.type)) {
+          return reject('🚷 Image type not supported');
         }
 
-        if (selected_file.size > _this4.maxFileSize) {
-          return reject('Max size is 2 MB');
+        if (selected_file.size > _this5.maxFileSize) {
+          return reject('🐠 Max file size is 2 MB');
         }
 
         return resolve();
@@ -26135,7 +26167,7 @@ function (_Component) {
   }, {
     key: "handleImage",
     value: function handleImage(id, element, selected_file) {
-      var _this5 = this;
+      var _this6 = this;
 
       var selected_file_type = selected_file ? selected_file.type : false;
       this.validateImage({
@@ -26143,7 +26175,7 @@ function (_Component) {
       }).then(function () {
         var promise_preview;
 
-        if (_this5.allowedImageTypes.includes(selected_file_type)) {
+        if (_this6.allowedImageTypes.includes(selected_file_type)) {
           promise_preview = function promise_preview() {
             return new Promise(function (resolve, reject) {
               var img = element.querySelector('img'); // set selected image into the src attribute via createObjectURL API
@@ -26158,7 +26190,7 @@ function (_Component) {
         } // if video
 
 
-        if (_this5.allowedVideoTypes.includes(selected_file_type)) {
+        if (_this6.allowedVideoTypes.includes(selected_file_type)) {
           promise_preview = function promise_preview() {
             return new Promise(function (resolve, reject) {
               var video = element.querySelector('video'),
@@ -26196,7 +26228,7 @@ function (_Component) {
         }
 
         promise_preview().then(function (url_media) {
-          var current_image = _this5.updateImage(id, {
+          var current_image = _this6.updateImage(id, {
             isDirty: true,
             status: 'UPLOADING',
             file: selected_file,
@@ -26204,9 +26236,18 @@ function (_Component) {
             url: url_media
           });
 
-          _this5.uploadImage(current_image);
+          _this6.uploadImage(current_image);
         });
       });
+    }
+  }, {
+    key: "findImageById",
+    value: function findImageById(id) {
+      var images = this.state.images;
+      var current_image = images.find(function (item) {
+        return item.id == id;
+      });
+      return current_image;
     }
     /**
      * Update image state by id
@@ -26221,9 +26262,7 @@ function (_Component) {
       // get images data from state
       var images = this.state.images; // find current image element in array by given id
 
-      var current_image = images.find(function (item) {
-        return item.id == id;
-      });
+      var current_image = this.findImageById(id);
       Object(_utils_obj_extend__WEBPACK_IMPORTED_MODULE_2__["default"])(current_image, obj);
       this.setState({
         images: images
@@ -26239,7 +26278,7 @@ function (_Component) {
   }, {
     key: "uploadImage",
     value: function uploadImage(image) {
-      var _this6 = this;
+      var _this7 = this;
 
       var form_data = new FormData();
       form_data.append('image', image.file);
@@ -26259,41 +26298,13 @@ function (_Component) {
       })["finally"](function () {}).then(function (data) {
         console.log(data);
 
-        var current_image = _this6.updateImage(image.id, {
+        var current_image = _this7.updateImage(image.id, {
           status: 'UPLOADED',
           isAbort: undefined
         });
       })["catch"](function (error) {
         console.log(error);
       });
-    }
-  }, {
-    key: "submitMedia",
-    value: function submitMedia(e) {
-      e.preventDefault();
-      return this.handleStep('caption');
-      var body = this.state;
-      var form_data = new FormData();
-      form_data.append('title', body.title);
-      form_data.append('slug', body.slug);
-      body.images.forEach(function (image) {
-        form_data.append('images', image.file);
-      });
-      fetch(routes.post_store, {
-        method: 'POST',
-        headers: {
-          'X-CSRF-TOKEN': token,
-          'Accept': 'application/json'
-        },
-        body: form_data
-      }).then(function (res) {
-        return res.json();
-      }).then(function (data) {
-        console.log(data);
-      })["catch"](function (error) {
-        console.log(error);
-      });
-      e.preventDefault();
     }
   }, {
     key: "componentDidUpdate",
@@ -26351,17 +26362,121 @@ function (_Component) {
     value: function isUploadingImage() {
       return this.uploadingImageStatus().uploadingImage > 0 ? true : false;
     }
+    /**
+     * Set caption to the image by id
+     */
+
+  }, {
+    key: "setCaptionToImage",
+    value: function setCaptionToImage() {
+      this.updateImage(this.currentImageId, {
+        caption: this.simplemde.value()
+      });
+      console.log(this.state.images);
+    }
+    /**
+     * Caption autosave
+     */
+
+  }, {
+    key: "autoSaveCaption",
+    value: function autoSaveCaption() {
+      var _this8 = this; // run auto-save after 2000s (when user has no activity on the textarea)
+
+
+      this.autoSaveTimeout = setTimeout(function () {
+        _this8.setCaptionToImage();
+      }, 2000);
+    }
+    /**
+     * Show caption modal
+     */
+
+  }, {
+    key: "showCaptionModal",
+    value: function showCaptionModal() {
+      var caption_modal = $('.caption-modal');
+      caption_modal.classList.remove('hidden');
+      $('body').classList.add('overflow-hidden');
+    }
+    /**
+     * Start captioning
+     */
+
+  }, {
+    key: "setCaption",
+    value: function setCaption(id) {
+      var _this9 = this;
+
+      this.currentImageId = id; // current image object
+
+      var current_image = this.findImageById(id); // set value
+
+      setTimeout(function () {
+        if (current_image.caption) _this9.simplemde.value(current_image.caption);else _this9.simplemde.value('');
+      }, 0); // show the modal first
+
+      this.showCaptionModal(); // start auto-saving
+
+      this.autoSaveCaption(); // when user typing
+
+      this.simplemde.codemirror.on('change', function () {
+        // clear the autosave timeout
+        clearTimeout(_this9.autoSaveTimeout); // start auto-saving again
+
+        _this9.autoSaveCaption();
+      });
+    }
+    /**
+     * Close caption modal
+     */
+
+  }, {
+    key: "closeCaptionModal",
+    value: function closeCaptionModal() {
+      this.setCaptionToImage();
+      delete this.currentImageId;
+      clearTimeout(this.autoSaveTimeout);
+      var caption_modal = $('.caption-modal');
+      caption_modal.classList.add('hidden');
+      $('body').classList.remove('overflow-hidden');
+    }
+    /**
+     * Set key to the current link key
+     * @param {String} key String given
+     */
+
+  }, {
+    key: "setLinkKey",
+    value: function setLinkKey(key) {
+      this.setState({
+        currentLinkKey: key
+      });
+    }
+    /**
+     * Add link to the current key
+     */
+
+  }, {
+    key: "addLinkToKey",
+    value: function addLinkToKey() {
+      var current_link_key = this.state.currentLinkKey;
+      var current_link_data = this.state[current_link_key];
+      var new_link = new Object();
+      new_link[current_link_key] = [].concat(_toConsumableArray(current_link_data), [{}]);
+      this.setState(new_link);
+    }
   }, {
     key: "render",
     value: function render() {
-      var _this7 = this;
+      var _this10 = this;
 
       var message = this.props.message;
       var _this$state = this.state,
           title = _this$state.title,
           slug = _this$state.slug,
           images = _this$state.images,
-          currentStep = _this$state.currentStep;
+          current_link_key = _this$state.currentLinkKey;
 
       var _this$uploadingImageS = this.uploadingImageStatus(),
           uploading_image = _this$uploadingImageS.uploadingImage,
@@ -26369,6 +26484,42 @@ function (_Component) {
           uploaded_image = _this$uploadingImageS.uploadedImage;
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "caption-modal overflow-y-auto fixed top-0 left-0 w-full h-full flex z-20 items-start justify-center hidden"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "fixed bg-black opacity-50 w-screen h-screen"
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "p-10 my-0 md:my-10 sm:w-6/12 lg:w-6/12 md:w-8/12 w-full h-full md:h-auto bg-white relative md:rounded shadow-lg"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        onClick: this.closeCaptionModal.bind(this),
+        className: "absolute top-0 right-0 bg-red-600 w-10 h-10 rounded-bl text-center cursor-pointer hover:bg-red-700 flex items-center justify-center"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("svg", {
+        className: "inline-block w-6 fill-current text-white",
+        xmlns: "http://www.w3.org/2000/svg",
+        viewBox: "0 0 24 24"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("g", {
+        "data-name": "Layer 2"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("g", {
+        "data-name": "close"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("rect", {
+        width: "24",
+        height: "24",
+        transform: "rotate(180 12 12)",
+        opacity: "0"
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("path", {
+        d: "M13.41 12l4.3-4.29a1 1 0 1 0-1.42-1.42L12 10.59l-4.29-4.3a1 1 0 0 0-1.42 1.42l4.3 4.29-4.3 4.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l4.29-4.3 4.29 4.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z"
+      }))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", {
+        className: "text-xl font-bold"
+      }, "Tentukan Deskripsi"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+        className: "text-sm text-gray-600 mt-2 leading-relaxed"
+      }, "Berikan deskripsi pada slide ini. Kamu dapat mengosongkan deskripsi bila tidak ada."), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "mt-6"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("textarea", {
+        className: "simplemde"
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        onClick: this.closeCaptionModal.bind(this),
+        className: "bg-indigo-600 p-6 text-sm text-white font-semibold rounded shadow block w-full text-center",
+        type: "button"
+      }, "Simpan Perubahan"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container mx-auto px-4 sm:px-0"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "flex py-12 -mx-4 justify-center"
@@ -26404,23 +26555,30 @@ function (_Component) {
       }, "Media"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "mb-6"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "dropzone rounded-lg border-2 border-dashed border-gray-300 w-full flex items-center justify-center mb-4"
+        className: "dropzone rounded-lg border-2 border-dashed border-gray-300 w-full flex items-center justify-center"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "p-20 text-center"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", {
         className: "text-xl"
       }, "Tarik gambar atau video kamu ke sini"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
         className: "text-sm mt-2 text-gray-600"
-      }, "Maksimal: 2MB. Format yang didukung: ", [].concat(_toConsumableArray(this.allowedImageTypesReadable), _toConsumableArray(this.allowedVideoTypesReadable)).join(', ')), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
-        className: "mt-6 text-indigo-600 font-semibold"
-      }, "Browse"))), images.length > 0 && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "text-xs uppercase font-semibold tracking-wider mb-2 text-gray-600"
+      }, "Maksimal: 2MB. Format yang didukung: ", [].concat(_toConsumableArray(this.allowedImageTypesReadable), _toConsumableArray(this.allowedVideoTypesReadable)).join(', ')), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+        className: "mt-6 text-indigo-600 font-semibold inline-block cursor-pointer",
+        htmlFor: "images-input"
+      }, "Browse"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        type: "file",
+        multiple: true,
+        id: "images-input",
+        className: "hidden",
+        onChange: this.handleFiles.bind(this)
+      }))), images.length > 0 && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "mt-6 text-xs uppercase font-semibold tracking-wider mb-2 text-gray-600"
       }, "Media yang dipilih ", this.isUploadingImage() ? '(' + uploaded_image + '/' + total_image + ')' : '')), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "image-files"
       }, images.map(function (image) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           key: image.id,
-          className: "flex justify-center w-full mb-4 rounded border-2 border-gray-200 hover:border-gray-400"
+          className: "bg-white flex justify-center w-full mb-4 rounded border-2 border-gray-200 hover:border-gray-400"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "handle flex-shrink-0 p-2 items-center flex border-r-2 border-gray-200 bg-gray-100 mr-4 cursor-move"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("svg", {
@@ -26475,16 +26633,54 @@ function (_Component) {
           className: "text-indigo-600 mb-1"
         }, image.file.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "text-xs text-gray-600"
-        }, _this7.humanFileSize(image.file.size)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        }, _this10.humanFileSize(image.file.size)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "flex mt-2 text-sm"
         }, !image.isAbort && image.isAbort !== undefined && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "cursor-pointer text-red-600",
-          onClick: _this7.abortImage.bind(_this7, image)
-        }, "Batalkan"), image.isDirty && image.isAbort == undefined && !image.isAbort && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          onClick: _this7.removeImage.bind(_this7, image.id),
+          onClick: _this10.abortImage.bind(_this10, image)
+        }, "Batalkan"), image.isDirty && image.isAbort == undefined && !image.isAbort && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          onClick: _this10.removeImage.bind(_this10, image.id),
           className: "text-red-600 cursor-pointer"
-        }, "Hapus"))));
-      }))))))));
+        }, "Hapus"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          onClick: _this10.setCaption.bind(_this10, image.id),
+          className: "text-teal-600 cursor-pointer ml-4"
+        }, "Tentukan Deskripsi")))));
+      })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "border-2 border-gray-200 p-8 rounded mt-10"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", {
+        className: "text-indigo-600 mb-4 text-xl font-semibold"
+      }, "Tautan"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+        className: "mb-4 mt-2 text-sm text-gray-600"
+      }, "Lampirkan beberapa tautan yang terkait dengan postingan ini, seperti halaman dokumentasi, demo, komunitas, dan tutorial."), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "flex mb-4"
+      }, Object.keys(key2str).map(function (name, index) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          onClick: _this10.setLinkKey.bind(_this10, name),
+          key: name,
+          className: 'px-4 py-2 border-t border-r border-b ' + (current_link_key == name ? 'bg-indigo-600 text-white' : 'text-gray-600 hover:bg-gray-100') + ' cursor-pointer border-gray-200 text-sm flex-1 justify-center flex items-center text-center' + (index == 0 ? ' border-l rounded-tl rounded-bl' : index == Object.keys(key2str).length - 1 ? ' rounded-tr rounded-br' : '')
+        }, key2str[name]);
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "bg-gray-100 border border-gray-200 rounded p-4"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "list"
+      }, this.state[current_link_key].map(function (link, index) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          key: index,
+          className: "bg-white shadow rounded mb-4 text-sm text-blue-500 flex"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+          tabIndex: "2",
+          type: "text",
+          name: 'link-' + current_link_key,
+          placeholder: "Contoh: https://kodinger.com/tutorial-javascript",
+          className: "url w-full py-3 px-4 rounded outline-none"
+        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "uppercase font-semibold bg-red-500 text-white px-4 flex items-center cursor-pointer hover:bg-red-600 rounded-tr rounded-br"
+        }, "Hapus"));
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        onClick: this.addLinkToKey.bind(this),
+        tabIndex: "1",
+        className: "bg-white shadow rounded py-3 px-4 text-sm text-blue-500 text-center cursor-pointer hover:bg-indigo-600 hover:text-white"
+      }, "Tambah URL")))))));
     }
   }]);
 
@@ -26492,6 +26688,126 @@ function (_Component) {
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
 
 /* harmony default export */ __webpack_exports__["default"] = (Form);
+
+/***/ }),
+
+/***/ "./resources/js/comps/toast.js":
+/*!*************************************!*\
+  !*** ./resources/js/comps/toast.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _utils_obj_extend__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/obj-extend */ "./resources/js/utils/obj-extend.js");
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
+
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
+
+
+
+var Toast =
+/*#__PURE__*/
+function () {
+  function Toast(options) {
+    _classCallCheck(this, Toast);
+
+    this.id = 'toast-' + this.generateID();
+    this.classes = {
+      wrapper: 'fixed absolutely-center bottom-0 p-4',
+      toast: 'bg-black text-white px-4 py-3 rounded text-sm mt-2 shadow'
+    };
+    this.options = Object(_utils_obj_extend__WEBPACK_IMPORTED_MODULE_0__["default"])({
+      timeout: 3000
+    }, options);
+    this.init();
+    return this;
+  }
+
+  _createClass(Toast, [{
+    key: "generateID",
+    value: function generateID() {
+      return new Date().valueOf();
+    }
+  }, {
+    key: "elementWrapper",
+    value: function elementWrapper() {
+      var template = "\n\t\t\t<div class=\"".concat(this.classes.wrapper, "\" id=\"").concat(this.id, "\">\n\t\t\t</div>\n\t\t");
+      return template;
+    }
+  }, {
+    key: "elementToast",
+    value: function elementToast(string) {
+      var id = 'toast-' + this.generateID();
+      var template = "\n\t\t\t<div class=\"".concat(this.classes.toast, "\" id=\"").concat(id, "\">\n\t\t\t\t").concat(string, "\n\t\t\t</div>\n\t\t");
+      return {
+        template: template,
+        id: id
+      };
+    }
+  }, {
+    key: "insertToast",
+    value: function insertToast(_ref) {
+      var _this = this;
+
+      var string = _ref.string;
+      var template = this.elementToast(string);
+      this.wrapper.insertAdjacentHTML('afterBegin', template.template);
+      setTimeout(function () {
+        _this.disposeToast(template.id);
+      }, this.options.timeout);
+    }
+  }, {
+    key: "disposeToast",
+    value: function disposeToast(element) {
+      if (typeof element == 'string') element = document.querySelector('#' + element);
+      element.remove();
+    }
+  }, {
+    key: "insertWrapper",
+    value: function insertWrapper() {
+      var body = document.body;
+      var wrapper = this.elementWrapper();
+      body.insertAdjacentHTML('beforeEnd', wrapper);
+      this.wrapper = document.querySelector('#' + this.id);
+    }
+  }, {
+    key: "init",
+    value: function init() {
+      this.insertWrapper();
+    }
+  }, {
+    key: "add",
+    value: function add(string) {
+      this.insertToast({
+        string: string
+      });
+    }
+  }]);
+
+  return Toast;
+}();
+
+/* harmony default export */ __webpack_exports__["default"] = (Toast);
 
 /***/ }),
 

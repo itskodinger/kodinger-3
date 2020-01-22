@@ -28,7 +28,7 @@ class PostApiController extends Controller
 	 */
 	public function store(Request $request)
 	{
-		sleep(5);
+		sleep(2);
 		return response()->json(['res' => $request->image->getClientOriginalName()]);
 	}
 
