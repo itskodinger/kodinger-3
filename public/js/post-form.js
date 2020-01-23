@@ -25741,17 +25741,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _utils_slugify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/slugify */ "./resources/js/utils/slugify.js");
-/* harmony import */ var _utils_obj_extend__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/obj-extend */ "./resources/js/utils/obj-extend.js");
-/* harmony import */ var _toast__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./toast */ "./resources/js/comps/toast.js");
-/* harmony import */ var _utils_adds__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/adds */ "./resources/js/utils/adds.js");
-/* harmony import */ var _utils_removes__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/removes */ "./resources/js/utils/removes.js");
-/* harmony import */ var sortablejs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! sortablejs */ "./node_modules/sortablejs/modular/sortable.esm.js");
-/* harmony import */ var simplemde_dist_simplemde_min_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! simplemde/dist/simplemde.min.js */ "./node_modules/simplemde/dist/simplemde.min.js");
-/* harmony import */ var simplemde_dist_simplemde_min_js__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(simplemde_dist_simplemde_min_js__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var simplemde_dist_simplemde_min_css__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! simplemde/dist/simplemde.min.css */ "./node_modules/simplemde/dist/simplemde.min.css");
-/* harmony import */ var simplemde_dist_simplemde_min_css__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(simplemde_dist_simplemde_min_css__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var _yaireo_tagify__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @yaireo/tagify */ "./node_modules/@yaireo/tagify/dist/tagify.min.js");
-/* harmony import */ var _yaireo_tagify__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_yaireo_tagify__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _utils_validate_url__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/validate-url */ "./resources/js/utils/validate-url.js");
+/* harmony import */ var _utils_obj_extend__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/obj-extend */ "./resources/js/utils/obj-extend.js");
+/* harmony import */ var _toast__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./toast */ "./resources/js/comps/toast.js");
+/* harmony import */ var _utils_adds__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/adds */ "./resources/js/utils/adds.js");
+/* harmony import */ var _utils_removes__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/removes */ "./resources/js/utils/removes.js");
+/* harmony import */ var sortablejs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! sortablejs */ "./node_modules/sortablejs/modular/sortable.esm.js");
+/* harmony import */ var simplemde_dist_simplemde_min_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! simplemde/dist/simplemde.min.js */ "./node_modules/simplemde/dist/simplemde.min.js");
+/* harmony import */ var simplemde_dist_simplemde_min_js__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(simplemde_dist_simplemde_min_js__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var simplemde_dist_simplemde_min_css__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! simplemde/dist/simplemde.min.css */ "./node_modules/simplemde/dist/simplemde.min.css");
+/* harmony import */ var simplemde_dist_simplemde_min_css__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(simplemde_dist_simplemde_min_css__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _yaireo_tagify__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @yaireo/tagify */ "./node_modules/@yaireo/tagify/dist/tagify.min.js");
+/* harmony import */ var _yaireo_tagify__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_yaireo_tagify__WEBPACK_IMPORTED_MODULE_10__);
 function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
 
 function _typeof(obj) {
@@ -25870,6 +25871,10 @@ function _setPrototypeOf(o, p) {
 
 
 
+/**
+ * INI HARUSNYA SEPARATION OF CONCERN AWKOAWKOWAK
+ */
+
 var Form =
 /*#__PURE__*/
 function (_Component) {
@@ -25926,13 +25931,13 @@ function (_Component) {
   }, {
     key: "addToast",
     value: function addToast() {
-      this.toast = new _toast__WEBPACK_IMPORTED_MODULE_3__["default"]();
+      this.toast = new _toast__WEBPACK_IMPORTED_MODULE_4__["default"]();
     }
   }, {
     key: "addSortable",
     value: function addSortable() {
       var el = document.querySelector('.image-files');
-      if (el) this.sortable = sortablejs__WEBPACK_IMPORTED_MODULE_6__["default"].create(el, {
+      if (el) this.sortable = sortablejs__WEBPACK_IMPORTED_MODULE_7__["default"].create(el, {
         handle: '.handle'
       });
     }
@@ -25942,7 +25947,7 @@ function (_Component) {
       var el = document.querySelector('.simplemde');
 
       if (el) {
-        this.simplemde = new simplemde_dist_simplemde_min_js__WEBPACK_IMPORTED_MODULE_7___default.a({
+        this.simplemde = new simplemde_dist_simplemde_min_js__WEBPACK_IMPORTED_MODULE_8___default.a({
           element: el,
           hideIcons: ['image', 'fullscreen', 'side-by-side', 'guide', 'heading-1'],
           status: false
@@ -25952,7 +25957,7 @@ function (_Component) {
   }, {
     key: "addTagify",
     value: function addTagify() {
-      this.tagify = new _yaireo_tagify__WEBPACK_IMPORTED_MODULE_9___default.a($('.tags'), {
+      this.tagify = new _yaireo_tagify__WEBPACK_IMPORTED_MODULE_10___default.a($('.tags'), {
         enforceWhitelist: true,
         whitelist: [],
         maxTags: 5,
@@ -26016,13 +26021,13 @@ function (_Component) {
       var dropzone = $('.dropzone');
 
       function onDragover() {
-        Object(_utils_removes__WEBPACK_IMPORTED_MODULE_5__["default"])(dropzone.classList, 'border-gray-300');
-        Object(_utils_adds__WEBPACK_IMPORTED_MODULE_4__["default"])(dropzone.classList, 'border-indigo-600 bg-indigo-100');
+        Object(_utils_removes__WEBPACK_IMPORTED_MODULE_6__["default"])(dropzone.classList, 'border-gray-300');
+        Object(_utils_adds__WEBPACK_IMPORTED_MODULE_5__["default"])(dropzone.classList, 'border-indigo-600 bg-indigo-100');
       }
 
       function onDragdone() {
-        Object(_utils_adds__WEBPACK_IMPORTED_MODULE_4__["default"])(dropzone.classList, 'border-gray-300');
-        Object(_utils_removes__WEBPACK_IMPORTED_MODULE_5__["default"])(dropzone.classList, 'border-indigo-600 bg-indigo-100');
+        Object(_utils_adds__WEBPACK_IMPORTED_MODULE_5__["default"])(dropzone.classList, 'border-gray-300');
+        Object(_utils_removes__WEBPACK_IMPORTED_MODULE_6__["default"])(dropzone.classList, 'border-indigo-600 bg-indigo-100');
       }
 
       dropzone.addEventListener('dragover', function (e) {
@@ -26263,7 +26268,7 @@ function (_Component) {
       var images = this.state.images; // find current image element in array by given id
 
       var current_image = this.findImageById(id);
-      Object(_utils_obj_extend__WEBPACK_IMPORTED_MODULE_2__["default"])(current_image, obj);
+      Object(_utils_obj_extend__WEBPACK_IMPORTED_MODULE_3__["default"])(current_image, obj);
       this.setState({
         images: images
       });
@@ -26452,6 +26457,36 @@ function (_Component) {
       this.setState({
         currentLinkKey: key
       });
+      this.checkButtonLinkDisabled();
+    }
+    /**
+     * Validate link
+     * @return {String} Link 	Link to be tested
+     */
+
+  }, {
+    key: "validateLink",
+    value: function validateLink(link) {
+      if (link.trim().length < 1) {
+        return false;
+      } else if (!Object(_utils_validate_url__WEBPACK_IMPORTED_MODULE_2__["default"])(link)) {
+        return false;
+      }
+
+      return true;
+    }
+  }, {
+    key: "allLinkInput",
+    value: function allLinkInput() {
+      var current_link_key = this.state.currentLinkKey;
+      var all_current_input = document.querySelectorAll('[name=link-' + current_link_key + ']');
+      return all_current_input;
+    }
+  }, {
+    key: "lastLinkInput",
+    value: function lastLinkInput() {
+      var all_current_input = this.allLinkInput();
+      return all_current_input[all_current_input.length - 1];
     }
     /**
      * Add link to the current key
@@ -26460,16 +26495,170 @@ function (_Component) {
   }, {
     key: "addLinkToKey",
     value: function addLinkToKey() {
+      var _this10 = this;
+
       var current_link_key = this.state.currentLinkKey;
       var current_link_data = this.state[current_link_key];
-      var new_link = new Object();
-      new_link[current_link_key] = [].concat(_toConsumableArray(current_link_data), [{}]);
-      this.setState(new_link);
+      var last_value = current_link_data[current_link_data.length - 1];
+
+      var add_new_empty_link = function add_new_empty_link() {
+        var new_link = {};
+        new_link[current_link_key] = current_link_data;
+        new_link[current_link_key].push({
+          id: _this10.generateID(),
+          value: ''
+        });
+
+        _this10.setState(new_link);
+      }; // first time link
+
+
+      if (current_link_data.length == 0) {
+        add_new_empty_link();
+      }
+
+      var invalid_input = this.getAllInvalidInputLink();
+
+      if (invalid_input.length < 1) {
+        setTimeout(function () {
+          _this10.lastLinkInput().focus();
+        }, 0);
+      }
+
+      if (invalid_input.length > 0) {
+        invalid_input[0].focus();
+      }
+
+      if (last_value && this.validateLink(last_value.value) && invalid_input.length < 1) {
+        add_new_empty_link();
+      }
+
+      this.checkButtonLinkDisabled();
+    }
+  }, {
+    key: "currentLinkData",
+    value: function currentLinkData() {
+      var current_link_key = this.state.currentLinkKey;
+      var current_link_data = this.state[current_link_key];
+      return current_link_data;
+    }
+    /**
+     * Set link value to the state by id 
+     * @param {Integer} id Link id
+     * @param {String} value  Value to be added
+     */
+
+  }, {
+    key: "setLinkValueById",
+    value: function setLinkValueById(id, value) {
+      var current_link_data = this.currentLinkData();
+      var current_link_key = this.state.currentLinkKey;
+      var current_link_object = current_link_data.find(function (item) {
+        return item.id == id;
+      });
+      current_link_object.value = value;
+      var updated_link_data = {};
+      updated_link_data[current_link_key] = _toConsumableArray(current_link_data);
+      this.setState(updated_link_data);
+    }
+    /**
+     * On link input blur
+     * @param  {Integer} id State id
+     * @param  {Event} 	 e     Input event
+     */
+
+  }, {
+    key: "linkInputHandle",
+    value: function linkInputHandle(id, e) {
+      this.setLinkValueById(id, e.target.value);
+    }
+    /**
+     * Get all invalid input links
+     * @return 	{Array}
+     */
+
+  }, {
+    key: "getAllInvalidInputLink",
+    value: function getAllInvalidInputLink() {
+      var _this11 = this;
+
+      var invalid = [],
+          current_input_name = 'link-' + this.state.currentLinkKey;
+      document.querySelectorAll('[name=' + current_input_name + ']').forEach(function (input) {
+        if (!_this11.validateLink(input.value)) {
+          invalid.push(input);
+        }
+      });
+      return invalid;
+    }
+  }, {
+    key: "removeLinkFromKey",
+    value: function removeLinkFromKey(id) {
+      var current_link_data = this.currentLinkData();
+      var current_link_key = this.state.currentLinkKey;
+      var updated_link_data = {};
+      updated_link_data[current_link_key] = _toConsumableArray(current_link_data.filter(function (item) {
+        return item.id !== id;
+      }));
+      this.setState(updated_link_data);
+      this.checkButtonLinkDisabled();
+    }
+  }, {
+    key: "linkKeydownHandle",
+    value: function linkKeydownHandle(e) {
+      if (e.target) {
+        var all_link_input = [].slice.call(this.allLinkInput()),
+            current = all_link_input.indexOf(e.target);
+
+        if (current == all_link_input.length - 1) {
+          if (e.keyCode == 9) {
+            e.preventDefault();
+            this.addLinkToKey();
+          }
+        }
+      }
+    }
+  }, {
+    key: "linkKeyupHandle",
+    value: function linkKeyupHandle(e) {
+      this.checkButtonLinkDisabled();
+    }
+  }, {
+    key: "checkButtonLinkDisabled",
+    value: function checkButtonLinkDisabled() {
+      var _this12 = this;
+
+      setTimeout(function () {
+        var invalid = _this12.getAllInvalidInputLink();
+
+        var current_link_data = _this12.currentLinkData();
+
+        var submit_btn = document.querySelector('.add-link-btn');
+
+        function enable_button() {
+          submit_btn.classList.remove('pointer-events-none');
+          submit_btn.classList.remove('opacity-75');
+        }
+
+        function disable_button() {
+          submit_btn.classList.add('pointer-events-none');
+          submit_btn.classList.add('opacity-75');
+        } // first time
+
+
+        if (current_link_data.length < 1) return enable_button();
+
+        if (invalid.length < 1 && current_link_data.length > 0) {
+          enable_button();
+        } else {
+          disable_button();
+        }
+      }, 0);
     }
   }, {
     key: "render",
     value: function render() {
-      var _this10 = this;
+      var _this13 = this;
 
       var message = this.props.message;
       var _this$state = this.state,
@@ -26633,16 +26822,16 @@ function (_Component) {
           className: "text-indigo-600 mb-1"
         }, image.file.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "text-xs text-gray-600"
-        }, _this10.humanFileSize(image.file.size)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        }, _this13.humanFileSize(image.file.size)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "flex mt-2 text-sm"
         }, !image.isAbort && image.isAbort !== undefined && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "cursor-pointer text-red-600",
-          onClick: _this10.abortImage.bind(_this10, image)
+          onClick: _this13.abortImage.bind(_this13, image)
         }, "Batalkan"), image.isDirty && image.isAbort == undefined && !image.isAbort && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          onClick: _this10.removeImage.bind(_this10, image.id),
+          onClick: _this13.removeImage.bind(_this13, image.id),
           className: "text-red-600 cursor-pointer"
         }, "Hapus"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          onClick: _this10.setCaption.bind(_this10, image.id),
+          onClick: _this13.setCaption.bind(_this13, image.id),
           className: "text-teal-600 cursor-pointer ml-4"
         }, "Tentukan Deskripsi")))));
       })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -26655,7 +26844,7 @@ function (_Component) {
         className: "flex mb-4"
       }, Object.keys(key2str).map(function (name, index) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          onClick: _this10.setLinkKey.bind(_this10, name),
+          onClick: _this13.setLinkKey.bind(_this13, name),
           key: name,
           className: 'px-4 py-2 border-t border-r border-b ' + (current_link_key == name ? 'bg-indigo-600 text-white' : 'text-gray-600 hover:bg-gray-100') + ' cursor-pointer border-gray-200 text-sm flex-1 justify-center flex items-center text-center' + (index == 0 ? ' border-l rounded-tl rounded-bl' : index == Object.keys(key2str).length - 1 ? ' rounded-tr rounded-br' : '')
         }, key2str[name]);
@@ -26663,23 +26852,28 @@ function (_Component) {
         className: "bg-gray-100 border border-gray-200 rounded p-4"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "list"
-      }, this.state[current_link_key].map(function (link, index) {
+      }, this.state[current_link_key].map(function (link, id) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          key: index,
+          key: link.id,
           className: "bg-white shadow rounded mb-4 text-sm text-blue-500 flex"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+          onKeyDown: _this13.linkKeydownHandle.bind(_this13),
+          onKeyUp: _this13.linkKeyupHandle.bind(_this13),
+          onChange: _this13.linkInputHandle.bind(_this13, link.id),
           tabIndex: "2",
           type: "text",
           name: 'link-' + current_link_key,
           placeholder: "Contoh: https://kodinger.com/tutorial-javascript",
-          className: "url w-full py-3 px-4 rounded outline-none"
+          className: "url w-full py-3 px-4 rounded outline-none",
+          defaultValue: link.value
         }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          onClick: _this13.removeLinkFromKey.bind(_this13, link.id),
           className: "uppercase font-semibold bg-red-500 text-white px-4 flex items-center cursor-pointer hover:bg-red-600 rounded-tr rounded-br"
         }, "Hapus"));
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         onClick: this.addLinkToKey.bind(this),
         tabIndex: "1",
-        className: "bg-white shadow rounded py-3 px-4 text-sm text-blue-500 text-center cursor-pointer hover:bg-indigo-600 hover:text-white"
+        className: "add-link-btn bg-white shadow rounded py-3 px-4 text-sm text-blue-500 text-center cursor-pointer hover:bg-indigo-600 hover:text-white"
       }, "Tambah URL")))))));
     }
   }]);
@@ -27067,6 +27261,28 @@ __webpack_require__.r(__webpack_exports__);
   .replace(/^-+/, "") // trim - from start of text
   .replace(/-+$/, "");
 });
+
+/***/ }),
+
+/***/ "./resources/js/utils/validate-url.js":
+/*!********************************************!*\
+  !*** ./resources/js/utils/validate-url.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/**
+ * URL string validation
+ * @param  {String} value The string to be tested
+ * @return {Boolean}
+ */
+function validateUrl(value) {
+  return /^(?:(?:(?:https?):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(value);
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (validateUrl);
 
 /***/ }),
 

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import slugify from '../utils/slugify';
+import validateUrl from '../utils/validate-url';
 import objExtend from '../utils/obj-extend';
 import Toast from './toast';
 import adds from '../utils/adds';
@@ -8,6 +9,10 @@ import Sortable from 'sortablejs';
 import SimpleMDE from 'simplemde/dist/simplemde.min.js';
 import 'simplemde/dist/simplemde.min.css';
 import Tagify from '@yaireo/tagify';
+
+/**
+ * INI HARUSNYA SEPARATION OF CONCERN AWKOAWKOWAK
+ */
 
 class Form extends Component {
 
@@ -632,6 +637,35 @@ class Form extends Component {
 		this.setState({
 			currentLinkKey: key
 		});
+
+		this.checkButtonLinkDisabled();
+	}
+
+	/**
+	 * Validate link
+	 * @return {String} Link 	Link to be tested
+	 */
+	validateLink(link) {
+		if(link.trim().length < 1) {
+			return false;
+		}else if(!validateUrl(link)) {
+			return false;
+		}
+
+		return true;
+	}
+
+	allLinkInput() {
+		const current_link_key = this.state.currentLinkKey;
+		const all_current_input = document.querySelectorAll('[name=link-' + current_link_key + ']');
+
+		return all_current_input;
+	}
+
+	lastLinkInput() {
+		const all_current_input = this.allLinkInput();
+
+		return all_current_input[all_current_input.length - 1];
 	}
 
 	/**
@@ -640,14 +674,160 @@ class Form extends Component {
 	addLinkToKey() {
 		const {currentLinkKey: current_link_key} = this.state;
 		const current_link_data = this.state[current_link_key];
+		const last_value = current_link_data[current_link_data.length - 1];
 
-		const new_link = new Object();
-		new_link[current_link_key] = [
-			...current_link_data,
-			{}
+		const add_new_empty_link = () => {
+			const new_link = {};
+			new_link[current_link_key] = current_link_data;
+			new_link[current_link_key].push({id: this.generateID(), value: ''});
+			
+			this.setState(new_link);
+		}
+
+		// first time link
+		if(current_link_data.length == 0) {
+			add_new_empty_link();
+		}
+
+		const invalid_input = this.getAllInvalidInputLink();
+
+		if(invalid_input.length < 1) {
+			setTimeout(() => {
+				this.lastLinkInput().focus();
+			}, 0);
+		}
+
+		if(invalid_input.length > 0) {
+			invalid_input[0].focus();
+		}
+
+		if(
+			last_value && 
+			this.validateLink(last_value.value) &&
+			invalid_input.length < 1
+		) {
+			add_new_empty_link();
+		}
+
+		this.checkButtonLinkDisabled();
+	}
+
+	currentLinkData() {
+		const {currentLinkKey: current_link_key} = this.state;
+		const current_link_data = this.state[current_link_key];
+
+		return current_link_data;	
+	}
+
+	/**
+	 * Set link value to the state by id 
+	 * @param {Integer} id Link id
+	 * @param {String} value  Value to be added
+	 */
+	setLinkValueById(id, value) {
+		const current_link_data = this.currentLinkData();
+		const current_link_key = this.state.currentLinkKey;
+
+		const current_link_object = current_link_data.find((item) =>{
+			return item.id == id;
+		});
+
+		current_link_object.value = value;
+
+		const updated_link_data = {};
+		updated_link_data[current_link_key] = [
+			...current_link_data
 		];
 
-		this.setState(new_link);
+		this.setState(updated_link_data);
+	}
+
+	/**
+	 * On link input blur
+	 * @param  {Integer} id State id
+	 * @param  {Event} 	 e     Input event
+	 */
+	linkInputHandle(id, e) {
+		this.setLinkValueById(id, e.target.value);
+	}
+
+	/**
+	 * Get all invalid input links
+	 * @return 	{Array}
+	 */
+	getAllInvalidInputLink() {
+		let invalid = [], current_input_name = 'link-' + this.state.currentLinkKey;
+
+		document.querySelectorAll('[name=' + current_input_name + ']').forEach((input) => {
+			if(!this.validateLink(input.value)) {
+				invalid.push(input);
+			}
+		});
+
+		return invalid;
+	}
+
+	removeLinkFromKey(id) {
+		const current_link_data = this.currentLinkData();
+		const current_link_key = this.state.currentLinkKey;
+
+		const updated_link_data = {};
+		updated_link_data[current_link_key] = [
+			...current_link_data.filter((item) => {
+				return item.id !== id;
+			})
+		];
+
+		this.setState(updated_link_data);
+
+		this.checkButtonLinkDisabled();
+	}
+
+	linkKeydownHandle(e) {
+		if(e.target) {
+			let all_link_input = [].slice.call(this.allLinkInput()),
+				current = all_link_input.indexOf(e.target);
+
+			if(current == all_link_input.length - 1) {
+				if(e.keyCode == 9) {
+					e.preventDefault();
+					
+					this.addLinkToKey();
+				}
+			}
+		}
+	}
+
+	linkKeyupHandle(e) {
+		this.checkButtonLinkDisabled();
+	}
+
+	checkButtonLinkDisabled() {
+		setTimeout(() => {
+			const invalid = this.getAllInvalidInputLink();
+			const current_link_data = this.currentLinkData();
+
+			let submit_btn = document.querySelector('.add-link-btn');
+
+			function enable_button() {
+				submit_btn.classList.remove('pointer-events-none');
+				submit_btn.classList.remove('opacity-75');
+			}
+
+			function disable_button() {
+				submit_btn.classList.add('pointer-events-none');
+				submit_btn.classList.add('opacity-75');								
+			}
+
+			// first time
+			if(current_link_data.length < 1) return enable_button();
+
+			if(invalid.length < 1 && current_link_data.length > 0) {
+				enable_button();
+			}else{
+				disable_button();
+			}
+		}, 0);
 	}
 
 	render() {
@@ -767,17 +947,17 @@ class Form extends Component {
 
 			            		<div className="bg-gray-100 border border-gray-200 rounded p-4">
 		            				<div className="list">
-		            					{ this.state[current_link_key].map((link, index) => {
+		            					{ this.state[current_link_key].map((link, id) => {
 				            				return (
-				            					<div key={index} className="bg-white shadow rounded mb-4 text-sm text-blue-500 flex">
-					            					<input tabIndex="2" type="text" name={'link-' + current_link_key} placeholder="Contoh: https://kodinger.com/tutorial-javascript" className="url w-full py-3 px-4 rounded outline-none" />
-					            					<div className="uppercase font-semibold bg-red-500 text-white px-4 flex items-center cursor-pointer hover:bg-red-600 rounded-tr rounded-br">Hapus</div>
+				            					<div key={link.id} className="bg-white shadow rounded mb-4 text-sm text-blue-500 flex">
+					            					<input onKeyDown={this.linkKeydownHandle.bind(this)} onKeyUp={this.linkKeyupHandle.bind(this)} onChange={this.linkInputHandle.bind(this, link.id)} tabIndex="2" type="text" name={'link-' + current_link_key} placeholder="Contoh: https://kodinger.com/tutorial-javascript" className="url w-full py-3 px-4 rounded outline-none" defaultValue={link.value} />
+					            					<div onClick={this.removeLinkFromKey.bind(this, link.id)} className="uppercase font-semibold bg-red-500 text-white px-4 flex items-center cursor-pointer hover:bg-red-600 rounded-tr rounded-br">Hapus</div>
 					            				</div>
 			            					);
 				            			})}
 				            		</div>
 
-			            			<div onClick={this.addLinkToKey.bind(this)} tabIndex="1" className="bg-white shadow rounded py-3 px-4 text-sm text-blue-500 text-center cursor-pointer hover:bg-indigo-600 hover:text-white">Tambah URL</div>
+			            			<div onClick={this.addLinkToKey.bind(this)} tabIndex="1" className="add-link-btn bg-white shadow rounded py-3 px-4 text-sm text-blue-500 text-center cursor-pointer hover:bg-indigo-600 hover:text-white">Tambah URL</div>
 			            		</div>
 					        </div>
 						</div>
