@@ -5,7 +5,7 @@ class Toast {
 		this.id = 'toast-' + this.generateID();
 		this.classes = {
 			wrapper: 'fixed absolutely-center bottom-0 p-4',
-			toast: 'bg-black text-white px-4 py-3 rounded text-sm mt-2 shadow'
+			toast: 'anim-fade-up bg-black text-white px-4 py-3 rounded text-sm mt-2 shadow'
 		};
 
 		this.options = objExtend({

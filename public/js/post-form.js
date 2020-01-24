@@ -25769,6 +25769,55 @@ function _typeof(obj) {
   return _typeof(obj);
 }
 
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    if (enumerableOnly) symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    });
+    keys.push.apply(keys, symbols);
+  }
+
+  return keys;
+}
+
+function _objectSpread(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
+    if (i % 2) {
+      ownKeys(source, true).forEach(function (key) {
+        _defineProperty(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      ownKeys(source).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+
+  return target;
+}
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
 function _toConsumableArray(arr) {
   return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();
 }
@@ -25887,8 +25936,11 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Form).call(this, props));
     _this.state = {
+      id: false,
       title: '',
       slug: '',
+      slugDirty: false,
+      keyword: '',
       tags: [],
       images: [],
       pages: [],
@@ -25903,7 +25955,8 @@ function (_Component) {
     _this.allowedImageTypes = ['image/png', 'image/jpeg', 'image/bmp', 'image/png', 'image/webp', 'image/svg+xml'];
     _this.allowedImageTypesReadable = ['png', 'jpeg', 'bmp', 'png', 'webp', 'svg'];
     _this.allowedMediaTypes = [].concat(_toConsumableArray(_this.allowedImageTypes), _toConsumableArray(_this.allowedVideoTypes));
-    _this.maxFileSize = 2000000;
+    _this.maxFileSize = 2000000; // 2 mb
+
     return _this;
   }
 
@@ -25920,6 +25973,35 @@ function (_Component) {
       }
     }
   }, {
+    key: "setID",
+    value: function setID(id) {
+      if (this.state.id !== undefined) return false;
+      this.setState({
+        id: id
+      });
+      this.autoSaveAll();
+    }
+  }, {
+    key: "saveAll",
+    value: function saveAll(data) {
+      console.log('Saved', data);
+    }
+  }, {
+    key: "autoSaveAll",
+    value: function autoSaveAll(data) {
+      var _this2 = this;
+
+      this.autoSaveAllTimeout = setTimeout(function () {
+        _this2.saveAll(data);
+      }, 2000);
+    }
+  }, {
+    key: "startAutoSaveAll",
+    value: function startAutoSaveAll(data) {
+      clearTimeout(this.autoSaveAllTimeout);
+      this.autoSaveAll(data);
+    }
+  }, {
     key: "componentDidMount",
     value: function componentDidMount() {
       this.addTagify();
@@ -25927,6 +26009,13 @@ function (_Component) {
       this.addDropzone();
       this.addToast();
       this.addSimplemde();
+      this.addControllerForm();
+    }
+  }, {
+    key: "addControllerForm",
+    value: function addControllerForm() {
+      var nav_empty_wrapper = document.querySelector('.nav-empty-wrapper');
+      nav_empty_wrapper.insertAdjacentHTML('beforeEnd', "<div class=\"ml-auto flex items-center\">\n\t\t\t\t<div class=\"text-gray-600 text-sm mr-6\">\n\t\t\t\t\tSaved\n\t\t\t\t</div>\n\t\t\t\t<button class=\"items-center bg-gradient text-white px-4 py-2 text-sm rounded mr-6 shadow-md hover:shadow-none flex\">\n\t\t\t\t\tPublish Post\n\t\t\t\t</button>\n\t\t\t</div>");
     }
   }, {
     key: "addToast",
@@ -25961,6 +26050,7 @@ function (_Component) {
         enforceWhitelist: true,
         whitelist: [],
         maxTags: 5,
+        editTags: false,
         skipInvalid: true,
         dropdown: {
           highlightFirst: true,
@@ -25969,10 +26059,10 @@ function (_Component) {
         placeholder: 'Pilih maksimal 5 tag',
         templates: {
           wrapper: function wrapper(input, settings) {
-            return "<tags class=\"tagify focus-within:border-indigo-600 ".concat(settings.mode ? "tagify--" + settings.mode : "", " ").concat(input.className, "\"\n\t                            ").concat(settings.readonly ? 'readonly aria-readonly="true"' : 'aria-haspopup="listbox" aria-expanded="false"', "\n\t                            role=\"tagslist\">\n\t\t\t\t\t\t            <span contenteditable data-placeholder=\"").concat(settings.placeholder || '&#8203;', "\" aria-placeholder=\"").concat(settings.placeholder || '', "\"\n\t\t\t\t\t                    class=\"tagify__input p-0 m-0 py-1 inline-block\"\n\t\t\t\t\t                    role=\"textbox\"\n\t\t\t\t\t                    aria-controls=\"dropdown\"\n\t\t\t\t\t                    aria-autocomplete=\"both\"\n\t\t\t\t\t                    aria-multiline=\"").concat(settings.mode == 'mix' ? true : false, "\"></span>\n                            </tags>");
+            return "<tags class=\"tagify focus-within:border-indigo-600 ".concat(settings.mode ? "tagify--" + settings.mode : "", " ").concat(input.className, "\"\n\t                            ").concat(settings.readonly ? 'readonly aria-readonly="true"' : 'aria-haspopup="listbox" aria-expanded="false"', "\n\t                            role=\"tagslist\">\n\t\t\t\t\t\t            <span tabindex=\"3\" contenteditable data-placeholder=\"").concat(settings.placeholder || '&#8203;', "\" aria-placeholder=\"").concat(settings.placeholder || '', "\"\n\t\t\t\t\t                    class=\"tagify__input p-0 m-0 py-1 inline-block\"\n\t\t\t\t\t                    role=\"textbox\"\n\t\t\t\t\t                    aria-controls=\"dropdown\"\n\t\t\t\t\t                    aria-autocomplete=\"both\"\n\t\t\t\t\t                    aria-multiline=\"").concat(settings.mode == 'mix' ? true : false, "\"></span>\n                            </tags>");
           },
           tag: function tag(value, tagData) {
-            return "\n\t\t\t                <tag title='".concat(tagData.title || value, "'\n\t\t                                contenteditable='false'\n\t\t                                spellcheck='false'\n\t\t                                class='tagify__tag m-0 mr-2 rounded ").concat(tagData['class'] ? tagData['class'] : "", "'\n\t\t                                ").concat(this.getAttributes(tagData), ">\n\t\t\t                        <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>\n\t\t\t                        <div>\n\t\t                                <span class='tagify__tag-text'>").concat(value, "</span>\n\t\t\t                        </div>\n\t\t\t                </tag>");
+            return "\n\t\t\t                <tag title='".concat(tagData.title || value, "'\n\t\t                                contenteditable='false'\n\t\t                                spellcheck='false'\n\t\t                                class='tagify__tag m-0 mr-2 rounded ").concat(tagData['class'] ? tagData['class'] : "", "'\n\t\t                                ").concat(this.getAttributes(tagData), ">\n\t\t\t                        <div>\n\t\t                                <span class='tagify__tag-text'>").concat(value, "</span>\n\t\t\t                        </div>\n\t\t\t                </tag>");
           },
           dropdownItem: function dropdownItem(item) {
             var mapValueTo = this.settings.dropdown.mapValueTo,
@@ -25989,6 +26079,8 @@ function (_Component) {
        */
 
       tagify.on('input', onInput);
+      tagify.on('add', this.tagAddHandle.bind(this));
+      tagify.on('remove', this.tagRemoveHandle.bind(this));
       /**
        * Tagify on input handler
        * @param  {Object} e Event
@@ -26010,13 +26102,37 @@ function (_Component) {
           (_tagify$settings$whit = tagify.settings.whitelist).splice.apply(_tagify$settings$whit, [0, whitelist.length].concat(_toConsumableArray(whitelist)));
 
           tagify.loading(false).dropdown.show.call(tagify, value);
-        });
+        })["catch"](function (err) {});
       }
+    }
+  }, {
+    key: "tagAddHandle",
+    value: function tagAddHandle(e) {
+      var old_tags = this.state.tags;
+      var tags = [].concat(_toConsumableArray(old_tags), [e.detail.data.id]);
+      this.setState({
+        tags: tags
+      });
+      this.startAutoSaveAll(tags);
+    }
+  }, {
+    key: "tagRemoveHandle",
+    value: function tagRemoveHandle(e) {
+      var old_tags = this.state.tags;
+
+      var tags = _toConsumableArray(old_tags.filter(function (tag) {
+        return tag !== e.detail.data.id;
+      }));
+
+      this.setState({
+        tags: tags
+      });
+      this.startAutoSaveAll(tags);
     }
   }, {
     key: "addDropzone",
     value: function addDropzone() {
-      var _this2 = this;
+      var _this3 = this;
 
       var dropzone = $('.dropzone');
 
@@ -26045,13 +26161,13 @@ function (_Component) {
         onDragdone();
         var files = e.dataTransfer.files;
 
-        _this2.handleFiles(files);
+        _this3.handleFiles(files);
       });
     }
   }, {
     key: "handleFiles",
     value: function handleFiles(files) {
-      var _this3 = this;
+      var _this4 = this;
 
       if (!(files instanceof FileList)) files = files.target.files; // check uploader first
 
@@ -26063,25 +26179,25 @@ function (_Component) {
 
           files.forEach(function (file) {
             // validate each file
-            _this3.validateImage({
+            _this4.validateImage({
               selectedFile: file
             }).then(function () {
               // if file is an valid image file
-              _this3.addImage({
+              _this4.addImage({
                 file: file
               }).then(function (_ref) {
                 var id = _ref.id,
                     node = _ref.node;
 
-                _this3.handleImage(id, node, file);
+                _this4.handleImage(id, node, file);
               });
             })["catch"](function (error) {
-              _this3.toast.add(error);
+              _this4.toast.add(error);
             });
           });
         }
       })["catch"](function (error) {
-        _this3.toast.add(error);
+        _this4.toast.add(error);
       });
     }
   }, {
@@ -26090,7 +26206,7 @@ function (_Component) {
       var title = this.state.title;
       return new Promise(function (resolve, reject) {
         if (title.trim().length < 1) {
-          return reject('😢 Harap isi judul terlebih dahulu');
+          return reject('😢&nbsp; Harap isi judul terlebih dahulu');
         }
 
         return resolve(true);
@@ -26126,14 +26242,14 @@ function (_Component) {
   }, {
     key: "addImage",
     value: function addImage(_ref2) {
-      var _this4 = this;
+      var _this5 = this;
 
       var _ref2$file = _ref2.file,
           file = _ref2$file === void 0 ? undefined : _ref2$file;
       return new Promise(function (resolve, reject) {
-        var id = _this4.generateID();
+        var id = _this5.generateID();
 
-        _this4.setState(function (prevState) {
+        _this5.setState(function (prevState) {
           // collect images from previous state
           var images = [].concat(_toConsumableArray(prevState.images), [{
             id: id,
@@ -26154,16 +26270,16 @@ function (_Component) {
   }, {
     key: "validateImage",
     value: function validateImage(_ref3) {
-      var _this5 = this;
+      var _this6 = this;
 
       var selected_file = _ref3.selectedFile;
       return new Promise(function (resolve, reject) {
-        if (!_this5.allowedMediaTypes.includes(selected_file.type)) {
-          return reject('🚷 Image type not supported');
+        if (!_this6.allowedMediaTypes.includes(selected_file.type)) {
+          return reject("\uD83D\uDEB7&nbsp; Jenis berkas ".concat(selected_file.name, " tidak didukung"));
         }
 
-        if (selected_file.size > _this5.maxFileSize) {
-          return reject('🐠 Max file size is 2 MB');
+        if (selected_file.size > _this6.maxFileSize) {
+          return reject('🐠&nbsp; Ukuran berkas maks. 2MB');
         }
 
         return resolve();
@@ -26172,7 +26288,7 @@ function (_Component) {
   }, {
     key: "handleImage",
     value: function handleImage(id, element, selected_file) {
-      var _this6 = this;
+      var _this7 = this;
 
       var selected_file_type = selected_file ? selected_file.type : false;
       this.validateImage({
@@ -26180,7 +26296,7 @@ function (_Component) {
       }).then(function () {
         var promise_preview;
 
-        if (_this6.allowedImageTypes.includes(selected_file_type)) {
+        if (_this7.allowedImageTypes.includes(selected_file_type)) {
           promise_preview = function promise_preview() {
             return new Promise(function (resolve, reject) {
               var img = element.querySelector('img'); // set selected image into the src attribute via createObjectURL API
@@ -26195,7 +26311,7 @@ function (_Component) {
         } // if video
 
 
-        if (_this6.allowedVideoTypes.includes(selected_file_type)) {
+        if (_this7.allowedVideoTypes.includes(selected_file_type)) {
           promise_preview = function promise_preview() {
             return new Promise(function (resolve, reject) {
               var video = element.querySelector('video'),
@@ -26233,7 +26349,7 @@ function (_Component) {
         }
 
         promise_preview().then(function (url_media) {
-          var current_image = _this6.updateImage(id, {
+          var current_image = _this7.updateImage(id, {
             isDirty: true,
             status: 'UPLOADING',
             file: selected_file,
@@ -26241,7 +26357,7 @@ function (_Component) {
             url: url_media
           });
 
-          _this6.uploadImage(current_image);
+          _this7.uploadImage(current_image);
         });
       });
     }
@@ -26283,9 +26399,11 @@ function (_Component) {
   }, {
     key: "uploadImage",
     value: function uploadImage(image) {
-      var _this7 = this;
+      var _this8 = this;
 
+      var id = this.state.id.id;
       var form_data = new FormData();
+      if (id) form_data.append('id', id);
       form_data.append('image', image.file);
       image = this.updateImage(image.id, {
         controller: new AbortController()
@@ -26303,9 +26421,11 @@ function (_Component) {
       })["finally"](function () {}).then(function (data) {
         console.log(data);
 
-        var current_image = _this7.updateImage(image.id, {
+        var current_image = _this8.updateImage(image.id, {
           status: 'UPLOADED',
-          isAbort: undefined
+          isAbort: undefined,
+          prod_url: data.res // change later
+
         });
       })["catch"](function (error) {
         console.log(error);
@@ -26318,12 +26438,55 @@ function (_Component) {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {}
   }, {
+    key: "keywordOnInput",
+    value: function keywordOnInput(e) {
+      var keyword = e.target.value;
+      this.setState({
+        keyword: keyword
+      });
+      this.startAutoSaveAll({
+        keyword: keyword
+      });
+    }
+  }, {
     key: "titleOnInput",
     value: function titleOnInput(e) {
+      var title = e.target.value;
+      var data = {
+        title: title
+      };
+      var auto_save_data = {
+        title: title
+      };
+
+      if (!this.state.slugDirty) {
+        data = _objectSpread({}, data, {
+          slug: Object(_utils_slugify__WEBPACK_IMPORTED_MODULE_1__["default"])(title)
+        });
+        auto_save_data = _objectSpread({}, auto_save_data, {
+          slug: Object(_utils_slugify__WEBPACK_IMPORTED_MODULE_1__["default"])(title)
+        });
+      }
+
+      this.setState(data);
+      this.startAutoSaveAll(auto_save_data);
+    }
+  }, {
+    key: "slugOnInput",
+    value: function slugOnInput(e) {
+      var slug = Object(_utils_slugify__WEBPACK_IMPORTED_MODULE_1__["default"])(e.target.value);
       this.setState({
-        title: e.target.value,
-        slug: Object(_utils_slugify__WEBPACK_IMPORTED_MODULE_1__["default"])(e.target.value)
+        slug: slug,
+        slugDirty: true
       });
+      this.startAutoSaveAll({
+        slug: slug
+      });
+    }
+  }, {
+    key: "slugOnBlur",
+    value: function slugOnBlur(e) {
+      e.target.value = this.state.slug;
     } // thanks, dude! 
     // https://stackoverflow.com/a/14919494/3690607
 
@@ -26367,6 +26530,29 @@ function (_Component) {
     value: function isUploadingImage() {
       return this.uploadingImageStatus().uploadingImage > 0 ? true : false;
     }
+  }, {
+    key: "flattenedImageFormat",
+    value: function flattenedImageFormat() {
+      var auto_save = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+      var images = this.state.images;
+      var new_images = [];
+      images.forEach(function (_ref4) {
+        var status = _ref4.status,
+            caption = _ref4.caption,
+            url = _ref4.prod_url;
+
+        if (status == 'UPLOADED') {
+          new_images.push({
+            caption: caption,
+            url: url
+          });
+        }
+      });
+      if (auto_save) this.startAutoSaveAll({
+        content: new_images
+      });
+      return new_images;
+    }
     /**
      * Set caption to the image by id
      */
@@ -26374,10 +26560,10 @@ function (_Component) {
   }, {
     key: "setCaptionToImage",
     value: function setCaptionToImage() {
-      this.updateImage(this.currentImageId, {
+      var images = this.updateImage(this.currentImageId, {
         caption: this.simplemde.value()
       });
-      console.log(this.state.images);
+      this.flattenedImageFormat(true);
     }
     /**
      * Caption autosave
@@ -26386,11 +26572,11 @@ function (_Component) {
   }, {
     key: "autoSaveCaption",
     value: function autoSaveCaption() {
-      var _this8 = this; // run auto-save after 2000s (when user has no activity on the textarea)
+      var _this9 = this; // run auto-save after 2000s (when user has no activity on the textarea)
 
 
       this.autoSaveTimeout = setTimeout(function () {
-        _this8.setCaptionToImage();
+        _this9.setCaptionToImage();
       }, 2000);
     }
     /**
@@ -26411,25 +26597,23 @@ function (_Component) {
   }, {
     key: "setCaption",
     value: function setCaption(id) {
-      var _this9 = this;
+      var _this10 = this;
 
       this.currentImageId = id; // current image object
 
       var current_image = this.findImageById(id); // set value
 
       setTimeout(function () {
-        if (current_image.caption) _this9.simplemde.value(current_image.caption);else _this9.simplemde.value('');
+        if (current_image.caption) _this10.simplemde.value(current_image.caption);else _this10.simplemde.value('');
       }, 0); // show the modal first
 
-      this.showCaptionModal(); // start auto-saving
-
-      this.autoSaveCaption(); // when user typing
+      this.showCaptionModal(); // when user typing
 
       this.simplemde.codemirror.on('change', function () {
         // clear the autosave timeout
-        clearTimeout(_this9.autoSaveTimeout); // start auto-saving again
+        clearTimeout(_this10.autoSaveTimeout); // start auto-saving again
 
-        _this9.autoSaveCaption();
+        _this10.autoSaveCaption();
       });
     }
     /**
@@ -26495,7 +26679,7 @@ function (_Component) {
   }, {
     key: "addLinkToKey",
     value: function addLinkToKey() {
-      var _this10 = this;
+      var _this11 = this;
 
       var current_link_key = this.state.currentLinkKey;
       var current_link_data = this.state[current_link_key];
@@ -26505,11 +26689,11 @@ function (_Component) {
         var new_link = {};
         new_link[current_link_key] = current_link_data;
         new_link[current_link_key].push({
-          id: _this10.generateID(),
+          id: _this11.generateID(),
           value: ''
         });
 
-        _this10.setState(new_link);
+        _this11.setState(new_link);
       }; // first time link
 
 
@@ -26521,7 +26705,7 @@ function (_Component) {
 
       if (invalid_input.length < 1) {
         setTimeout(function () {
-          _this10.lastLinkInput().focus();
+          _this11.lastLinkInput().focus();
         }, 0);
       }
 
@@ -26543,6 +26727,30 @@ function (_Component) {
       return current_link_data;
     }
     /**
+     * Transform link object to flattened array
+     * @param 	{Object} 	data 		Data to be flattened
+     * @param 	{Boolean} 	auto_save 	Run autosave?
+     * @return 	{Array} 	 			Flattened array
+     */
+
+  }, {
+    key: "flattenLinkFormat",
+    value: function flattenLinkFormat(data) {
+      var auto_save = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      var new_data = [];
+      data[this.state.currentLinkKey].forEach(function (item) {
+        new_data.push(item.value);
+      });
+      var new_data_output = [];
+      new_data_output[this.state.currentLinkKey] = new_data; // auto save link if there's no invalid link
+
+      if (this.getAllInvalidInputLink().length < 1 && auto_save) {
+        this.startAutoSaveAll(new_data_output);
+      }
+
+      return new_data_output;
+    }
+    /**
      * Set link value to the state by id 
      * @param {Integer} id Link id
      * @param {String} value  Value to be added
@@ -26560,6 +26768,7 @@ function (_Component) {
       var updated_link_data = {};
       updated_link_data[current_link_key] = _toConsumableArray(current_link_data);
       this.setState(updated_link_data);
+      this.flattenLinkFormat(updated_link_data, true);
     }
     /**
      * On link input blur
@@ -26580,12 +26789,12 @@ function (_Component) {
   }, {
     key: "getAllInvalidInputLink",
     value: function getAllInvalidInputLink() {
-      var _this11 = this;
+      var _this12 = this;
 
       var invalid = [],
           current_input_name = 'link-' + this.state.currentLinkKey;
       document.querySelectorAll('[name=' + current_input_name + ']').forEach(function (input) {
-        if (!_this11.validateLink(input.value)) {
+        if (!_this12.validateLink(input.value)) {
           invalid.push(input);
         }
       });
@@ -26601,6 +26810,7 @@ function (_Component) {
         return item.id !== id;
       }));
       this.setState(updated_link_data);
+      this.flattenLinkFormat(updated_link_data, true);
       this.checkButtonLinkDisabled();
     }
   }, {
@@ -26626,12 +26836,12 @@ function (_Component) {
   }, {
     key: "checkButtonLinkDisabled",
     value: function checkButtonLinkDisabled() {
-      var _this12 = this;
+      var _this13 = this;
 
       setTimeout(function () {
-        var invalid = _this12.getAllInvalidInputLink();
+        var invalid = _this13.getAllInvalidInputLink();
 
-        var current_link_data = _this12.currentLinkData();
+        var current_link_data = _this13.currentLinkData();
 
         var submit_btn = document.querySelector('.add-link-btn');
 
@@ -26658,7 +26868,7 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this13 = this;
+      var _this14 = this;
 
       var message = this.props.message;
       var _this$state = this.state,
@@ -26728,16 +26938,49 @@ function (_Component) {
         onChange: this.titleOnInput.bind(this),
         type: "text",
         name: "title",
-        className: "text-gray-600 border-2 border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600"
+        className: "text-gray-600 border-2 border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600",
+        autoComplete: "off",
+        tabIndex: "1"
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "mb-6 mt-6"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+        className: "mb-1 text-sm inline-block text-gray-600"
+      }, "Slug"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        onChange: this.slugOnInput.bind(this),
+        onBlur: this.slugOnBlur.bind(this),
+        type: "text",
+        name: "slug",
+        className: "text-gray-600 border-2 border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600",
+        autoComplete: "off",
+        defaultValue: slug,
+        tabIndex: "2"
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
         className: "mt-2 text-sm text-indigo-600"
-      }, routes.single.replace(/slug/g, '') + slug)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+      }, routes.single.replace(/slug/g, '') + slug)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "mb-6"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
         className: "mb-1 text-sm inline-block text-gray-600"
       }, "Topik"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "text",
         name: "tags[]",
-        className: "tags text-gray-600 border-2 border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600"
-      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "tags text-gray-600 border-2 border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600",
+        tabIndex: "3"
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+        className: "mb-1 text-sm inline-block text-gray-600"
+      }, "Design Keyword ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        className: "text-xs"
+      }, "(Optional)")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        onChange: this.keywordOnInput.bind(this),
+        type: "text",
+        name: "keyword",
+        className: "text-gray-600 border-2 border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600",
+        tabIndex: "4"
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+        className: "mt-2 text-xs text-indigo-600"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        className: "tooltip cursor-help border-b border-dotted border-indigo-600",
+        "data-title": "Keyword ini bukan untuk SEO, melainkan digunakan untuk mencari inspirasi desain ke situs di luar Kodinger, seperti Dribbble, Behance, atau Uplabs. Jadi, bila kamu sedang membahas library carousel, maka kamu dapat mengisi keyword dengan 'carousel'. Lalu, sistem akan menggunakan kata 'carousel' tadi untuk digunakan sebagai keyword pencarian ke 3 situs tadi."
+      }, "Saya harus mengisi ini dengan apa?")))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "border-2 border-gray-200 p-8 rounded mt-10"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", {
         className: "text-indigo-600 mb-4 text-xl font-semibold"
@@ -26753,7 +26996,8 @@ function (_Component) {
         className: "text-sm mt-2 text-gray-600"
       }, "Maksimal: 2MB. Format yang didukung: ", [].concat(_toConsumableArray(this.allowedImageTypesReadable), _toConsumableArray(this.allowedVideoTypesReadable)).join(', ')), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
         className: "mt-6 text-indigo-600 font-semibold inline-block cursor-pointer",
-        htmlFor: "images-input"
+        htmlFor: "images-input",
+        tabIndex: "5"
       }, "Browse"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "file",
         multiple: true,
@@ -26822,29 +27066,31 @@ function (_Component) {
           className: "text-indigo-600 mb-1"
         }, image.file.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "text-xs text-gray-600"
-        }, _this13.humanFileSize(image.file.size)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        }, _this14.humanFileSize(image.file.size)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "flex mt-2 text-sm"
         }, !image.isAbort && image.isAbort !== undefined && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "cursor-pointer text-red-600",
-          onClick: _this13.abortImage.bind(_this13, image)
+          onClick: _this14.abortImage.bind(_this14, image)
         }, "Batalkan"), image.isDirty && image.isAbort == undefined && !image.isAbort && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          onClick: _this13.removeImage.bind(_this13, image.id),
+          onClick: _this14.removeImage.bind(_this14, image.id),
           className: "text-red-600 cursor-pointer"
         }, "Hapus"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          onClick: _this13.setCaption.bind(_this13, image.id),
+          onClick: _this14.setCaption.bind(_this14, image.id),
           className: "text-teal-600 cursor-pointer ml-4"
         }, "Tentukan Deskripsi")))));
       })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "border-2 border-gray-200 p-8 rounded mt-10"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", {
         className: "text-indigo-600 mb-4 text-xl font-semibold"
-      }, "Tautan"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+      }, "Tautan ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        className: "text-xs text-gray-600"
+      }, "(Optional)")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
         className: "mb-4 mt-2 text-sm text-gray-600"
-      }, "Lampirkan beberapa tautan yang terkait dengan postingan ini, seperti halaman dokumentasi, demo, komunitas, dan tutorial."), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "flex mb-4"
+      }, "Post yang baik menyertakan beberapa referensi yang dingunakan sebagai dasar pikiran."), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "flex mb-4 overflow-x-auto flex-no-wrap"
       }, Object.keys(key2str).map(function (name, index) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          onClick: _this13.setLinkKey.bind(_this13, name),
+          onClick: _this14.setLinkKey.bind(_this14, name),
           key: name,
           className: 'px-4 py-2 border-t border-r border-b ' + (current_link_key == name ? 'bg-indigo-600 text-white' : 'text-gray-600 hover:bg-gray-100') + ' cursor-pointer border-gray-200 text-sm flex-1 justify-center flex items-center text-center' + (index == 0 ? ' border-l rounded-tl rounded-bl' : index == Object.keys(key2str).length - 1 ? ' rounded-tr rounded-br' : '')
         }, key2str[name]);
@@ -26857,23 +27103,25 @@ function (_Component) {
           key: link.id,
           className: "bg-white shadow rounded mb-4 text-sm text-blue-500 flex"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-          onKeyDown: _this13.linkKeydownHandle.bind(_this13),
-          onKeyUp: _this13.linkKeyupHandle.bind(_this13),
-          onChange: _this13.linkInputHandle.bind(_this13, link.id),
-          tabIndex: "2",
+          onKeyDown: _this14.linkKeydownHandle.bind(_this14),
+          onKeyUp: _this14.linkKeyupHandle.bind(_this14),
+          onChange: _this14.linkInputHandle.bind(_this14, link.id),
+          tabIndex: "6",
           type: "text",
           name: 'link-' + current_link_key,
           placeholder: "Contoh: https://kodinger.com/tutorial-javascript",
           className: "url w-full py-3 px-4 rounded outline-none",
           defaultValue: link.value
-        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          onClick: _this13.removeLinkFromKey.bind(_this13, link.id),
+        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          type: "button",
+          onClick: _this14.removeLinkFromKey.bind(_this14, link.id),
           className: "uppercase font-semibold bg-red-500 text-white px-4 flex items-center cursor-pointer hover:bg-red-600 rounded-tr rounded-br"
         }, "Hapus"));
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        type: "button",
         onClick: this.addLinkToKey.bind(this),
-        tabIndex: "1",
-        className: "add-link-btn bg-white shadow rounded py-3 px-4 text-sm text-blue-500 text-center cursor-pointer hover:bg-indigo-600 hover:text-white"
+        tabIndex: "7",
+        className: "add-link-btn bg-white w-full shadow rounded py-3 px-4 text-sm text-blue-500 text-center cursor-pointer hover:bg-indigo-600 hover:text-white"
       }, "Tambah URL")))))));
     }
   }]);
@@ -26928,7 +27176,7 @@ function () {
     this.id = 'toast-' + this.generateID();
     this.classes = {
       wrapper: 'fixed absolutely-center bottom-0 p-4',
-      toast: 'bg-black text-white px-4 py-3 rounded text-sm mt-2 shadow'
+      toast: 'anim-fade-up bg-black text-white px-4 py-3 rounded text-sm mt-2 shadow'
     };
     this.options = Object(_utils_obj_extend__WEBPACK_IMPORTED_MODULE_0__["default"])({
       timeout: 3000

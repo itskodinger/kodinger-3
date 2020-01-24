@@ -169,18 +169,22 @@ $('body').addEventListener('click', function (e) {
  */
 
 (function () {
+  if (!$('.nav-auto-hide')) {
+    return false;
+  }
+
   var scroll,
       scroll_up = false,
       scroll_down = false;
-  $('.primary-nav').style.transition = 'all .5s';
+  $('.nav-auto-hide').style.transition = 'all .5s';
 
   var showNavbar = function showNavbar() {
-    var navbar = $('.primary-nav');
+    var navbar = $('.nav-auto-hide');
     navbar.style.top = 0;
   };
 
   var hideNavbar = function hideNavbar() {
-    var navbar = $('.primary-nav');
+    var navbar = $('.nav-auto-hide');
     navbar.style.top = -navbar.clientHeight + 'px';
   };
 

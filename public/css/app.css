@@ -11824,7 +11824,8 @@ video {
   background-color: #000;
   border-radius: 5px;
   padding: 10px;
-  content: attr(title);
+  width: 100%;
+  content: attr(data-title);
 }
 
 .tooltip:hover::before {
@@ -11890,7 +11891,8 @@ video {
   background-color: #000;
   border-radius: 5px;
   padding: 10px;
-  content: attr(title);
+  width: 100%;
+  content: attr(data-title);
 }
 
 .hover\:tooltip:hover:hover::before {
@@ -11954,6 +11956,39 @@ video {
 
   100% {
     transform: scale(1);
+  }
+}
+
+.anim-fade-up {
+  -webkit-animation-name: anim-fade-up;
+          animation-name: anim-fade-up;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+  -webkit-animation-duration: .5s;
+          animation-duration: .5s;
+}
+
+@-webkit-keyframes anim-fade-up {
+  0% {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes anim-fade-up {
+  0% {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
   }
 }
 
@@ -23241,7 +23276,8 @@ html {
     background-color: #000;
     border-radius: 5px;
     padding: 10px;
-    content: attr(title);
+    width: 100%;
+    content: attr(data-title);
   }
 
   .sm\:tooltip:hover::before {
@@ -23307,7 +23343,8 @@ html {
     background-color: #000;
     border-radius: 5px;
     padding: 10px;
-    content: attr(title);
+    width: 100%;
+    content: attr(data-title);
   }
 
   .sm\:hover\:tooltip:hover:hover::before {
@@ -34505,7 +34542,8 @@ html {
     background-color: #000;
     border-radius: 5px;
     padding: 10px;
-    content: attr(title);
+    width: 100%;
+    content: attr(data-title);
   }
 
   .md\:tooltip:hover::before {
@@ -34571,7 +34609,8 @@ html {
     background-color: #000;
     border-radius: 5px;
     padding: 10px;
-    content: attr(title);
+    width: 100%;
+    content: attr(data-title);
   }
 
   .md\:hover\:tooltip:hover:hover::before {
@@ -45769,7 +45808,8 @@ html {
     background-color: #000;
     border-radius: 5px;
     padding: 10px;
-    content: attr(title);
+    width: 100%;
+    content: attr(data-title);
   }
 
   .lg\:tooltip:hover::before {
@@ -45835,7 +45875,8 @@ html {
     background-color: #000;
     border-radius: 5px;
     padding: 10px;
-    content: attr(title);
+    width: 100%;
+    content: attr(data-title);
   }
 
   .lg\:hover\:tooltip:hover:hover::before {
@@ -57033,7 +57074,8 @@ html {
     background-color: #000;
     border-radius: 5px;
     padding: 10px;
-    content: attr(title);
+    width: 100%;
+    content: attr(data-title);
   }
 
   .xl\:tooltip:hover::before {
@@ -57099,7 +57141,8 @@ html {
     background-color: #000;
     border-radius: 5px;
     padding: 10px;
-    content: attr(title);
+    width: 100%;
+    content: attr(data-title);
   }
 
   .xl\:hover\:tooltip:hover:hover::before {

@@ -77,16 +77,19 @@ $('body').addEventListener('click', function(e) {
  * Sticky navbar hide on scroll down
  */
 (function() {
+	if(!$('.nav-auto-hide')) {
+		return false;
+	}
 	let scroll, scroll_up = false, scroll_down = false;
-	$('.primary-nav').style.transition = 'all .5s';
+	$('.nav-auto-hide').style.transition = 'all .5s';
 
 	let showNavbar = function() {
-		let navbar = $('.primary-nav');
+		let navbar = $('.nav-auto-hide');
 		navbar.style.top = 0;
 	}
 
 	let hideNavbar = function() {
-		let navbar = $('.primary-nav');
+		let navbar = $('.nav-auto-hide');
 		navbar.style.top = -navbar.clientHeight + 'px';
 	}
 

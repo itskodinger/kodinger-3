@@ -20,8 +20,11 @@ class Form extends Component {
 		super(props);
 
 		this.state = {
+			id: false,
 			title: '',
 			slug: '',
+			slugDirty: false,
+			keyword: '',
 			tags: [],
 			images: [],
 			pages: [],
@@ -68,7 +71,7 @@ class Form extends Component {
 			...this.allowedVideoTypes
 		];
 
-		this.maxFileSize = 2000000;
+		this.maxFileSize = 2000000; // 2 mb
 	}
 
 	handleRemove(id, e) {
@@ -82,12 +85,51 @@ class Form extends Component {
 		}
 	}
 
+	setID(id) {
+		if(this.state.id !== undefined) return false;
+
+		this.setState({id});
+
+		this.autoSaveAll();
+	}
+
+	saveAll(data) {
+		console.log('Saved', data);
+	}
+
+	autoSaveAll(data) {
+		this.autoSaveAllTimeout = setTimeout(() => {
+			this.saveAll(data);
+		}, 2000);
+	}
+
+	startAutoSaveAll(data) {
+		clearTimeout(this.autoSaveAllTimeout);
+
+		this.autoSaveAll(data);
+	}
+
 	componentDidMount() {
 		this.addTagify();
 		this.addSortable();
 		this.addDropzone();
 		this.addToast();
 		this.addSimplemde();
+		this.addControllerForm();
+	}
+
+	addControllerForm() {
+		const nav_empty_wrapper = document.querySelector('.nav-empty-wrapper')
+		nav_empty_wrapper.insertAdjacentHTML('beforeEnd', 
+			`<div class="ml-auto flex items-center">
+				<div class="text-gray-600 text-sm mr-6">
+					Saved
+				</div>
+				<button class="items-center bg-gradient text-white px-4 py-2 text-sm rounded mr-6 shadow-md hover:shadow-none flex">
+					Publish Post
+				</button>
+			</div>`
+		);
 	}
 
 	addToast() {
@@ -120,6 +162,7 @@ class Form extends Component {
 		    enforceWhitelist : true,
 		    whitelist        : [],
 		    maxTags: 5,
+		    editTags: false,
 		    skipInvalid: true,
 		    dropdown : {
 		            highlightFirst: true,
@@ -131,7 +174,7 @@ class Form extends Component {
 		            return `<tags class="tagify focus-within:border-indigo-600 ${settings.mode ? "tagify--" + settings.mode : ""} ${input.className}"
 	                            ${settings.readonly ? 'readonly aria-readonly="true"' : 'aria-haspopup="listbox" aria-expanded="false"'}
 	                            role="tagslist">
-						            <span contenteditable data-placeholder="${settings.placeholder || '&#8203;'}" aria-placeholder="${settings.placeholder || ''}"
+						            <span tabindex="3" contenteditable data-placeholder="${settings.placeholder || '&#8203;'}" aria-placeholder="${settings.placeholder || ''}"
 					                    class="tagify__input p-0 m-0 py-1 inline-block"
 					                    role="textbox"
 					                    aria-controls="dropdown"
@@ -147,7 +190,6 @@ class Form extends Component {
 		                                spellcheck='false'
 		                                class='tagify__tag m-0 mr-2 rounded ${tagData['class'] ? tagData['class'] : ""}'
 		                                ${this.getAttributes(tagData)}>
-			                        <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
 			                        <div>
 		                                <span class='tagify__tag-text'>${value}</span>
 			                        </div>
@@ -177,7 +219,10 @@ class Form extends Component {
 		/**
 		 * Tagify on input
 		 */
-		tagify.on('input', onInput)
+		tagify.on('input', onInput);
+
+		tagify.on('add', this.tagAddHandle.bind(this));
+		tagify.on('remove', this.tagRemoveHandle.bind(this));
 
 		/**
 		 * Tagify on input handler
@@ -198,7 +243,39 @@ class Form extends Component {
 		        tagify.settings.whitelist.splice(0, whitelist.length, ...whitelist)
 		        tagify.loading(false).dropdown.show.call(tagify, value);
 		    })
+		    .catch((err) => {})
 		}
+	}
+
+	tagAddHandle(e) {
+		const { tags: old_tags } = this.state;
+
+		const tags = [
+			...old_tags,
+			e.detail.data.id
+		];
+
+		this.setState({
+			tags
+		});
+
+		this.startAutoSaveAll(tags);
+	}
+
+	tagRemoveHandle(e) {
+		const { tags: old_tags } = this.state;
+
+		const tags = [
+			...old_tags.filter((tag) => {
+				return tag !== e.detail.data.id;
+			})
+		];
+
+		this.setState({
+			tags
+		});
+
+		this.startAutoSaveAll(tags);
 	}
 
 	addDropzone() {
@@ -277,7 +354,7 @@ class Form extends Component {
 
 		return new Promise((resolve, reject) => {
 			if(title.trim().length < 1) {
-				return reject('😢 Harap isi judul terlebih dahulu');
+				return reject('😢&nbsp; Harap isi judul terlebih dahulu');
 			}
 
 			return resolve(true);
@@ -335,11 +412,11 @@ class Form extends Component {
 	validateImage({selectedFile: selected_file}) {
 		return new Promise((resolve, reject) => {
 			if(!this.allowedMediaTypes.includes(selected_file.type)) {
-				return reject('🚷 Image type not supported');
+				return reject(`🚷&nbsp; Jenis berkas ${selected_file.name} tidak didukung`);
 			}
 
 			if(selected_file.size > this.maxFileSize) {
-				return reject('🐠 Max file size is 2 MB');
+				return reject('🐠&nbsp; Ukuran berkas maks. 2MB');
 			}
 
 			return resolve();
@@ -466,7 +543,13 @@ class Form extends Component {
 	}
 
 	uploadImage(image) {
+		const { id } = this.state.id;
+
 		let form_data = new FormData();
+
+		if(id)
+			form_data.append('id', id);
+
 		form_data.append('image', image.file);
 
 		image = this.updateImage(image.id, {
@@ -491,7 +574,8 @@ class Form extends Component {
 
 			const current_image = this.updateImage(image.id, {
 				status: 'UPLOADED',
-				isAbort: undefined
+				isAbort: undefined,
+				prod_url: data.res // change later
 			});
 		})
 		.catch(function(error) {
@@ -505,11 +589,46 @@ class Form extends Component {
 	componentWillUnmount() {
 	}
 
+	keywordOnInput(e) {
+		const keyword = e.target.value;
+
+		this.setState({keyword});
+
+		this.startAutoSaveAll({keyword});
+	}
+
 	titleOnInput(e) {
+		const title = e.target.value;
+
+		let data = {
+			title
+		}
+
+		let auto_save_data = {title};
+
+		if(!this.state.slugDirty) {
+			data = {...data, slug: slugify(title)}
+			auto_save_data = {...auto_save_data, slug: slugify(title)}
+		}
+
+		this.setState(data);
+
+		this.startAutoSaveAll(auto_save_data);
+	}
+
+	slugOnInput(e) {
+		const slug = slugify(e.target.value);
+
 		this.setState({
-			title: e.target.value,
-			slug: slugify(e.target.value)
+			slug,
+			slugDirty: true
 		});
+
+		this.startAutoSaveAll({slug});
+	}
+
+	slugOnBlur(e) {
+		e.target.value = this.state.slug;
 	}
 
 	// thanks, dude! 
@@ -552,15 +671,31 @@ class Form extends Component {
 		return this.uploadingImageStatus().uploadingImage > 0 ? true : false;
 	}
 
+	flattenedImageFormat(auto_save=false) {
+		const { images } = this.state;
+
+		let new_images = [];
+		images.forEach(({status, caption, prod_url: url}) => {
+			if(status == 'UPLOADED') {
+				new_images.push({caption, url})
+			}
+		});
+
+		if(auto_save)
+			this.startAutoSaveAll({content: new_images});
+
+		return new_images;
+	}
+
 	/**
 	 * Set caption to the image by id
 	 */
 	setCaptionToImage() {
-		this.updateImage(this.currentImageId, {
+		const images = this.updateImage(this.currentImageId, {
 			caption: this.simplemde.value()
 		});
 
-		console.log(this.state.images);
+		this.flattenedImageFormat(true);
 	}
 
 	/**
@@ -601,8 +736,6 @@ class Form extends Component {
 		// show the modal first
 		this.showCaptionModal();
 
-		// start auto-saving
-		this.autoSaveCaption();
 		// when user typing
 		this.simplemde.codemirror.on('change', () => {
 			// clear the autosave timeout
@@ -720,6 +853,29 @@ class Form extends Component {
 	}
 
 	/**
+	 * Transform link object to flattened array
+	 * @param 	{Object} 	data 		Data to be flattened
+	 * @param 	{Boolean} 	auto_save 	Run autosave?
+	 * @return 	{Array} 	 			Flattened array
+	 */
+	flattenLinkFormat(data, auto_save=false) {
+		let new_data = [];
+		data[this.state.currentLinkKey].forEach((item) => {
+			new_data.push(item.value);
+		});
+
+		let new_data_output = [];
+		new_data_output[this.state.currentLinkKey] = new_data;
+
+		// auto save link if there's no invalid link
+		if(this.getAllInvalidInputLink().length < 1 && auto_save) {
+			this.startAutoSaveAll(new_data_output);
+		}
+
+		return new_data_output;
+	}
+
+	/**
 	 * Set link value to the state by id 
 	 * @param {Integer} id Link id
 	 * @param {String} value  Value to be added
@@ -740,6 +896,8 @@ class Form extends Component {
 		];
 
 		this.setState(updated_link_data);
+
+		this.flattenLinkFormat(updated_link_data, true)
 	}
 
 	/**
@@ -779,6 +937,8 @@ class Form extends Component {
 		];
 
 		this.setState(updated_link_data);
+
+		this.flattenLinkFormat(updated_link_data, true)
 
 		this.checkButtonLinkDisabled();
 	}
@@ -862,12 +1022,25 @@ class Form extends Component {
 
 								<div className="mb-6 mt-6">
 									<label className="mb-1 text-sm inline-block text-gray-600">Judul</label>
-									<input onChange={this.titleOnInput.bind(this)} type="text" name="title" className="text-gray-600 border-2 border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600" />
+									<input onChange={this.titleOnInput.bind(this)} type="text" name="title" className="text-gray-600 border-2 border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600" autoComplete="off" tabIndex="1" />
+								</div>
+								<div className="mb-6 mt-6">
+									<label className="mb-1 text-sm inline-block text-gray-600">Slug</label>
+									<input onChange={this.slugOnInput.bind(this)} onBlur={this.slugOnBlur.bind(this)} type="text" name="slug" className="text-gray-600 border-2 border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600" autoComplete="off" defaultValue={slug} tabIndex="2" />
 									<p className="mt-2 text-sm text-indigo-600">{routes.single.replace(/slug/g, '') + slug}</p>
 								</div>
-								<div>
+								<div className="mb-6">
 									<label className="mb-1 text-sm inline-block text-gray-600">Topik</label>
-									<input type="text" name="tags[]" className="tags text-gray-600 border-2 border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600" />
+									<input type="text" name="tags[]" className="tags text-gray-600 border-2 border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600" tabIndex="3" />
+								</div>
+								<div>
+									<label className="mb-1 text-sm inline-block text-gray-600">Design Keyword <span className="text-xs">(Optional)</span></label>
+									<input onChange={this.keywordOnInput.bind(this)} type="text" name="keyword" className="text-gray-600 border-2 border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600" tabIndex="4" />
+									<p className="mt-2 text-xs text-indigo-600">
+										<span className="tooltip cursor-help border-b border-dotted border-indigo-600" data-title="Keyword ini bukan untuk SEO, melainkan digunakan untuk mencari inspirasi desain ke situs di luar Kodinger, seperti Dribbble, Behance, atau Uplabs. Jadi, bila kamu sedang membahas library carousel, maka kamu dapat mengisi keyword dengan 'carousel'. Lalu, sistem akan menggunakan kata 'carousel' tadi untuk digunakan sebagai keyword pencarian ke 3 situs tadi.">
+											Saya harus mengisi ini dengan apa?
+										</span>
+									</p>
 								</div>
 							</div>
 
@@ -881,7 +1054,7 @@ class Form extends Component {
 											<p className="text-sm mt-2 text-gray-600">
 												Maksimal: 2MB. Format yang didukung: {[...this.allowedImageTypesReadable, ...this.allowedVideoTypesReadable].join(', ')}
 											</p>
-											<label className="mt-6 text-indigo-600 font-semibold inline-block cursor-pointer" htmlFor="images-input">Browse</label>
+											<label className="mt-6 text-indigo-600 font-semibold inline-block cursor-pointer" htmlFor="images-input" tabIndex="5">Browse</label>
 											<input type="file" multiple id="images-input" className="hidden" onChange={this.handleFiles.bind(this)} />
 										</div>
 									</div>
@@ -928,10 +1101,10 @@ class Form extends Component {
 								</div>
 							</div>
 							<div className="border-2 border-gray-200 p-8 rounded mt-10">
-						        <h2 className="text-indigo-600 mb-4 text-xl font-semibold">Tautan</h2>
-						        <p className="mb-4 mt-2 text-sm text-gray-600">Lampirkan beberapa tautan yang terkait dengan postingan ini, seperti halaman dokumentasi, demo, komunitas, dan tutorial.</p>
+						        <h2 className="text-indigo-600 mb-4 text-xl font-semibold">Tautan <span className="text-xs text-gray-600">(Optional)</span></h2>
+						        <p className="mb-4 mt-2 text-sm text-gray-600">Post yang baik menyertakan beberapa referensi yang dingunakan sebagai dasar pikiran.</p>
 
-						        <div className="flex mb-4">
+						        <div className="flex mb-4 overflow-x-auto flex-no-wrap">
 						        	{ Object.keys(key2str).map((name, index) => {
 							        	return (
 							        		<div 
@@ -950,14 +1123,14 @@ class Form extends Component {
 		            					{ this.state[current_link_key].map((link, id) => {
 				            				return (
 				            					<div key={link.id} className="bg-white shadow rounded mb-4 text-sm text-blue-500 flex">
-					            					<input onKeyDown={this.linkKeydownHandle.bind(this)} onKeyUp={this.linkKeyupHandle.bind(this)} onChange={this.linkInputHandle.bind(this, link.id)} tabIndex="2" type="text" name={'link-' + current_link_key} placeholder="Contoh: https://kodinger.com/tutorial-javascript" className="url w-full py-3 px-4 rounded outline-none" defaultValue={link.value} />
-					            					<div onClick={this.removeLinkFromKey.bind(this, link.id)} className="uppercase font-semibold bg-red-500 text-white px-4 flex items-center cursor-pointer hover:bg-red-600 rounded-tr rounded-br">Hapus</div>
+					            					<input onKeyDown={this.linkKeydownHandle.bind(this)} onKeyUp={this.linkKeyupHandle.bind(this)} onChange={this.linkInputHandle.bind(this, link.id)} tabIndex="6" type="text" name={'link-' + current_link_key} placeholder="Contoh: https://kodinger.com/tutorial-javascript" className="url w-full py-3 px-4 rounded outline-none" defaultValue={link.value} />
+					            					<button type="button" onClick={this.removeLinkFromKey.bind(this, link.id)} className="uppercase font-semibold bg-red-500 text-white px-4 flex items-center cursor-pointer hover:bg-red-600 rounded-tr rounded-br">Hapus</button>
 					            				</div>
 			            					);
 				            			})}
 				            		</div>
 
-			            			<div onClick={this.addLinkToKey.bind(this)} tabIndex="1" className="add-link-btn bg-white shadow rounded py-3 px-4 text-sm text-blue-500 text-center cursor-pointer hover:bg-indigo-600 hover:text-white">Tambah URL</div>
+			            			<button type="button" onClick={this.addLinkToKey.bind(this)} tabIndex="7" className="add-link-btn bg-white w-full shadow rounded py-3 px-4 text-sm text-blue-500 text-center cursor-pointer hover:bg-indigo-600 hover:text-white">Tambah URL</button>
 			            		</div>
 					        </div>
 						</div>

@@ -61,7 +61,8 @@ module.exports = {
 				backgroundColor: '#000',
 				borderRadius: '5px',
 				padding: '10px',
-				content: 'attr(title)'
+				width: '100%',
+				content: 'attr(data-title)'
 			},
 			'.tooltip:hover::before': {
 				display: 'block'
@@ -99,6 +100,21 @@ module.exports = {
   				},
   				'100%': {
   					transform: 'scale(1)'
+  				}
+  			},
+  			'.anim-fade-up': {
+  				animationName: 'anim-fade-up',
+  				animationFillMode: 'forwards',
+  				animationDuration: '.5s'
+  			},
+  			'@keyframes anim-fade-up': {
+  				'0%': {
+  					transform: 'translateY(50px)',
+  					opacity: 0
+  				},
+  				'100%': {
+  					transform: 'translateY(0)',
+  					opacity: 1
   				}
   			}
   		}
