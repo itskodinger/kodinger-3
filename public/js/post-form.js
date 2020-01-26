@@ -26763,10 +26763,28 @@ function (_Component) {
     _this.maxFileSize = 2000000; // 2 mb
 
     _this.enablePublish = false;
+
+    _this.loadData();
+
     return _this;
   }
+  /**
+   * Edit page
+   */
+
 
   _createClass(Form, [{
+    key: "loadData",
+    value: function loadData() {
+      var url = new URL(window.location.href);
+      var path = url.pathname.split(/\/post\//g);
+
+      if (path[1]) {
+        var id = path[1];
+        console.log(id);
+      }
+    }
+  }, {
     key: "handleRemove",
     value: function handleRemove(id, e) {
       var images = this.state.images,
@@ -26887,7 +26905,7 @@ function (_Component) {
   }, {
     key: "startAutoSaveAll",
     value: function startAutoSaveAll(data) {
-      var time = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 2000;
+      var time = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 5000;
       clearTimeout(this.autoSaveAllTimeout);
       if (time === true) time = 0;
       this.autoSaveAll(data, time);
@@ -27172,25 +27190,33 @@ function (_Component) {
     value: function removeImage(id) {
       var _this8 = this;
 
-      var images = _toConsumableArray(this.state.images);
-
-      images = images.filter(function (item) {
-        return item.id !== id;
-      });
       var current_image = this.findImageById(id);
-      if (current_image.status == 'DELETING') return this.toast.add("\uD83D\uDE19&nbsp; Penghapusan gambar ".concat(current_image.file.name, " masih proses"));
+      var deleting_images = this.state.images.filter(function (img) {
+        return img.status == 'DELETING';
+      });
+      if (current_image.status == 'DELETING') return this.toast.add("\uD83D\uDE19&nbsp; Penghapusan gambar ".concat(current_image.file.name, " masih proses")); // uncomment this if you want sync instead of async deleting process
+      // else if(deleting_images.length > 0)
+      // 	return this.toast.add(`😙&nbsp; Sabar, masih menghapus gambar yang lain`)
 
       function updateState(auto_save) {
         var _this7 = this;
 
-        this.setState({
-          images: images
+        this.setState(function (_ref5) {
+          var images = _ref5.images;
+          images = images.filter(function (item) {
+            return item.id !== id;
+          });
+          return {
+            images: images
+          };
         }, function () {
           if (auto_save) {
             _this7.flattenedImageFormat(true, true);
 
             _this7.statusSaved();
           }
+
+          console.log(_this7.state.images);
         });
       }
 
@@ -27209,8 +27235,8 @@ function (_Component) {
           })
         }).then(function (res) {
           return res.json();
-        })["finally"](function () {}).then(function (_ref5) {
-          var status = _ref5.status;
+        })["finally"](function () {}).then(function (_ref6) {
+          var status = _ref6.status;
           if (status) updateState.call(_this8, true);
         })["catch"](function (error) {
           console.log(error);
@@ -27227,11 +27253,11 @@ function (_Component) {
 
   }, {
     key: "addImage",
-    value: function addImage(_ref6) {
+    value: function addImage(_ref7) {
       var _this9 = this;
 
-      var _ref6$file = _ref6.file,
-          file = _ref6$file === void 0 ? undefined : _ref6$file;
+      var _ref7$file = _ref7.file,
+          file = _ref7$file === void 0 ? undefined : _ref7$file;
       return new Promise(function (resolve, reject) {
         var id = _this9.generateID();
 
@@ -27255,10 +27281,10 @@ function (_Component) {
     }
   }, {
     key: "validateImage",
-    value: function validateImage(_ref7) {
+    value: function validateImage(_ref8) {
       var _this10 = this;
 
-      var selected_file = _ref7.selectedFile;
+      var selected_file = _ref8.selectedFile;
       return new Promise(function (resolve, reject) {
         if (!_this10.allowedMediaTypes.includes(selected_file.type)) {
           return reject("\uD83D\uDEB7&nbsp; Jenis berkas ".concat(selected_file.name, " tidak didukung"));
@@ -27545,9 +27571,9 @@ function (_Component) {
               slug: slug
             });
           }
-        })["catch"](function (_ref9) {
-          var err = _ref9.err,
-              data = _ref9.data;
+        })["catch"](function (_ref10) {
+          var err = _ref10.err,
+              data = _ref10.data;
 
           if (!err.ok && err.status == 422) {
             _this13.toast.add("\uD83D\uDE20&nbsp; ".concat(data.errors.slug[0]));
@@ -27616,10 +27642,10 @@ function (_Component) {
       var now = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
       var images = this.state.images;
       var new_images = [];
-      images.forEach(function (_ref10) {
-        var status = _ref10.status,
-            caption = _ref10.caption,
-            url = _ref10.prodUrl;
+      images.forEach(function (_ref11) {
+        var status = _ref11.status,
+            caption = _ref11.caption,
+            url = _ref11.prodUrl;
 
         if (status == 'UPLOADED') {
           new_images.push({
@@ -27968,25 +27994,7 @@ function (_Component) {
         className: "fixed bg-black opacity-50 w-screen h-screen"
       }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "p-10 my-0 md:my-10 sm:w-6/12 lg:w-6/12 md:w-8/12 w-full h-full md:h-auto bg-white relative md:rounded shadow-lg"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        onClick: this.closeCaptionModal.bind(this),
-        className: "absolute top-0 right-0 bg-red-600 w-10 h-10 rounded-bl text-center cursor-pointer hover:bg-red-700 flex items-center justify-center"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("svg", {
-        className: "inline-block w-6 fill-current text-white",
-        xmlns: "http://www.w3.org/2000/svg",
-        viewBox: "0 0 24 24"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("g", {
-        "data-name": "Layer 2"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("g", {
-        "data-name": "close"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("rect", {
-        width: "24",
-        height: "24",
-        transform: "rotate(180 12 12)",
-        opacity: "0"
-      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("path", {
-        d: "M13.41 12l4.3-4.29a1 1 0 1 0-1.42-1.42L12 10.59l-4.29-4.3a1 1 0 0 0-1.42 1.42l4.3 4.29-4.3 4.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l4.29-4.3 4.29 4.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z"
-      }))))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", {
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", {
         className: "text-xl font-bold"
       }, "Tentukan Deskripsi"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
         className: "text-sm text-gray-600 mt-2 leading-relaxed"
@@ -28158,7 +28166,7 @@ function (_Component) {
         }, "Hapus"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
           onClick: _this19.setCaption.bind(_this19, image.id),
           className: "text-teal-600 cursor-pointer ml-4"
-        }, "Tentukan Deskripsi")))));
+        }, "Tentukan Deskripsi ", image.caption ? '👍' : '')))));
       })))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "border-2 border-gray-200 p-8 rounded mt-10"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", {

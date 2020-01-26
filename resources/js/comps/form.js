@@ -76,6 +76,21 @@ class Form extends Component {
 		this.maxFileSize = 2000000; // 2 mb
 
 		this.enablePublish = false;
+
+		this.loadData();
+	}
+
+	/**
+	 * Edit page
+	 */
+	loadData() {
+		const url = new URL(window.location.href);
+		const path = url.pathname.split(/\/post\//g);
+
+		if(path[1]) {
+			const id = path[1];
+			console.log(id);
+		}
 	}
 
 	handleRemove(id, e) {
@@ -157,7 +172,7 @@ class Form extends Component {
 		}, time);
 	}
 
-	startAutoSaveAll(data, time=2000) {
+	startAutoSaveAll(data, time=5000) {
 		clearTimeout(this.autoSaveAllTimeout);
 
 		if(time === true) time = 0;
@@ -467,23 +482,33 @@ class Form extends Component {
 	 * @param  {Integer} id Target image ID
 	 */
 	removeImage(id) {
-		let images = [...this.state.images];
-		images = images.filter(function(item) {
-			return item.id !== id;
-		});
 		const current_image = this.findImageById(id);
+
+		const deleting_images = this.state.images.filter((img) => {
+			return img.status == 'DELETING';
+		});
 
 		if(current_image.status == 'DELETING') 
 			return this.toast.add(`😙&nbsp; Penghapusan gambar ${current_image.file.name} masih proses`)
 
+		// uncomment this if you want sync instead of async deleting process
+		// else if(deleting_images.length > 0)
+		// 	return this.toast.add(`😙&nbsp; Sabar, masih menghapus gambar yang lain`)
+
 		function updateState(auto_save) {
-			this.setState({
-				images
+			this.setState(({images}) => {
+				images = images.filter(function(item) {
+					return item.id !== id;
+				});
+
+				return {images};
 			}, () => {
 				if(auto_save) {
 					this.flattenedImageFormat(true, true);
 					this.statusSaved();
 				}
+
+				console.log(this.state.images);
 			});
 		}
 
@@ -1204,7 +1229,6 @@ class Form extends Component {
 				<div className="caption-modal overflow-y-auto fixed top-0 left-0 w-full h-full flex z-20 items-start justify-center hidden">
 				    <div className="fixed bg-black opacity-50 w-screen h-screen"></div>
 				    <div className="p-10 my-0 md:my-10 sm:w-6/12 lg:w-6/12 md:w-8/12 w-full h-full md:h-auto bg-white relative md:rounded shadow-lg">
-				        <div onClick={this.closeCaptionModal.bind(this)} className="absolute top-0 right-0 bg-red-600 w-10 h-10 rounded-bl text-center cursor-pointer hover:bg-red-700 flex items-center justify-center"><svg className="inline-block w-6 fill-current text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="close"><rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"/><path d="M13.41 12l4.3-4.29a1 1 0 1 0-1.42-1.42L12 10.59l-4.29-4.3a1 1 0 0 0-1.42 1.42l4.3 4.29-4.3 4.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l4.29-4.3 4.29 4.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z"/></g></g></svg></div>
 				        <h2 className="text-xl font-bold">Tentukan Deskripsi</h2>
 				        <p className="text-sm text-gray-600 mt-2 leading-relaxed">Berikan deskripsi pada slide ini. Kamu dapat mengosongkan deskripsi bila tidak ada.</p>
 				        <div className="mt-6">
@@ -1289,7 +1313,9 @@ class Form extends Component {
 														{(image.isDirty && (image.isAbort == undefined && !image.isAbort)) &&
 															<>
 																<div onClick={this.removeImage.bind(this, image.id)} className="text-red-600 cursor-pointer">Hapus</div>
-																<div onClick={this.setCaption.bind(this, image.id)} className="text-teal-600 cursor-pointer ml-4">Tentukan Deskripsi</div>
+																<div onClick={this.setCaption.bind(this, image.id)} className="text-teal-600 cursor-pointer ml-4">
+																	Tentukan Deskripsi {image.caption ? '👍' : ''}
+																</div>
 															</>
 														}
 														</div>
