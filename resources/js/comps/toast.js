@@ -54,7 +54,10 @@ class Toast {
 	disposeToast(element) {
 		if(typeof element == 'string') element = document.querySelector('#' + element);
 
-		element.remove();
+		element.classList.add('anim-fade-down');
+		setTimeout(() => {
+			element.remove();
+		}, 500);
 	}
 
 	insertWrapper() {

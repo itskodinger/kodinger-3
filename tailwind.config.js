@@ -107,6 +107,11 @@ module.exports = {
   				animationFillMode: 'forwards',
   				animationDuration: '.5s'
   			},
+  			'.anim-fade-down': {
+  				animationName: 'anim-fade-down',
+  				animationFillMode: 'forwards',
+  				animationDuration: '.5s'
+  			},
   			'@keyframes anim-fade-up': {
   				'0%': {
   					transform: 'translateY(50px)',
@@ -115,6 +120,16 @@ module.exports = {
   				'100%': {
   					transform: 'translateY(0)',
   					opacity: 1
+  				}
+  			},
+  			'@keyframes anim-fade-down': {
+  				'0%': {
+  					transform: 'translateY(0)',
+  					opacity: 1
+  				},
+  				'100%': {
+  					transform: 'translateY(50px)',
+  					opacity: 0
   				}
   			}
   		}

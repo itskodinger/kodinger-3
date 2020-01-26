@@ -32,6 +32,11 @@ class PostService
 		return new Post;
 	}
 
+	public function checkSlug($slug)
+	{
+		return $this->model()->whereSlug($slug)->count();
+	}
+
 	protected function with($parent=false, $arr2=[])
 	{
 		return array_merge([

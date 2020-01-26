@@ -32,6 +32,8 @@ class Form extends Component {
 			tutorials: [],
 			helps: [],
 			examples: [],
+			publicFolder: false,
+			status: 'DRAFT',
 
 			currentLinkKey: Object.keys(key2str)[0],
 		}
@@ -72,6 +74,8 @@ class Form extends Component {
 		];
 
 		this.maxFileSize = 2000000; // 2 mb
+
+		this.enablePublish = false;
 	}
 
 	handleRemove(id, e) {
@@ -86,27 +90,78 @@ class Form extends Component {
 	}
 
 	setID(id) {
-		if(this.state.id !== undefined) return false;
+		if(this.state.id !== false) return false;
 
 		this.setState({id});
 
-		this.autoSaveAll();
+		window.history.pushState({}, null, '/post/' + id);
+	}
+
+	setPublicFolder(publicFolder) {
+		if(this.state.publicFolder !== false) return false;
+
+		this.setState({publicFolder});
 	}
 
 	saveAll(data) {
-		console.log('Saved', data);
+		const { id } = this.state;
+
+		this.statusSaving();
+
+		this.saveContentController && clearTimeout(this.saveContentController);
+		this.saveContentController = new AbortController();
+
+		let body = data;
+
+		if(id) body = {...body, id};
+
+		body = JSON.stringify(body);
+
+		(async () => {
+			const response = await fetch(routes.post_store, {
+				method: 'POST',
+				headers: {
+					'X-CSRF-TOKEN': token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				},
+				signal:this.saveContentController.signal, 
+				body
+			});
+
+			const json = await response.json();
+
+			if(!response.ok) return Promise.reject({err: response, data: json});
+
+			return Promise.resolve(json);
+		})()
+		.then(({data}) => {
+			this.statusSaved();
+
+			if(data.id) 
+				this.setID(data.id);
+		})
+		.catch(({err, data}) => {
+			if(err && !err.ok && err.status == 422) {
+				const {errors} = data;
+				const first_error = errors[Object.keys(errors)[0]][0];
+
+				this.toast.add(`😠&nbsp; ${first_error}`);
+			}
+		});
 	}
 
-	autoSaveAll(data) {
+	autoSaveAll(data, time) {
 		this.autoSaveAllTimeout = setTimeout(() => {
 			this.saveAll(data);
-		}, 2000);
+		}, time);
 	}
 
-	startAutoSaveAll(data) {
+	startAutoSaveAll(data, time=2000) {
 		clearTimeout(this.autoSaveAllTimeout);
 
-		this.autoSaveAll(data);
+		if(time === true) time = 0;
+		this.autoSaveAll(data, time);
 	}
 
 	componentDidMount() {
@@ -122,14 +177,37 @@ class Form extends Component {
 		const nav_empty_wrapper = document.querySelector('.nav-empty-wrapper')
 		nav_empty_wrapper.insertAdjacentHTML('beforeEnd', 
 			`<div class="ml-auto flex items-center">
-				<div class="text-gray-600 text-sm mr-6">
+				<div class="text-gray-600 text-sm mr-6 save-status">
 					Saved
 				</div>
-				<button class="items-center bg-gradient text-white px-4 py-2 text-sm rounded mr-6 shadow-md hover:shadow-none flex">
+				<button class="publish-btn items-center bg-gradient text-white px-4 py-2 text-sm rounded mr-6 shadow-md hover:shadow-none flex">
 					Publish Post
 				</button>
 			</div>`
 		);
+
+		this.statusElement = $('.save-status');
+		this.publishBtnElement = $('.publish-btn');
+	}
+
+	disablePublishBtn() {
+		adds(this.publishBtnElement.classList, 'pointer-events-none opacity-50');
+		this.enablePublish = false;
+	}
+
+	enablePublishBtn() {
+		removes(this.publishBtnElement.classList, 'pointer-events-none opacity-50');
+		this.enablePublish = true;
+	}
+
+	statusSaving() {
+		this.statusElement.innerHTML = 'Saving ...';
+		this.disablePublishBtn();
+	}
+
+	statusSaved() {
+		this.statusElement.innerHTML = 'Saved';
+		this.enablePublishBtn();
 	}
 
 	addToast() {
@@ -141,7 +219,26 @@ class Form extends Component {
 
 		if(el)
 			this.sortable = Sortable.create(el, {
+				dataIdAttr: 'data-id',
 				handle: '.handle',
+				onUpdate: (e) => {
+					function array_move(arr, old_index, new_index) {
+					    if (new_index >= arr.length) {
+					        var k = new_index - arr.length + 1;
+					        while (k--) {
+					            arr.push(undefined);
+					        }
+					    }
+					    arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+					    return arr;
+					};
+
+					this.setState({
+						images: array_move(this.state.images, e.oldIndex, e.newIndex)
+					});
+
+					this.flattenedImageFormat(true, true);
+				},
 			});
 	}
 
@@ -259,7 +356,7 @@ class Form extends Component {
 			tags
 		});
 
-		this.startAutoSaveAll(tags);
+		this.startAutoSaveAll({tags});
 	}
 
 	tagRemoveHandle(e) {
@@ -275,7 +372,7 @@ class Form extends Component {
 			tags
 		});
 
-		this.startAutoSaveAll(tags);
+		this.startAutoSaveAll({tags});
 	}
 
 	addDropzone() {
@@ -353,9 +450,9 @@ class Form extends Component {
 		const { title } = this.state;
 
 		return new Promise((resolve, reject) => {
-			if(title.trim().length < 1) {
-				return reject('😢&nbsp; Harap isi judul terlebih dahulu');
-			}
+			// if(title.trim().length < 1) {
+			// 	return reject('😢&nbsp; Harap isi judul terlebih dahulu');
+			// }
 
 			return resolve(true);
 		});
@@ -374,10 +471,49 @@ class Form extends Component {
 		images = images.filter(function(item) {
 			return item.id !== id;
 		});
+		const current_image = this.findImageById(id);
 
-		this.setState({
-			images
-		});
+		if(current_image.status == 'DELETING') 
+			return this.toast.add(`😙&nbsp; Penghapusan gambar ${current_image.file.name} masih proses`)
+
+		function updateState(auto_save) {
+			this.setState({
+				images
+			}, () => {
+				if(auto_save) {
+					this.flattenedImageFormat(true, true);
+					this.statusSaved();
+				}
+			});
+		}
+
+		if(current_image.status !== 'UPLOADED') {
+			updateState.call(this);
+		}else{
+			fetch(routes.post_delete_image, {
+				method: 'DELETE',
+				headers: {
+				    'X-CSRF-TOKEN': token,
+				    'Accept': 'application/json',
+				    'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({image: current_image.prodPath}),
+			})
+			.then(res => res.json())
+			.finally(() => {
+
+			})
+			.then(({status}) => {
+				if(status) updateState.call(this, true);
+			})
+			.catch(function(error) {
+				console.log(error);
+			});
+	
+			this.updateImage(id, {
+				status: 'DELETING'
+			});
+		}
 	}
 
 	/**
@@ -399,7 +535,7 @@ class Form extends Component {
 					images
 				}
 			}, () => {
-				let node = $('.image-files').firstChild;
+				let node = $('.image-files').lastChild;
 
 				return resolve({
 					id,
@@ -537,18 +673,23 @@ class Form extends Component {
 	}
 
 	abortImage(image) {
+		this.statusSaved();
+
 		image.controller.abort();
 
 		this.removeImage(image.id);
 	}
 
 	uploadImage(image) {
-		const { id } = this.state.id;
+		const { id, publicFolder: public_folder } = this.state;
 
 		let form_data = new FormData();
 
 		if(id)
 			form_data.append('id', id);
+
+		if(public_folder)
+			form_data.append('public_folder', public_folder);
 
 		form_data.append('image', image.file);
 
@@ -556,7 +697,10 @@ class Form extends Component {
 			controller: new AbortController()
 		});
 
-		fetch(routes.post_store, {
+		// change status saving
+		this.statusSaving();
+
+		fetch(routes.post_upload_image, {
 			method: 'POST',
 			headers: {
 			    'X-CSRF-TOKEN': token,
@@ -570,13 +714,22 @@ class Form extends Component {
 
 		})
 		.then((data) => {
-			console.log(data);
-
 			const current_image = this.updateImage(image.id, {
 				status: 'UPLOADED',
 				isAbort: undefined,
-				prod_url: data.res // change later
+				name: data.name,
+				prodUrl: data.url, // change later
+				prodPath: data.path
 			});
+
+			this.flattenedImageFormat(true, true);
+			this.statusSaved();
+
+			if(data.public_folder)
+				this.setPublicFolder(data.public_folder);
+
+			if(data.post_id)
+				this.setID(data.post_id);
 		})
 		.catch(function(error) {
 			console.log(error);
@@ -624,7 +777,48 @@ class Form extends Component {
 			slugDirty: true
 		});
 
-		this.startAutoSaveAll({slug});
+		this.slugController && this.slugController.abort();
+		this.slugController = new AbortController();
+
+		const body = JSON.stringify({slug});
+
+		this.checkSlugTimeout && clearTimeout(this.checkSlugTimeout);
+
+		this.checkSlugTimeout = setTimeout(() => {
+			(async () => {
+				const response = await fetch(routes.check_slug, {
+					method: 'POST',
+					headers: {
+						'X-CSRF-TOKEN': token,
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					},
+					signal:this.slugController.signal, 
+					body
+				});
+
+				const json = await response.json();
+
+				if(!response.ok) return Promise.reject({err: response, data: json});
+
+				return Promise.resolve(json);
+			})()
+			.then((res) => {
+				// which means slug already exist
+				if(res.status == true) {
+					this.disablePublishBtn();
+
+					this.toast.add('😠&nbsp; Slug sudah digunakan. Cari yang lain!');
+				}else{
+					this.startAutoSaveAll({slug});
+				}
+			})
+			.catch(({err, data}) => {
+				if(!err.ok && err.status == 422) {
+					this.toast.add(`😠&nbsp; ${data.errors.slug[0]}`)
+				}
+			});
+		}, 2000);
 	}
 
 	slugOnBlur(e) {
@@ -671,18 +865,24 @@ class Form extends Component {
 		return this.uploadingImageStatus().uploadingImage > 0 ? true : false;
 	}
 
-	flattenedImageFormat(auto_save=false) {
+	/**
+	 * Fixing image format for database
+	 * @param  {Boolean} auto_save 	Auto save the output?
+	 * @param  {Boolean} now 		Run auto save immediately
+	 * @return {Array}
+	 */
+	flattenedImageFormat(auto_save=false, now=false) {
 		const { images } = this.state;
 
 		let new_images = [];
-		images.forEach(({status, caption, prod_url: url}) => {
+		images.forEach(({status, caption, prodUrl: url}) => {
 			if(status == 'UPLOADED') {
 				new_images.push({caption, url})
 			}
 		});
 
 		if(auto_save)
-			this.startAutoSaveAll({content: new_images});
+			this.startAutoSaveAll({content: new_images}, now);
 
 		return new_images;
 	}
@@ -1069,7 +1269,7 @@ class Form extends Component {
 									<div className="image-files">
 										{ images.map((image) => {
 											return (
-												<div key={image.id} className="bg-white flex justify-center w-full mb-4 rounded border-2 border-gray-200 hover:border-gray-400">
+												<div data-id={image.id} key={image.id} className="bg-white flex justify-center w-full mb-4 rounded border-2 border-gray-200 hover:border-gray-400">
 													<div className="handle flex-shrink-0 p-2 items-center flex border-r-2 border-gray-200 bg-gray-100 mr-4 cursor-move">
 														<svg xmlns="http://www.w3.org/2000/svg" className="w-4 fill-current text-gray-600" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="menu"><rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"/><rect x="3" y="11" width="18" height="2" rx=".95" ry=".95"/><rect x="3" y="16" width="18" height="2" rx=".95" ry=".95"/><rect x="3" y="6" width="18" height="2" rx=".95" ry=".95"/></g></g></svg>
 													</div>
@@ -1080,7 +1280,7 @@ class Form extends Component {
 													</div>
 													<div className="w-full py-4 pr-4">
 														<div className={'text-xs float-right font-semibold tracking-wider inline-block' + (image.status == 'UPLOADED' ? ' text-teal-600' : ' text-orange-600')}>{image.status}</div>
-														<div className="text-indigo-600 mb-1">{image.file.name}</div>
+														<div className="text-indigo-600 mb-1">{image.name ? image.name : image.file.name}</div>
 														<div className="text-xs text-gray-600">{this.humanFileSize(image.file.size)}</div>
 														<div className="flex mt-2 text-sm">
 														{(!image.isAbort && image.isAbort !== undefined) &&

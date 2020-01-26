@@ -86,6 +86,17 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./node_modules/@babel/runtime/regenerator/index.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! regenerator-runtime */ "./node_modules/regenerator-runtime/runtime.js");
+
+/***/ }),
+
 /***/ "./node_modules/@yaireo/tagify/dist/tagify.min.js":
 /*!********************************************************!*\
   !*** ./node_modules/@yaireo/tagify/dist/tagify.min.js ***!
@@ -8396,6 +8407,724 @@ if (true) {
 if (false) {} else {
   module.exports = __webpack_require__(/*! ./cjs/react.development.js */ "./node_modules/react/cjs/react.development.js");
 }
+
+/***/ }),
+
+/***/ "./node_modules/regenerator-runtime/runtime.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/regenerator-runtime/runtime.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(module) {function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+var runtime = function (exports) {
+  "use strict";
+
+  var Op = Object.prototype;
+  var hasOwn = Op.hasOwnProperty;
+  var undefined; // More compressible than void 0.
+
+  var $Symbol = typeof Symbol === "function" ? Symbol : {};
+  var iteratorSymbol = $Symbol.iterator || "@@iterator";
+  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
+  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
+
+  function wrap(innerFn, outerFn, self, tryLocsList) {
+    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
+    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
+    var generator = Object.create(protoGenerator.prototype);
+    var context = new Context(tryLocsList || []); // The ._invoke method unifies the implementations of the .next,
+    // .throw, and .return methods.
+
+    generator._invoke = makeInvokeMethod(innerFn, self, context);
+    return generator;
+  }
+
+  exports.wrap = wrap; // Try/catch helper to minimize deoptimizations. Returns a completion
+  // record like context.tryEntries[i].completion. This interface could
+  // have been (and was previously) designed to take a closure to be
+  // invoked without arguments, but in all the cases we care about we
+  // already have an existing method we want to call, so there's no need
+  // to create a new function object. We can even get away with assuming
+  // the method takes exactly one argument, since that happens to be true
+  // in every case, so we don't have to touch the arguments object. The
+  // only additional allocation required is the completion record, which
+  // has a stable shape and so hopefully should be cheap to allocate.
+
+  function tryCatch(fn, obj, arg) {
+    try {
+      return {
+        type: "normal",
+        arg: fn.call(obj, arg)
+      };
+    } catch (err) {
+      return {
+        type: "throw",
+        arg: err
+      };
+    }
+  }
+
+  var GenStateSuspendedStart = "suspendedStart";
+  var GenStateSuspendedYield = "suspendedYield";
+  var GenStateExecuting = "executing";
+  var GenStateCompleted = "completed"; // Returning this object from the innerFn has the same effect as
+  // breaking out of the dispatch switch statement.
+
+  var ContinueSentinel = {}; // Dummy constructor functions that we use as the .constructor and
+  // .constructor.prototype properties for functions that return Generator
+  // objects. For full spec compliance, you may wish to configure your
+  // minifier not to mangle the names of these two functions.
+
+  function Generator() {}
+
+  function GeneratorFunction() {}
+
+  function GeneratorFunctionPrototype() {} // This is a polyfill for %IteratorPrototype% for environments that
+  // don't natively support it.
+
+
+  var IteratorPrototype = {};
+
+  IteratorPrototype[iteratorSymbol] = function () {
+    return this;
+  };
+
+  var getProto = Object.getPrototypeOf;
+  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
+
+  if (NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
+    // This environment has a native %IteratorPrototype%; use it instead
+    // of the polyfill.
+    IteratorPrototype = NativeIteratorPrototype;
+  }
+
+  var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype);
+  GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
+  GeneratorFunctionPrototype.constructor = GeneratorFunction;
+  GeneratorFunctionPrototype[toStringTagSymbol] = GeneratorFunction.displayName = "GeneratorFunction"; // Helper for defining the .next, .throw, and .return methods of the
+  // Iterator interface in terms of a single ._invoke method.
+
+  function defineIteratorMethods(prototype) {
+    ["next", "throw", "return"].forEach(function (method) {
+      prototype[method] = function (arg) {
+        return this._invoke(method, arg);
+      };
+    });
+  }
+
+  exports.isGeneratorFunction = function (genFun) {
+    var ctor = typeof genFun === "function" && genFun.constructor;
+    return ctor ? ctor === GeneratorFunction || // For the native GeneratorFunction constructor, the best we can
+    // do is to check its .name property.
+    (ctor.displayName || ctor.name) === "GeneratorFunction" : false;
+  };
+
+  exports.mark = function (genFun) {
+    if (Object.setPrototypeOf) {
+      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
+    } else {
+      genFun.__proto__ = GeneratorFunctionPrototype;
+
+      if (!(toStringTagSymbol in genFun)) {
+        genFun[toStringTagSymbol] = "GeneratorFunction";
+      }
+    }
+
+    genFun.prototype = Object.create(Gp);
+    return genFun;
+  }; // Within the body of any async function, `await x` is transformed to
+  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
+  // `hasOwn.call(value, "__await")` to determine if the yielded value is
+  // meant to be awaited.
+
+
+  exports.awrap = function (arg) {
+    return {
+      __await: arg
+    };
+  };
+
+  function AsyncIterator(generator) {
+    function invoke(method, arg, resolve, reject) {
+      var record = tryCatch(generator[method], generator, arg);
+
+      if (record.type === "throw") {
+        reject(record.arg);
+      } else {
+        var result = record.arg;
+        var value = result.value;
+
+        if (value && _typeof(value) === "object" && hasOwn.call(value, "__await")) {
+          return Promise.resolve(value.__await).then(function (value) {
+            invoke("next", value, resolve, reject);
+          }, function (err) {
+            invoke("throw", err, resolve, reject);
+          });
+        }
+
+        return Promise.resolve(value).then(function (unwrapped) {
+          // When a yielded Promise is resolved, its final value becomes
+          // the .value of the Promise<{value,done}> result for the
+          // current iteration.
+          result.value = unwrapped;
+          resolve(result);
+        }, function (error) {
+          // If a rejected Promise was yielded, throw the rejection back
+          // into the async generator function so it can be handled there.
+          return invoke("throw", error, resolve, reject);
+        });
+      }
+    }
+
+    var previousPromise;
+
+    function enqueue(method, arg) {
+      function callInvokeWithMethodAndArg() {
+        return new Promise(function (resolve, reject) {
+          invoke(method, arg, resolve, reject);
+        });
+      }
+
+      return previousPromise = // If enqueue has been called before, then we want to wait until
+      // all previous Promises have been resolved before calling invoke,
+      // so that results are always delivered in the correct order. If
+      // enqueue has not been called before, then it is important to
+      // call invoke immediately, without waiting on a callback to fire,
+      // so that the async generator function has the opportunity to do
+      // any necessary setup in a predictable way. This predictability
+      // is why the Promise constructor synchronously invokes its
+      // executor callback, and why async functions synchronously
+      // execute code before the first await. Since we implement simple
+      // async functions in terms of async generators, it is especially
+      // important to get this right, even though it requires care.
+      previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, // Avoid propagating failures to Promises returned by later
+      // invocations of the iterator.
+      callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg();
+    } // Define the unified helper method that is used to implement .next,
+    // .throw, and .return (see defineIteratorMethods).
+
+
+    this._invoke = enqueue;
+  }
+
+  defineIteratorMethods(AsyncIterator.prototype);
+
+  AsyncIterator.prototype[asyncIteratorSymbol] = function () {
+    return this;
+  };
+
+  exports.AsyncIterator = AsyncIterator; // Note that simple async functions are implemented on top of
+  // AsyncIterator objects; they just return a Promise for the value of
+  // the final result produced by the iterator.
+
+  exports.async = function (innerFn, outerFn, self, tryLocsList) {
+    var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList));
+    return exports.isGeneratorFunction(outerFn) ? iter // If outerFn is a generator, return the full iterator.
+    : iter.next().then(function (result) {
+      return result.done ? result.value : iter.next();
+    });
+  };
+
+  function makeInvokeMethod(innerFn, self, context) {
+    var state = GenStateSuspendedStart;
+    return function invoke(method, arg) {
+      if (state === GenStateExecuting) {
+        throw new Error("Generator is already running");
+      }
+
+      if (state === GenStateCompleted) {
+        if (method === "throw") {
+          throw arg;
+        } // Be forgiving, per 25.3.3.3.3 of the spec:
+        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
+
+
+        return doneResult();
+      }
+
+      context.method = method;
+      context.arg = arg;
+
+      while (true) {
+        var delegate = context.delegate;
+
+        if (delegate) {
+          var delegateResult = maybeInvokeDelegate(delegate, context);
+
+          if (delegateResult) {
+            if (delegateResult === ContinueSentinel) continue;
+            return delegateResult;
+          }
+        }
+
+        if (context.method === "next") {
+          // Setting context._sent for legacy support of Babel's
+          // function.sent implementation.
+          context.sent = context._sent = context.arg;
+        } else if (context.method === "throw") {
+          if (state === GenStateSuspendedStart) {
+            state = GenStateCompleted;
+            throw context.arg;
+          }
+
+          context.dispatchException(context.arg);
+        } else if (context.method === "return") {
+          context.abrupt("return", context.arg);
+        }
+
+        state = GenStateExecuting;
+        var record = tryCatch(innerFn, self, context);
+
+        if (record.type === "normal") {
+          // If an exception is thrown from innerFn, we leave state ===
+          // GenStateExecuting and loop back for another invocation.
+          state = context.done ? GenStateCompleted : GenStateSuspendedYield;
+
+          if (record.arg === ContinueSentinel) {
+            continue;
+          }
+
+          return {
+            value: record.arg,
+            done: context.done
+          };
+        } else if (record.type === "throw") {
+          state = GenStateCompleted; // Dispatch the exception by looping back around to the
+          // context.dispatchException(context.arg) call above.
+
+          context.method = "throw";
+          context.arg = record.arg;
+        }
+      }
+    };
+  } // Call delegate.iterator[context.method](context.arg) and handle the
+  // result, either by returning a { value, done } result from the
+  // delegate iterator, or by modifying context.method and context.arg,
+  // setting context.delegate to null, and returning the ContinueSentinel.
+
+
+  function maybeInvokeDelegate(delegate, context) {
+    var method = delegate.iterator[context.method];
+
+    if (method === undefined) {
+      // A .throw or .return when the delegate iterator has no .throw
+      // method always terminates the yield* loop.
+      context.delegate = null;
+
+      if (context.method === "throw") {
+        // Note: ["return"] must be used for ES3 parsing compatibility.
+        if (delegate.iterator["return"]) {
+          // If the delegate iterator has a return method, give it a
+          // chance to clean up.
+          context.method = "return";
+          context.arg = undefined;
+          maybeInvokeDelegate(delegate, context);
+
+          if (context.method === "throw") {
+            // If maybeInvokeDelegate(context) changed context.method from
+            // "return" to "throw", let that override the TypeError below.
+            return ContinueSentinel;
+          }
+        }
+
+        context.method = "throw";
+        context.arg = new TypeError("The iterator does not provide a 'throw' method");
+      }
+
+      return ContinueSentinel;
+    }
+
+    var record = tryCatch(method, delegate.iterator, context.arg);
+
+    if (record.type === "throw") {
+      context.method = "throw";
+      context.arg = record.arg;
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    var info = record.arg;
+
+    if (!info) {
+      context.method = "throw";
+      context.arg = new TypeError("iterator result is not an object");
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    if (info.done) {
+      // Assign the result of the finished delegate to the temporary
+      // variable specified by delegate.resultName (see delegateYield).
+      context[delegate.resultName] = info.value; // Resume execution at the desired location (see delegateYield).
+
+      context.next = delegate.nextLoc; // If context.method was "throw" but the delegate handled the
+      // exception, let the outer generator proceed normally. If
+      // context.method was "next", forget context.arg since it has been
+      // "consumed" by the delegate iterator. If context.method was
+      // "return", allow the original .return call to continue in the
+      // outer generator.
+
+      if (context.method !== "return") {
+        context.method = "next";
+        context.arg = undefined;
+      }
+    } else {
+      // Re-yield the result returned by the delegate method.
+      return info;
+    } // The delegate iterator is finished, so forget it and continue with
+    // the outer generator.
+
+
+    context.delegate = null;
+    return ContinueSentinel;
+  } // Define Generator.prototype.{next,throw,return} in terms of the
+  // unified ._invoke helper method.
+
+
+  defineIteratorMethods(Gp);
+  Gp[toStringTagSymbol] = "Generator"; // A Generator should always return itself as the iterator object when the
+  // @@iterator function is called on it. Some browsers' implementations of the
+  // iterator prototype chain incorrectly implement this, causing the Generator
+  // object to not be returned from this call. This ensures that doesn't happen.
+  // See https://github.com/facebook/regenerator/issues/274 for more details.
+
+  Gp[iteratorSymbol] = function () {
+    return this;
+  };
+
+  Gp.toString = function () {
+    return "[object Generator]";
+  };
+
+  function pushTryEntry(locs) {
+    var entry = {
+      tryLoc: locs[0]
+    };
+
+    if (1 in locs) {
+      entry.catchLoc = locs[1];
+    }
+
+    if (2 in locs) {
+      entry.finallyLoc = locs[2];
+      entry.afterLoc = locs[3];
+    }
+
+    this.tryEntries.push(entry);
+  }
+
+  function resetTryEntry(entry) {
+    var record = entry.completion || {};
+    record.type = "normal";
+    delete record.arg;
+    entry.completion = record;
+  }
+
+  function Context(tryLocsList) {
+    // The root entry object (effectively a try statement without a catch
+    // or a finally block) gives us a place to store values thrown from
+    // locations where there is no enclosing try statement.
+    this.tryEntries = [{
+      tryLoc: "root"
+    }];
+    tryLocsList.forEach(pushTryEntry, this);
+    this.reset(true);
+  }
+
+  exports.keys = function (object) {
+    var keys = [];
+
+    for (var key in object) {
+      keys.push(key);
+    }
+
+    keys.reverse(); // Rather than returning an object with a next method, we keep
+    // things simple and return the next function itself.
+
+    return function next() {
+      while (keys.length) {
+        var key = keys.pop();
+
+        if (key in object) {
+          next.value = key;
+          next.done = false;
+          return next;
+        }
+      } // To avoid creating an additional object, we just hang the .value
+      // and .done properties off the next function object itself. This
+      // also ensures that the minifier will not anonymize the function.
+
+
+      next.done = true;
+      return next;
+    };
+  };
+
+  function values(iterable) {
+    if (iterable) {
+      var iteratorMethod = iterable[iteratorSymbol];
+
+      if (iteratorMethod) {
+        return iteratorMethod.call(iterable);
+      }
+
+      if (typeof iterable.next === "function") {
+        return iterable;
+      }
+
+      if (!isNaN(iterable.length)) {
+        var i = -1,
+            next = function next() {
+          while (++i < iterable.length) {
+            if (hasOwn.call(iterable, i)) {
+              next.value = iterable[i];
+              next.done = false;
+              return next;
+            }
+          }
+
+          next.value = undefined;
+          next.done = true;
+          return next;
+        };
+
+        return next.next = next;
+      }
+    } // Return an iterator with no values.
+
+
+    return {
+      next: doneResult
+    };
+  }
+
+  exports.values = values;
+
+  function doneResult() {
+    return {
+      value: undefined,
+      done: true
+    };
+  }
+
+  Context.prototype = {
+    constructor: Context,
+    reset: function reset(skipTempReset) {
+      this.prev = 0;
+      this.next = 0; // Resetting context._sent for legacy support of Babel's
+      // function.sent implementation.
+
+      this.sent = this._sent = undefined;
+      this.done = false;
+      this.delegate = null;
+      this.method = "next";
+      this.arg = undefined;
+      this.tryEntries.forEach(resetTryEntry);
+
+      if (!skipTempReset) {
+        for (var name in this) {
+          // Not sure about the optimal order of these conditions:
+          if (name.charAt(0) === "t" && hasOwn.call(this, name) && !isNaN(+name.slice(1))) {
+            this[name] = undefined;
+          }
+        }
+      }
+    },
+    stop: function stop() {
+      this.done = true;
+      var rootEntry = this.tryEntries[0];
+      var rootRecord = rootEntry.completion;
+
+      if (rootRecord.type === "throw") {
+        throw rootRecord.arg;
+      }
+
+      return this.rval;
+    },
+    dispatchException: function dispatchException(exception) {
+      if (this.done) {
+        throw exception;
+      }
+
+      var context = this;
+
+      function handle(loc, caught) {
+        record.type = "throw";
+        record.arg = exception;
+        context.next = loc;
+
+        if (caught) {
+          // If the dispatched exception was caught by a catch block,
+          // then let that catch block handle the exception normally.
+          context.method = "next";
+          context.arg = undefined;
+        }
+
+        return !!caught;
+      }
+
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        var record = entry.completion;
+
+        if (entry.tryLoc === "root") {
+          // Exception thrown outside of any try block that could handle
+          // it, so set the completion value of the entire function to
+          // throw the exception.
+          return handle("end");
+        }
+
+        if (entry.tryLoc <= this.prev) {
+          var hasCatch = hasOwn.call(entry, "catchLoc");
+          var hasFinally = hasOwn.call(entry, "finallyLoc");
+
+          if (hasCatch && hasFinally) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            } else if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+          } else if (hasCatch) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            }
+          } else if (hasFinally) {
+            if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+          } else {
+            throw new Error("try statement without catch or finally");
+          }
+        }
+      }
+    },
+    abrupt: function abrupt(type, arg) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+
+        if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) {
+          var finallyEntry = entry;
+          break;
+        }
+      }
+
+      if (finallyEntry && (type === "break" || type === "continue") && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc) {
+        // Ignore the finally entry if control is not jumping to a
+        // location outside the try/catch block.
+        finallyEntry = null;
+      }
+
+      var record = finallyEntry ? finallyEntry.completion : {};
+      record.type = type;
+      record.arg = arg;
+
+      if (finallyEntry) {
+        this.method = "next";
+        this.next = finallyEntry.finallyLoc;
+        return ContinueSentinel;
+      }
+
+      return this.complete(record);
+    },
+    complete: function complete(record, afterLoc) {
+      if (record.type === "throw") {
+        throw record.arg;
+      }
+
+      if (record.type === "break" || record.type === "continue") {
+        this.next = record.arg;
+      } else if (record.type === "return") {
+        this.rval = this.arg = record.arg;
+        this.method = "return";
+        this.next = "end";
+      } else if (record.type === "normal" && afterLoc) {
+        this.next = afterLoc;
+      }
+
+      return ContinueSentinel;
+    },
+    finish: function finish(finallyLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+
+        if (entry.finallyLoc === finallyLoc) {
+          this.complete(entry.completion, entry.afterLoc);
+          resetTryEntry(entry);
+          return ContinueSentinel;
+        }
+      }
+    },
+    "catch": function _catch(tryLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+
+        if (entry.tryLoc === tryLoc) {
+          var record = entry.completion;
+
+          if (record.type === "throw") {
+            var thrown = record.arg;
+            resetTryEntry(entry);
+          }
+
+          return thrown;
+        }
+      } // The context.catch method must only be called with a location
+      // argument that corresponds to a known catch block.
+
+
+      throw new Error("illegal catch attempt");
+    },
+    delegateYield: function delegateYield(iterable, resultName, nextLoc) {
+      this.delegate = {
+        iterator: values(iterable),
+        resultName: resultName,
+        nextLoc: nextLoc
+      };
+
+      if (this.method === "next") {
+        // Deliberately forget the last sent value so that we don't
+        // accidentally pass it on to the delegate.
+        this.arg = undefined;
+      }
+
+      return ContinueSentinel;
+    }
+  }; // Regardless of whether this script is executing as a CommonJS module
+  // or not, return the runtime object so that we can declare the variable
+  // regeneratorRuntime in the outer scope, which allows this module to be
+  // injected easily by `bin/regenerator --include-runtime script.js`.
+
+  return exports;
+}( // If this script is executing as a CommonJS module, use module.exports
+// as the regeneratorRuntime namespace. Otherwise create a new empty
+// object. Either way, the resulting object will be used to initialize
+// the regeneratorRuntime variable at the top of this file.
+( false ? undefined : _typeof(module)) === "object" ? module.exports : {});
+
+try {
+  regeneratorRuntime = runtime;
+} catch (accidentalStrictMode) {
+  // This module should not be running in strict mode, so the above
+  // assignment should always work unless something is misconfigured. Just
+  // in case runtime.js accidentally runs in strict mode, we can escape
+  // strict mode using a global Function call. This could conceivably fail
+  // if a Content Security Policy forbids using Function, but in that case
+  // the proper solution is to fix the accidental strict mode problem. If
+  // you've misconfigured your bundler to force strict mode and applied a
+  // CSP to forbid Function, and you're not willing to fix either of those
+  // problems, please detail your unique predicament in a GitHub issue.
+  Function("r", "regeneratorRuntime = r")(runtime);
+}
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../webpack/buildin/module.js */ "./node_modules/webpack/buildin/module.js")(module)))
 
 /***/ }),
 
@@ -25729,6 +26458,40 @@ module.exports = g;
 
 /***/ }),
 
+/***/ "./node_modules/webpack/buildin/module.js":
+/*!***********************************!*\
+  !*** (webpack)/buildin/module.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = function (module) {
+  if (!module.webpackPolyfill) {
+    module.deprecate = function () {};
+
+    module.paths = []; // module.parent = undefined by default
+
+    if (!module.children) module.children = [];
+    Object.defineProperty(module, "loaded", {
+      enumerable: true,
+      get: function get() {
+        return module.l;
+      }
+    });
+    Object.defineProperty(module, "id", {
+      enumerable: true,
+      get: function get() {
+        return module.i;
+      }
+    });
+    module.webpackPolyfill = 1;
+  }
+
+  return module;
+};
+
+/***/ }),
+
 /***/ "./resources/js/comps/form.js":
 /*!************************************!*\
   !*** ./resources/js/comps/form.js ***!
@@ -25738,22 +26501,26 @@ module.exports = g;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _utils_slugify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/slugify */ "./resources/js/utils/slugify.js");
-/* harmony import */ var _utils_validate_url__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/validate-url */ "./resources/js/utils/validate-url.js");
-/* harmony import */ var _utils_obj_extend__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/obj-extend */ "./resources/js/utils/obj-extend.js");
-/* harmony import */ var _toast__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./toast */ "./resources/js/comps/toast.js");
-/* harmony import */ var _utils_adds__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/adds */ "./resources/js/utils/adds.js");
-/* harmony import */ var _utils_removes__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/removes */ "./resources/js/utils/removes.js");
-/* harmony import */ var sortablejs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! sortablejs */ "./node_modules/sortablejs/modular/sortable.esm.js");
-/* harmony import */ var simplemde_dist_simplemde_min_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! simplemde/dist/simplemde.min.js */ "./node_modules/simplemde/dist/simplemde.min.js");
-/* harmony import */ var simplemde_dist_simplemde_min_js__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(simplemde_dist_simplemde_min_js__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var simplemde_dist_simplemde_min_css__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! simplemde/dist/simplemde.min.css */ "./node_modules/simplemde/dist/simplemde.min.css");
-/* harmony import */ var simplemde_dist_simplemde_min_css__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(simplemde_dist_simplemde_min_css__WEBPACK_IMPORTED_MODULE_9__);
-/* harmony import */ var _yaireo_tagify__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @yaireo/tagify */ "./node_modules/@yaireo/tagify/dist/tagify.min.js");
-/* harmony import */ var _yaireo_tagify__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_yaireo_tagify__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _utils_slugify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/slugify */ "./resources/js/utils/slugify.js");
+/* harmony import */ var _utils_validate_url__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/validate-url */ "./resources/js/utils/validate-url.js");
+/* harmony import */ var _utils_obj_extend__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/obj-extend */ "./resources/js/utils/obj-extend.js");
+/* harmony import */ var _toast__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./toast */ "./resources/js/comps/toast.js");
+/* harmony import */ var _utils_adds__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/adds */ "./resources/js/utils/adds.js");
+/* harmony import */ var _utils_removes__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../utils/removes */ "./resources/js/utils/removes.js");
+/* harmony import */ var sortablejs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! sortablejs */ "./node_modules/sortablejs/modular/sortable.esm.js");
+/* harmony import */ var simplemde_dist_simplemde_min_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! simplemde/dist/simplemde.min.js */ "./node_modules/simplemde/dist/simplemde.min.js");
+/* harmony import */ var simplemde_dist_simplemde_min_js__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(simplemde_dist_simplemde_min_js__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var simplemde_dist_simplemde_min_css__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! simplemde/dist/simplemde.min.css */ "./node_modules/simplemde/dist/simplemde.min.css");
+/* harmony import */ var simplemde_dist_simplemde_min_css__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(simplemde_dist_simplemde_min_css__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var _yaireo_tagify__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @yaireo/tagify */ "./node_modules/@yaireo/tagify/dist/tagify.min.js");
+/* harmony import */ var _yaireo_tagify__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(_yaireo_tagify__WEBPACK_IMPORTED_MODULE_11__);
 function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
+
+
 
 function _typeof(obj) {
   if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
@@ -25767,6 +26534,42 @@ function _typeof(obj) {
   }
 
   return _typeof(obj);
+}
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+  try {
+    var info = gen[key](arg);
+    var value = info.value;
+  } catch (error) {
+    reject(error);
+    return;
+  }
+
+  if (info.done) {
+    resolve(value);
+  } else {
+    Promise.resolve(value).then(_next, _throw);
+  }
+}
+
+function _asyncToGenerator(fn) {
+  return function () {
+    var self = this,
+        args = arguments;
+    return new Promise(function (resolve, reject) {
+      var gen = fn.apply(self, args);
+
+      function _next(value) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+      }
+
+      function _throw(err) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+      }
+
+      _next(undefined);
+    });
+  };
 }
 
 function ownKeys(object, enumerableOnly) {
@@ -25948,6 +26751,8 @@ function (_Component) {
       tutorials: [],
       helps: [],
       examples: [],
+      publicFolder: false,
+      status: 'DRAFT',
       currentLinkKey: Object.keys(key2str)[0]
     };
     _this.allowedVideoTypes = ['video/mp4', 'video/webm', 'video/ogg'];
@@ -25957,6 +26762,7 @@ function (_Component) {
     _this.allowedMediaTypes = [].concat(_toConsumableArray(_this.allowedImageTypes), _toConsumableArray(_this.allowedVideoTypes));
     _this.maxFileSize = 2000000; // 2 mb
 
+    _this.enablePublish = false;
     return _this;
   }
 
@@ -25975,31 +26781,116 @@ function (_Component) {
   }, {
     key: "setID",
     value: function setID(id) {
-      if (this.state.id !== undefined) return false;
+      if (this.state.id !== false) return false;
       this.setState({
         id: id
       });
-      this.autoSaveAll();
+      window.history.pushState({}, null, '/post/' + id);
+    }
+  }, {
+    key: "setPublicFolder",
+    value: function setPublicFolder(publicFolder) {
+      if (this.state.publicFolder !== false) return false;
+      this.setState({
+        publicFolder: publicFolder
+      });
     }
   }, {
     key: "saveAll",
     value: function saveAll(data) {
-      console.log('Saved', data);
+      var _this2 = this;
+
+      var id = this.state.id;
+      this.statusSaving();
+      this.saveContentController && clearTimeout(this.saveContentController);
+      this.saveContentController = new AbortController();
+      var body = data;
+      if (id) body = _objectSpread({}, body, {
+        id: id
+      });
+      body = JSON.stringify(body);
+
+      _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var response, json;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return fetch(routes.post_store, {
+                  method: 'POST',
+                  headers: {
+                    'X-CSRF-TOKEN': token,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                  },
+                  signal: _this2.saveContentController.signal,
+                  body: body
+                });
+
+              case 2:
+                response = _context.sent;
+                _context.next = 5;
+                return response.json();
+
+              case 5:
+                json = _context.sent;
+
+                if (response.ok) {
+                  _context.next = 8;
+                  break;
+                }
+
+                return _context.abrupt("return", Promise.reject({
+                  err: response,
+                  data: json
+                }));
+
+              case 8:
+                return _context.abrupt("return", Promise.resolve(json));
+
+              case 9:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))().then(function (_ref2) {
+        var data = _ref2.data;
+
+        _this2.statusSaved();
+
+        if (data.id) _this2.setID(data.id);
+      })["catch"](function (_ref3) {
+        var err = _ref3.err,
+            data = _ref3.data;
+
+        if (err && !err.ok && err.status == 422) {
+          var errors = data.errors;
+          var first_error = errors[Object.keys(errors)[0]][0];
+
+          _this2.toast.add("\uD83D\uDE20&nbsp; ".concat(first_error));
+        }
+      });
     }
   }, {
     key: "autoSaveAll",
-    value: function autoSaveAll(data) {
-      var _this2 = this;
+    value: function autoSaveAll(data, time) {
+      var _this3 = this;
 
       this.autoSaveAllTimeout = setTimeout(function () {
-        _this2.saveAll(data);
-      }, 2000);
+        _this3.saveAll(data);
+      }, time);
     }
   }, {
     key: "startAutoSaveAll",
     value: function startAutoSaveAll(data) {
+      var time = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 2000;
       clearTimeout(this.autoSaveAllTimeout);
-      this.autoSaveAll(data);
+      if (time === true) time = 0;
+      this.autoSaveAll(data, time);
     }
   }, {
     key: "componentDidMount",
@@ -26015,19 +26906,70 @@ function (_Component) {
     key: "addControllerForm",
     value: function addControllerForm() {
       var nav_empty_wrapper = document.querySelector('.nav-empty-wrapper');
-      nav_empty_wrapper.insertAdjacentHTML('beforeEnd', "<div class=\"ml-auto flex items-center\">\n\t\t\t\t<div class=\"text-gray-600 text-sm mr-6\">\n\t\t\t\t\tSaved\n\t\t\t\t</div>\n\t\t\t\t<button class=\"items-center bg-gradient text-white px-4 py-2 text-sm rounded mr-6 shadow-md hover:shadow-none flex\">\n\t\t\t\t\tPublish Post\n\t\t\t\t</button>\n\t\t\t</div>");
+      nav_empty_wrapper.insertAdjacentHTML('beforeEnd', "<div class=\"ml-auto flex items-center\">\n\t\t\t\t<div class=\"text-gray-600 text-sm mr-6 save-status\">\n\t\t\t\t\tSaved\n\t\t\t\t</div>\n\t\t\t\t<button class=\"publish-btn items-center bg-gradient text-white px-4 py-2 text-sm rounded mr-6 shadow-md hover:shadow-none flex\">\n\t\t\t\t\tPublish Post\n\t\t\t\t</button>\n\t\t\t</div>");
+      this.statusElement = $('.save-status');
+      this.publishBtnElement = $('.publish-btn');
+    }
+  }, {
+    key: "disablePublishBtn",
+    value: function disablePublishBtn() {
+      Object(_utils_adds__WEBPACK_IMPORTED_MODULE_6__["default"])(this.publishBtnElement.classList, 'pointer-events-none opacity-50');
+      this.enablePublish = false;
+    }
+  }, {
+    key: "enablePublishBtn",
+    value: function enablePublishBtn() {
+      Object(_utils_removes__WEBPACK_IMPORTED_MODULE_7__["default"])(this.publishBtnElement.classList, 'pointer-events-none opacity-50');
+      this.enablePublish = true;
+    }
+  }, {
+    key: "statusSaving",
+    value: function statusSaving() {
+      this.statusElement.innerHTML = 'Saving ...';
+      this.disablePublishBtn();
+    }
+  }, {
+    key: "statusSaved",
+    value: function statusSaved() {
+      this.statusElement.innerHTML = 'Saved';
+      this.enablePublishBtn();
     }
   }, {
     key: "addToast",
     value: function addToast() {
-      this.toast = new _toast__WEBPACK_IMPORTED_MODULE_4__["default"]();
+      this.toast = new _toast__WEBPACK_IMPORTED_MODULE_5__["default"]();
     }
   }, {
     key: "addSortable",
     value: function addSortable() {
+      var _this4 = this;
+
       var el = document.querySelector('.image-files');
-      if (el) this.sortable = sortablejs__WEBPACK_IMPORTED_MODULE_7__["default"].create(el, {
-        handle: '.handle'
+      if (el) this.sortable = sortablejs__WEBPACK_IMPORTED_MODULE_8__["default"].create(el, {
+        dataIdAttr: 'data-id',
+        handle: '.handle',
+        onUpdate: function onUpdate(e) {
+          function array_move(arr, old_index, new_index) {
+            if (new_index >= arr.length) {
+              var k = new_index - arr.length + 1;
+
+              while (k--) {
+                arr.push(undefined);
+              }
+            }
+
+            arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+            return arr;
+          }
+
+          ;
+
+          _this4.setState({
+            images: array_move(_this4.state.images, e.oldIndex, e.newIndex)
+          });
+
+          _this4.flattenedImageFormat(true, true);
+        }
       });
     }
   }, {
@@ -26036,7 +26978,7 @@ function (_Component) {
       var el = document.querySelector('.simplemde');
 
       if (el) {
-        this.simplemde = new simplemde_dist_simplemde_min_js__WEBPACK_IMPORTED_MODULE_8___default.a({
+        this.simplemde = new simplemde_dist_simplemde_min_js__WEBPACK_IMPORTED_MODULE_9___default.a({
           element: el,
           hideIcons: ['image', 'fullscreen', 'side-by-side', 'guide', 'heading-1'],
           status: false
@@ -26046,7 +26988,7 @@ function (_Component) {
   }, {
     key: "addTagify",
     value: function addTagify() {
-      this.tagify = new _yaireo_tagify__WEBPACK_IMPORTED_MODULE_10___default.a($('.tags'), {
+      this.tagify = new _yaireo_tagify__WEBPACK_IMPORTED_MODULE_11___default.a($('.tags'), {
         enforceWhitelist: true,
         whitelist: [],
         maxTags: 5,
@@ -26113,7 +27055,9 @@ function (_Component) {
       this.setState({
         tags: tags
       });
-      this.startAutoSaveAll(tags);
+      this.startAutoSaveAll({
+        tags: tags
+      });
     }
   }, {
     key: "tagRemoveHandle",
@@ -26127,23 +27071,25 @@ function (_Component) {
       this.setState({
         tags: tags
       });
-      this.startAutoSaveAll(tags);
+      this.startAutoSaveAll({
+        tags: tags
+      });
     }
   }, {
     key: "addDropzone",
     value: function addDropzone() {
-      var _this3 = this;
+      var _this5 = this;
 
       var dropzone = $('.dropzone');
 
       function onDragover() {
-        Object(_utils_removes__WEBPACK_IMPORTED_MODULE_6__["default"])(dropzone.classList, 'border-gray-300');
-        Object(_utils_adds__WEBPACK_IMPORTED_MODULE_5__["default"])(dropzone.classList, 'border-indigo-600 bg-indigo-100');
+        Object(_utils_removes__WEBPACK_IMPORTED_MODULE_7__["default"])(dropzone.classList, 'border-gray-300');
+        Object(_utils_adds__WEBPACK_IMPORTED_MODULE_6__["default"])(dropzone.classList, 'border-indigo-600 bg-indigo-100');
       }
 
       function onDragdone() {
-        Object(_utils_adds__WEBPACK_IMPORTED_MODULE_5__["default"])(dropzone.classList, 'border-gray-300');
-        Object(_utils_removes__WEBPACK_IMPORTED_MODULE_6__["default"])(dropzone.classList, 'border-indigo-600 bg-indigo-100');
+        Object(_utils_adds__WEBPACK_IMPORTED_MODULE_6__["default"])(dropzone.classList, 'border-gray-300');
+        Object(_utils_removes__WEBPACK_IMPORTED_MODULE_7__["default"])(dropzone.classList, 'border-indigo-600 bg-indigo-100');
       }
 
       dropzone.addEventListener('dragover', function (e) {
@@ -26161,13 +27107,13 @@ function (_Component) {
         onDragdone();
         var files = e.dataTransfer.files;
 
-        _this3.handleFiles(files);
+        _this5.handleFiles(files);
       });
     }
   }, {
     key: "handleFiles",
     value: function handleFiles(files) {
-      var _this4 = this;
+      var _this6 = this;
 
       if (!(files instanceof FileList)) files = files.target.files; // check uploader first
 
@@ -26179,25 +27125,25 @@ function (_Component) {
 
           files.forEach(function (file) {
             // validate each file
-            _this4.validateImage({
+            _this6.validateImage({
               selectedFile: file
             }).then(function () {
               // if file is an valid image file
-              _this4.addImage({
+              _this6.addImage({
                 file: file
-              }).then(function (_ref) {
-                var id = _ref.id,
-                    node = _ref.node;
+              }).then(function (_ref4) {
+                var id = _ref4.id,
+                    node = _ref4.node;
 
-                _this4.handleImage(id, node, file);
+                _this6.handleImage(id, node, file);
               });
             })["catch"](function (error) {
-              _this4.toast.add(error);
+              _this6.toast.add(error);
             });
           });
         }
       })["catch"](function (error) {
-        _this4.toast.add(error);
+        _this6.toast.add(error);
       });
     }
   }, {
@@ -26205,10 +27151,9 @@ function (_Component) {
     value: function isUploadAllowed() {
       var title = this.state.title;
       return new Promise(function (resolve, reject) {
-        if (title.trim().length < 1) {
-          return reject('😢&nbsp; Harap isi judul terlebih dahulu');
-        }
-
+        // if(title.trim().length < 1) {
+        // 	return reject('😢&nbsp; Harap isi judul terlebih dahulu');
+        // }
         return resolve(true);
       });
     }
@@ -26225,14 +27170,55 @@ function (_Component) {
   }, {
     key: "removeImage",
     value: function removeImage(id) {
+      var _this8 = this;
+
       var images = _toConsumableArray(this.state.images);
 
       images = images.filter(function (item) {
         return item.id !== id;
       });
-      this.setState({
-        images: images
-      });
+      var current_image = this.findImageById(id);
+      if (current_image.status == 'DELETING') return this.toast.add("\uD83D\uDE19&nbsp; Penghapusan gambar ".concat(current_image.file.name, " masih proses"));
+
+      function updateState(auto_save) {
+        var _this7 = this;
+
+        this.setState({
+          images: images
+        }, function () {
+          if (auto_save) {
+            _this7.flattenedImageFormat(true, true);
+
+            _this7.statusSaved();
+          }
+        });
+      }
+
+      if (current_image.status !== 'UPLOADED') {
+        updateState.call(this);
+      } else {
+        fetch(routes.post_delete_image, {
+          method: 'DELETE',
+          headers: {
+            'X-CSRF-TOKEN': token,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            image: current_image.prodPath
+          })
+        }).then(function (res) {
+          return res.json();
+        })["finally"](function () {}).then(function (_ref5) {
+          var status = _ref5.status;
+          if (status) updateState.call(_this8, true);
+        })["catch"](function (error) {
+          console.log(error);
+        });
+        this.updateImage(id, {
+          status: 'DELETING'
+        });
+      }
     }
     /**
      * Add image to the state
@@ -26241,15 +27227,15 @@ function (_Component) {
 
   }, {
     key: "addImage",
-    value: function addImage(_ref2) {
-      var _this5 = this;
+    value: function addImage(_ref6) {
+      var _this9 = this;
 
-      var _ref2$file = _ref2.file,
-          file = _ref2$file === void 0 ? undefined : _ref2$file;
+      var _ref6$file = _ref6.file,
+          file = _ref6$file === void 0 ? undefined : _ref6$file;
       return new Promise(function (resolve, reject) {
-        var id = _this5.generateID();
+        var id = _this9.generateID();
 
-        _this5.setState(function (prevState) {
+        _this9.setState(function (prevState) {
           // collect images from previous state
           var images = [].concat(_toConsumableArray(prevState.images), [{
             id: id,
@@ -26259,7 +27245,7 @@ function (_Component) {
             images: images
           };
         }, function () {
-          var node = $('.image-files').firstChild;
+          var node = $('.image-files').lastChild;
           return resolve({
             id: id,
             node: node
@@ -26269,16 +27255,16 @@ function (_Component) {
     }
   }, {
     key: "validateImage",
-    value: function validateImage(_ref3) {
-      var _this6 = this;
+    value: function validateImage(_ref7) {
+      var _this10 = this;
 
-      var selected_file = _ref3.selectedFile;
+      var selected_file = _ref7.selectedFile;
       return new Promise(function (resolve, reject) {
-        if (!_this6.allowedMediaTypes.includes(selected_file.type)) {
+        if (!_this10.allowedMediaTypes.includes(selected_file.type)) {
           return reject("\uD83D\uDEB7&nbsp; Jenis berkas ".concat(selected_file.name, " tidak didukung"));
         }
 
-        if (selected_file.size > _this6.maxFileSize) {
+        if (selected_file.size > _this10.maxFileSize) {
           return reject('🐠&nbsp; Ukuran berkas maks. 2MB');
         }
 
@@ -26288,7 +27274,7 @@ function (_Component) {
   }, {
     key: "handleImage",
     value: function handleImage(id, element, selected_file) {
-      var _this7 = this;
+      var _this11 = this;
 
       var selected_file_type = selected_file ? selected_file.type : false;
       this.validateImage({
@@ -26296,7 +27282,7 @@ function (_Component) {
       }).then(function () {
         var promise_preview;
 
-        if (_this7.allowedImageTypes.includes(selected_file_type)) {
+        if (_this11.allowedImageTypes.includes(selected_file_type)) {
           promise_preview = function promise_preview() {
             return new Promise(function (resolve, reject) {
               var img = element.querySelector('img'); // set selected image into the src attribute via createObjectURL API
@@ -26311,7 +27297,7 @@ function (_Component) {
         } // if video
 
 
-        if (_this7.allowedVideoTypes.includes(selected_file_type)) {
+        if (_this11.allowedVideoTypes.includes(selected_file_type)) {
           promise_preview = function promise_preview() {
             return new Promise(function (resolve, reject) {
               var video = element.querySelector('video'),
@@ -26349,7 +27335,7 @@ function (_Component) {
         }
 
         promise_preview().then(function (url_media) {
-          var current_image = _this7.updateImage(id, {
+          var current_image = _this11.updateImage(id, {
             isDirty: true,
             status: 'UPLOADING',
             file: selected_file,
@@ -26357,7 +27343,7 @@ function (_Component) {
             url: url_media
           });
 
-          _this7.uploadImage(current_image);
+          _this11.uploadImage(current_image);
         });
       });
     }
@@ -26384,7 +27370,7 @@ function (_Component) {
       var images = this.state.images; // find current image element in array by given id
 
       var current_image = this.findImageById(id);
-      Object(_utils_obj_extend__WEBPACK_IMPORTED_MODULE_3__["default"])(current_image, obj);
+      Object(_utils_obj_extend__WEBPACK_IMPORTED_MODULE_4__["default"])(current_image, obj);
       this.setState({
         images: images
       });
@@ -26393,22 +27379,28 @@ function (_Component) {
   }, {
     key: "abortImage",
     value: function abortImage(image) {
+      this.statusSaved();
       image.controller.abort();
       this.removeImage(image.id);
     }
   }, {
     key: "uploadImage",
     value: function uploadImage(image) {
-      var _this8 = this;
+      var _this12 = this;
 
-      var id = this.state.id.id;
+      var _this$state = this.state,
+          id = _this$state.id,
+          public_folder = _this$state.publicFolder;
       var form_data = new FormData();
       if (id) form_data.append('id', id);
+      if (public_folder) form_data.append('public_folder', public_folder);
       form_data.append('image', image.file);
       image = this.updateImage(image.id, {
         controller: new AbortController()
-      });
-      fetch(routes.post_store, {
+      }); // change status saving
+
+      this.statusSaving();
+      fetch(routes.post_upload_image, {
         method: 'POST',
         headers: {
           'X-CSRF-TOKEN': token,
@@ -26419,14 +27411,21 @@ function (_Component) {
       }).then(function (res) {
         return res.json();
       })["finally"](function () {}).then(function (data) {
-        console.log(data);
-
-        var current_image = _this8.updateImage(image.id, {
+        var current_image = _this12.updateImage(image.id, {
           status: 'UPLOADED',
           isAbort: undefined,
-          prod_url: data.res // change later
-
+          name: data.name,
+          prodUrl: data.url,
+          // change later
+          prodPath: data.path
         });
+
+        _this12.flattenedImageFormat(true, true);
+
+        _this12.statusSaved();
+
+        if (data.public_folder) _this12.setPublicFolder(data.public_folder);
+        if (data.post_id) _this12.setID(data.post_id);
       })["catch"](function (error) {
         console.log(error);
       });
@@ -26461,10 +27460,10 @@ function (_Component) {
 
       if (!this.state.slugDirty) {
         data = _objectSpread({}, data, {
-          slug: Object(_utils_slugify__WEBPACK_IMPORTED_MODULE_1__["default"])(title)
+          slug: Object(_utils_slugify__WEBPACK_IMPORTED_MODULE_2__["default"])(title)
         });
         auto_save_data = _objectSpread({}, auto_save_data, {
-          slug: Object(_utils_slugify__WEBPACK_IMPORTED_MODULE_1__["default"])(title)
+          slug: Object(_utils_slugify__WEBPACK_IMPORTED_MODULE_2__["default"])(title)
         });
       }
 
@@ -26474,14 +27473,87 @@ function (_Component) {
   }, {
     key: "slugOnInput",
     value: function slugOnInput(e) {
-      var slug = Object(_utils_slugify__WEBPACK_IMPORTED_MODULE_1__["default"])(e.target.value);
+      var _this13 = this;
+
+      var slug = Object(_utils_slugify__WEBPACK_IMPORTED_MODULE_2__["default"])(e.target.value);
       this.setState({
         slug: slug,
         slugDirty: true
       });
-      this.startAutoSaveAll({
+      this.slugController && this.slugController.abort();
+      this.slugController = new AbortController();
+      var body = JSON.stringify({
         slug: slug
       });
+      this.checkSlugTimeout && clearTimeout(this.checkSlugTimeout);
+      this.checkSlugTimeout = setTimeout(function () {
+        _asyncToGenerator(
+        /*#__PURE__*/
+        _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+          var response, json;
+          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+            while (1) {
+              switch (_context2.prev = _context2.next) {
+                case 0:
+                  _context2.next = 2;
+                  return fetch(routes.check_slug, {
+                    method: 'POST',
+                    headers: {
+                      'X-CSRF-TOKEN': token,
+                      'Content-Type': 'application/json',
+                      'Accept': 'application/json'
+                    },
+                    signal: _this13.slugController.signal,
+                    body: body
+                  });
+
+                case 2:
+                  response = _context2.sent;
+                  _context2.next = 5;
+                  return response.json();
+
+                case 5:
+                  json = _context2.sent;
+
+                  if (response.ok) {
+                    _context2.next = 8;
+                    break;
+                  }
+
+                  return _context2.abrupt("return", Promise.reject({
+                    err: response,
+                    data: json
+                  }));
+
+                case 8:
+                  return _context2.abrupt("return", Promise.resolve(json));
+
+                case 9:
+                case "end":
+                  return _context2.stop();
+              }
+            }
+          }, _callee2);
+        }))().then(function (res) {
+          // which means slug already exist
+          if (res.status == true) {
+            _this13.disablePublishBtn();
+
+            _this13.toast.add('😠&nbsp; Slug sudah digunakan. Cari yang lain!');
+          } else {
+            _this13.startAutoSaveAll({
+              slug: slug
+            });
+          }
+        })["catch"](function (_ref9) {
+          var err = _ref9.err,
+              data = _ref9.data;
+
+          if (!err.ok && err.status == 422) {
+            _this13.toast.add("\uD83D\uDE20&nbsp; ".concat(data.errors.slug[0]));
+          }
+        });
+      }, 2000);
     }
   }, {
     key: "slugOnBlur",
@@ -26530,16 +27602,24 @@ function (_Component) {
     value: function isUploadingImage() {
       return this.uploadingImageStatus().uploadingImage > 0 ? true : false;
     }
+    /**
+     * Fixing image format for database
+     * @param  {Boolean} auto_save 	Auto save the output?
+     * @param  {Boolean} now 		Run auto save immediately
+     * @return {Array}
+     */
+
   }, {
     key: "flattenedImageFormat",
     value: function flattenedImageFormat() {
       var auto_save = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+      var now = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
       var images = this.state.images;
       var new_images = [];
-      images.forEach(function (_ref4) {
-        var status = _ref4.status,
-            caption = _ref4.caption,
-            url = _ref4.prod_url;
+      images.forEach(function (_ref10) {
+        var status = _ref10.status,
+            caption = _ref10.caption,
+            url = _ref10.prodUrl;
 
         if (status == 'UPLOADED') {
           new_images.push({
@@ -26550,7 +27630,7 @@ function (_Component) {
       });
       if (auto_save) this.startAutoSaveAll({
         content: new_images
-      });
+      }, now);
       return new_images;
     }
     /**
@@ -26572,11 +27652,11 @@ function (_Component) {
   }, {
     key: "autoSaveCaption",
     value: function autoSaveCaption() {
-      var _this9 = this; // run auto-save after 2000s (when user has no activity on the textarea)
+      var _this14 = this; // run auto-save after 2000s (when user has no activity on the textarea)
 
 
       this.autoSaveTimeout = setTimeout(function () {
-        _this9.setCaptionToImage();
+        _this14.setCaptionToImage();
       }, 2000);
     }
     /**
@@ -26597,23 +27677,23 @@ function (_Component) {
   }, {
     key: "setCaption",
     value: function setCaption(id) {
-      var _this10 = this;
+      var _this15 = this;
 
       this.currentImageId = id; // current image object
 
       var current_image = this.findImageById(id); // set value
 
       setTimeout(function () {
-        if (current_image.caption) _this10.simplemde.value(current_image.caption);else _this10.simplemde.value('');
+        if (current_image.caption) _this15.simplemde.value(current_image.caption);else _this15.simplemde.value('');
       }, 0); // show the modal first
 
       this.showCaptionModal(); // when user typing
 
       this.simplemde.codemirror.on('change', function () {
         // clear the autosave timeout
-        clearTimeout(_this10.autoSaveTimeout); // start auto-saving again
+        clearTimeout(_this15.autoSaveTimeout); // start auto-saving again
 
-        _this10.autoSaveCaption();
+        _this15.autoSaveCaption();
       });
     }
     /**
@@ -26653,7 +27733,7 @@ function (_Component) {
     value: function validateLink(link) {
       if (link.trim().length < 1) {
         return false;
-      } else if (!Object(_utils_validate_url__WEBPACK_IMPORTED_MODULE_2__["default"])(link)) {
+      } else if (!Object(_utils_validate_url__WEBPACK_IMPORTED_MODULE_3__["default"])(link)) {
         return false;
       }
 
@@ -26679,7 +27759,7 @@ function (_Component) {
   }, {
     key: "addLinkToKey",
     value: function addLinkToKey() {
-      var _this11 = this;
+      var _this16 = this;
 
       var current_link_key = this.state.currentLinkKey;
       var current_link_data = this.state[current_link_key];
@@ -26689,11 +27769,11 @@ function (_Component) {
         var new_link = {};
         new_link[current_link_key] = current_link_data;
         new_link[current_link_key].push({
-          id: _this11.generateID(),
+          id: _this16.generateID(),
           value: ''
         });
 
-        _this11.setState(new_link);
+        _this16.setState(new_link);
       }; // first time link
 
 
@@ -26705,7 +27785,7 @@ function (_Component) {
 
       if (invalid_input.length < 1) {
         setTimeout(function () {
-          _this11.lastLinkInput().focus();
+          _this16.lastLinkInput().focus();
         }, 0);
       }
 
@@ -26789,12 +27869,12 @@ function (_Component) {
   }, {
     key: "getAllInvalidInputLink",
     value: function getAllInvalidInputLink() {
-      var _this12 = this;
+      var _this17 = this;
 
       var invalid = [],
           current_input_name = 'link-' + this.state.currentLinkKey;
       document.querySelectorAll('[name=' + current_input_name + ']').forEach(function (input) {
-        if (!_this12.validateLink(input.value)) {
+        if (!_this17.validateLink(input.value)) {
           invalid.push(input);
         }
       });
@@ -26836,12 +27916,12 @@ function (_Component) {
   }, {
     key: "checkButtonLinkDisabled",
     value: function checkButtonLinkDisabled() {
-      var _this13 = this;
+      var _this18 = this;
 
       setTimeout(function () {
-        var invalid = _this13.getAllInvalidInputLink();
+        var invalid = _this18.getAllInvalidInputLink();
 
-        var current_link_data = _this13.currentLinkData();
+        var current_link_data = _this18.currentLinkData();
 
         var submit_btn = document.querySelector('.add-link-btn');
 
@@ -26868,84 +27948,84 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this14 = this;
+      var _this19 = this;
 
       var message = this.props.message;
-      var _this$state = this.state,
-          title = _this$state.title,
-          slug = _this$state.slug,
-          images = _this$state.images,
-          current_link_key = _this$state.currentLinkKey;
+      var _this$state2 = this.state,
+          title = _this$state2.title,
+          slug = _this$state2.slug,
+          images = _this$state2.images,
+          current_link_key = _this$state2.currentLinkKey;
 
       var _this$uploadingImageS = this.uploadingImageStatus(),
           uploading_image = _this$uploadingImageS.uploadingImage,
           total_image = _this$uploadingImageS.totalImage,
           uploaded_image = _this$uploadingImageS.uploadedImage;
 
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "caption-modal overflow-y-auto fixed top-0 left-0 w-full h-full flex z-20 items-start justify-center hidden"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "fixed bg-black opacity-50 w-screen h-screen"
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "p-10 my-0 md:my-10 sm:w-6/12 lg:w-6/12 md:w-8/12 w-full h-full md:h-auto bg-white relative md:rounded shadow-lg"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         onClick: this.closeCaptionModal.bind(this),
         className: "absolute top-0 right-0 bg-red-600 w-10 h-10 rounded-bl text-center cursor-pointer hover:bg-red-700 flex items-center justify-center"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("svg", {
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("svg", {
         className: "inline-block w-6 fill-current text-white",
         xmlns: "http://www.w3.org/2000/svg",
         viewBox: "0 0 24 24"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("g", {
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("g", {
         "data-name": "Layer 2"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("g", {
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("g", {
         "data-name": "close"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("rect", {
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("rect", {
         width: "24",
         height: "24",
         transform: "rotate(180 12 12)",
         opacity: "0"
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("path", {
+      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("path", {
         d: "M13.41 12l4.3-4.29a1 1 0 1 0-1.42-1.42L12 10.59l-4.29-4.3a1 1 0 0 0-1.42 1.42l4.3 4.29-4.3 4.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l4.29-4.3 4.29 4.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z"
-      }))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", {
+      }))))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", {
         className: "text-xl font-bold"
-      }, "Tentukan Deskripsi"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+      }, "Tentukan Deskripsi"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
         className: "text-sm text-gray-600 mt-2 leading-relaxed"
-      }, "Berikan deskripsi pada slide ini. Kamu dapat mengosongkan deskripsi bila tidak ada."), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, "Berikan deskripsi pada slide ini. Kamu dapat mengosongkan deskripsi bila tidak ada."), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "mt-6"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("textarea", {
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("textarea", {
         className: "simplemde"
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+      })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
         onClick: this.closeCaptionModal.bind(this),
         className: "bg-indigo-600 p-6 text-sm text-white font-semibold rounded shadow block w-full text-center",
         type: "button"
-      }, "Simpan Perubahan"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, "Simpan Perubahan"))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "container mx-auto px-4 sm:px-0"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "flex py-12 -mx-4 justify-center"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "w-full lg:w-6/12 px-4 md:w-8/12"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "border-2 border-gray-200 p-8 rounded"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h1", {
         className: "text-indigo-600 text-xl font-semibold"
-      }, "Buat Post"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+      }, "Buat Post"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
         className: "mb-4 mt-2 text-sm text-gray-600"
-      }, "Bagikan pengetahuan kamu dengan developer lain; begitu pula dengan developer lain, mereka akan melakukan hal serupa."), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, "Bagikan pengetahuan kamu dengan developer lain; begitu pula dengan developer lain, mereka akan melakukan hal serupa."), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "mb-6 mt-6"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
         className: "mb-1 text-sm inline-block text-gray-600"
-      }, "Judul"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      }, "Judul"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
         onChange: this.titleOnInput.bind(this),
         type: "text",
         name: "title",
         className: "text-gray-600 border-2 border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600",
         autoComplete: "off",
         tabIndex: "1"
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "mb-6 mt-6"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
         className: "mb-1 text-sm inline-block text-gray-600"
-      }, "Slug"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      }, "Slug"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
         onChange: this.slugOnInput.bind(this),
         onBlur: this.slugOnBlur.bind(this),
         type: "text",
@@ -26954,170 +28034,171 @@ function (_Component) {
         autoComplete: "off",
         defaultValue: slug,
         tabIndex: "2"
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
         className: "mt-2 text-sm text-indigo-600"
-      }, routes.single.replace(/slug/g, '') + slug)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, routes.single.replace(/slug/g, '') + slug)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "mb-6"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
         className: "mb-1 text-sm inline-block text-gray-600"
-      }, "Topik"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      }, "Topik"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
         type: "text",
         name: "tags[]",
         className: "tags text-gray-600 border-2 border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600",
         tabIndex: "3"
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+      })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
         className: "mb-1 text-sm inline-block text-gray-600"
-      }, "Design Keyword ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+      }, "Design Keyword ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
         className: "text-xs"
-      }, "(Optional)")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      }, "(Optional)")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
         onChange: this.keywordOnInput.bind(this),
         type: "text",
         name: "keyword",
         className: "text-gray-600 border-2 border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600",
         tabIndex: "4"
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
         className: "mt-2 text-xs text-indigo-600"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
         className: "tooltip cursor-help border-b border-dotted border-indigo-600",
         "data-title": "Keyword ini bukan untuk SEO, melainkan digunakan untuk mencari inspirasi desain ke situs di luar Kodinger, seperti Dribbble, Behance, atau Uplabs. Jadi, bila kamu sedang membahas library carousel, maka kamu dapat mengisi keyword dengan 'carousel'. Lalu, sistem akan menggunakan kata 'carousel' tadi untuk digunakan sebagai keyword pencarian ke 3 situs tadi."
-      }, "Saya harus mengisi ini dengan apa?")))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, "Saya harus mengisi ini dengan apa?")))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "border-2 border-gray-200 p-8 rounded mt-10"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", {
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", {
         className: "text-indigo-600 mb-4 text-xl font-semibold"
-      }, "Media"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, "Media"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "mb-6"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "dropzone rounded-lg border-2 border-dashed border-gray-300 w-full flex items-center justify-center"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "p-20 text-center"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", {
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h4", {
         className: "text-xl"
-      }, "Tarik gambar atau video kamu ke sini"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+      }, "Tarik gambar atau video kamu ke sini"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
         className: "text-sm mt-2 text-gray-600"
-      }, "Maksimal: 2MB. Format yang didukung: ", [].concat(_toConsumableArray(this.allowedImageTypesReadable), _toConsumableArray(this.allowedVideoTypesReadable)).join(', ')), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+      }, "Maksimal: 2MB. Format yang didukung: ", [].concat(_toConsumableArray(this.allowedImageTypesReadable), _toConsumableArray(this.allowedVideoTypesReadable)).join(', ')), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
         className: "mt-6 text-indigo-600 font-semibold inline-block cursor-pointer",
         htmlFor: "images-input",
         tabIndex: "5"
-      }, "Browse"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      }, "Browse"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
         type: "file",
         multiple: true,
         id: "images-input",
         className: "hidden",
         onChange: this.handleFiles.bind(this)
-      }))), images.length > 0 && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }))), images.length > 0 && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "mt-6 text-xs uppercase font-semibold tracking-wider mb-2 text-gray-600"
-      }, "Media yang dipilih ", this.isUploadingImage() ? '(' + uploaded_image + '/' + total_image + ')' : '')), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, "Media yang dipilih ", this.isUploadingImage() ? '(' + uploaded_image + '/' + total_image + ')' : '')), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "image-files"
       }, images.map(function (image) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          "data-id": image.id,
           key: image.id,
           className: "bg-white flex justify-center w-full mb-4 rounded border-2 border-gray-200 hover:border-gray-400"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
           className: "handle flex-shrink-0 p-2 items-center flex border-r-2 border-gray-200 bg-gray-100 mr-4 cursor-move"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("svg", {
+        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("svg", {
           xmlns: "http://www.w3.org/2000/svg",
           className: "w-4 fill-current text-gray-600",
           viewBox: "0 0 24 24"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("g", {
+        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("g", {
           "data-name": "Layer 2"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("g", {
+        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("g", {
           "data-name": "menu"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("rect", {
+        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("rect", {
           width: "24",
           height: "24",
           transform: "rotate(180 12 12)",
           opacity: "0"
-        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("rect", {
+        }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("rect", {
           x: "3",
           y: "11",
           width: "18",
           height: "2",
           rx: ".95",
           ry: ".95"
-        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("rect", {
+        }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("rect", {
           x: "3",
           y: "16",
           width: "18",
           height: "2",
           rx: ".95",
           ry: ".95"
-        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("rect", {
+        }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("rect", {
           x: "3",
           y: "6",
           width: "18",
           height: "2",
           rx: ".95",
           ry: ".95"
-        }))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        }))))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
           className: "w-16 h-16 mr-4 flex-shrink-0 py-4"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("img", {
           className: 'rounded' + (image.url ? '' : ' hidden'),
           src: image.url ? image.url : null
-        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("video", {
+        }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("video", {
           className: "hidden",
           controls: true
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("source", null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("canvas", {
+        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("source", null)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("canvas", {
           className: "hidden"
-        })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
           className: "w-full py-4 pr-4"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
           className: 'text-xs float-right font-semibold tracking-wider inline-block' + (image.status == 'UPLOADED' ? ' text-teal-600' : ' text-orange-600')
-        }, image.status), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        }, image.status), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
           className: "text-indigo-600 mb-1"
-        }, image.file.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        }, image.name ? image.name : image.file.name), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
           className: "text-xs text-gray-600"
-        }, _this14.humanFileSize(image.file.size)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        }, _this19.humanFileSize(image.file.size)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
           className: "flex mt-2 text-sm"
-        }, !image.isAbort && image.isAbort !== undefined && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        }, !image.isAbort && image.isAbort !== undefined && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
           className: "cursor-pointer text-red-600",
-          onClick: _this14.abortImage.bind(_this14, image)
-        }, "Batalkan"), image.isDirty && image.isAbort == undefined && !image.isAbort && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          onClick: _this14.removeImage.bind(_this14, image.id),
+          onClick: _this19.abortImage.bind(_this19, image)
+        }, "Batalkan"), image.isDirty && image.isAbort == undefined && !image.isAbort && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          onClick: _this19.removeImage.bind(_this19, image.id),
           className: "text-red-600 cursor-pointer"
-        }, "Hapus"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          onClick: _this14.setCaption.bind(_this14, image.id),
+        }, "Hapus"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          onClick: _this19.setCaption.bind(_this19, image.id),
           className: "text-teal-600 cursor-pointer ml-4"
         }, "Tentukan Deskripsi")))));
-      })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      })))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "border-2 border-gray-200 p-8 rounded mt-10"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", {
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", {
         className: "text-indigo-600 mb-4 text-xl font-semibold"
-      }, "Tautan ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+      }, "Tautan ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
         className: "text-xs text-gray-600"
-      }, "(Optional)")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+      }, "(Optional)")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
         className: "mb-4 mt-2 text-sm text-gray-600"
-      }, "Post yang baik menyertakan beberapa referensi yang dingunakan sebagai dasar pikiran."), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, "Post yang baik menyertakan beberapa referensi yang dingunakan sebagai dasar pikiran."), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "flex mb-4 overflow-x-auto flex-no-wrap"
       }, Object.keys(key2str).map(function (name, index) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          onClick: _this14.setLinkKey.bind(_this14, name),
+        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          onClick: _this19.setLinkKey.bind(_this19, name),
           key: name,
           className: 'px-4 py-2 border-t border-r border-b ' + (current_link_key == name ? 'bg-indigo-600 text-white' : 'text-gray-600 hover:bg-gray-100') + ' cursor-pointer border-gray-200 text-sm flex-1 justify-center flex items-center text-center' + (index == 0 ? ' border-l rounded-tl rounded-bl' : index == Object.keys(key2str).length - 1 ? ' rounded-tr rounded-br' : '')
         }, key2str[name]);
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "bg-gray-100 border border-gray-200 rounded p-4"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "list"
       }, this.state[current_link_key].map(function (link, id) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
           key: link.id,
           className: "bg-white shadow rounded mb-4 text-sm text-blue-500 flex"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-          onKeyDown: _this14.linkKeydownHandle.bind(_this14),
-          onKeyUp: _this14.linkKeyupHandle.bind(_this14),
-          onChange: _this14.linkInputHandle.bind(_this14, link.id),
+        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+          onKeyDown: _this19.linkKeydownHandle.bind(_this19),
+          onKeyUp: _this19.linkKeyupHandle.bind(_this19),
+          onChange: _this19.linkInputHandle.bind(_this19, link.id),
           tabIndex: "6",
           type: "text",
           name: 'link-' + current_link_key,
           placeholder: "Contoh: https://kodinger.com/tutorial-javascript",
           className: "url w-full py-3 px-4 rounded outline-none",
           defaultValue: link.value
-        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
           type: "button",
-          onClick: _this14.removeLinkFromKey.bind(_this14, link.id),
+          onClick: _this19.removeLinkFromKey.bind(_this19, link.id),
           className: "uppercase font-semibold bg-red-500 text-white px-4 flex items-center cursor-pointer hover:bg-red-600 rounded-tr rounded-br"
         }, "Hapus"));
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+      })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
         type: "button",
         onClick: this.addLinkToKey.bind(this),
         tabIndex: "7",
@@ -27127,7 +28208,7 @@ function (_Component) {
   }]);
 
   return Form;
-}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+}(react__WEBPACK_IMPORTED_MODULE_1__["Component"]);
 
 /* harmony default export */ __webpack_exports__["default"] = (Form);
 
@@ -27222,7 +28303,10 @@ function () {
     key: "disposeToast",
     value: function disposeToast(element) {
       if (typeof element == 'string') element = document.querySelector('#' + element);
-      element.remove();
+      element.classList.add('anim-fade-down');
+      setTimeout(function () {
+        element.remove();
+      }, 500);
     }
   }, {
     key: "insertWrapper",

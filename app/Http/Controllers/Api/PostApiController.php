@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Requests\PostDiscoverCreateRequest;
 use Requests\PostCreateRequest;
+use Requests\PostCheckSlugRequest;
 use App\Http\Controllers\Controller;
 use Services\PostService;
+use Illuminate\Support\Str;
 
 class PostApiController extends Controller
 {
@@ -22,14 +24,111 @@ class PostApiController extends Controller
 	}
 
 	/**
+	 * Check slug
+	 * @param  Request $request
+	 * @return JSON
+	 */
+	public function checkSlug(PostCheckSlugRequest $request) 
+	{
+		$slug = $request->slug;
+
+		if($this->postService->checkSlug($slug))
+		{
+			return response()->json(['status' => true, 'message' => 'Slug already exists']);
+		}
+
+		return response()->json(['status' => false, 'message' => 'Slug available to use']);
+	}
+
+	/**
 	 * Create a new post
-	 * @param  PostCreateRequest $request [description]
+	 * @param  Request $request [description]
 	 * @return JSON
 	 */
 	public function store(Request $request)
 	{
+		$input = $request->all();
+		$id = $input['id'] ?? false;
+
+		if(!$id) {
+			$id = Str::uuid();
+			$input['id'] = $id;
+
+			// create new post
+			// code here
+		}
+
+		// update post
+		// code here
+
+		return response()->json([
+			'status' => true,
+			'data' => $input
+		]);
+	}
+
+	/**
+	 * Upload post image
+	 * @param  Request $request [description]
+	 * @return JSON
+	 */
+	public function uploadImage(Request $request)
+	{
+		$public_folder = $request->public_folder;
+		$slug = $request->slug;
+		$user = auth()->user();
+		// post id
+		$id = $request->id;
+
+		// create post
+		if(!$id)
+		{
+			$id = Str::uuid();
+
+			// creating post
+			// code here
+		}
+
+		if(!$public_folder)
+		{
+			$public_folder = $slug ?? $user->username . '-' . uniqid();
+		}
+
+		$name = $request->image->getClientOriginalName();
+		$path = $public_folder . '/' . $name;
+		$url = $path; // change letter
+
+		// upload image
+		// code here
+
 		sleep(2);
-		return response()->json(['res' => $request->image->getClientOriginalName()]);
+
+		return response()->json([
+			'post_id' => $id,
+			'public_folder' => $public_folder,
+			'name' => $name,
+			'url' => $url,
+			'path' => $path,
+		]);
+	}
+
+	/**
+	 * Delete post image
+	 * @param  Request $request [description]
+	 * @return JSON
+	 */
+	public function deleteImage(Request $request)
+	{
+		$public_folder = $request->public_folder;
+
+		// delete image
+		// code here
+		sleep(2);
+		
+		return response()->json([
+			'status' => true,
+			'message' => 'Image deleted successfully'
+		]);
 	}
 
 	/**

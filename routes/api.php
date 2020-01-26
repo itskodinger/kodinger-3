@@ -27,6 +27,9 @@ Route::group(['prefix' => 'posts', 'as' => 'post.', 'namespace' => 'Api'], funct
 {
 	Route::post('/link-info', 'PostApiController@getLinkInfo')->name('getLinkInfo');
 	Route::post('/', 'PostApiController@store')->name('store');
+	Route::post('/check-slug', 'PostApiController@checkSlug')->name('check_slug');
+	Route::post('/upload-image', 'PostApiController@uploadImage')->name('upload_image');
+	Route::delete('/delete-image', 'PostApiController@deleteImage')->name('delete_image');
 	Route::get('/posts', 'PostApiController@posts')->name('posts');
 	Route::get('/both', 'PostApiController@both')->name('both');
 	Route::get('/discover', 'PostApiController@discover')->name('discover');

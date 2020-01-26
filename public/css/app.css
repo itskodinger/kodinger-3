@@ -11968,6 +11968,15 @@ video {
           animation-duration: .5s;
 }
 
+.anim-fade-down {
+  -webkit-animation-name: anim-fade-down;
+          animation-name: anim-fade-down;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+  -webkit-animation-duration: .5s;
+          animation-duration: .5s;
+}
+
 @-webkit-keyframes anim-fade-up {
   0% {
     transform: translateY(50px);
@@ -11989,6 +11998,30 @@ video {
   100% {
     transform: translateY(0);
     opacity: 1;
+  }
+}
+
+@-webkit-keyframes anim-fade-down {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+}
+
+@keyframes anim-fade-down {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(50px);
+    opacity: 0;
   }
 }
 

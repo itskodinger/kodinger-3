@@ -4,7 +4,7 @@ namespace Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PostCreateRequest extends FormRequest
+class PostCheckSlugRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,8 +14,7 @@ class PostCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|min:5',
-            'slug' => 'required|min:5|unique:posts,slug'
+            'slug' => 'required|min:5'
         ];
     }
 }
