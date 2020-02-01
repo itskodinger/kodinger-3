@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Buat Post Baru', 'empty_navbar' => true, 'auto_hide' => false])
+@extends('layouts.app', ['title' => 'Buat Post Baru', 'navbar' => false])
 
 @section('content')
 	<div id="post-form">Loading editor ...</div>

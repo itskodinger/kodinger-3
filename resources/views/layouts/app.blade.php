@@ -39,6 +39,7 @@
     </div>
     @endguest
     <div id="app">
+    	@if(@$navbar !== false)
         <nav class="primary-nav {{!isset($auto_hide) ? 'nav-auto-hide ' : ''}}bg-white border-b-2 border-indigo-600 top-0 shadow mb-4 py-3 fixed left-0 w-full z-10">
             <div class="container mx-auto sm:px-6 px-4 md:px-0">
                 <div class="flex items-center{{ !isset($empty_navbar) ? ' justify-center' : ''}}">
@@ -136,6 +137,7 @@
                 </div>
             </div>
         </nav>
+        @endif
 
         <nav class="fixed bottom-0 left-0 w-full z-30 sm:hidden">
         	<div class="nav-bottom-overlay hidden absolute top-0 left-0 right-0 h-full bg-white opacity-50"></div>
