@@ -3,12 +3,15 @@
 namespace Services;
 
 use DB;
+use Str;
 use App\Tag;
 use App\Save;
 use App\Post;
 use App\PostAttribute;
 use App\PostTag;
 use App\Contribute;
+use Illuminate\Http\Request;
+use App\Contracts\Post\Post as PostContract;
 // use App\Events\Post\Discover\DiscoverPostCreated;
 use App\Jobs\FetchDiscoverUrlPreview;
 use Services\UserService;
@@ -16,10 +19,11 @@ use Services\UserService;
 class PostService
 {
 	protected $init;
-	protected $userService;
+	protected $userService, $postImageService;
 
-	public function __construct(UserService $userService) {
+	public function __construct(UserService $userService, PostImageService $postImageService) {
 		$this->userService = $userService;
+		$this->postImageService = $postImageService;
 	}
 
 	public function model()
@@ -187,10 +191,18 @@ class PostService
 		$input['views'] = 0;
 		$input['user_id'] = auth()->user()->id;
 
+		if($request->has('id')) {
+			$input['id'] = $request->id;
+		}
+		else 
+		{
+			$input['id'] = Str::uuid()->toString();
+		}
+
 		$input = array_merge($input, $arr);
 
 		$data = $this->model()->create($input);
-		foreach($tags as $tag)
+		foreach($tags ?? [] as $tag)
 		{
 			PostTag::create([
 				'post_id' => $data->id,
@@ -271,5 +283,63 @@ class PostService
 		$post = $this->model()->find($id);
 
 		return $post->delete($id);
+	}
+
+	public function createFromContract(PostContract $post) {
+		$request = app(Request::class);
+
+		// Please add required fields here with data from the post contract.
+		// @see App\Services\Post\Post
+		$request->merge([
+			'id'  => $post->getId(),
+			'title' => $post->getTitle(),
+			'slug' => $post->getSlug()
+		]);
+
+		return $this->create($request);
+	}
+
+	public function updateFromContract(PostContract $post) {
+		$request = app(Request::class);
+
+		// Please add required fields here with data from the post contract.
+		// @see App\Services\Post\Post
+		$request->merge([
+			'title' => $post->getTitle(),
+			'slug' => $post->getSlug()
+		]);
+
+		if(!empty($post->getPostImages())) {
+
+			foreach($post->getPostImages() as $image) {
+
+				// $postImage = $this->postImageService->create([
+				// 	'post_id'   => $post->getId(),
+				// 	'image_url' => $image->getUrl()
+				// ]);
+
+				// $this->postImageCaptionService->create([
+				// 	'post_image_id' => $postImage->id,
+				// 	'caption'       => $image->getCaption()
+				// ]);
+			}
+
+		}
+
+		return $this->findAndUpdate(
+			$post->getId(),
+			$request
+		);
+	}
+
+	public function generateContractFromPost(Post $post) {
+		$contract = app(PostContract::class)
+			->setId($post->id)
+			->setTitle($post->title)
+			->setSlug($post->slug);
+
+		$images = $post->postImages;
+
+		return $contract;
 	}
 }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Post;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Requests\PostDiscoverCreateRequest;
 use Requests\PostCreateRequest;
@@ -9,6 +11,8 @@ use Requests\PostCheckSlugRequest;
 use App\Http\Controllers\Controller;
 use Services\PostService;
 use Illuminate\Support\Str;
+use App\Contracts\Post\Post as PostContract;
+use App\Contracts\Post\PostImage;
 
 class PostApiController extends Controller
 {
@@ -83,10 +87,19 @@ class PostApiController extends Controller
 		// create post
 		if(!$id)
 		{
-			$id = Str::uuid();
+			$id = Str::uuid()->toString();
 
-			// creating post
-			// code here
+			$postContract = app(PostContract::class)
+				->setId($id)
+				->setTitle('Tidak ada judul')
+				->setSlug(Str::random(100));
+
+			$post = $this->postService->createFromContract($postContract);
+		}
+
+
+		if($post instanceof Post) {
+			$postContract = $this->postService->generateContractFromPost($post);
 		}
 
 		if(!$public_folder)
@@ -101,7 +114,18 @@ class PostApiController extends Controller
 		// upload image
 		// code here
 
-		sleep(2);
+		Storage::disk('spaces')->putFileAs($public_folder, $request->image, $name);
+
+		$url       = sprintf("%s/%s", env("DO_SPACES_BASEURL"), $path, 'public');
+		$caption   = "SET CAPTION HERE"; // jadi captionya gimana bos?
+
+		$postContract->addPostImage(
+			app(PostImage::class)
+				->setImageUrl($url)
+				->setCaption($caption)
+		);
+
+		$this->postService->updateFromContract($postContract);
 
 		return response()->json([
 			'post_id' => $id,

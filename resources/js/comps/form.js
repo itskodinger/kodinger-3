@@ -1342,6 +1342,7 @@ class Form extends Component {
 														<div className={'text-xs float-right font-semibold tracking-wider inline-block' + (image.status == 'UPLOADED' ? ' text-teal-600' : ' text-orange-600')}>{image.status}</div>
 														<div className="text-indigo-600 mb-1">{image.name ? image.name : image.file.name}</div>
 														<div className="text-xs text-gray-600">{this.humanFileSize(image.file.size)}</div>
+
 														<div className="flex mt-2 text-sm">
 														{(!image.isAbort && image.isAbort !== undefined) &&
 															<div className="cursor-pointer text-red-600" onClick={this.abortImage.bind(this, image)}>Batalkan</div>
@@ -1356,6 +1357,7 @@ class Form extends Component {
 														}
 														</div>
 													</div>
+
 												</div>
 											);
 										}) }

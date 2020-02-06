@@ -28688,7 +28688,7 @@ function validateUrl(value) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Library/WebServer/Documents/kd/resources/js/post-form.js */"./resources/js/post-form.js");
+module.exports = __webpack_require__(/*! /Users/rizalfakhri/Code/kd3/resources/js/post-form.js */"./resources/js/post-form.js");
 
 
 /***/ })

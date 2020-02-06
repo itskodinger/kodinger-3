@@ -9,10 +9,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
 {
-	use SoftDeletes;
+    use SoftDeletes;
+    
+    public $incrementing = false;
 
 	protected $table = 'posts';
 	protected $fillable = [
+        'id',
 		'title',
 		'slug',
 		'content',
@@ -175,5 +178,9 @@ class Post extends Model
 
 	public function attributes() {
 		return $this->hasMany(PostAttribute::class);
-	}
+    }
+    
+    public function postImages() {
+        return $this->hasMany(PostImage::class);
+    }
 }

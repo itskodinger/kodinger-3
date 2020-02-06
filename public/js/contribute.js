@@ -2173,7 +2173,7 @@ function validateUrl(value) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Library/WebServer/Documents/kd/resources/js/contribute.js */"./resources/js/contribute.js");
+module.exports = __webpack_require__(/*! /Users/rizalfakhri/Code/kd3/resources/js/contribute.js */"./resources/js/contribute.js");
 
 
 /***/ })

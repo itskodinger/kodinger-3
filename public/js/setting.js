@@ -113,7 +113,7 @@ avatar_field.addEventListener('change', function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Library/WebServer/Documents/kd/resources/js/setting.js */"./resources/js/setting.js");
+module.exports = __webpack_require__(/*! /Users/rizalfakhri/Code/kd3/resources/js/setting.js */"./resources/js/setting.js");
 
 
 /***/ })

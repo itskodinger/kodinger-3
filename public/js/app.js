@@ -220,8 +220,8 @@ $('body').addEventListener('click', function (e) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Library/WebServer/Documents/kd/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Library/WebServer/Documents/kd/resources/css/app.css */"./resources/css/app.css");
+__webpack_require__(/*! /Users/rizalfakhri/Code/kd3/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/rizalfakhri/Code/kd3/resources/css/app.css */"./resources/css/app.css");
 
 
 /***/ })

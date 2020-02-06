@@ -4823,7 +4823,7 @@ function wrapNode(wrap, element) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Library/WebServer/Documents/kd/resources/js/single.js */"./resources/js/single.js");
+module.exports = __webpack_require__(/*! /Users/rizalfakhri/Code/kd3/resources/js/single.js */"./resources/js/single.js");
 
 
 /***/ })

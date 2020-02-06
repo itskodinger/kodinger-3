@@ -3881,7 +3881,7 @@ function wrapNode(wrap, element) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Library/WebServer/Documents/kd/resources/js/profile-saves.js */"./resources/js/profile-saves.js");
+module.exports = __webpack_require__(/*! /Users/rizalfakhri/Code/kd3/resources/js/profile-saves.js */"./resources/js/profile-saves.js");
 
 
 /***/ })
