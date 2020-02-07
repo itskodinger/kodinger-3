@@ -55,7 +55,7 @@ class PostApiController extends Controller
 			$input['id'] = $id;
 
 			// create new post
-			// code here
+			$this->postService->create($input);
 		}
 
 		// update post

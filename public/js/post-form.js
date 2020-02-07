@@ -27018,7 +27018,7 @@ function (_Component) {
             images: array_move(_this5.state.images, e.oldIndex, e.newIndex)
           });
 
-          _this5.flattenedImageFormat(true, true);
+          _this5.flattenedImageFormat(true);
         }
       });
     }
@@ -27478,7 +27478,7 @@ function (_Component) {
           prodPath: data.path
         });
 
-        _this13.flattenedImageFormat(true, true);
+        _this13.flattenedImageFormat(true);
 
         _this13.statusSaved();
 
@@ -27671,7 +27671,7 @@ function (_Component) {
     key: "flattenedImageFormat",
     value: function flattenedImageFormat() {
       var auto_save = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-      var now = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      var now = arguments.length > 1 ? arguments[1] : undefined;
       var images = this.state.images;
       var new_images = [];
       images.forEach(function (_ref11) {

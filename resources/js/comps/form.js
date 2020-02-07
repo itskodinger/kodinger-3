@@ -271,7 +271,7 @@ class Form extends Component {
 						images: array_move(this.state.images, e.oldIndex, e.newIndex)
 					});
 
-					this.flattenedImageFormat(true, true);
+					this.flattenedImageFormat(true);
 				},
 			});
 	}
@@ -766,7 +766,7 @@ class Form extends Component {
 				prodPath: data.path
 			});
 
-			this.flattenedImageFormat(true, true);
+			this.flattenedImageFormat(true);
 			this.statusSaved();
 
 			if(data.public_folder)
@@ -915,7 +915,7 @@ class Form extends Component {
 	 * @param  {Boolean} now 		Run auto save immediately
 	 * @return {Array}
 	 */
-	flattenedImageFormat(auto_save=false, now=false) {
+	flattenedImageFormat(auto_save=false, now) {
 		const { images } = this.state;
 
 		let new_images = [];
