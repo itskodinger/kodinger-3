@@ -198,32 +198,57 @@ class PostService
 		$blurry_folder = 'px';
 		$blurry_path = $base . $public_folder . '/' . $blurry_folder;
 
-		$blurry = Image::make($request->image);
+		$video_thumbnail = $request->video_thumbnail;
+		$image = $request->image;
+		$image_ext = $image->getClientOriginalExtension();
+
+		if($video_thumbnail) 
+		{
+			$video_thumbnail = str_replace('data:image/png;base64,', '', $video_thumbnail);
+			$video_thumbnail = base64_decode($video_thumbnail);
+			$video_thumbnail_name = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME) . '.png';
+			$video_path = $base . $public_folder . '/' . $video_thumbnail_name;
+			Storage::disk('spaces')->put($video_path, $video_thumbnail, 'public');
+		}
+
+		$blurry = Image::make($video_thumbnail ? $video_thumbnail : $image);
 		$blurry->fit(30);
-		$blurry = $blurry->stream()->detach();
+		$blurry = $blurry->stream($video_thumbnail ? 'png' : $image_ext, 20)->detach();
 
 		// create sub-directory
 		Storage::disk('spaces')->makeDirectory($blurry_path);
 
 		// upload image
-		Storage::disk('spaces')->putFileAs($base . $public_folder, $request->image, $name, 'public');
-		Storage::disk('spaces')->put($blurry_path . '/' . $name, $blurry, 'public');
+		Storage::disk('spaces')->putFileAs($base . $public_folder, $image, $name, 'public');
+		// upload blurry
+		Storage::disk('spaces')->put($blurry_path . '/' . ($video_thumbnail ? $video_thumbnail_name : $name), $blurry, 'public');
 
 
-		return [
+		$output = [
 			'post_id' => $id,
 			'public_folder' => $public_folder,
 			'name' => $name,
 			'url' => $url,
 			'path' => $path
 		];
+
+		if($video_thumbnail)
+		{
+			$output['video_thumbnail_url'] = space_url($video_path);
+			$output['video_thumbnail_name'] = $video_thumbnail_name;
+		}
+
+		return $output;
 	}
 
 	public function deleteImage($request)
 	{
-		$path = 'posts/' . $request->public_folder . '/' . $request->name;
+		$base_path = 'posts/' . $request->public_folder . '/';
+		$path = $base_path . $request->name;
+		$path_blurry = $base_path . 'px/' . $request->name;
 
 		Storage::disk('spaces')->delete($path);
+		Storage::disk('spaces')->delete($path_blurry);
 	}
 
 	public function create($request, $arr=[])

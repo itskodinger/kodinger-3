@@ -27,9 +27,11 @@ Kodinger 3 merupakan project dari tim Kodinger untuk refactoring website utama K
 - More more more more
 
 ## RN
-- Otomatis add image ke post ketika upload tanpa ID post
+- Otomatis add image ke post ketika upload tanpa ID post (later)
 - Otomatis update slug ketika `checkSlug`
-- Simplify form.js's fetch function
+- Simplify form.js's fetch function (ok)
+- Send generated video thumbnail to the server
+- Lazyload first video slide content
 
 ## Setup
 - Add the `MIX_PROXY=your_proxy_here.test` key-value to your `.env`

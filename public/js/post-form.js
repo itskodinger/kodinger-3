@@ -14517,9 +14517,10 @@ function (_Component) {
       var _this$state = this.state,
           id = _this$state.id,
           title = _this$state.title,
-          slug = _this$state.slug; // reject
+          slug = _this$state.slug,
+          savingStatus = _this$state.savingStatus; // reject
 
-      if (!id) return false; // if(!title || !slug) return this.toast.add('❓&nbsp; Auto-save akan jalan ketika kamu sudah mengisi judul dan slug');
+      if (!id || savingStatus == 'PUBLISHING') return false; // if(!title || !slug) return this.toast.add('❓&nbsp; Auto-save akan jalan ketika kamu sudah mengisi judul dan slug');
 
       this.statusSaving();
       this.saveContentController && clearTimeout(this.saveContentController);
@@ -14576,6 +14577,8 @@ function (_Component) {
               data = _ref3.data;
 
           if (err && !err.ok) {
+            console.log(err, data);
+
             switch (err.status) {
               case 422:
                 var errors = data.errors;
@@ -14594,6 +14597,11 @@ function (_Component) {
 
               case 500:
                 _this6.toast.add("\uD83D\uDE2D&nbsp; Error 500: ".concat(data.message));
+
+                break;
+
+              case 504:
+                _this6.toast.add("\uD83D\uDC0C&nbsp; Error 504: ".concat(data.message));
 
                 break;
             }
@@ -14704,7 +14712,8 @@ function (_Component) {
           title = _this$state2.title,
           slug = _this$state2.slug,
           tags = _this$state2.tags,
-          keyword = _this$state2.keyword; // images
+          keyword = _this$state2.keyword,
+          id = _this$state2.id; // images
 
       var images = this.flattenedImageFormat(); // validation
 
@@ -14714,7 +14723,7 @@ function (_Component) {
         return this.toast.add("\uD83D\uDE0F&nbsp; Slide pertama gambar harus diisi caption");
       }
 
-      var data = {
+      var body = {
         status: 'publish',
         title: title,
         slug: slug,
@@ -14723,8 +14732,20 @@ function (_Component) {
         content: JSON.stringify(images)
       };
       Object.keys(key2str).forEach(function (key) {
-        data[key] = _this9.doFlattenLinkFormat(key);
+        body[key] = _this9.doFlattenLinkFormat(key);
       });
+      this.setState({
+        savingStatus: 'PUBLISHING',
+        publish: false
+      });
+      this.request({
+        method: 'PUT',
+        route: routes.post_update.replace(/slug/g, id),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      }).then(function () {});
     }
   }, {
     key: "disablePublish",
@@ -15089,7 +15110,8 @@ function (_Component) {
           // collect images from previous state
           var images = [].concat(_toConsumableArray(prevState.images), [{
             id: id,
-            file: file
+            file: file,
+            status: 'PREPARING'
           }]);
           return {
             images: images
@@ -15140,9 +15162,7 @@ function (_Component) {
 
               img.classList.remove('hidden');
               return resolve(urlMedia);
-            }
-
-            if (_this17.allowedVideoTypes.includes(selectedFileType)) {
+            } else if (_this17.allowedVideoTypes.includes(selectedFileType)) {
               var video = element.querySelector('video'),
                   videoSource = video.querySelector('source'),
                   canvas = element.querySelector('canvas'),
@@ -15154,7 +15174,7 @@ function (_Component) {
 
               video.load(); // listen to meta data
 
-              video.addEventListener('loadedmetadata', function () {
+              video.addEventListener('canplay', function () {
                 // show the video player
                 video.classList.remove('hidden'); // set the canvas dimension as the video
 
@@ -15166,20 +15186,20 @@ function (_Component) {
                   ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight); // convert canvas to the base64 image format and set into the src attribute
 
                   var urlMedia = canvas.toDataURL();
-                  _img.src = urlMedia; // show the image!
+                  _img.src = urlMedia; // hide the video player
 
-                  _img.classList.remove('hidden'); // hide the videeo player
+                  video.classList.add('hidden'); // show the image!
 
+                  _img.classList.remove('hidden');
 
-                  video.classList.add('hidden');
                   return resolve(urlMedia);
-                }, 500);
+                }, 1000);
+              });
+            } else {
+              return reject({
+                error: 'Unsupported file type'
               });
             }
-
-            return resolve({
-              error: 'Unsupported file type'
-            });
           });
         };
 
@@ -15246,7 +15266,12 @@ function (_Component) {
       if (id) formData.append('id', id);
       if (publicFolder) formData.append('public_folder', publicFolder);
       formData.append('image', image.file);
-      formData.append('name', image.file.name);
+      formData.append('name', image.file.name); // is video
+
+      if (image.file && this.allowedVideoTypes.includes(image.file.type)) {
+        formData.append('video_thumbnail', image.url);
+      }
+
       image = this.updateImage(image.id, {
         controller: new AbortController()
       }); // change status saving
@@ -15262,14 +15287,18 @@ function (_Component) {
         var _ref12$data = _ref12.data,
             name = _ref12$data.name,
             url = _ref12$data.url,
-            path = _ref12$data.path;
+            path = _ref12$data.path,
+            videoThumbnailUrl = _ref12$data.video_thumbnail_url,
+            videoThumbnailName = _ref12$data.video_thumbnail_name;
 
         var currentImage = _this18.updateImage(image.id, {
           status: 'UPLOADED',
           isAbort: undefined,
           name: name,
           url: url,
-          path: path
+          path: path,
+          videoThumbnailUrl: videoThumbnailUrl,
+          videoThumbnailName: videoThumbnailName
         });
 
         _this18.flattenedImageFormat(true); // run auto-save, temp solution
@@ -15438,19 +15467,24 @@ function (_Component) {
             name = _ref13.name,
             size = _ref13.size,
             url = _ref13.url,
-            file = _ref13.file;
+            file = _ref13.file,
+            videoThumbnailName = _ref13.videoThumbnailName,
+            videoThumbnailUrl = _ref13.videoThumbnailUrl;
         if (!name) name = file.name;
         if (!size) size = file.size;
 
         if (status == 'UPLOADED') {
-          newImages.push({
+          var newImageData = {
             caption: caption,
             url: url,
             name: name,
             size: size,
             status: status,
             id: id
-          });
+          };
+          if (videoThumbnailName) newImageData['video_thumbnail_name'] = videoThumbnailName;
+          if (videoThumbnailUrl) newImageData['video_thumbnail_url'] = videoThumbnailUrl;
+          newImages.push(newImageData);
         }
       });
 
@@ -16031,11 +16065,10 @@ function (_Component) {
         }))))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
           className: "w-16 h-16 mr-4 flex-shrink-0 py-4"
         }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("img", {
-          className: 'rounded' + (image.url ? '' : ' hidden'),
+          className: 'rounded' + (image.name && image.url ? '' : ' hidden'),
           src: image.url
         }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("video", {
-          className: "hidden",
-          controls: true
+          className: "hidden rounded"
         }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("source", null)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("canvas", {
           className: "hidden"
         })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {

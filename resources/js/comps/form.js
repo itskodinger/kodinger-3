@@ -173,10 +173,10 @@ class Form extends Component {
 	}
 
 	saveAll(data) {
-		const { id, title, slug } = this.state;
+		const { id, title, slug, savingStatus } = this.state;
 
 		// reject
-		if(!id) return false;
+		if(!id || savingStatus == 'PUBLISHING') return false;
 
 		// if(!title || !slug) return this.toast.add('❓&nbsp; Auto-save akan jalan ketika kamu sudah mengisi judul dan slug');
 
@@ -229,6 +229,7 @@ class Form extends Component {
 			})
 			.catch(({err, data}) => {
 				if(err && !err.ok) {
+					console.log(err, data);
 					switch(err.status) {
 						case 422:
 							const {errors} = data;
@@ -246,6 +247,10 @@ class Form extends Component {
 
 						case 500:
 							this.toast.add(`😭&nbsp; Error 500: ${data.message}`);
+						break;
+
+						case 504:
+							this.toast.add(`🐌&nbsp; Error 504: ${data.message}`);
 						break;
 					}
 
@@ -300,7 +305,7 @@ class Form extends Component {
 
 	publishWholeContent() {
 		// basic data
-		const { title, slug, tags, keyword } = this.state;
+		const { title, slug, tags, keyword, id } = this.state;
 
 		// images
 		const images = this.flattenedImageFormat();
@@ -312,7 +317,7 @@ class Form extends Component {
 			return this.toast.add(`😏&nbsp; Slide pertama gambar harus diisi caption`);
 		}
 
-		const data = {
+		const body = {
 			status: 'publish',
 			title,
 			slug,
@@ -322,7 +327,24 @@ class Form extends Component {
 		}
 
 		Object.keys(key2str).forEach((key) => {
-			data[key] = this.doFlattenLinkFormat(key);
+			body[key] = this.doFlattenLinkFormat(key);
+		});
+
+		this.setState({
+			savingStatus: 'PUBLISHING',
+			publish: false
+		});
+
+		this.request({
+			method: 'PUT',
+			route: routes.post_update.replace(/slug/g, id),
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(body)
+		})
+		.then(() => {
+
 		});
 	}
 
@@ -693,7 +715,7 @@ class Form extends Component {
 				// collect images from previous state
 				let images = [
 						...prevState.images,
-						{id, file},
+						{id, file, status: 'PREPARING'},
 					];
 
 				return {
@@ -742,9 +764,7 @@ class Form extends Component {
 						img.classList.remove('hidden');
 
 						return resolve(urlMedia);
-					}
-
-					if(this.allowedVideoTypes.includes(selectedFileType)) {
+					}else if(this.allowedVideoTypes.includes(selectedFileType)) {
 						let video = element.querySelector('video'),
 							videoSource = video.querySelector('source'),
 							canvas = element.querySelector('canvas'),
@@ -757,7 +777,7 @@ class Form extends Component {
 						video.load();
 
 						// listen to meta data
-						video.addEventListener('loadedmetadata', function() {
+						video.addEventListener('canplay', function() {
 							// show the video player
 							video.classList.remove('hidden');
 
@@ -772,19 +792,20 @@ class Form extends Component {
 								// convert canvas to the base64 image format and set into the src attribute
 								let urlMedia = canvas.toDataURL();
 								img.src = urlMedia;
+								// hide the video player
+								video.classList.add('hidden');
 								// show the image!
 								img.classList.remove('hidden');
-								// hide the videeo player
-								video.classList.add('hidden');
 
 								return resolve(urlMedia);
-							}, 500);
+							}, 1000);
+						});
+					}else{
+						return reject({
+							error: 'Unsupported file type'
 						});
 					}
 
-					return resolve({
-						error: 'Unsupported file type'
-					});
 				});
 			}
 
@@ -856,6 +877,10 @@ class Form extends Component {
 
 		formData.append('image', image.file);
 		formData.append('name', image.file.name);
+		// is video
+		if(image.file && this.allowedVideoTypes.includes(image.file.type)) {
+			formData.append('video_thumbnail', image.url);
+		}
 
 		image = this.updateImage(image.id, {
 			controller: new AbortController()
@@ -871,13 +896,20 @@ class Form extends Component {
 			body: formData,
 			signal: image.controller.signal
 		})
-		.then(({data: {name, url, path}}) => {
+		.then(({data: {name, 
+						url, 
+						path, 
+						video_thumbnail_url: videoThumbnailUrl, 
+						video_thumbnail_name: videoThumbnailName}
+		}) => {
 			const currentImage = this.updateImage(image.id, {
 				status: 'UPLOADED',
 				isAbort: undefined,
 				name,
 				url,
-				path
+				path,
+				videoThumbnailUrl,
+				videoThumbnailName
 			});
 
 			this.flattenedImageFormat(true); // run auto-save, temp solution
@@ -1023,12 +1055,17 @@ class Form extends Component {
 		const { images } = this.state;
 
 		let newImages = [];
-		images.forEach(({id, status, caption, name, size, url, file}) => {
+		images.forEach(({id, status, caption, name, size, url, file, videoThumbnailName, videoThumbnailUrl}) => {
 			if(!name) name = file.name;
 			if(!size) size = file.size;
 
 			if(status == 'UPLOADED') {
-				newImages.push({caption, url, name, size, status, id});
+				let newImageData = {caption, url, name, size, status, id};
+
+				if(videoThumbnailName) newImageData['video_thumbnail_name'] = videoThumbnailName;
+				if(videoThumbnailUrl) newImageData['video_thumbnail_url'] = videoThumbnailUrl;
+
+				newImages.push(newImageData);
 			}
 		});
 
@@ -1517,8 +1554,8 @@ class Form extends Component {
 															<svg xmlns="http://www.w3.org/2000/svg" className="w-4 fill-current text-gray-600" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="menu"><rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"/><rect x="3" y="11" width="18" height="2" rx=".95" ry=".95"/><rect x="3" y="16" width="18" height="2" rx=".95" ry=".95"/><rect x="3" y="6" width="18" height="2" rx=".95" ry=".95"/></g></g></svg>
 														</div>
 														<div className="w-16 h-16 mr-4 flex-shrink-0 py-4">
-															<img className={'rounded' + (image.url ? '' : ' hidden')} src={image.url} />
-															<video className="hidden" controls><source /></video>
+															<img className={'rounded' + (image.name && image.url ? '' : ' hidden')} src={image.url} />
+															<video className="hidden rounded"><source /></video>
 															<canvas className="hidden"></canvas>
 														</div>
 														<div className="w-full py-4 pr-4">
