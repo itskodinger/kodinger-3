@@ -14164,20 +14164,6 @@ function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.itera
 
 
 
-function _typeof(obj) {
-  if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
-    _typeof = function _typeof(obj) {
-      return _typeof2(obj);
-    };
-  } else {
-    _typeof = function _typeof(obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
-    };
-  }
-
-  return _typeof(obj);
-}
-
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
   try {
     var info = gen[key](arg);
@@ -14212,6 +14198,20 @@ function _asyncToGenerator(fn) {
       _next(undefined);
     });
   };
+}
+
+function _typeof(obj) {
+  if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
+    _typeof = function _typeof(obj) {
+      return _typeof2(obj);
+    };
+  } else {
+    _typeof = function _typeof(obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
+    };
+  }
+
+  return _typeof(obj);
 }
 
 function ownKeys(object, enumerableOnly) {
@@ -14409,7 +14409,7 @@ function (_Component) {
     return _this;
   }
   /**
-   * Edit page
+   * Get initial data
    */
 
 
@@ -14436,66 +14436,27 @@ function (_Component) {
   }, {
     key: "getDataById",
     value: function getDataById(id) {
+      var _this3 = this;
+
       return new Promise(function (resolve, reject) {
-        _asyncToGenerator(
-        /*#__PURE__*/
-        _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-          var response, json;
-          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
-            while (1) {
-              switch (_context.prev = _context.next) {
-                case 0:
-                  _context.next = 2;
-                  return fetch(routes.post_edit.replace(/id/g, id), {
-                    method: 'GET',
-                    headers: {
-                      'X-CSRF-TOKEN': token,
-                      'Content-Type': 'application/json',
-                      'Accept': 'application/json'
-                    }
-                  });
-
-                case 2:
-                  response = _context.sent;
-                  _context.next = 5;
-                  return response.json();
-
-                case 5:
-                  json = _context.sent;
-
-                  if (response.ok) {
-                    _context.next = 8;
-                    break;
-                  }
-
-                  return _context.abrupt("return", Promise.reject({
-                    err: response,
-                    data: json
-                  }));
-
-                case 8:
-                  return _context.abrupt("return", Promise.resolve(json));
-
-                case 9:
-                case "end":
-                  return _context.stop();
-              }
-            }
-          }, _callee);
-        }))().then(function (_ref2) {
-          var _ref2$data = _ref2.data,
-              content = _ref2$data.content,
-              title = _ref2$data.title,
-              slug = _ref2$data.slug,
-              keyword = _ref2$data.keyword,
-              _ref2$data$tag_ids = _ref2$data.tag_ids,
-              tags = _ref2$data$tag_ids === void 0 ? [] : _ref2$data$tag_ids,
-              tagify = _ref2$data.tagify,
-              pages = _ref2$data.pagesObj,
-              examples = _ref2$data.examplesObj,
-              helps = _ref2$data.helpsObj,
-              tutorials = _ref2$data.tutorialsObj,
-              publicFolder = _ref2$data.public_folder;
+        _this3.request({
+          route: routes.post_edit.replace(/id/g, id),
+          method: 'GET'
+        }).then(function (_ref) {
+          var _ref$data = _ref.data,
+              content = _ref$data.content,
+              title = _ref$data.title,
+              slug = _ref$data.slug,
+              keyword = _ref$data.keyword,
+              _ref$data$tag_ids = _ref$data.tag_ids,
+              tags = _ref$data$tag_ids === void 0 ? [] : _ref$data$tag_ids,
+              tagify = _ref$data.tagify,
+              pages = _ref$data.pagesObj,
+              examples = _ref$data.examplesObj,
+              helps = _ref$data.helpsObj,
+              tutorials = _ref$data.tutorialsObj,
+              publicFolder = _ref$data.public_folder,
+              status = _ref$data.status;
           return resolve({
             title: title,
             slug: slug,
@@ -14513,7 +14474,8 @@ function (_Component) {
             publicFolder: publicFolder,
             edit: true,
             publish: true,
-            statusSaving: 'Draft'
+            status: status,
+            statusSaving: status
           });
         });
       });
@@ -14550,7 +14512,7 @@ function (_Component) {
   }, {
     key: "saveAll",
     value: function saveAll(data) {
-      var _this3 = this;
+      var _this4 = this;
 
       var _this$state = this.state,
           id = _this$state.id,
@@ -14575,22 +14537,21 @@ function (_Component) {
         },
         method: 'PUT',
         signal: this.saveContentController.signal
-      }).then(function (_ref3) {
-        var data = _ref3.data;
+      }).then(function (_ref2) {
+        var data = _ref2.data;
 
-        _this3.statusSaved();
+        _this4.statusSaved();
 
-        if (data.id) _this3.setID(data.id);
-        _this3.isContentDirty = false;
+        _this4.isContentDirty = false;
       });
     }
   }, {
     key: "autoSaveAll",
     value: function autoSaveAll(data, time) {
-      var _this4 = this;
+      var _this5 = this;
 
       this.autoSaveAllTimeout = setTimeout(function () {
-        _this4.saveAll(data);
+        _this5.saveAll(data);
       }, time);
     }
   }, {
@@ -14605,29 +14566,39 @@ function (_Component) {
   }, {
     key: "request",
     value: function request(options) {
-      var _this5 = this;
+      var _this6 = this;
 
       return new Promise(function (resolve, reject) {
-        _this5._request(options).then(function (data) {
+        _this6._request(options).then(function (data) {
           return resolve(data);
-        })["catch"](function (_ref4) {
-          var err = _ref4.err,
-              data = _ref4.data;
+        })["catch"](function (_ref3) {
+          var err = _ref3.err,
+              data = _ref3.data;
 
-          if (err && !err.ok && err.status == 422) {
-            var errors = data.errors;
-            var firstKey = Object.keys(errors)[0];
-            var firstError = errors[firstKey][0];
+          if (err && !err.ok) {
+            switch (err.status) {
+              case 422:
+                var errors = data.errors;
+                var firstKey = Object.keys(errors)[0];
+                var firstError = errors[firstKey][0];
 
-            if (firstKey == 'slug') {
-              _this5.setState({
-                slugOk: false
-              });
+                if (firstKey == 'slug') {
+                  _this6.setState({
+                    slugOk: false
+                  });
+                }
+
+                _this6.toast.add("\uD83D\uDE20&nbsp; ".concat(firstError));
+
+                break;
+
+              case 500:
+                _this6.toast.add("\uD83D\uDE2D&nbsp; Error 500: ".concat(data.message));
+
+                break;
             }
 
-            _this5.statusFailed();
-
-            _this5.toast.add("\uD83D\uDE20&nbsp; ".concat(firstError));
+            _this6.statusFailed();
           }
 
           return reject(err);
@@ -14639,18 +14610,18 @@ function (_Component) {
     value: function () {
       var _request2 = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(_ref5) {
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(_ref4) {
         var route, body, method, signal, token, headers, response, json;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
-            switch (_context2.prev = _context2.next) {
+            switch (_context.prev = _context.next) {
               case 0:
-                route = _ref5.route, body = _ref5.body, method = _ref5.method, signal = _ref5.signal, token = _ref5.token, headers = _ref5.headers;
+                route = _ref4.route, body = _ref4.body, method = _ref4.method, signal = _ref4.signal, token = _ref4.token, headers = _ref4.headers;
                 headers = Object.assign({
                   'X-CSRF-TOKEN': token,
                   'Accept': 'application/json'
                 }, headers);
-                _context2.next = 4;
+                _context.next = 4;
                 return fetch(route, {
                   method: method,
                   headers: headers,
@@ -14659,32 +14630,32 @@ function (_Component) {
                 });
 
               case 4:
-                response = _context2.sent;
-                _context2.next = 7;
+                response = _context.sent;
+                _context.next = 7;
                 return response.json();
 
               case 7:
-                json = _context2.sent;
+                json = _context.sent;
 
                 if (response.ok) {
-                  _context2.next = 10;
+                  _context.next = 10;
                   break;
                 }
 
-                return _context2.abrupt("return", Promise.reject({
+                return _context.abrupt("return", Promise.reject({
                   err: response,
                   data: json
                 }));
 
               case 10:
-                return _context2.abrupt("return", Promise.resolve(json));
+                return _context.abrupt("return", Promise.resolve(json));
 
               case 11:
               case "end":
-                return _context2.stop();
+                return _context.stop();
             }
           }
-        }, _callee2);
+        }, _callee);
       }));
 
       function _request(_x) {
@@ -14696,37 +14667,37 @@ function (_Component) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      var _this6 = this;
+      var _this7 = this;
 
       this.loadData();
       this.addToast(); // unsaved changes!
 
       window.onbeforeunload = function () {
-        if (_this6.state.id && _this6.isContentDirty) {
+        if (_this7.state.id && _this7.isContentDirty) {
           return true;
         }
       };
     }
   }, {
     key: "addDOMFunctionality",
-    value: function addDOMFunctionality(_ref6) {
-      var _this7 = this;
+    value: function addDOMFunctionality(_ref5) {
+      var _this8 = this;
 
-      var defaultTags = _ref6.defaultTags;
+      var defaultTags = _ref5.defaultTags;
       setTimeout(function () {
-        _this7.addTagify({
+        _this8.addTagify({
           defaultTags: defaultTags
         });
 
-        _this7.addSortable();
+        _this8.addSortable();
 
-        _this7.addDropzone();
+        _this8.addDropzone();
       }, 0);
     }
   }, {
     key: "publishWholeContent",
     value: function publishWholeContent() {
-      var _this8 = this; // basic data
+      var _this9 = this; // basic data
 
 
       var _this$state2 = this.state,
@@ -14737,7 +14708,9 @@ function (_Component) {
 
       var images = this.flattenedImageFormat(); // validation
 
-      if (images.length > 0 && (!images[0].caption || images[0].caption.trim().length < 1)) {
+      if (images.length < 1) {
+        return this.toast.add("\uD83D\uDC21&nbsp; Tidak ada gambar satu pun");
+      } else if (images.length > 0 && (!images[0].caption || images[0].caption.trim().length < 1)) {
         return this.toast.add("\uD83D\uDE0F&nbsp; Slide pertama gambar harus diisi caption");
       }
 
@@ -14750,7 +14723,7 @@ function (_Component) {
         content: JSON.stringify(images)
       };
       Object.keys(key2str).forEach(function (key) {
-        data[key] = _this8.doFlattenLinkFormat(key);
+        data[key] = _this9.doFlattenLinkFormat(key);
       });
     }
   }, {
@@ -14798,7 +14771,7 @@ function (_Component) {
   }, {
     key: "addSortable",
     value: function addSortable() {
-      var _this9 = this;
+      var _this10 = this;
 
       var el = document.querySelector('.image-files');
       if (el) this.sortable = sortablejs__WEBPACK_IMPORTED_MODULE_8__["default"].create(el, {
@@ -14820,11 +14793,11 @@ function (_Component) {
 
           ;
 
-          _this9.setState({
-            images: arrayMove(_this9.state.images, e.oldIndex, e.newIndex)
+          _this10.setState({
+            images: arrayMove(_this10.state.images, e.oldIndex, e.newIndex)
           });
 
-          _this9.flattenedImageFormat(true);
+          _this10.flattenedImageFormat(true);
         }
       });
     } // addSimplemde() {
@@ -14840,8 +14813,8 @@ function (_Component) {
 
   }, {
     key: "addTagify",
-    value: function addTagify(_ref7) {
-      var defaultTags = _ref7.defaultTags;
+    value: function addTagify(_ref6) {
+      var defaultTags = _ref6.defaultTags;
       this.tagify = new _yaireo_tagify__WEBPACK_IMPORTED_MODULE_9___default.a($('.tags'), {
         enforceWhitelist: true,
         whitelist: defaultTags ? _toConsumableArray(defaultTags) : [],
@@ -14895,8 +14868,8 @@ function (_Component) {
         tagify.loading(true).dropdown.hide.call(tagify);
         fetch(routes.post_tags + '?value=' + value, {
           signal: controller.signal
-        }).then(function (RES) {
-          return RES.json();
+        }).then(function (res) {
+          return res.json();
         }).then(function (whitelist) {
           var _tagify$settings$whit;
 
@@ -14937,7 +14910,7 @@ function (_Component) {
   }, {
     key: "addDropzone",
     value: function addDropzone() {
-      var _this10 = this;
+      var _this11 = this;
 
       var dropzone = $('.dropzone');
 
@@ -14966,13 +14939,13 @@ function (_Component) {
         onDragdone();
         var files = e.dataTransfer.files;
 
-        _this10.handleFiles(files);
+        _this11.handleFiles(files);
       });
     }
   }, {
     key: "handleFiles",
     value: function handleFiles(files) {
-      var _this11 = this;
+      var _this12 = this;
 
       if (!(files instanceof FileList)) files = files.target.files; // check uploader first
 
@@ -14984,25 +14957,25 @@ function (_Component) {
 
           files.forEach(function (file) {
             // validate each file
-            _this11.validateImage({
+            _this12.validateImage({
               selectedFile: file
             }).then(function () {
               // if file is an valid image file
-              _this11.addImage({
+              _this12.addImage({
                 file: file
-              }).then(function (_ref8) {
-                var id = _ref8.id,
-                    node = _ref8.node;
+              }).then(function (_ref7) {
+                var id = _ref7.id,
+                    node = _ref7.node;
 
-                _this11.handleImage(id, node, file);
+                _this12.handleImage(id, node, file);
               });
             })["catch"](function (error) {
-              _this11.toast.add(error);
+              _this12.toast.add(error);
             });
           });
         }
       })["catch"](function (error) {
-        _this11.toast.add(error);
+        _this12.toast.add(error);
       });
     }
   }, {
@@ -15037,28 +15010,29 @@ function (_Component) {
   }, {
     key: "removeImage",
     value: function removeImage(id) {
-      var _this13 = this;
+      var _this14 = this;
 
       var force = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      var currentImage = this.findImageById(id);
+      var public_folder = this.state.publicFolder;
 
-      if (!force) {
+      if (currentImage.status !== 'DELETING' && force !== true) {
         var ask = confirm("Gambar akan dihapus dan tidak dapat dikembalikan. Lanjutkan?");
         if (!ask) return false;
       }
 
-      var currentImage = this.findImageById(id);
       var deletingImages = this.state.images.filter(function (img) {
         return img.status == 'DELETING';
       });
-      if (currentImage.status == 'DELETING') return this.toast.add("\uD83D\uDE19&nbsp; Penghapusan gambar ".concat(currentImage.file.name, " masih proses")); // uncomment this if you want sync instead of async deleting process
+      if (currentImage.status == 'DELETING') return this.toast.add("\uD83D\uDE19&nbsp; Penghapusan gambar ".concat(currentImage.name ? currentImage.name : currentImage.file.name, " masih proses")); // uncomment this if you want sync instead of async deleting process
       // else if(deletingImages.length > 0)
       // 	return this.toast.add(`😙&nbsp; Sabar, masih menghapus gambar yang lain`)
 
       function updateState(autoSave) {
-        var _this12 = this;
+        var _this13 = this;
 
-        this.setState(function (_ref9) {
-          var images = _ref9.images;
+        this.setState(function (_ref8) {
+          var images = _ref8.images;
           images = images.filter(function (item) {
             return item.id !== id;
           });
@@ -15067,9 +15041,9 @@ function (_Component) {
           };
         }, function () {
           if (autoSave) {
-            _this12.flattenedImageFormat(true);
+            _this13.flattenedImageFormat(true);
 
-            _this12.statusSaved();
+            _this13.statusSaved();
           }
         });
       }
@@ -15077,24 +15051,20 @@ function (_Component) {
       if (currentImage.status !== 'UPLOADED') {
         updateState.call(this);
       } else {
-        fetch(routes.post_delete_image, {
+        this.request({
+          route: routes.post_delete_image,
           method: 'DELETE',
           headers: {
-            'X-CSRF-TOKEN': token,
-            'Accept': 'application/json',
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            image: currentImage.path
+            name: currentImage.name,
+            public_folder: public_folder
           })
-        }).then(function (res) {
-          return res.json();
-        })["finally"](function () {}).then(function (_ref10) {
-          var status = _ref10.status;
-          if (status) updateState.call(_this13, true);
-        })["catch"](function (error) {
-          console.log(error);
-        });
+        }).then(function (_ref9) {
+          var status = _ref9.status;
+          if (status) updateState.call(_this14, true);
+        })["catch"](function (error) {});
         this.updateImage(id, {
           status: 'DELETING'
         });
@@ -15107,15 +15077,15 @@ function (_Component) {
 
   }, {
     key: "addImage",
-    value: function addImage(_ref11) {
-      var _this14 = this;
+    value: function addImage(_ref10) {
+      var _this15 = this;
 
-      var _ref11$file = _ref11.file,
-          file = _ref11$file === void 0 ? undefined : _ref11$file;
+      var _ref10$file = _ref10.file,
+          file = _ref10$file === void 0 ? undefined : _ref10$file;
       return new Promise(function (resolve, reject) {
-        var id = _this14.generateID();
+        var id = _this15.generateID();
 
-        _this14.setState(function (prevState) {
+        _this15.setState(function (prevState) {
           // collect images from previous state
           var images = [].concat(_toConsumableArray(prevState.images), [{
             id: id,
@@ -15135,16 +15105,16 @@ function (_Component) {
     }
   }, {
     key: "validateImage",
-    value: function validateImage(_ref12) {
-      var _this15 = this;
+    value: function validateImage(_ref11) {
+      var _this16 = this;
 
-      var selectedFile = _ref12.selectedFile;
+      var selectedFile = _ref11.selectedFile;
       return new Promise(function (resolve, reject) {
-        if (!_this15.allowedMediaTypes.includes(selectedFile.type)) {
+        if (!_this16.allowedMediaTypes.includes(selectedFile.type)) {
           return reject("\uD83D\uDEB7&nbsp; Jenis berkas ".concat(selectedFile.name, " tidak didukung"));
         }
 
-        if (selectedFile.size > _this15.maxFileSize) {
+        if (selectedFile.size > _this16.maxFileSize) {
           return reject('🐠&nbsp; Ukuran berkas maks. 5MB');
         }
 
@@ -15154,7 +15124,7 @@ function (_Component) {
   }, {
     key: "handleImage",
     value: function handleImage(id, element, selectedFile) {
-      var _this16 = this;
+      var _this17 = this;
 
       var selectedFileType = selectedFile ? selectedFile.type : false;
       this.validateImage({
@@ -15162,7 +15132,7 @@ function (_Component) {
       }).then(function () {
         var promisePreview = function promisePreview() {
           return new Promise(function (resolve, reject) {
-            if (_this16.allowedImageTypes.includes(selectedFileType)) {
+            if (_this17.allowedImageTypes.includes(selectedFileType)) {
               var img = element.querySelector('img'); // set selected image into the src attribute via createObjectURL API
 
               var urlMedia = URL.createObjectURL(selectedFile);
@@ -15172,7 +15142,7 @@ function (_Component) {
               return resolve(urlMedia);
             }
 
-            if (_this16.allowedVideoTypes.includes(selectedFileType)) {
+            if (_this17.allowedVideoTypes.includes(selectedFileType)) {
               var video = element.querySelector('video'),
                   videoSource = video.querySelector('source'),
                   canvas = element.querySelector('canvas'),
@@ -15214,7 +15184,7 @@ function (_Component) {
         };
 
         promisePreview().then(function (urlMedia) {
-          var currentImage = _this16.updateImage(id, {
+          var currentImage = _this17.updateImage(id, {
             isDirty: true,
             status: 'UPLOADING',
             file: selectedFile,
@@ -15222,7 +15192,7 @@ function (_Component) {
             url: urlMedia
           });
 
-          _this16.uploadImage(currentImage);
+          _this17.uploadImage(currentImage);
         })["catch"](function (error) {
           return console.log(error);
         });
@@ -15267,7 +15237,7 @@ function (_Component) {
   }, {
     key: "uploadImage",
     value: function uploadImage(image) {
-      var _this17 = this;
+      var _this18 = this;
 
       var _this$state4 = this.state,
           id = _this$state4.id,
@@ -15288,26 +15258,28 @@ function (_Component) {
         method: 'POST',
         body: formData,
         signal: image.controller.signal
-      }).then(function (data) {
-        var currentImage = _this17.updateImage(image.id, {
+      }).then(function (_ref12) {
+        var _ref12$data = _ref12.data,
+            name = _ref12$data.name,
+            url = _ref12$data.url,
+            path = _ref12$data.path;
+
+        var currentImage = _this18.updateImage(image.id, {
           status: 'UPLOADED',
           isAbort: undefined,
-          name: data.name,
-          url: data.url,
-          path: data.path
+          name: name,
+          url: url,
+          path: path
         });
 
-        _this17.flattenedImageFormat(true); // run auto-save, temp solution
+        _this18.flattenedImageFormat(true); // run auto-save, temp solution
 
 
-        _this17.statusSaved();
-
-        if (data.public_folder) _this17.setPublicFolder(data.public_folder);
-        if (data.post_id) _this17.setID(data.post_id);
+        _this18.statusSaved();
       })["catch"](function (error) {
-        _this17.isContentDirty = false; // force delete unsupported image
+        _this18.isContentDirty = false; // force delete unsupported image
 
-        _this17.removeImage(image.id, true);
+        _this18.removeImage(image.id, true);
       });
     }
   }, {
@@ -15353,7 +15325,7 @@ function (_Component) {
   }, {
     key: "slugOnInput",
     value: function slugOnInput(e) {
-      var _this18 = this;
+      var _this19 = this;
 
       var _this$state5 = this.state,
           title = _this$state5.title,
@@ -15372,29 +15344,29 @@ function (_Component) {
       });
       this.checkSlugTimeout && clearTimeout(this.checkSlugTimeout);
       this.checkSlugTimeout = setTimeout(function () {
-        _this18.request({
+        _this19.request({
           method: 'POST',
           route: routes.check_slug,
           headers: {
             'Content-Type': 'application/json'
           },
-          signal: _this18.slugController.signal,
+          signal: _this19.slugController.signal,
           body: body
         }).then(function (res) {
-          _this18.setState({
+          _this19.setState({
             slugOk: true
           });
 
-          _this18.startAutoSaveAll({
+          _this19.startAutoSaveAll({
             slug: slug,
             title: title
           });
         })["catch"](function (error) {
-          _this18.setState({
+          _this19.setState({
             slugOk: false
           });
 
-          _this18.disablePublish();
+          _this19.disablePublish();
         });
       }, 2000);
     }
@@ -15510,11 +15482,11 @@ function (_Component) {
   }, {
     key: "autoSaveCaption",
     value: function autoSaveCaption() {
-      var _this19 = this; // run auto-save after 2000s (when user has no activity on the textarea)
+      var _this20 = this; // run auto-save after 2000s (when user has no activity on the textarea)
 
 
       this.autoSaveTimeout = setTimeout(function () {
-        _this19.setCaptionToImage();
+        _this20.setCaptionToImage();
       }, 2000);
     }
     /**
@@ -15535,7 +15507,7 @@ function (_Component) {
   }, {
     key: "setCaption",
     value: function setCaption(id) {
-      var _this20 = this;
+      var _this21 = this;
 
       this.currentImageId = id; // set caption element
 
@@ -15544,16 +15516,16 @@ function (_Component) {
       var currentImage = this.findImageById(id); // set value
 
       setTimeout(function () {
-        if (currentImage.caption) _this20.captionArea.value = currentImage.caption;else _this20.captionArea.value = '';
+        if (currentImage.caption) _this21.captionArea.value = currentImage.caption;else _this21.captionArea.value = '';
       }, 0); // show the modal first
 
       this.showCaptionModal(); // when user typing
 
       this.captionArea.addEventListener('change', function () {
         // clear the autosave timeout
-        clearTimeout(_this20.autoSaveTimeout); // start auto-saving again
+        clearTimeout(_this21.autoSaveTimeout); // start auto-saving again
 
-        _this20.autoSaveCaption();
+        _this21.autoSaveCaption();
       });
     }
     /**
@@ -15619,7 +15591,7 @@ function (_Component) {
   }, {
     key: "addLinkToKey",
     value: function addLinkToKey() {
-      var _this21 = this;
+      var _this22 = this;
 
       var currentLinkKey = this.state.currentLinkKey;
       var currentLinkData = this.state[currentLinkKey];
@@ -15629,11 +15601,11 @@ function (_Component) {
         var newLink = {};
         newLink[currentLinkKey] = currentLinkData;
         newLink[currentLinkKey].push({
-          id: _this21.generateID(),
+          id: _this22.generateID(),
           value: ''
         });
 
-        _this21.setState(newLink);
+        _this22.setState(newLink);
       }; // first time link
 
 
@@ -15645,7 +15617,7 @@ function (_Component) {
 
       if (invalidInput.length < 1) {
         setTimeout(function () {
-          _this21.lastLinkInput().focus();
+          _this22.lastLinkInput().focus();
         }, 0);
       }
 
@@ -15742,12 +15714,12 @@ function (_Component) {
   }, {
     key: "getAllInvalidInputLink",
     value: function getAllInvalidInputLink() {
-      var _this22 = this;
+      var _this23 = this;
 
       var invalid = [],
           currentInputName = 'link-' + this.state.currentLinkKey;
       document.querySelectorAll('[name=' + currentInputName + ']').forEach(function (input) {
-        if (!_this22.validateLink(input.value)) {
+        if (!_this23.validateLink(input.value)) {
           invalid.push(input);
         }
       });
@@ -15789,12 +15761,12 @@ function (_Component) {
   }, {
     key: "checkButtonLinkDisabled",
     value: function checkButtonLinkDisabled() {
-      var _this23 = this;
+      var _this24 = this;
 
       setTimeout(function () {
-        var invalid = _this23.getAllInvalidInputLink();
+        var invalid = _this24.getAllInvalidInputLink();
 
-        var currentLinkData = _this23.currentLinkData();
+        var currentLinkData = _this24.currentLinkData();
 
         var submitBtn = document.querySelector('.add-link-btn');
 
@@ -15821,7 +15793,7 @@ function (_Component) {
   }, {
     key: "saveFirstStep",
     value: function saveFirstStep(e) {
-      var _this24 = this;
+      var _this25 = this;
 
       var _this$state6 = this.state,
           title = _this$state6.title,
@@ -15835,82 +15807,23 @@ function (_Component) {
         var button = e.target;
         Object(_utils_adds__WEBPACK_IMPORTED_MODULE_6__["default"])(button.classList, 'pointer-events-none opacity-50');
         button.disabled = true;
-
-        _asyncToGenerator(
-        /*#__PURE__*/
-        _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
-          var response, json;
-          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
-            while (1) {
-              switch (_context3.prev = _context3.next) {
-                case 0:
-                  _context3.next = 2;
-                  return fetch(routes.post_store, {
-                    method: 'POST',
-                    headers: {
-                      'X-CSRF-TOKEN': token,
-                      'Content-Type': 'application/json',
-                      'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({
-                      title: title,
-                      slug: slug
-                    })
-                  });
-
-                case 2:
-                  response = _context3.sent;
-                  _context3.next = 5;
-                  return response.json();
-
-                case 5:
-                  json = _context3.sent;
-
-                  if (response.ok) {
-                    _context3.next = 8;
-                    break;
-                  }
-
-                  return _context3.abrupt("return", Promise.reject({
-                    err: response,
-                    data: json
-                  }));
-
-                case 8:
-                  return _context3.abrupt("return", Promise.resolve(json));
-
-                case 9:
-                case "end":
-                  return _context3.stop();
-              }
-            }
-          }, _callee3);
-        }))().then(function (_ref15) {
-          var data = _ref15.data;
-
-          _this24.setID(data.id);
-
-          _this24.setPublicFolder(data.public_folder);
-
-          _this24.addDOMFunctionality();
-        })["catch"](function (_ref16) {
-          var err = _ref16.err,
-              data = _ref16.data;
-
-          if (err && !err.ok && err.status == 422) {
-            var errors = data.errors;
-            var firstKey = Object.keys(errors)[0];
-            var firstError = errors[firstKey][0];
-            document.querySelector('[name="' + firstKey + '"]').focus();
-
-            if (firstKey == 'slug') {
-              _this24.setState({
-                slugOk: false
-              });
-            }
-
-            _this24.toast.add("\uD83D\uDE20&nbsp; ".concat(firstError));
+        this.request({
+          method: 'POST',
+          body: JSON.stringify({
+            title: title,
+            slug: slug
+          }),
+          headers: {
+            'Content-Type': 'application/json'
           }
+        }).then(function (_ref14) {
+          var data = _ref14.data;
+
+          _this25.setID(data.id);
+
+          _this25.setPublicFolder(data.public_folder);
+
+          _this25.addDOMFunctionality();
         })["finally"](function () {
           Object(_utils_removes__WEBPACK_IMPORTED_MODULE_7__["default"])(button.classList, 'pointer-events-none opacity-50');
           button.disabled = false;
@@ -15920,7 +15833,7 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this25 = this;
+      var _this26 = this;
 
       var message = this.props.message;
       var _this$state7 = this.state,
@@ -15987,7 +15900,7 @@ function (_Component) {
         className: "border-2 border-gray-200 p-8 rounded"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h1", {
         className: "text-indigo-600 text-xl font-semibold"
-      }, "Buat Post"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
+      }, edit ? 'Perbarui Post' : 'Buat Post'), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
         className: "mb-4 mt-2 text-sm text-gray-600"
       }, "Bagikan pengetahuan kamu dengan developer lain; begitu pula dengan developer lain, mereka akan melakukan hal serupa."), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "mb-6 mt-6"
@@ -16080,7 +15993,7 @@ function (_Component) {
           key: image.id,
           className: "bg-white flex justify-center w-full mb-4 rounded border-2 border-gray-200 hover:border-gray-400"
         }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-          className: "handle flex-shrink-0 p-2 items-center flex border-r-2 border-gray-200 bg-gray-100 mr-4 cursor-move" + (_this25.isUploadingImage() ? ' pointer-events-none' : '')
+          className: "handle flex-shrink-0 p-2 items-center flex border-r-2 border-gray-200 bg-gray-100 mr-4 cursor-move" + (_this26.isUploadingImage() ? ' pointer-events-none' : '')
         }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("svg", {
           xmlns: "http://www.w3.org/2000/svg",
           className: "w-4 fill-current text-gray-600",
@@ -16133,16 +16046,16 @@ function (_Component) {
           className: "text-indigo-600 mb-1"
         }, image.name ? image.name : image.file.name), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
           className: "text-xs text-gray-600"
-        }, _this25.humanFileSize(image.size ? image.size : image.file.size)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        }, _this26.humanFileSize(image.size ? image.size : image.file.size)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
           className: "flex mt-2 text-sm"
         }, !image.isAbort && image.isAbort !== undefined && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
           className: "cursor-pointer text-red-600",
-          onClick: _this25.abortImage.bind(_this25, image)
+          onClick: _this26.abortImage.bind(_this26, image)
         }, "Batalkan"), (image.isDirty && image.isAbort == undefined && !image.isAbort || !image.isDirty && edit) && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-          onClick: _this25.removeImage.bind(_this25, image.id),
+          onClick: _this26.removeImage.bind(_this26, image.id),
           className: "text-red-600 cursor-pointer"
         }, "Hapus"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-          onClick: _this25.setCaption.bind(_this25, image.id),
+          onClick: _this26.setCaption.bind(_this26, image.id),
           className: "text-teal-600 cursor-pointer ml-4"
         }, "Tentukan Deskripsi ", image.caption ? '👍' : '')))));
       })))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
@@ -16157,7 +16070,7 @@ function (_Component) {
         className: "flex mb-4 overflow-x-auto flex-no-wrap"
       }, Object.keys(key2str).map(function (name, index) {
         return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-          onClick: _this25.setLinkKey.bind(_this25, name),
+          onClick: _this26.setLinkKey.bind(_this26, name),
           key: name,
           className: 'px-4 py-2 border-t border-r border-b ' + (currentLinkKey == name ? 'bg-indigo-600 text-white' : 'text-gray-600 hover:bg-gray-100') + ' cursor-pointer border-gray-200 text-sm flex-1 justify-center flex items-center text-center' + (index == 0 ? ' border-l rounded-tl rounded-bl' : index == Object.keys(key2str).length - 1 ? ' rounded-tr rounded-br' : '')
         }, key2str[name]);
@@ -16170,9 +16083,9 @@ function (_Component) {
           key: link.id,
           className: "bg-white shadow rounded mb-4 text-sm text-blue-500 flex"
         }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
-          onKeyDown: _this25.linkKeydownHandle.bind(_this25),
-          onKeyUp: _this25.linkKeyupHandle.bind(_this25),
-          onChange: _this25.linkInputHandle.bind(_this25, link.id),
+          onKeyDown: _this26.linkKeydownHandle.bind(_this26),
+          onKeyUp: _this26.linkKeyupHandle.bind(_this26),
+          onChange: _this26.linkInputHandle.bind(_this26, link.id),
           tabIndex: "6",
           type: "text",
           name: 'link-' + currentLinkKey,
@@ -16181,7 +16094,7 @@ function (_Component) {
           defaultValue: link.value
         }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
           type: "button",
-          onClick: _this25.removeLinkFromKey.bind(_this25, link.id),
+          onClick: _this26.removeLinkFromKey.bind(_this26, link.id),
           className: "uppercase font-semibold bg-red-500 text-white px-4 flex items-center cursor-pointer hover:bg-red-600 rounded-tr rounded-br"
         }, "Hapus"));
       })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {

@@ -12,6 +12,8 @@ use App\Contribute;
 // use App\Events\Post\Discover\DiscoverPostCreated;
 use App\Jobs\FetchDiscoverUrlPreview;
 use Services\UserService;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class PostService
 {
@@ -177,6 +179,51 @@ class PostService
 		$posts->appends(['search' => $req_search, 'type' => $req_type]);
 
 		return $posts;
+	}
+
+	public function uploadImage($request)
+	{
+		$public_folder = $request->public_folder;
+		$user = auth()->user();
+
+		// post id
+		$id = $request->id;
+		$post = $this->find($id);
+
+		$base = 'posts/';
+		$name = $request->name;
+		$path = $base . $public_folder . '/' . $name;
+		$url = space_url($path);
+
+		$blurry_folder = 'px';
+		$blurry_path = $base . $public_folder . '/' . $blurry_folder;
+
+		$blurry = Image::make($request->image);
+		$blurry->fit(30);
+		$blurry = $blurry->stream()->detach();
+
+		// create sub-directory
+		Storage::disk('spaces')->makeDirectory($blurry_path);
+
+		// upload image
+		Storage::disk('spaces')->putFileAs($base . $public_folder, $request->image, $name, 'public');
+		Storage::disk('spaces')->put($blurry_path . '/' . $name, $blurry, 'public');
+
+
+		return [
+			'post_id' => $id,
+			'public_folder' => $public_folder,
+			'name' => $name,
+			'url' => $url,
+			'path' => $path
+		];
+	}
+
+	public function deleteImage($request)
+	{
+		$path = 'posts/' . $request->public_folder . '/' . $request->name;
+
+		Storage::disk('spaces')->delete($path);
 	}
 
 	public function create($request, $arr=[])

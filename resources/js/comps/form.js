@@ -79,7 +79,7 @@ class Form extends Component {
 	}
 
 	/**
-	 * Edit page
+	 * Get initial data
 	 */
 	loadData() {
 		const url = new URL(window.location.href);
@@ -105,22 +105,10 @@ class Form extends Component {
 
 	getDataById(id) {
 		return new Promise((resolve, reject) => {
-			(async () => {
-				const response = await fetch(routes.post_edit.replace(/id/g, id), {
-					method: 'GET',
-					headers: {
-						'X-CSRF-TOKEN': token,
-						'Content-Type': 'application/json',
-						'Accept': 'application/json'
-					}
-				});
-
-				const json = await response.json();
-
-				if(!response.ok) return Promise.reject({err: response, data: json});
-
-				return Promise.resolve(json);
-			})()
+			this.request({
+				route: routes.post_edit.replace(/id/g, id),
+				method: 'GET'
+			})
 			.then(({
 				data: {
 					content, 
@@ -133,7 +121,8 @@ class Form extends Component {
 					examplesObj: examples,
 					helpsObj: helps,
 					tutorialsObj: tutorials,
-					public_folder: publicFolder
+					public_folder: publicFolder,
+					status
 				}
 			}) => {
 				return resolve({
@@ -151,7 +140,8 @@ class Form extends Component {
 					publicFolder,
 					edit: true,
 					publish: true,
-					statusSaving: 'Draft'
+					status,
+					statusSaving: status
 				});
 			});
 		});
@@ -212,9 +202,6 @@ class Form extends Component {
 		}).then(({data}) => {
 			this.statusSaved();
 
-			if(data.id) 
-				this.setID(data.id);
-
 			this.isContentDirty = false;
 		});
 	}
@@ -241,19 +228,28 @@ class Form extends Component {
 				return resolve(data);
 			})
 			.catch(({err, data}) => {
-				if(err && !err.ok && err.status == 422) {
-					const {errors} = data;
-					const firstKey = Object.keys(errors)[0];
-					const firstError = errors[firstKey][0];
+				if(err && !err.ok) {
+					switch(err.status) {
+						case 422:
+							const {errors} = data;
+							const firstKey = Object.keys(errors)[0];
+							const firstError = errors[firstKey][0];
 
-					if(firstKey == 'slug') {
-						this.setState({
-							slugOk: false
-						});
+							if(firstKey == 'slug') {
+								this.setState({
+									slugOk: false
+								});
+							}
+
+							this.toast.add(`😠&nbsp; ${firstError}`);
+						break;
+
+						case 500:
+							this.toast.add(`😭&nbsp; Error 500: ${data.message}`);
+						break;
 					}
 
 					this.statusFailed();
-					this.toast.add(`😠&nbsp; ${firstError}`);
 				}
 
 				return reject(err);
@@ -310,7 +306,9 @@ class Form extends Component {
 		const images = this.flattenedImageFormat();
 
 		// validation
-		if(images.length > 0 && (!images[0].caption || images[0].caption.trim().length < 1)) {
+		if(images.length < 1) {
+			return this.toast.add(`🐡&nbsp; Tidak ada gambar satu pun`);
+		}else if(images.length > 0 && (!images[0].caption || images[0].caption.trim().length < 1)) {
 			return this.toast.add(`😏&nbsp; Slide pertama gambar harus diisi caption`);
 		}
 
@@ -489,7 +487,7 @@ class Form extends Component {
 		    tagify.loading(true).dropdown.hide.call(tagify)
 
 		    fetch(routes.post_tags + '?value=' + value, {signal:controller.signal})
-		    .then(RES => RES.json())
+		    .then(res => res.json())
 		    .then(function(whitelist){
 		        tagify.settings.whitelist.splice(0, whitelist.length, ...whitelist)
 		        tagify.loading(false).dropdown.show.call(tagify, value);
@@ -625,20 +623,21 @@ class Form extends Component {
 	 * @param  {Integer} id Target image ID
 	 */
 	removeImage(id, force=false) {
-		if(!force) {
+		const currentImage = this.findImageById(id);
+		const { publicFolder: public_folder } = this.state;
+
+		if(currentImage.status !== 'DELETING' && force !== true) {
 			const ask = confirm("Gambar akan dihapus dan tidak dapat dikembalikan. Lanjutkan?");
 
 			if(!ask) return false;
 		}
-
-		const currentImage = this.findImageById(id);
 
 		const deletingImages = this.state.images.filter((img) => {
 			return img.status == 'DELETING';
 		});
 
 		if(currentImage.status == 'DELETING') 
-			return this.toast.add(`😙&nbsp; Penghapusan gambar ${currentImage.file.name} masih proses`)
+			return this.toast.add(`😙&nbsp; Penghapusan gambar ${currentImage.name ? currentImage.name : currentImage.file.name} masih proses`)
 
 		// uncomment this if you want sync instead of async deleting process
 		// else if(deletingImages.length > 0)
@@ -662,24 +661,18 @@ class Form extends Component {
 		if(currentImage.status !== 'UPLOADED') {
 			updateState.call(this);
 		}else{
-			fetch(routes.post_delete_image, {
+			this.request({
+				route: routes.post_delete_image,
 				method: 'DELETE',
 				headers: {
-				    'X-CSRF-TOKEN': token,
-				    'Accept': 'application/json',
 				    'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({image: currentImage.path}),
+				body: JSON.stringify({name: currentImage.name, public_folder}),
 			})
-			.then(res => res.json())
-			.finally(() => {
-
-			})
-			.then(({status}) => {
+			.then(({status}) => { 
 				if(status) updateState.call(this, true);
 			})
-			.catch(function(error) {
-				console.log(error);
+			.catch((error) => {
 			});
 	
 			this.updateImage(id, {
@@ -878,23 +871,17 @@ class Form extends Component {
 			body: formData,
 			signal: image.controller.signal
 		})
-		.then((data) => {
+		.then(({data: {name, url, path}}) => {
 			const currentImage = this.updateImage(image.id, {
 				status: 'UPLOADED',
 				isAbort: undefined,
-				name: data.name,
-				url: data.url,
-				path: data.path
+				name,
+				url,
+				path
 			});
 
 			this.flattenedImageFormat(true); // run auto-save, temp solution
 			this.statusSaved();
-
-			if(data.public_folder)
-				this.setPublicFolder(data.public_folder);
-
-			if(data.post_id)
-				this.setID(data.post_id);
 		})
 		.catch((error) => {
 			this.isContentDirty = false;
@@ -1387,45 +1374,18 @@ class Form extends Component {
 			adds(button.classList, 'pointer-events-none opacity-50');
 			button.disabled = true;
 
-			(async () => {
-				const response = await fetch(routes.post_store, {
-					method: 'POST',
-					headers: {
-						'X-CSRF-TOKEN': token,
-						'Content-Type': 'application/json',
-						'Accept': 'application/json'
-					},
-					body: JSON.stringify({title, slug})
-				});
-
-				const json = await response.json();
-
-				if(!response.ok) return Promise.reject({err: response, data: json});
-
-				return Promise.resolve(json);
-			})()
+			this.request({
+				method: 'POST',
+				body: JSON.stringify({title, slug}),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
 			.then(({data}) => {
 				this.setID(data.id);
 				this.setPublicFolder(data.public_folder);
 
 				this.addDOMFunctionality();
-			})
-			.catch(({err, data}) => {
-				if(err && !err.ok && err.status == 422) {
-					const {errors} = data;
-					const firstKey = Object.keys(errors)[0];
-					const firstError = errors[firstKey][0];
-
-					document.querySelector('[name="'+ firstKey +'"]').focus();
-
-					if(firstKey == 'slug') {
-						this.setState({
-							slugOk: false
-						});
-					}
-
-					this.toast.add(`😠&nbsp; ${firstError}`);
-				}
 			})
 			.finally(() => {
 				removes(button.classList, 'pointer-events-none opacity-50');
@@ -1488,7 +1448,7 @@ class Form extends Component {
 			        <div className="flex py-12 -mx-4 justify-center">
 			            <div className="w-full lg:w-6/12 px-4 md:w-8/12">
 							<div className="border-2 border-gray-200 p-8 rounded">
-						        <h1 className="text-indigo-600 text-xl font-semibold">Buat Post</h1>
+						        <h1 className="text-indigo-600 text-xl font-semibold">{edit ? 'Perbarui Post' : 'Buat Post'}</h1>
 						        <p className="mb-4 mt-2 text-sm text-gray-600">Bagikan pengetahuan kamu dengan developer lain; begitu pula dengan developer lain, mereka akan melakukan hal serupa.</p>
 
 								<div className="mb-6 mt-6">

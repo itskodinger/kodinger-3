@@ -11,7 +11,6 @@ use Requests\PostUploadImageRequest;
 use App\Http\Controllers\Controller;
 use Services\PostService;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
 
 class PostApiController extends Controller
 {
@@ -38,111 +37,78 @@ class PostApiController extends Controller
 
 	/**
 	 * Create a new post
-	 * @param  Request $request [description]
+	 * @param  Request $request
 	 * @return JSON
 	 */
 	public function store(PostCreateRequest $request)
 	{
-		$input = $request->all();
+		$post = $this->postService->create($request, [
+			'id' => Str::uuid(),
+			'public_folder' => auth()->user()->id . Str::random(10)
+		]);
 
-		$id = Str::uuid();
-		$user = auth()->user();
-
-		$input['id'] = $id;
-		$input['public_folder'] = $user->id . Str::random(10);
-
-		// create new post
-		$this->postService->create($input);
+		if(!$post)
+		{
+			return response()->json([
+				'status' => false
+			])->status(500);
+		}
 
 		return response()->json([
 			'status' => true,
-			'data' => $input
+			'data' => [
+				'id' => $post->id,
+				'public_folder' => $post->public_folder
+			]
 		]);
 	}
 
+	/**
+	 * Update post
+	 * @param  Request $request
+	 * @param  String  $id     
+	 * @return JSON          
+	 */
 	public function update(Request $request, $id) 
 	{
-		$input = $request->all();
+		$post = $this->postService->findAndUpdate($id, $request);
 
-		if($id) {
-			$this->postService->findAndUpdate($id, $input);
-
+		if(!$post)
+		{
 			return response()->json([
-				'status' => true,
-				'data' => $input
-			]);
+				'status' => false
+			])->status(500);
 		}
+
+		return response()->json([
+			'status' => true
+		]);
 	}
 
 	/**
 	 * Upload post image
-	 * @param  PostUploadImageRequest $request [description]
+	 * @param  PostUploadImageRequest $request
 	 * @return JSON
 	 */
 	public function uploadImage(PostUploadImageRequest $request)
 	{
-		$public_folder = $request->public_folder;
-		$user = auth()->user();
-		// post id
-		$id = $request->id;
-		$post = $this->postService->find($id);
-
-		$base = 'posts/';
-		$name = $request->name;
-		$path = $base . $public_folder . '/' . $name;
-		$url = space_url($path);
-
-		// Add to content directly => bugs!
-		// $size = $request->size;
-		// $status = $request->status;
-		// $data = [
-		// 	'url' => $url,
-		// 	'name' => $name,
-		// 	'size' => $size,
-		// 	'status' => $status,
-		// ];
-		// $content = $post->content ?? [$data];
-		// $post_content = $post->content;
-		// $content = ($post_content ?? '') . $name;
-
-		// if(!is_array($content))
-		// {
-		// 	$content = json_decode($content);
-		// 	array_push($content, $data);
-		// }
-
-		// $content = json_encode($content);
-
-		// $this->postService->findAndUpdate($id, [
-		// 	'content' => $content
-		// ]);
-
-		// upload image
-		Storage::disk('spaces')->putFileAs($base . $public_folder, $request->image, $name, 'public');
+		$image = $this->postService->uploadImage($request);
 
 		return response()->json([
-			// 'content' => $content,
-			// 'post_content' => $post_content,
-			'post_id' => $id,
-			'public_folder' => $public_folder,
-			'name' => $name,
-			'url' => $url,
-			'path' => $path,
+			'status' => true,
+			'data' => $image
 		]);
 	}
 
 	/**
 	 * Delete post image
-	 * @param  Request $request [description]
+	 * @param  Request $request
 	 * @return JSON
 	 */
 	public function deleteImage(Request $request)
 	{
-		$public_folder = $request->public_folder;
-
 		// delete image
-		// code here
-		sleep(2);
+		$image = $this->postService->deleteImage($request);
 		
 		return response()->json([
 			'status' => true,
