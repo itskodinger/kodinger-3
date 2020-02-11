@@ -131,6 +131,9 @@ module.exports = {
   					transform: 'translateY(50px)',
   					opacity: 0
   				}
+  			},
+  			'.transition': {
+  				transition: 'all .5s'
   			}
   		}
 

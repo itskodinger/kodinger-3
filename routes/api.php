@@ -27,6 +27,8 @@ Route::group(['prefix' => 'posts', 'as' => 'post.', 'namespace' => 'Api'], funct
 {
 	Route::post('/link-info', 'PostApiController@getLinkInfo')->name('getLinkInfo');
 	Route::post('/', 'PostApiController@store')->name('store');
+	Route::put('/{id}', 'PostApiController@update')->name('update');
+	Route::patch('/{id}', 'PostApiController@update')->name('update');
 	Route::post('/check-slug', 'PostApiController@checkSlug')->name('check_slug');
 	Route::post('/upload-image', 'PostApiController@uploadImage')->name('upload_image');
 	Route::delete('/delete-image', 'PostApiController@deleteImage')->name('delete_image');
@@ -34,6 +36,7 @@ Route::group(['prefix' => 'posts', 'as' => 'post.', 'namespace' => 'Api'], funct
 	Route::get('/both', 'PostApiController@both')->name('both');
 	Route::get('/discover', 'PostApiController@discover')->name('discover');
 	Route::get('/{slug}', 'PostApiController@show')->name('show');
+	Route::get('/edit/{id}', 'PostApiController@edit')->name('edit');
 
 	Route::group(['middleware' => 'auth:api'], function() 
 	{

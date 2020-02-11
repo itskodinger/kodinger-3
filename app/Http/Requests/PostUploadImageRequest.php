@@ -4,7 +4,7 @@ namespace Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PostCheckSlugRequest extends FormRequest
+class PostUploadImageRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,7 +14,7 @@ class PostCheckSlugRequest extends FormRequest
     public function rules()
     {
         return [
-            'slug' => 'required|min:5|unique:posts,slug,' . $this->id
+            'image' => 'max:5000|mimes:png,jpeg,bmp,png,webp,svg,mp4,webm,ogg',
         ];
     }
 }

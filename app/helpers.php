@@ -275,6 +275,8 @@ function routes_js()
         "delete_post" => route('deletePost', 'slug'),
         "post_both" => route('api.post.both'),
         "post_store" => route('api.post.store'),
+        "post_edit" => route('api.post.edit', 'id'),
+        "post_update" => route('api.post.update', 'slug'),
         "post_upload_image" => route('api.post.upload_image'),
         "post_delete_image" => route('api.post.delete_image'),
         "discover" => route('api.post.discover'),
@@ -337,4 +339,26 @@ function login_features()
 		'Berdiskusi dengan anggota yang lain',
 		'Berbagi tautan dengan komunitas'
 	];
+}
+
+function link_nl2obj($str)
+{
+	$str = rtrim($str, "\r\n");
+	$link_array = explode("\r\n", $str);
+
+	$new_array = [];
+
+	if(count($link_array) > 0)
+	{
+		foreach($link_array as $k => $link)
+		{
+			if(!empty($link))
+			{		
+				$new_array[$k]['id'] = str_random();
+				$new_array[$k]['value'] = $link;
+			}
+		}
+	}
+
+	return $new_array;
 }

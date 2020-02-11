@@ -13,6 +13,7 @@ class Post extends Model
 
 	protected $table = 'posts';
 	protected $fillable = [
+        'id',
 		'title',
 		'slug',
 		'content',
@@ -26,10 +27,13 @@ class Post extends Model
 		'status',
 		'views',
 		'user_id',
-		'type'
+		'type',
+        'public_folder'
 	];
 
     protected $appends = [
+        'tag_ids',
+        'tagify',
     	'time', 
         'blurry_image',
     	'markdown', 
@@ -37,7 +41,12 @@ class Post extends Model
     	'is_mine', 
     	'is_post_saved', 
     	'is_post_loved',
-    	'post_card'
+    	'post_card',
+        'pages',
+        'pagesObj',
+        'examplesObj',
+        'helpsObj',
+        'tutorialsObj',
     ];
 
     public function getIsPostSavedAttribute()
@@ -144,6 +153,20 @@ class Post extends Model
 		return $this->hasMany('App\PostTag');
 	}
 
+    public function getTagIdsAttribute()
+    {
+        return $this->tags()->pluck('tag_id');
+    }
+
+    public function getTagifyAttribute()
+    {
+        return $this->hasMany('App\PostTag')
+                    ->join('tags', 'post_tags.tag_id', 'tags.id')
+                    ->select('tags.name as value', 'id')
+                    ->get()
+                    ->toArray();
+    }
+
     public function getBlurryImageAttribute()
     {
         if(isset($this->images[0]))
@@ -156,6 +179,26 @@ class Post extends Model
 
             return $dir . '/px/' . $filename .'.'. $extension;
         }
+    }
+
+    public function getPagesObjAttribute()
+    {
+        return link_nl2obj($this->raw_pages);
+    }
+
+    public function getTutorialsObjAttribute()
+    {
+        return link_nl2obj($this->raw_tutorials);
+    }
+
+    public function getHelpsObjAttribute()
+    {
+        return link_nl2obj($this->raw_helps);
+    }
+
+    public function getExamplesObjAttribute()
+    {
+        return link_nl2obj($this->raw_examples);
     }
 
 	public function user()
@@ -176,4 +219,8 @@ class Post extends Model
 	public function attributes() {
 		return $this->hasMany(PostAttribute::class);
 	}
+
+    protected $casts = [
+        'id' => 'string'
+    ];
 }

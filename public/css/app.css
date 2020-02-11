@@ -12025,6 +12025,10 @@ video {
   }
 }
 
+.transition {
+  transition: all .5s;
+}
+
 html {
   scroll-behavior: smooth;
 }

@@ -1,9 +1,10 @@
 const mix = require('laravel-mix');
 const glob = require('glob');
 
-let tailwind = require('tailwindcss');
+const tailwind = require('tailwindcss');
 require('laravel-mix-purgecss');
 
+// extend webpack config
 mix.webpackConfig({
   module: {
     rules: [{
@@ -16,25 +17,39 @@ mix.webpackConfig({
   }
 });
 
+// get all js files
 const jsFiles = glob.sync('resources/js/*.js');
+
+// js files
 const reactFiles = [
 	'resources/js/post-form.js'
 ];
+
+// compile each js file
 jsFiles.forEach(filename => {
 	mix[reactFiles.includes(filename) ? 'react' : 'js'](filename, filename.replace(/^resources\//g, 'public/'));
 });
 
+// compile app.css using tailwind plugin
 mix.postCss('resources/css/app.css', 'public/css', [
    tailwind('./tailwind.config.js')
 ]);
 
+mix.browserSync({
+	proxy: process.env.MIX_PROXY,
+	host: process.env.MIX_PROXY,
+	open: 'external'
+});
+
+// when production mode
 if (mix.inProduction()) {
-  mix
-  .purgeCss({
-  	extensions: ['html', 'php', 'js'],
-  	globs: [
-  	    path.join(__dirname, 'resources/js/**/*.js'),
-  	],
-  })
-  .version();
+	// purge tailwind! and do versioning
+	mix
+	.purgeCss({
+		extensions: ['html', 'php', 'js'],
+		globs: [
+		    path.join(__dirname, 'resources/js/**/*.js'),
+		],
+	})
+	.version();
 }

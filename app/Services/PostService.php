@@ -181,8 +181,13 @@ class PostService
 
 	public function create($request, $arr=[])
 	{
-		$input = $request->all();
-		$tags = $arr['tags'] ?? $request->tags;
+		if(is_array($request)) {
+			$input = $request;
+		}else{
+			$input = $request->all();
+		}
+
+		$tags = $arr['tags'] ?? $request->tags ?? false;
 		$input['status'] = 'draft';
 		$input['views'] = 0;
 		$input['user_id'] = auth()->user()->id;
@@ -190,12 +195,15 @@ class PostService
 		$input = array_merge($input, $arr);
 
 		$data = $this->model()->create($input);
-		foreach($tags as $tag)
-		{
-			PostTag::create([
-				'post_id' => $data->id,
-				'tag_id' => $tag
-			]);
+
+		if($tags) {
+			foreach($tags as $tag)
+			{
+				PostTag::create([
+					'post_id' => $data->id,
+					'tag_id' => $tag
+				]);
+			}
 		}
 
 		return $data;
@@ -203,18 +211,24 @@ class PostService
 
 	public function findAndUpdate($id, $request)
 	{
-		$input = $request->all();
+		if(is_array($request)) {
+			$input = $request;
+		}else{
+			$input = $request->all();
+		}
 	
 		$data = $this->model()->find($id);
 
 		// temp solution: need better solution
-		PostTag::wherePostId($id)->delete();
-		foreach($request->tags as $tag)
-		{
-			PostTag::create([
-				'post_id' => $id,
-				'tag_id' => $tag
-			]);
+		if(isset($input['tags'])) {
+			PostTag::wherePostId($id)->delete();
+			foreach($input['tags'] as $tag)
+			{
+				PostTag::create([
+					'post_id' => $id,
+					'tag_id' => $tag
+				]);
+			}			
 		}
 
 		$data->update($input);

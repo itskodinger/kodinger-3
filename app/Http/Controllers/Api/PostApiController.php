@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Requests\PostDiscoverCreateRequest;
 use Requests\PostCreateRequest;
+use Requests\PostUpdateRequest;
 use Requests\PostCheckSlugRequest;
+use Requests\PostUploadImageRequest;
 use App\Http\Controllers\Controller;
 use Services\PostService;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class PostApiController extends Controller
 {
@@ -30,13 +33,6 @@ class PostApiController extends Controller
 	 */
 	public function checkSlug(PostCheckSlugRequest $request) 
 	{
-		$slug = $request->slug;
-
-		if($this->postService->checkSlug($slug))
-		{
-			return response()->json(['status' => true, 'message' => 'Slug already exists']);
-		}
-
 		return response()->json(['status' => false, 'message' => 'Slug available to use']);
 	}
 
@@ -45,21 +41,18 @@ class PostApiController extends Controller
 	 * @param  Request $request [description]
 	 * @return JSON
 	 */
-	public function store(Request $request)
+	public function store(PostCreateRequest $request)
 	{
 		$input = $request->all();
-		$id = $input['id'] ?? false;
 
-		if(!$id) {
-			$id = Str::uuid();
-			$input['id'] = $id;
+		$id = Str::uuid();
+		$user = auth()->user();
 
-			// create new post
-			$this->postService->create($input);
-		}
+		$input['id'] = $id;
+		$input['public_folder'] = $user->id . Str::random(10);
 
-		// update post
-		// code here
+		// create new post
+		$this->postService->create($input);
 
 		return response()->json([
 			'status' => true,
@@ -67,43 +60,69 @@ class PostApiController extends Controller
 		]);
 	}
 
+	public function update(Request $request, $id) 
+	{
+		$input = $request->all();
+
+		if($id) {
+			$this->postService->findAndUpdate($id, $input);
+
+			return response()->json([
+				'status' => true,
+				'data' => $input
+			]);
+		}
+	}
+
 	/**
 	 * Upload post image
-	 * @param  Request $request [description]
+	 * @param  PostUploadImageRequest $request [description]
 	 * @return JSON
 	 */
-	public function uploadImage(Request $request)
+	public function uploadImage(PostUploadImageRequest $request)
 	{
 		$public_folder = $request->public_folder;
-		$slug = $request->slug;
 		$user = auth()->user();
 		// post id
 		$id = $request->id;
+		$post = $this->postService->find($id);
 
-		// create post
-		if(!$id)
-		{
-			$id = Str::uuid();
+		$base = 'posts/';
+		$name = $request->name;
+		$path = $base . $public_folder . '/' . $name;
+		$url = space_url($path);
 
-			// creating post
-			// code here
-		}
+		// Add to content directly => bugs!
+		// $size = $request->size;
+		// $status = $request->status;
+		// $data = [
+		// 	'url' => $url,
+		// 	'name' => $name,
+		// 	'size' => $size,
+		// 	'status' => $status,
+		// ];
+		// $content = $post->content ?? [$data];
+		// $post_content = $post->content;
+		// $content = ($post_content ?? '') . $name;
 
-		if(!$public_folder)
-		{
-			$public_folder = $slug ?? $user->username . '-' . uniqid();
-		}
+		// if(!is_array($content))
+		// {
+		// 	$content = json_decode($content);
+		// 	array_push($content, $data);
+		// }
 
-		$name = $request->image->getClientOriginalName();
-		$path = $public_folder . '/' . $name;
-		$url = $path; // change letter
+		// $content = json_encode($content);
+
+		// $this->postService->findAndUpdate($id, [
+		// 	'content' => $content
+		// ]);
 
 		// upload image
-		// code here
-
-		sleep(2);
+		Storage::disk('spaces')->putFileAs($base . $public_folder, $request->image, $name, 'public');
 
 		return response()->json([
+			// 'content' => $content,
+			// 'post_content' => $post_content,
 			'post_id' => $id,
 			'public_folder' => $public_folder,
 			'name' => $name,
@@ -129,6 +148,19 @@ class PostApiController extends Controller
 			'status' => true,
 			'message' => 'Image deleted successfully'
 		]);
+	}
+
+	/**
+	 * Edit post
+	 * @param  Request $request 
+	 * @param  String  $id      
+	 * @return JSON           
+	 */
+	public function edit(Request $request, $id)
+	{
+		$post = $this->postService->find($id);
+
+		return response()->json(['data' => $post]);
 	}
 
 	/**

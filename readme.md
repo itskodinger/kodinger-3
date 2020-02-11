@@ -19,11 +19,17 @@ Kodinger 3 merupakan project dari tim Kodinger untuk refactoring website utama K
 - Report post, comment, community
 - ACL (ok,d one)
 - Upvote post (done)
-- More more more more
-
-## RN
 - Discover fetch
 - Lazy-load image (done)
 - Search (done)
 - Off-canvasify overflow (bug) (done)
 - Ajax to REST (endpoint) (done)
+- More more more more
+
+## RN
+- Otomatis add image ke post ketika upload tanpa ID post
+- Otomatis update slug ketika `checkSlug`
+- Simplify form.js's fetch function
+
+## Setup
+- Add the `MIX_PROXY=your_proxy_here.test` key-value to your `.env`
