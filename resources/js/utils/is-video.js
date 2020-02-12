@@ -5,7 +5,13 @@
  */
 function isVideo(str)
 {
-	return str.indexOf('.mp4') > -1 ? true : false;
+	const videos = [
+		'mp4',
+		'webm',
+		'ogg'
+	];
+
+	return videos.includes(str) ? true : false;
 }
 
 export default isVideo;

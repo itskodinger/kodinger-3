@@ -128,9 +128,13 @@ let api = {
 			try {
 	            var cr = new window.Siema({
 	                selector: find(element, '.carousel'),
-	                  perPage: {
-					    0: 1,
-					  },
+					perPage: {
+						0: 1,
+					},
+					onChange: function() {
+						finds(element, '[data-index]').forEach(el => el.classList.add('hidden'));
+						find(element, '[data-index="'+ cr.currentSlide +'"]').classList.remove('hidden');
+					}
 	            });
 
 	            find(element, '.prev').addEventListener('click', () => cr.prev());
@@ -631,8 +635,10 @@ let api = {
 			                )
 		                : // else
 			                
-			                post.content_object.map(function(img) {
-			                    if(isVideo(img)) {
+			                post.content_object.map(function(slide) {
+			                	const img = slide.url;
+
+			                    if(isVideo(slide.type.replace(/video\//g, ''))) {
 				                    return `<video controls="">
 				                        <source src="${img}" type="video/mp4">
 				                    </video>`;
@@ -657,9 +663,15 @@ let api = {
 				        </a></h4>`
 			        : ''}
 
-			        ${!options.discover && (post.markdown_truncate || post.markdown) ?
-				        `<div class="mb-5">${options.truncate_content ? post.first_slide_caption : post.markdown}</div>`
+			        ${!options.discover && options.truncate_content ?
+				        `<div class="mb-5">${post.first_slide_caption}</div>`
 			        : ''}
+
+			        ${!options.discover && !options.truncate_content ?
+			        	post.content_object.map((slide, index) => {
+				        	return `<div data-index="${index}" class="mb-5 ${index != 0 ? 'hidden' : ''}">${slide.caption || '<i>Tidak ada keterangan</i>'}</div>`;
+			        	}).join('')
+		        	: ''}
 
 			        <div class="flex flex-wrap">
 			        ${post.tags.map(function(tag) {

@@ -3585,6 +3585,12 @@ var api = {
           selector: Object(_utils_find__WEBPACK_IMPORTED_MODULE_9__["default"])(element, '.carousel'),
           perPage: {
             0: 1
+          },
+          onChange: function onChange() {
+            Object(_utils_finds__WEBPACK_IMPORTED_MODULE_8__["default"])(element, '[data-index]').forEach(function (el) {
+              return el.classList.add('hidden');
+            });
+            Object(_utils_find__WEBPACK_IMPORTED_MODULE_9__["default"])(element, '[data-index="' + cr.currentSlide + '"]').classList.remove('hidden');
           }
         });
         Object(_utils_find__WEBPACK_IMPORTED_MODULE_9__["default"])(element, '.prev').addEventListener('click', function () {
@@ -3950,13 +3956,17 @@ var api = {
       var tpl = "\n\t\t\t<div class=\"bg-white rounded border-2 border-gray-200 mb-10\">\n\t\t\t    <div class=\"flex p-6 items-center\">\n\t\t\t        <a href=\"".concat(routes.single + _post.user.the_username, "\">\n\t\t\t            <img class=\"rounded w-12 rounded border\" src=\"").concat(_post.user.the_avatar_sm, "\">\n\t\t\t        </a>\n\t\t\t        <div class=\"ml-3\">\n\t\t\t            <h4 class=\"mb-1 font-bold\">\n\t\t\t                <a class=\"text-indigo-600\" href=\"").concat(routes.single + _post.user.the_username, "\">\n\t\t\t                    ").concat(_post.user.name, "\n\t\t\t                </a>\n\t\t\t            </h4>\n\t\t\t            <div class=\"-mx-1 flex items-center text-xs text-gray-500\">\n\t\t\t                <p class=\"mx-1\">").concat(_post.user.the_username, "</p>\n\t\t\t                <p class=\"mx-1\">&bull;</p>\n\t\t\t                <p class=\"mx-1 text-blue-500 font-semibold\">").concat(_post.time, "</p>\n\t\t\t            </div>\n\t\t\t        </div>\n\t\t\t    </div>\n\n\t\t\t    ").concat(_post.type == 'link' ? "\n\t\t\t\t    <div class=\"px-6 text-sm text-gray-700 leading-loose\">\n\t\t\t\t        ".concat(_post.status == 'CONTAINS_PORNOGRAPHIC' ? "\n\t\t\t\t            <div class=\"bg-orange-100 border-l-4 border-orange-500 text-orange-700 px-4 py-2 mb-4\" role=\"alert\">\n\t\t\t\t                <p class=\"font-bold\">Hati-hati</p>\n\t\t\t\t                <p>Post ini mungkin mengandung konten ponografi</p>\n\t\t\t\t            </div>\n\t\t\t\t        " : '', "\n\t\t\t\t    </div>\n\n\t\t\t\t    <div class=\"shimmer border rounded mx-6\">\n\n\t\t\t\t        ").concat(_post.post_card.has_embeddable_code ? "\n\n\t\t\t\t            <div class=\"embeddable-frame\">\n\t\t\t\t                ".concat(_post.post_card.embeddable_code, "\n\t\t\t\t            </div>") : // else
       "\n\t\t\t\t        \t".concat(_post.post_card.thumbnail !== null ? "<img src=\"".concat(_post.post_card.thumbnail, "\" class=\"w-full h-64 object-cover\">") : // else
       "<img src=\"".concat(_post.post_card.default_thumbnail, "\" class=\"w-full h-64 object-scale-down\">"), "\n\t\t\t\t        "), "\n\n\t\t\t\t        <div class=\"p-4 border-t bg-gray-100\">\n\t\t\t\t        \n\t\t\t\t            <h2 class=\"text-lg font-semibold hover:text-indigo-600\"><a href=\"").concat(_post.post_card.url, "\">").concat(_post.post_card.title, "</a></h2>\n\n\t\t\t\t            ").concat(_post.post_card.description ? "\n\t\t\t\t                <p class=\"text-gray-600 text-sm break-all\">".concat(_post.post_card.description.substr(0, 200), "</p>\n\t\t\t\t            ") : '', "\n\t\t\t\t            <div class=\"uppercase tracking-wider text-xs mt-3 text-teal-500 font-semibold\">").concat(Object(_utils_get_hostname__WEBPACK_IMPORTED_MODULE_10__["default"])(_post.post_card.url), "</div>\n\t\t\t\t        </div>\n\t\t\t\t    </div>\n\t\t\t    ") : "", "\n\n\t\t\t    ").concat(_post.type !== 'link' ? "\n\t\t\t    \n\t\t\t    <div class=\"relative".concat(_post.content_object.length > 1 && options.carousel ? ' carousel-outer w-full' : '', "\"> \n\t\t\t        <div class=\"").concat(_post.content_object.length > 1 && options.carousel ? 'carousel w-full' : '', "\">\n\t\t\t            \n\t\t\t            ").concat('carousel' in options && options.carousel == false ? _post.thumbnail_is_video ? "<video controls=\"\">\n\t\t\t                        <source src=\"".concat(_post.first_slide_media, "\" type=\"video/").concat(_post.thumbnail_type, "\">\n\t\t\t                    </video>") : "<a href=\"".concat(routes.single + _post.slug, "\">\n\t\t\t\t                    <div data-blurry=\"").concat(_post.blurry_image, "\" data-src=\"").concat(_post.first_slide_media, "\" class=\"lazy-image w-full bg-gray-200 bg-cover h-40 sm:h-64\"></div>\n\t\t\t\t                </a>") : // else
-      _post.content_object.map(function (img) {
-        if (Object(_utils_is_video__WEBPACK_IMPORTED_MODULE_4__["default"])(img)) {
+      _post.content_object.map(function (slide) {
+        var img = slide.url;
+
+        if (Object(_utils_is_video__WEBPACK_IMPORTED_MODULE_4__["default"])(slide.type.replace(/video\//g, ''))) {
           return "<video controls=\"\">\n\t\t\t\t                        <source src=\"".concat(img, "\" type=\"video/mp4\">\n\t\t\t\t                    </video>");
         } else {
           return "<img src=\"".concat(img, "\" alt=\"image\">");
         }
-      }).join(""), "\n\t\t\t        </div>\n\n\t\t\t        ").concat(_post.content_object.length > 1 && options.carousel !== false ? "\n\t\t\t\t        <button class=\"prev\">&lsaquo;</button>\n\t\t\t\t        <button class=\"next\">&rsaquo;</button>" : '', "\n\t\t\t    </div>\n\t\t\t    ") : '', "\n\n\t\t\t    <div class=\"p-6 text-sm text-gray-700 leading-relaxed\">\n\t\t\t        ").concat(_post.title ? "<h4 class=\"text-lg mb-2 text-black font-bold\"><a class=\"text-indigo-700\" href=\"".concat(routes.single + _post.slug, "\">\n\t\t\t\t            ").concat(_post.title, "\n\t\t\t\t        </a></h4>") : '', "\n\n\t\t\t        ").concat(!options.discover && (_post.markdown_truncate || _post.markdown) ? "<div class=\"mb-5\">".concat(options.truncate_content ? _post.first_slide_caption : _post.markdown, "</div>") : '', "\n\n\t\t\t        <div class=\"flex flex-wrap\">\n\t\t\t        ").concat(_post.tags.map(function (tag) {
+      }).join(""), "\n\t\t\t        </div>\n\n\t\t\t        ").concat(_post.content_object.length > 1 && options.carousel !== false ? "\n\t\t\t\t        <button class=\"prev\">&lsaquo;</button>\n\t\t\t\t        <button class=\"next\">&rsaquo;</button>" : '', "\n\t\t\t    </div>\n\t\t\t    ") : '', "\n\n\t\t\t    <div class=\"p-6 text-sm text-gray-700 leading-relaxed\">\n\t\t\t        ").concat(_post.title ? "<h4 class=\"text-lg mb-2 text-black font-bold\"><a class=\"text-indigo-700\" href=\"".concat(routes.single + _post.slug, "\">\n\t\t\t\t            ").concat(_post.title, "\n\t\t\t\t        </a></h4>") : '', "\n\n\t\t\t        ").concat(!options.discover && options.truncate_content ? "<div class=\"mb-5\">".concat(_post.first_slide_caption, "</div>") : '', "\n\n\t\t\t        ").concat(!options.discover && !options.truncate_content ? _post.content_object.map(function (slide, index) {
+        return "<div data-index=\"".concat(index, "\" class=\"mb-5 ").concat(index != 0 ? 'hidden' : '', "\">").concat(slide.caption || '<i>Tidak ada keterangan</i>', "</div>");
+      }).join('') : '', "\n\n\t\t\t        <div class=\"flex flex-wrap\">\n\t\t\t        ").concat(_post.tags.map(function (tag) {
         if (tag.tag !== null) {
           return "<a class=\"border border-gray-300 bg-gray-100 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded-full py-2 px-4 text-xs\" href=\"".concat(routes.search + Object(_utils_full_url_with_query__WEBPACK_IMPORTED_MODULE_7__["default"])({
             tag: tag.tag.name
@@ -4927,7 +4937,8 @@ __webpack_require__.r(__webpack_exports__);
  * @return {Boolean}     
  */
 function isVideo(str) {
-  return str.indexOf('.mp4') > -1 ? true : false;
+  var videos = ['mp4', 'webm', 'ogg'];
+  return videos.includes(str) ? true : false;
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (isVideo);
