@@ -331,48 +331,55 @@ class Form extends Component {
 
 	publishWholeContent(data) {
 		this.saveWholeContent(data)
-		.then(({status, slug}) => {
+		.then(() => {
 			window.location.reload();
-		});
+		})
+		.catch(() => {});
 	}
 
-	async saveWholeContent(objectData={}) {
-		// basic data
-		const { title, slug, tags, keyword, id } = this.state;
+	async saveWholeContent(objectData={}, route=false) {
+		return new Promise((resolve, reject) => {
+			// basic data
+			const { title, slug, tags, keyword, id } = this.state;
 
-		// images
-		const images = this.flattenedImageFormat();
+			if(!route) route = routes.post_publish.replace(/slug/g, id);
 
-		// validation
-		if(images.length < 1) {
-			return this.toast.add(`🐡&nbsp; Tidak ada gambar satu pun`);
-		}else if(images.length > 0 && (!images[0].caption || images[0].caption.trim().length < 1)) {
-			return this.toast.add(`😏&nbsp; Slide pertama gambar harus diisi caption`);
-		}
+			// images
+			const images = this.flattenedImageFormat();
 
-		const body = Object.assign({
-			title,
-			slug,
-			tags,
-			keyword,
-			content: JSON.stringify(images),
-		}, objectData);
+			// validation
+			if(objectData && objectData.status.toUpperCase() == 'PUBLISH' && images.length < 1) {
+				this.toast.add(`🐡&nbsp; Tidak ada gambar satu pun`);
 
-		Object.keys(key2str).forEach((key) => {
-			body[key] = this.doFlattenLinkFormat(key);
-		});
+				return reject();
+			}else if(objectData && objectData.status.toUpperCase() == 'PUBLISH' && images.length > 0 && (!images[0].caption || images[0].caption.trim().length < 1)) {
+				this.toast.add(`😏&nbsp; Slide pertama gambar harus diisi caption`);
 
-		this.setState({
-			statusSaving: 'Processing',
-			publish: false
-		});
+				return reject();
+			}
 
-		return new Promise((resolve) => {
+			const body = Object.assign({
+				title,
+				slug,
+				tags,
+				keyword,
+				content: JSON.stringify(images),
+			}, objectData);
+
+			Object.keys(key2str).forEach((key) => {
+				body[key] = this.doFlattenLinkFormat(key);
+			});
+
+			this.setState({
+				statusSaving: 'Processing',
+				publish: false
+			});
+
 			clearTimeout(this.autoSaveAllTimeout);
 
 			this.request({
 				method: 'PUT',
-				route: routes.post_publish.replace(/slug/g, id),
+				route,
 				headers: {
 					'Content-Type': 'application/json'
 				},
@@ -380,6 +387,7 @@ class Form extends Component {
 			})
 			.then(() => {
 				this.isContentDirty = false;
+				this.statusSaved();
 
 				return resolve(body);
 			})
@@ -427,7 +435,7 @@ class Form extends Component {
 	}
 
 	addKeyboardShortcut() {
-		const { status } = this.state;
+		const { status, id } = this.state;
 
 		window.addEventListener('keydown', (e) => {
 			const key = this.isMac() ? 'metaKey' : 'ctrlKey';
@@ -437,10 +445,10 @@ class Form extends Component {
 
 				if(!this.isContentDirty) return this.toast.add('🤘&nbsp; Post sudah tersimpan sebagai draft');
 
-				this.saveWholeContent({status: 'draft'})
+				this.saveWholeContent({status: 'draft'}, routes.post_update.replace(/slug/g, id))
 				.then(() => {
 					this.toast.add(`🖖&nbsp; Post sudah disimpan sebagai draft`);
-				});
+				}).catch(() => {});
 			}
 		});
 	}
@@ -1138,12 +1146,13 @@ class Form extends Component {
 		const { images } = this.state;
 
 		let newImages = [];
-		images.forEach(({id, status, caption, name, size, url, file, videoThumbnailName, videoThumbnailUrl}) => {
+		images.forEach(({id, status, caption, name, size, type, url, file, videoThumbnailName, videoThumbnailUrl}) => {
 			if(!name) name = file.name;
 			if(!size) size = file.size;
+			if(!type) type = file.type;
 
 			if(status == 'UPLOADED') {
-				let newImageData = {caption, url, name, size, status, id};
+				let newImageData = {caption, url, name, size, type, status, id};
 
 				if(videoThumbnailName) newImageData['video_thumbnail_name'] = videoThumbnailName;
 				if(videoThumbnailUrl) newImageData['video_thumbnail_url'] = videoThumbnailUrl;
@@ -1484,6 +1493,8 @@ class Form extends Component {
 	saveFirstStep(e) {
 		const { title, slug } = this.state;
 
+		const status = 'draft';
+
 		if(title.trim().length < 1) {
 			document.querySelector('[name=title]').focus();
 		}else if(slug.trim().length < 1) {
@@ -1497,7 +1508,7 @@ class Form extends Component {
 			this.request({
 				route: routes.post_store,
 				method: 'POST',
-				body: JSON.stringify({title, slug}),
+				body: JSON.stringify({title, slug, status}),
 				headers: {
 					'Content-Type': 'application/json'
 				}
@@ -1505,6 +1516,11 @@ class Form extends Component {
 			.then(({data}) => {
 				this.setID(data.id);
 				this.setPublicFolder(data.public_folder);
+
+				this.setState({
+					status,
+					publish: true
+				});
 
 				this.addDOMFunctionality();
 			})

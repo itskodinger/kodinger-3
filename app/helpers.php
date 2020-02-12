@@ -97,7 +97,13 @@ function the_avatar()
 
 function is_video($str)
 {
-	return strpos($str, '.mp4') > -1 ? true : false;
+	$videos = [
+		'mp4',
+		'webm',
+		'ogg'
+	];
+
+	return in_array($str, $videos) ? true : false;
 }
 
 function recommend_fields()

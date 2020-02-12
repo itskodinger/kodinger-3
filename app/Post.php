@@ -48,8 +48,41 @@ class Post extends Model
         'helps_object',
         'tutorials_object',
         'content_object',
-        'post_type'
+        'post_type',
+        'thumbnail',
+        'thumbnail_type',
+        'thumbnail_is_video',
+        'first_slide_media',
+        'first_slide_caption',
     ];
+
+    public function getThumbnailAttribute()
+    {
+        $content = $this->content_object;
+        $first_slide = $content[0];
+
+        return $first_slide->video_thumbnail_url ?? $first_slide->url;
+    }
+
+    public function getThumbnailTypeAttribute()
+    {
+        return pathinfo($this->thumbnail, PATHINFO_EXTENSION);
+    }
+
+    public function getThumbnailIsVideoAttribute()
+    {
+        return is_video($this->thumbnail) ? true : false;
+    }
+
+    public function getFirstSlideMediaAttribute()
+    {
+        return count($this->content_object) > 0 ? $this->content_object[0]->url : '';
+    }
+
+    public function getFirstSlideCaptionAttribute()
+    {
+        return count($this->content_object) > 0 ? ($this->content_object[0]->caption ?? '') : '';
+    }
 
     public function getPostTypeAttribute()
     {
@@ -186,16 +219,13 @@ class Post extends Model
 
     public function getBlurryImageAttribute()
     {
-        if(isset($this->images[0]))
-        {
-            $image = $this->images[0];
+        $image = $this->thumbnail;
 
-            $filename = pathinfo($image, PATHINFO_FILENAME);
-            $extension = pathinfo($image, PATHINFO_EXTENSION);
-            $dir = pathinfo($image, PATHINFO_DIRNAME);
+        $filename = pathinfo($image, PATHINFO_FILENAME);
+        $extension = pathinfo($image, PATHINFO_EXTENSION);
+        $dir = pathinfo($image, PATHINFO_DIRNAME);
 
-            return $dir . '/px/' . $filename .'.'. $extension;
-        }
+        return $dir . '/px/' . $filename .'.'. $extension;
     }
 
     public function getPagesObjectAttribute()

@@ -14730,11 +14730,9 @@ function (_Component) {
   }, {
     key: "publishWholeContent",
     value: function publishWholeContent(data) {
-      this.saveWholeContent(data).then(function (_ref5) {
-        var status = _ref5.status,
-            slug = _ref5.slug;
+      this.saveWholeContent(data).then(function () {
         window.location.reload();
-      });
+      })["catch"](function () {});
     }
   }, {
     key: "saveWholeContent",
@@ -14745,80 +14743,79 @@ function (_Component) {
         var _this9 = this;
 
         var objectData,
-            _this$state3,
-            title,
-            slug,
-            tags,
-            keyword,
-            id,
-            images,
-            body,
+            route,
             _args2 = arguments;
-
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                objectData = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : {}; // basic data
+                objectData = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : {};
+                route = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : false;
+                return _context2.abrupt("return", new Promise(function (resolve, reject) {
+                  // basic data
+                  var _this9$state = _this9.state,
+                      title = _this9$state.title,
+                      slug = _this9$state.slug,
+                      tags = _this9$state.tags,
+                      keyword = _this9$state.keyword,
+                      id = _this9$state.id;
+                  if (!route) route = routes.post_publish.replace(/slug/g, id); // images
 
-                _this$state3 = this.state, title = _this$state3.title, slug = _this$state3.slug, tags = _this$state3.tags, keyword = _this$state3.keyword, id = _this$state3.id; // images
+                  var images = _this9.flattenedImageFormat(); // validation
 
-                images = this.flattenedImageFormat(); // validation
 
-                if (!(images.length < 1)) {
-                  _context2.next = 7;
-                  break;
-                }
+                  if (objectData && objectData.status.toUpperCase() == 'PUBLISH' && images.length < 1) {
+                    _this9.toast.add("\uD83D\uDC21&nbsp; Tidak ada gambar satu pun");
 
-                return _context2.abrupt("return", this.toast.add("\uD83D\uDC21&nbsp; Tidak ada gambar satu pun"));
+                    return reject();
+                  } else if (objectData && objectData.status.toUpperCase() == 'PUBLISH' && images.length > 0 && (!images[0].caption || images[0].caption.trim().length < 1)) {
+                    _this9.toast.add("\uD83D\uDE0F&nbsp; Slide pertama gambar harus diisi caption");
 
-              case 7:
-                if (!(images.length > 0 && (!images[0].caption || images[0].caption.trim().length < 1))) {
-                  _context2.next = 9;
-                  break;
-                }
+                    return reject();
+                  }
 
-                return _context2.abrupt("return", this.toast.add("\uD83D\uDE0F&nbsp; Slide pertama gambar harus diisi caption"));
+                  var body = Object.assign({
+                    title: title,
+                    slug: slug,
+                    tags: tags,
+                    keyword: keyword,
+                    content: JSON.stringify(images)
+                  }, objectData);
+                  Object.keys(key2str).forEach(function (key) {
+                    body[key] = _this9.doFlattenLinkFormat(key);
+                  });
 
-              case 9:
-                body = Object.assign({
-                  title: title,
-                  slug: slug,
-                  tags: tags,
-                  keyword: keyword,
-                  content: JSON.stringify(images)
-                }, objectData);
-                Object.keys(key2str).forEach(function (key) {
-                  body[key] = _this9.doFlattenLinkFormat(key);
-                });
-                this.setState({
-                  statusSaving: 'Processing',
-                  publish: false
-                });
-                return _context2.abrupt("return", new Promise(function (resolve) {
+                  _this9.setState({
+                    statusSaving: 'Processing',
+                    publish: false
+                  });
+
                   clearTimeout(_this9.autoSaveAllTimeout);
 
                   _this9.request({
                     method: 'PUT',
-                    route: routes.post_publish.replace(/slug/g, id),
+                    route: route,
                     headers: {
                       'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(body)
                   }).then(function () {
                     _this9.isContentDirty = false;
+
+                    _this9.statusSaved();
+
                     return resolve(body);
                   })["finally"](function () {
                     _this9.enablePublish();
                   })["catch"](function () {});
                 }));
 
-              case 13:
+              case 3:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, this);
+        }, _callee2);
       }));
 
       function saveWholeContent() {
@@ -14874,7 +14871,9 @@ function (_Component) {
     value: function addKeyboardShortcut() {
       var _this10 = this;
 
-      var status = this.state.status;
+      var _this$state3 = this.state,
+          status = _this$state3.status,
+          id = _this$state3.id;
       window.addEventListener('keydown', function (e) {
         var key = _this10.isMac() ? 'metaKey' : 'ctrlKey';
 
@@ -14884,9 +14883,9 @@ function (_Component) {
 
           _this10.saveWholeContent({
             status: 'draft'
-          }).then(function () {
+          }, routes.post_update.replace(/slug/g, id)).then(function () {
             _this10.toast.add("\uD83D\uDD96&nbsp; Post sudah disimpan sebagai draft");
-          });
+          })["catch"](function () {});
         }
       });
     }
@@ -14935,8 +14934,8 @@ function (_Component) {
 
   }, {
     key: "addTagify",
-    value: function addTagify(_ref6) {
-      var defaultTags = _ref6.defaultTags;
+    value: function addTagify(_ref5) {
+      var defaultTags = _ref5.defaultTags;
       this.tagify = new _yaireo_tagify__WEBPACK_IMPORTED_MODULE_9___default.a($('.tags'), {
         enforceWhitelist: true,
         whitelist: defaultTags ? _toConsumableArray(defaultTags) : [],
@@ -15085,9 +15084,9 @@ function (_Component) {
               // if file is an valid image file
               _this13.addImage({
                 file: file
-              }).then(function (_ref7) {
-                var id = _ref7.id,
-                    node = _ref7.node;
+              }).then(function (_ref6) {
+                var id = _ref6.id,
+                    node = _ref6.node;
 
                 _this13.handleImage(id, node, file);
               });
@@ -15153,8 +15152,8 @@ function (_Component) {
       function updateState(autoSave) {
         var _this14 = this;
 
-        this.setState(function (_ref8) {
-          var images = _ref8.images;
+        this.setState(function (_ref7) {
+          var images = _ref7.images;
           images = images.filter(function (item) {
             return item.id !== id;
           });
@@ -15184,8 +15183,8 @@ function (_Component) {
             name: currentImage.name,
             public_folder: public_folder
           })
-        }).then(function (_ref9) {
-          var status = _ref9.status;
+        }).then(function (_ref8) {
+          var status = _ref8.status;
           if (status) updateState.call(_this15, true);
         })["catch"](function (error) {});
         this.updateImage(id, {
@@ -15200,11 +15199,11 @@ function (_Component) {
 
   }, {
     key: "addImage",
-    value: function addImage(_ref10) {
+    value: function addImage(_ref9) {
       var _this16 = this;
 
-      var _ref10$file = _ref10.file,
-          file = _ref10$file === void 0 ? undefined : _ref10$file;
+      var _ref9$file = _ref9.file,
+          file = _ref9$file === void 0 ? undefined : _ref9$file;
       return new Promise(function (resolve, reject) {
         var id = _this16.generateID();
 
@@ -15229,10 +15228,10 @@ function (_Component) {
     }
   }, {
     key: "validateImage",
-    value: function validateImage(_ref11) {
+    value: function validateImage(_ref10) {
       var _this17 = this;
 
-      var selectedFile = _ref11.selectedFile;
+      var selectedFile = _ref10.selectedFile;
       return new Promise(function (resolve, reject) {
         if (!_this17.allowedMediaTypes.includes(selectedFile.type)) {
           return reject("\uD83D\uDEB7&nbsp; Jenis berkas ".concat(selectedFile.name, " tidak didukung"));
@@ -15360,8 +15359,8 @@ function (_Component) {
   }, {
     key: "_removeImage",
     value: function _removeImage(id) {
-      this.setState(function (_ref12) {
-        var images = _ref12.images;
+      this.setState(function (_ref11) {
+        var images = _ref11.images;
         return {
           images: images.filter(function (item) {
             return item.id !== id;
@@ -15398,13 +15397,13 @@ function (_Component) {
         method: 'POST',
         body: formData,
         signal: image.controller.signal
-      }).then(function (_ref13) {
-        var _ref13$data = _ref13.data,
-            name = _ref13$data.name,
-            url = _ref13$data.url,
-            path = _ref13$data.path,
-            videoThumbnailUrl = _ref13$data.video_thumbnail_url,
-            videoThumbnailName = _ref13$data.video_thumbnail_name;
+      }).then(function (_ref12) {
+        var _ref12$data = _ref12.data,
+            name = _ref12$data.name,
+            url = _ref12$data.url,
+            path = _ref12$data.path,
+            videoThumbnailUrl = _ref12$data.video_thumbnail_url,
+            videoThumbnailName = _ref12$data.video_thumbnail_name;
 
         var currentImage = _this19.updateImage(image.id, {
           status: 'UPLOADED',
@@ -15590,18 +15589,20 @@ function (_Component) {
       var now = arguments.length > 1 ? arguments[1] : undefined;
       var images = this.state.images;
       var newImages = [];
-      images.forEach(function (_ref14) {
-        var id = _ref14.id,
-            status = _ref14.status,
-            caption = _ref14.caption,
-            name = _ref14.name,
-            size = _ref14.size,
-            url = _ref14.url,
-            file = _ref14.file,
-            videoThumbnailName = _ref14.videoThumbnailName,
-            videoThumbnailUrl = _ref14.videoThumbnailUrl;
+      images.forEach(function (_ref13) {
+        var id = _ref13.id,
+            status = _ref13.status,
+            caption = _ref13.caption,
+            name = _ref13.name,
+            size = _ref13.size,
+            type = _ref13.type,
+            url = _ref13.url,
+            file = _ref13.file,
+            videoThumbnailName = _ref13.videoThumbnailName,
+            videoThumbnailUrl = _ref13.videoThumbnailUrl;
         if (!name) name = file.name;
         if (!size) size = file.size;
+        if (!type) type = file.type;
 
         if (status == 'UPLOADED') {
           var newImageData = {
@@ -15609,6 +15610,7 @@ function (_Component) {
             url: url,
             name: name,
             size: size,
+            type: type,
             status: status,
             id: id
           };
@@ -15962,6 +15964,7 @@ function (_Component) {
       var _this$state7 = this.state,
           title = _this$state7.title,
           slug = _this$state7.slug;
+      var status = 'draft';
 
       if (title.trim().length < 1) {
         document.querySelector('[name=title]').focus();
@@ -15976,17 +15979,23 @@ function (_Component) {
           method: 'POST',
           body: JSON.stringify({
             title: title,
-            slug: slug
+            slug: slug,
+            status: status
           }),
           headers: {
             'Content-Type': 'application/json'
           }
-        }).then(function (_ref15) {
-          var data = _ref15.data;
+        }).then(function (_ref14) {
+          var data = _ref14.data;
 
           _this26.setID(data.id);
 
           _this26.setPublicFolder(data.public_folder);
+
+          _this26.setState({
+            status: status,
+            publish: true
+          });
 
           _this26.addDOMFunctionality();
         })["finally"](function () {
@@ -15998,8 +16007,8 @@ function (_Component) {
   }, {
     key: "toggleStatus",
     value: function toggleStatus() {
-      this.setState(function (_ref16) {
-        var status = _ref16.status;
+      this.setState(function (_ref15) {
+        var status = _ref15.status;
         return {
           newStatus: status == 'publish' ? 'draft' : 'publish'
         };

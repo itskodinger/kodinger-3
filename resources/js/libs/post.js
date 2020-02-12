@@ -100,8 +100,15 @@ let api = {
 				image.src = the_image.dataset.blurry;
 				image.dataset.src = the_image.dataset.src;
 				image.className = 'w-full';
+				image.style = 'filter: blur(20px);';
 
 				image.addEventListener('load', function(e) {
+						image = wrapNode({
+					    	tag: 'div',
+					    	attrs: {
+					    		className: 'overflow-hidden'
+					    	}
+					    }, image);
 					the_image.parentNode.appendChild(image);
 					the_image.remove();
 
@@ -608,23 +615,23 @@ let api = {
 
 			    ${ post.type !== 'link' ? `
 			    
-			    <div class="relative${post.images.length > 1 && options.carousel ? ' carousel-outer w-full' : ''}"> 
-			        <div class="${post.images.length > 1 && options.carousel ? 'carousel w-full' : ''}">
+			    <div class="relative${post.content_object.length > 1 && options.carousel ? ' carousel-outer w-full' : ''}"> 
+			        <div class="${post.content_object.length > 1 && options.carousel ? 'carousel w-full' : ''}">
 			            
 			            ${'carousel' in options && options.carousel == false ? 
-			            	(isVideo(post.images[0]) ?
+			            	(post.thumbnail_is_video ?
 			                    `<video controls="">
-			                        <source src="${post.images[0]}" type="video/mp4">
+			                        <source src="${post.first_slide_media}" type="video/${post.thumbnail_type}">
 			                    </video>`
 			            		:
 				            	`<a href="${routes.single + post.slug}">
-				                    <div data-blurry="${post.blurry_image}" data-src="${post.images[0]}" class="lazy-image w-full bg-gray-200 bg-cover h-40 sm:h-64"></div>
+				                    <div data-blurry="${post.blurry_image}" data-src="${post.first_slide_media}" class="lazy-image w-full bg-gray-200 bg-cover h-40 sm:h-64"></div>
 				                </a>`
 
 			                )
 		                : // else
 			                
-			                post.images.map(function(img) {
+			                post.content_object.map(function(img) {
 			                    if(isVideo(img)) {
 				                    return `<video controls="">
 				                        <source src="${img}" type="video/mp4">
@@ -636,7 +643,7 @@ let api = {
 			            }
 			        </div>
 
-			        ${post.images.length > 1 && options.carousel !== false ? `
+			        ${post.content_object.length > 1 && options.carousel !== false ? `
 				        <button class="prev">&lsaquo;</button>
 				        <button class="next">&rsaquo;</button>`
 			        : ''}
@@ -651,7 +658,7 @@ let api = {
 			        : ''}
 
 			        ${!options.discover && (post.markdown_truncate || post.markdown) ?
-				        `<div class="mb-5">${options.truncate_content ? post.markdown_truncate : post.markdown}</div>`
+				        `<div class="mb-5">${options.truncate_content ? post.first_slide_caption : post.markdown}</div>`
 			        : ''}
 
 			        <div class="flex flex-wrap">
@@ -681,6 +688,7 @@ let api = {
 
 		                	${post.is_mine ? 
 				                `<div class="ml-auto">
+				                	${ post.type !== 'link' ? `<a href="${routes.post + post.id}" class="mr-4">Edit</a>` : ''}
 				                	<a href="${routes.delete_post.replace(/slug/g, post.slug)}" class="text-red-600">Delete</a>
 				                </div>`
 			                : ''}
@@ -972,7 +980,7 @@ let api = {
 			api.vars.io = new IntersectionObserver(function(entries) {
 				entries.forEach(function(entry) {
 					if(entry.isIntersecting) {
-						let target = entry.target;
+						let target = entry.target.querySelector('img');
 						let image = new Image;
 						image.src = target.dataset.src;
 						image.className = 'w-full';
