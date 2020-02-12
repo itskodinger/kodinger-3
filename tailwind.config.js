@@ -11,7 +11,7 @@ module.exports = {
   	opacity: ['responsive', 'hover', 'focus', 'group-hover'],
   },
   plugins: [
-  	function({ addUtilities }) {
+  	function({ addUtilities, theme }) {
   		const classes = {
   			'.counter': {
   				counterReset: 'theCounter'
@@ -66,6 +66,27 @@ module.exports = {
 			},
 			'.tooltip:hover::before': {
 				display: 'block'
+			},
+			'.custom-checkbox label': {
+				display: 'flex',
+				alignItems: 'center'
+			},
+			'.custom-checkbox input': {
+				display: 'none'
+			},
+			'.custom-checkbox label::before': {
+				content: "' '",
+				width: '20px',
+				height: '20px',
+				display: 'inline-block',
+				border: '2px solid ' + theme('colors.gray.200'),
+				borderRadius: '3px',
+				marginRight: '10px'
+			},
+			'.custom-checkbox input:checked + label::before': {
+				backgroundImage: `url("data:image/svg+xml,%3Csvg stroke='%23fff' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg data-name='Layer 2'%3E%3Cg data-name='checkmark'%3E%3Crect width='24' height='24' opacity='0'/%3E%3Cpath fill='%23fff' d='M9.86 18a1 1 0 0 1-.73-.32l-4.86-5.17a1 1 0 1 1 1.46-1.37l4.12 4.39 8.41-9.2a1 1 0 1 1 1.48 1.34l-9.14 10a1 1 0 0 1-.73.33z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+				backgroundColor: theme('colors.indigo.500'),
+				borderColor: theme('colors.indigo.600')
 			}
   		}
 
@@ -167,7 +188,7 @@ module.exports = {
   			  },
   			  '100%': {
   			    strokeDasharray: 300,
-  			    strokeDashoffset: 300,  			  	
+  			    strokeDashoffset: 300,
   			  }
   			}
   		}

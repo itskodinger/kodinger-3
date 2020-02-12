@@ -35,7 +35,7 @@ class Form extends Component {
 			publicFolder: false,
 			status: 'DRAFT',
 			publish: false,
-			savingStatus: '',
+			statusSaving: '',
 
 			currentLinkKey: Object.keys(key2str)[0],
 		}
@@ -194,7 +194,7 @@ class Form extends Component {
 	}
 
 	saveAll(data) {
-		const { id, title, slug, savingStatus } = this.state;
+		const { id, title, slug, statusSaving } = this.state;
 
 		// if(!title || !slug) return this.toast.add('❓&nbsp; Auto-save akan jalan ketika kamu sudah mengisi judul dan slug');
 
@@ -231,10 +231,10 @@ class Form extends Component {
 	}
 
 	startAutoSaveAll(data, time=5000) {
-		const { id, savingStatus } = this.state;
+		const { id, statusSaving } = this.state;
 
 		// reject
-		if(!id || savingStatus == 'PROCESSING') return false;
+		if(!id || statusSaving.toUpperCase() == 'PROCESSING') return false;
 
 		this.isContentDirty = true;
 
@@ -331,8 +331,8 @@ class Form extends Component {
 
 	publishWholeContent(data) {
 		this.saveWholeContent(data)
-		.then(({slug}) => {
-			window.location.href = routes.single + slug;
+		.then(({status, slug}) => {
+			window.location.reload();
 		});
 	}
 
@@ -363,7 +363,7 @@ class Form extends Component {
 		});
 
 		this.setState({
-			savingStatus: 'PROCESSING',
+			statusSaving: 'Processing',
 			publish: false
 		});
 
@@ -384,10 +384,7 @@ class Form extends Component {
 				return resolve(body);
 			})
 			.finally(() => {
-				this.setState({
-					publish: true,
-					savingStatus: 'Failed'
-				})
+				this.enablePublish();
 			})
 			.catch(() => {});
 		});
@@ -1518,6 +1515,12 @@ class Form extends Component {
 		}
 	}
 
+	toggleStatus() {
+		this.setState(({status}) => ({
+			newStatus: status == 'publish' ? 'draft' : 'publish'
+		}));
+	}
+
 	render() {
 		const { message } = this.props;
 		const { 
@@ -1531,7 +1534,8 @@ class Form extends Component {
 			statusSaving,
 			edit,
 			stateStatus,
-			status
+			status,
+			newStatus
 		} = this.state;
 
 		const { 
@@ -1552,8 +1556,8 @@ class Form extends Component {
 				            	<div className="text-gray-600 text-sm mr-6 save-status capitalize">
 				            		{statusSaving}
 				            	</div>
-				            	<button onClick={this.publishWholeContent.bind(this, {status: 'publish'})} className={`items-center bg-gradient text-white px-4 py-2 text-sm rounded mr-6 shadow-md hover:shadow-none flex` + (!publish || this.isUploadingImage() ? ' pointer-events-none opacity-50' : '')}>
-				            		Publish Post
+				            	<button onClick={this.publishWholeContent.bind(this, {status: newStatus ? newStatus : 'publish'})} className={`items-center bg-gradient text-white px-4 py-2 text-sm rounded mr-6 shadow-md hover:shadow-none flex` + (!publish || this.isUploadingImage() ? ' pointer-events-none opacity-50' : '')}>
+				            		{edit && status.toUpperCase() == 'PUBLISH' ? 'Simpan Perubahan' : 'Publish Post'}
 				            	</button>
 				            </div>
 			            </div>
@@ -1760,6 +1764,17 @@ class Form extends Component {
 						            			<button type="button" onClick={this.addLinkToKey.bind(this)} tabIndex="7" className="add-link-btn bg-white w-full shadow rounded py-3 px-4 text-sm text-blue-500 text-center cursor-pointer hover:bg-indigo-600 hover:text-white">Tambah URL</button>
 						            		</div>
 								        </div>
+								        { status.toUpperCase() == 'PUBLISH' &&
+											<div className="border-2 border-gray-200 p-8 rounded mt-10">
+										        <h2 className="text-orange-600 mb-4 text-xl font-semibold">Visibilitas</h2>
+										        <p className="leading-relaxed mb-6 mt-2 text-sm text-gray-600">Post ini sudah dipublikasikan dan semua orang dapat mengakses post ini melalui tautan, beranda, mesin pencari, atau cara lainnya. Kamu dapat mengubah status post ini menjadi "draft" untuk menyembunyikannya dari semua orang.</p>
+
+										        <div className="custom-checkbox">
+										        	<input onChange={this.toggleStatus.bind(this)} type="checkbox" id="checkbox-draft" />
+										        	<label htmlFor="checkbox-draft">Sembunyikan Post (Ubah status menjadi draft)</label>
+										        </div>
+									        </div>
+									    }
 							        </>
 								    )}
 								</>

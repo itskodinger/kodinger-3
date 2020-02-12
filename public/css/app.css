@@ -11832,6 +11832,31 @@ video {
   display: block;
 }
 
+.custom-checkbox label {
+  display: flex;
+  align-items: center;
+}
+
+.custom-checkbox input {
+  display: none;
+}
+
+.custom-checkbox label::before {
+  content: ' ';
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  border: 2px solid #edf2f7;
+  border-radius: 3px;
+  margin-right: 10px;
+}
+
+.custom-checkbox input:checked + label::before {
+  background-image: url("data:image/svg+xml,%3Csvg stroke='%23fff' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg data-name='Layer 2'%3E%3Cg data-name='checkmark'%3E%3Crect width='24' height='24' opacity='0'/%3E%3Cpath fill='%23fff' d='M9.86 18a1 1 0 0 1-.73-.32l-4.86-5.17a1 1 0 1 1 1.46-1.37l4.12 4.39 8.41-9.2a1 1 0 1 1 1.48 1.34l-9.14 10a1 1 0 0 1-.73.33z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  background-color: #667eea;
+  border-color: #5a67d8;
+}
+
 .hover\:counter:hover {
   counter-reset: theCounter;
 }
@@ -11897,6 +11922,31 @@ video {
 
 .hover\:tooltip:hover:hover::before {
   display: block;
+}
+
+.hover\:custom-checkbox:hover label {
+  display: flex;
+  align-items: center;
+}
+
+.hover\:custom-checkbox:hover input {
+  display: none;
+}
+
+.hover\:custom-checkbox:hover label::before {
+  content: ' ';
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  border: 2px solid #edf2f7;
+  border-radius: 3px;
+  margin-right: 10px;
+}
+
+.hover\:custom-checkbox:hover input:checked + label::before {
+  background-image: url("data:image/svg+xml,%3Csvg stroke='%23fff' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg data-name='Layer 2'%3E%3Cg data-name='checkmark'%3E%3Crect width='24' height='24' opacity='0'/%3E%3Cpath fill='%23fff' d='M9.86 18a1 1 0 0 1-.73-.32l-4.86-5.17a1 1 0 1 1 1.46-1.37l4.12 4.39 8.41-9.2a1 1 0 1 1 1.48 1.34l-9.14 10a1 1 0 0 1-.73.33z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  background-color: #667eea;
+  border-color: #5a67d8;
 }
 
 .spin {
@@ -23390,6 +23440,31 @@ html {
     display: block;
   }
 
+  .sm\:custom-checkbox label {
+    display: flex;
+    align-items: center;
+  }
+
+  .sm\:custom-checkbox input {
+    display: none;
+  }
+
+  .sm\:custom-checkbox label::before {
+    content: ' ';
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    border: 2px solid #edf2f7;
+    border-radius: 3px;
+    margin-right: 10px;
+  }
+
+  .sm\:custom-checkbox input:checked + label::before {
+    background-image: url("data:image/svg+xml,%3Csvg stroke='%23fff' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg data-name='Layer 2'%3E%3Cg data-name='checkmark'%3E%3Crect width='24' height='24' opacity='0'/%3E%3Cpath fill='%23fff' d='M9.86 18a1 1 0 0 1-.73-.32l-4.86-5.17a1 1 0 1 1 1.46-1.37l4.12 4.39 8.41-9.2a1 1 0 1 1 1.48 1.34l-9.14 10a1 1 0 0 1-.73.33z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-color: #667eea;
+    border-color: #5a67d8;
+  }
+
   .sm\:hover\:counter:hover {
     counter-reset: theCounter;
   }
@@ -23455,6 +23530,31 @@ html {
 
   .sm\:hover\:tooltip:hover:hover::before {
     display: block;
+  }
+
+  .sm\:hover\:custom-checkbox:hover label {
+    display: flex;
+    align-items: center;
+  }
+
+  .sm\:hover\:custom-checkbox:hover input {
+    display: none;
+  }
+
+  .sm\:hover\:custom-checkbox:hover label::before {
+    content: ' ';
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    border: 2px solid #edf2f7;
+    border-radius: 3px;
+    margin-right: 10px;
+  }
+
+  .sm\:hover\:custom-checkbox:hover input:checked + label::before {
+    background-image: url("data:image/svg+xml,%3Csvg stroke='%23fff' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg data-name='Layer 2'%3E%3Cg data-name='checkmark'%3E%3Crect width='24' height='24' opacity='0'/%3E%3Cpath fill='%23fff' d='M9.86 18a1 1 0 0 1-.73-.32l-4.86-5.17a1 1 0 1 1 1.46-1.37l4.12 4.39 8.41-9.2a1 1 0 1 1 1.48 1.34l-9.14 10a1 1 0 0 1-.73.33z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-color: #667eea;
+    border-color: #5a67d8;
   }
 }
 
@@ -34656,6 +34756,31 @@ html {
     display: block;
   }
 
+  .md\:custom-checkbox label {
+    display: flex;
+    align-items: center;
+  }
+
+  .md\:custom-checkbox input {
+    display: none;
+  }
+
+  .md\:custom-checkbox label::before {
+    content: ' ';
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    border: 2px solid #edf2f7;
+    border-radius: 3px;
+    margin-right: 10px;
+  }
+
+  .md\:custom-checkbox input:checked + label::before {
+    background-image: url("data:image/svg+xml,%3Csvg stroke='%23fff' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg data-name='Layer 2'%3E%3Cg data-name='checkmark'%3E%3Crect width='24' height='24' opacity='0'/%3E%3Cpath fill='%23fff' d='M9.86 18a1 1 0 0 1-.73-.32l-4.86-5.17a1 1 0 1 1 1.46-1.37l4.12 4.39 8.41-9.2a1 1 0 1 1 1.48 1.34l-9.14 10a1 1 0 0 1-.73.33z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-color: #667eea;
+    border-color: #5a67d8;
+  }
+
   .md\:hover\:counter:hover {
     counter-reset: theCounter;
   }
@@ -34721,6 +34846,31 @@ html {
 
   .md\:hover\:tooltip:hover:hover::before {
     display: block;
+  }
+
+  .md\:hover\:custom-checkbox:hover label {
+    display: flex;
+    align-items: center;
+  }
+
+  .md\:hover\:custom-checkbox:hover input {
+    display: none;
+  }
+
+  .md\:hover\:custom-checkbox:hover label::before {
+    content: ' ';
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    border: 2px solid #edf2f7;
+    border-radius: 3px;
+    margin-right: 10px;
+  }
+
+  .md\:hover\:custom-checkbox:hover input:checked + label::before {
+    background-image: url("data:image/svg+xml,%3Csvg stroke='%23fff' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg data-name='Layer 2'%3E%3Cg data-name='checkmark'%3E%3Crect width='24' height='24' opacity='0'/%3E%3Cpath fill='%23fff' d='M9.86 18a1 1 0 0 1-.73-.32l-4.86-5.17a1 1 0 1 1 1.46-1.37l4.12 4.39 8.41-9.2a1 1 0 1 1 1.48 1.34l-9.14 10a1 1 0 0 1-.73.33z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-color: #667eea;
+    border-color: #5a67d8;
   }
 }
 
@@ -45922,6 +46072,31 @@ html {
     display: block;
   }
 
+  .lg\:custom-checkbox label {
+    display: flex;
+    align-items: center;
+  }
+
+  .lg\:custom-checkbox input {
+    display: none;
+  }
+
+  .lg\:custom-checkbox label::before {
+    content: ' ';
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    border: 2px solid #edf2f7;
+    border-radius: 3px;
+    margin-right: 10px;
+  }
+
+  .lg\:custom-checkbox input:checked + label::before {
+    background-image: url("data:image/svg+xml,%3Csvg stroke='%23fff' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg data-name='Layer 2'%3E%3Cg data-name='checkmark'%3E%3Crect width='24' height='24' opacity='0'/%3E%3Cpath fill='%23fff' d='M9.86 18a1 1 0 0 1-.73-.32l-4.86-5.17a1 1 0 1 1 1.46-1.37l4.12 4.39 8.41-9.2a1 1 0 1 1 1.48 1.34l-9.14 10a1 1 0 0 1-.73.33z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-color: #667eea;
+    border-color: #5a67d8;
+  }
+
   .lg\:hover\:counter:hover {
     counter-reset: theCounter;
   }
@@ -45987,6 +46162,31 @@ html {
 
   .lg\:hover\:tooltip:hover:hover::before {
     display: block;
+  }
+
+  .lg\:hover\:custom-checkbox:hover label {
+    display: flex;
+    align-items: center;
+  }
+
+  .lg\:hover\:custom-checkbox:hover input {
+    display: none;
+  }
+
+  .lg\:hover\:custom-checkbox:hover label::before {
+    content: ' ';
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    border: 2px solid #edf2f7;
+    border-radius: 3px;
+    margin-right: 10px;
+  }
+
+  .lg\:hover\:custom-checkbox:hover input:checked + label::before {
+    background-image: url("data:image/svg+xml,%3Csvg stroke='%23fff' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg data-name='Layer 2'%3E%3Cg data-name='checkmark'%3E%3Crect width='24' height='24' opacity='0'/%3E%3Cpath fill='%23fff' d='M9.86 18a1 1 0 0 1-.73-.32l-4.86-5.17a1 1 0 1 1 1.46-1.37l4.12 4.39 8.41-9.2a1 1 0 1 1 1.48 1.34l-9.14 10a1 1 0 0 1-.73.33z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-color: #667eea;
+    border-color: #5a67d8;
   }
 }
 
@@ -57188,6 +57388,31 @@ html {
     display: block;
   }
 
+  .xl\:custom-checkbox label {
+    display: flex;
+    align-items: center;
+  }
+
+  .xl\:custom-checkbox input {
+    display: none;
+  }
+
+  .xl\:custom-checkbox label::before {
+    content: ' ';
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    border: 2px solid #edf2f7;
+    border-radius: 3px;
+    margin-right: 10px;
+  }
+
+  .xl\:custom-checkbox input:checked + label::before {
+    background-image: url("data:image/svg+xml,%3Csvg stroke='%23fff' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg data-name='Layer 2'%3E%3Cg data-name='checkmark'%3E%3Crect width='24' height='24' opacity='0'/%3E%3Cpath fill='%23fff' d='M9.86 18a1 1 0 0 1-.73-.32l-4.86-5.17a1 1 0 1 1 1.46-1.37l4.12 4.39 8.41-9.2a1 1 0 1 1 1.48 1.34l-9.14 10a1 1 0 0 1-.73.33z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-color: #667eea;
+    border-color: #5a67d8;
+  }
+
   .xl\:hover\:counter:hover {
     counter-reset: theCounter;
   }
@@ -57253,5 +57478,30 @@ html {
 
   .xl\:hover\:tooltip:hover:hover::before {
     display: block;
+  }
+
+  .xl\:hover\:custom-checkbox:hover label {
+    display: flex;
+    align-items: center;
+  }
+
+  .xl\:hover\:custom-checkbox:hover input {
+    display: none;
+  }
+
+  .xl\:hover\:custom-checkbox:hover label::before {
+    content: ' ';
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    border: 2px solid #edf2f7;
+    border-radius: 3px;
+    margin-right: 10px;
+  }
+
+  .xl\:hover\:custom-checkbox:hover input:checked + label::before {
+    background-image: url("data:image/svg+xml,%3Csvg stroke='%23fff' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg data-name='Layer 2'%3E%3Cg data-name='checkmark'%3E%3Crect width='24' height='24' opacity='0'/%3E%3Cpath fill='%23fff' d='M9.86 18a1 1 0 0 1-.73-.32l-4.86-5.17a1 1 0 1 1 1.46-1.37l4.12 4.39 8.41-9.2a1 1 0 1 1 1.48 1.34l-9.14 10a1 1 0 0 1-.73.33z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-color: #667eea;
+    border-color: #5a67d8;
   }
 }

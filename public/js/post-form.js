@@ -14396,7 +14396,7 @@ function (_Component) {
       publicFolder: false,
       status: 'DRAFT',
       publish: false,
-      savingStatus: '',
+      statusSaving: '',
       currentLinkKey: Object.keys(key2str)[0]
     };
     _this.allowedVideoTypes = ['video/mp4', 'video/webm', 'video/ogg'];
@@ -14539,7 +14539,7 @@ function (_Component) {
           id = _this$state.id,
           title = _this$state.title,
           slug = _this$state.slug,
-          savingStatus = _this$state.savingStatus; // if(!title || !slug) return this.toast.add('❓&nbsp; Auto-save akan jalan ketika kamu sudah mengisi judul dan slug');
+          statusSaving = _this$state.statusSaving; // if(!title || !slug) return this.toast.add('❓&nbsp; Auto-save akan jalan ketika kamu sudah mengisi judul dan slug');
 
       this.statusSaving();
       this.saveContentController && clearTimeout(this.saveContentController);
@@ -14580,9 +14580,9 @@ function (_Component) {
       var time = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 5000;
       var _this$state2 = this.state,
           id = _this$state2.id,
-          savingStatus = _this$state2.savingStatus; // reject
+          statusSaving = _this$state2.statusSaving; // reject
 
-      if (!id || savingStatus == 'PROCESSING') return false;
+      if (!id || statusSaving.toUpperCase() == 'PROCESSING') return false;
       this.isContentDirty = true;
       clearTimeout(this.autoSaveAllTimeout);
       if (time === true) time = 0;
@@ -14731,8 +14731,9 @@ function (_Component) {
     key: "publishWholeContent",
     value: function publishWholeContent(data) {
       this.saveWholeContent(data).then(function (_ref5) {
-        var slug = _ref5.slug;
-        window.location.href = routes.single + slug;
+        var status = _ref5.status,
+            slug = _ref5.slug;
+        window.location.reload();
       });
     }
   }, {
@@ -14791,7 +14792,7 @@ function (_Component) {
                   body[key] = _this9.doFlattenLinkFormat(key);
                 });
                 this.setState({
-                  savingStatus: 'PROCESSING',
+                  statusSaving: 'Processing',
                   publish: false
                 });
                 return _context2.abrupt("return", new Promise(function (resolve) {
@@ -14808,10 +14809,7 @@ function (_Component) {
                     _this9.isContentDirty = false;
                     return resolve(body);
                   })["finally"](function () {
-                    _this9.setState({
-                      publish: true,
-                      savingStatus: 'Failed'
-                    });
+                    _this9.enablePublish();
                   })["catch"](function () {});
                 }));
 
@@ -15998,6 +15996,16 @@ function (_Component) {
       }
     }
   }, {
+    key: "toggleStatus",
+    value: function toggleStatus() {
+      this.setState(function (_ref16) {
+        var status = _ref16.status;
+        return {
+          newStatus: status == 'publish' ? 'draft' : 'publish'
+        };
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
       var _this27 = this;
@@ -16014,7 +16022,8 @@ function (_Component) {
           statusSaving = _this$state8.statusSaving,
           edit = _this$state8.edit,
           stateStatus = _this$state8.stateStatus,
-          status = _this$state8.status;
+          status = _this$state8.status,
+          newStatus = _this$state8.newStatus;
 
       var _this$uploadingImageS = this.uploadingImageStatus(),
           uploadingImage = _this$uploadingImageS.uploadingImage,
@@ -16040,10 +16049,10 @@ function (_Component) {
         className: "text-gray-600 text-sm mr-6 save-status capitalize"
       }, statusSaving), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
         onClick: this.publishWholeContent.bind(this, {
-          status: 'publish'
+          status: newStatus ? newStatus : 'publish'
         }),
         className: "items-center bg-gradient text-white px-4 py-2 text-sm rounded mr-6 shadow-md hover:shadow-none flex" + (!publish || this.isUploadingImage() ? ' pointer-events-none opacity-50' : '')
-      }, "Publish Post"))))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      }, edit && status.toUpperCase() == 'PUBLISH' ? 'Simpan Perubahan' : 'Publish Post'))))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "caption-modal overflow-y-auto fixed top-0 left-0 w-full h-full flex z-20 items-start justify-center hidden"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "fixed bg-black opacity-50 w-screen h-screen"
@@ -16326,7 +16335,21 @@ function (_Component) {
         onClick: this.addLinkToKey.bind(this),
         tabIndex: "7",
         className: "add-link-btn bg-white w-full shadow rounded py-3 px-4 text-sm text-blue-500 text-center cursor-pointer hover:bg-indigo-600 hover:text-white"
-      }, "Tambah URL")))))))));
+      }, "Tambah URL"))), status.toUpperCase() == 'PUBLISH' && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "border-2 border-gray-200 p-8 rounded mt-10"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", {
+        className: "text-orange-600 mb-4 text-xl font-semibold"
+      }, "Visibilitas"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
+        className: "leading-relaxed mb-6 mt-2 text-sm text-gray-600"
+      }, "Post ini sudah dipublikasikan dan semua orang dapat mengakses post ini melalui tautan, beranda, mesin pencari, atau cara lainnya. Kamu dapat mengubah status post ini menjadi \"draft\" untuk menyembunyikannya dari semua orang."), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "custom-checkbox"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+        onChange: this.toggleStatus.bind(this),
+        type: "checkbox",
+        id: "checkbox-draft"
+      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+        htmlFor: "checkbox-draft"
+      }, "Sembunyikan Post (Ubah status menjadi draft)")))))))));
     }
   }]);
 
