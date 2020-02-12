@@ -272,11 +272,13 @@ function routes_js()
 	return json_encode([
         "save" => route('api.saves.store'),
         "post" => route('api.post.posts'),
+        "post_form" => route('post'),
         "delete_post" => route('deletePost', 'slug'),
         "post_both" => route('api.post.both'),
         "post_store" => route('api.post.store'),
         "post_edit" => route('api.post.edit', 'id'),
         "post_update" => route('api.post.update', 'slug'),
+        "post_publish" => route('api.post.publish', 'slug'),
         "post_upload_image" => route('api.post.upload_image'),
         "post_delete_image" => route('api.post.delete_image'),
         "discover" => route('api.post.discover'),

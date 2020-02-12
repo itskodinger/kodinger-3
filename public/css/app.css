@@ -12029,6 +12029,75 @@ video {
   transition: all .5s;
 }
 
+.logo-loader {
+  width: 100px;
+  display: inline-block;
+}
+
+.logo-loader path:not(:first-child) {
+  fill: transparent;
+  -webkit-animation-name: LogoLoader;
+          animation-name: LogoLoader;
+  -webkit-animation-duration: 3s;
+          animation-duration: 3s;
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+  stroke: rgb(105, 121, 187);
+  stroke-width: 5;
+}
+
+@-webkit-keyframes LogoLoader {
+  0% {
+    stroke-dasharray: 300px;
+    stroke-dashoffset: 300;
+  }
+
+  25% {
+    stroke-dasharray: 0;
+    stroke-dashoffset: 0;
+  }
+
+  50% {
+    fill: rgb(105, 121, 187);
+  }
+
+  75% {
+    stroke-dasharray: 0;
+    stroke-dashoffset: 0;
+  }
+
+  100% {
+    stroke-dasharray: 300px;
+    stroke-dashoffset: 300;
+  }
+}
+
+@keyframes LogoLoader {
+  0% {
+    stroke-dasharray: 300px;
+    stroke-dashoffset: 300;
+  }
+
+  25% {
+    stroke-dasharray: 0;
+    stroke-dashoffset: 0;
+  }
+
+  50% {
+    fill: rgb(105, 121, 187);
+  }
+
+  75% {
+    stroke-dasharray: 0;
+    stroke-dashoffset: 0;
+  }
+
+  100% {
+    stroke-dasharray: 300px;
+    stroke-dashoffset: 300;
+  }
+}
+
 html {
   scroll-behavior: smooth;
 }

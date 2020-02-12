@@ -29,6 +29,8 @@ Route::group(['prefix' => 'posts', 'as' => 'post.', 'namespace' => 'Api'], funct
 	Route::post('/', 'PostApiController@store')->name('store');
 	Route::put('/{id}', 'PostApiController@update')->name('update');
 	Route::patch('/{id}', 'PostApiController@update')->name('update');
+	Route::put('/{id}/publish', 'PostApiController@publish')->name('publish');
+	Route::patch('/{id}/publish', 'PostApiController@publish')->name('publish');
 	Route::post('/check-slug', 'PostApiController@checkSlug')->name('check_slug');
 	Route::post('/upload-image', 'PostApiController@uploadImage')->name('upload_image');
 	Route::delete('/delete-image', 'PostApiController@deleteImage')->name('delete_image');

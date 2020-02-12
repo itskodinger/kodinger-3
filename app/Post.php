@@ -43,11 +43,18 @@ class Post extends Model
     	'is_post_loved',
     	'post_card',
         'pages',
-        'pagesObj',
-        'examplesObj',
-        'helpsObj',
-        'tutorialsObj',
+        'pages_object',
+        'examples_object',
+        'helps_object',
+        'tutorials_object',
+        'content_object',
+        'post_type'
     ];
+
+    public function getPostTypeAttribute()
+    {
+        return json_decode($this->content) ? 'json' : 'regular';
+    }
 
     public function getIsPostSavedAttribute()
     {
@@ -124,6 +131,16 @@ class Post extends Model
     	return $this->created_at->diffForHumans();
     }
 
+    public function getContentObjectAttribute()
+    {
+        $content_object = json_decode($this->content);
+
+        if($content_object)
+        {
+            return $content_object;
+        }
+    }
+
     public function getMarkdownAttribute()
     {
         return Markdown::convertToHtml($this->content ?? '');
@@ -181,22 +198,22 @@ class Post extends Model
         }
     }
 
-    public function getPagesObjAttribute()
+    public function getPagesObjectAttribute()
     {
         return link_nl2obj($this->raw_pages);
     }
 
-    public function getTutorialsObjAttribute()
+    public function getTutorialsObjectAttribute()
     {
         return link_nl2obj($this->raw_tutorials);
     }
 
-    public function getHelpsObjAttribute()
+    public function getHelpsObjectAttribute()
     {
         return link_nl2obj($this->raw_helps);
     }
 
-    public function getExamplesObjAttribute()
+    public function getExamplesObjectAttribute()
     {
         return link_nl2obj($this->raw_examples);
     }
@@ -223,4 +240,6 @@ class Post extends Model
     protected $casts = [
         'id' => 'string'
     ];
+
+    public $incrementing = false;
 }

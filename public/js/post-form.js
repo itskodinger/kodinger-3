@@ -14424,8 +14424,13 @@ function (_Component) {
       if (path[1]) {
         var id = path[1];
         this.setID(id);
+        this.setState({
+          stateStatus: 'LOADING'
+        });
         this.getDataById(id).then(function (data) {
-          _this2.setState(_objectSpread({}, data));
+          _this2.setState(_objectSpread({
+            stateStatus: 'LOADED'
+          }, data));
 
           _this2.addDOMFunctionality({
             defaultTags: data.tagify
@@ -14451,16 +14456,16 @@ function (_Component) {
               _ref$data$tag_ids = _ref$data.tag_ids,
               tags = _ref$data$tag_ids === void 0 ? [] : _ref$data$tag_ids,
               tagify = _ref$data.tagify,
-              pages = _ref$data.pagesObj,
-              examples = _ref$data.examplesObj,
-              helps = _ref$data.helpsObj,
-              tutorials = _ref$data.tutorialsObj,
+              pages = _ref$data.pages_object,
+              examples = _ref$data.examples_object,
+              helps = _ref$data.helps_object,
+              tutorials = _ref$data.tutorials_object,
               publicFolder = _ref$data.public_folder,
               status = _ref$data.status;
           return resolve({
             title: title,
             slug: slug,
-            images: JSON.parse(content),
+            images: _this3.parseImagesJSON(content),
             tags: _toConsumableArray(tags.map(function (tag) {
               return _typeof(tag) == 'object' ? tag.id : tag;
             })),
@@ -14479,6 +14484,22 @@ function (_Component) {
           });
         });
       });
+    }
+  }, {
+    key: "parseImagesJSON",
+    value: function parseImagesJSON(json) {
+      if (!json) return []; // parse
+
+      json = JSON.parse(json); // restructure object
+
+      return function (newImages, images) {
+        images.forEach(function (image, key) {
+          newImages[key] = _objectSpread({}, image);
+          newImages[key].videoThumbnailUrl = image.video_thumbnail_url;
+          newImages[key].videoThumbnailName = image.video_thumbnail_name;
+        });
+        return newImages;
+      }([], json);
     }
   }, {
     key: "handleRemove",
@@ -14518,9 +14539,7 @@ function (_Component) {
           id = _this$state.id,
           title = _this$state.title,
           slug = _this$state.slug,
-          savingStatus = _this$state.savingStatus; // reject
-
-      if (!id || savingStatus == 'PUBLISHING') return false; // if(!title || !slug) return this.toast.add('❓&nbsp; Auto-save akan jalan ketika kamu sudah mengisi judul dan slug');
+          savingStatus = _this$state.savingStatus; // if(!title || !slug) return this.toast.add('❓&nbsp; Auto-save akan jalan ketika kamu sudah mengisi judul dan slug');
 
       this.statusSaving();
       this.saveContentController && clearTimeout(this.saveContentController);
@@ -14559,6 +14578,11 @@ function (_Component) {
     key: "startAutoSaveAll",
     value: function startAutoSaveAll(data) {
       var time = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 5000;
+      var _this$state2 = this.state,
+          id = _this$state2.id,
+          savingStatus = _this$state2.savingStatus; // reject
+
+      if (!id || savingStatus == 'PROCESSING') return false;
       this.isContentDirty = true;
       clearTimeout(this.autoSaveAllTimeout);
       if (time === true) time = 0;
@@ -14577,8 +14601,6 @@ function (_Component) {
               data = _ref3.data;
 
           if (err && !err.ok) {
-            console.log(err, data);
-
             switch (err.status) {
               case 422:
                 var errors = data.errors;
@@ -14688,10 +14710,11 @@ function (_Component) {
     }
   }, {
     key: "addDOMFunctionality",
-    value: function addDOMFunctionality(_ref5) {
+    value: function addDOMFunctionality(options) {
       var _this8 = this;
 
-      var defaultTags = _ref5.defaultTags;
+      var defaultTags = [];
+      if (options) defaultTags = options.defaultTags;
       setTimeout(function () {
         _this8.addTagify({
           defaultTags: defaultTags
@@ -14700,53 +14723,112 @@ function (_Component) {
         _this8.addSortable();
 
         _this8.addDropzone();
+
+        _this8.addKeyboardShortcut();
       }, 0);
     }
   }, {
     key: "publishWholeContent",
-    value: function publishWholeContent() {
-      var _this9 = this; // basic data
+    value: function publishWholeContent(data) {
+      this.saveWholeContent(data).then(function (_ref5) {
+        var slug = _ref5.slug;
+        window.location.href = routes.single + slug;
+      });
+    }
+  }, {
+    key: "saveWholeContent",
+    value: function () {
+      var _saveWholeContent = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        var _this9 = this;
 
+        var objectData,
+            _this$state3,
+            title,
+            slug,
+            tags,
+            keyword,
+            id,
+            images,
+            body,
+            _args2 = arguments;
 
-      var _this$state2 = this.state,
-          title = _this$state2.title,
-          slug = _this$state2.slug,
-          tags = _this$state2.tags,
-          keyword = _this$state2.keyword,
-          id = _this$state2.id; // images
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                objectData = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : {}; // basic data
 
-      var images = this.flattenedImageFormat(); // validation
+                _this$state3 = this.state, title = _this$state3.title, slug = _this$state3.slug, tags = _this$state3.tags, keyword = _this$state3.keyword, id = _this$state3.id; // images
 
-      if (images.length < 1) {
-        return this.toast.add("\uD83D\uDC21&nbsp; Tidak ada gambar satu pun");
-      } else if (images.length > 0 && (!images[0].caption || images[0].caption.trim().length < 1)) {
-        return this.toast.add("\uD83D\uDE0F&nbsp; Slide pertama gambar harus diisi caption");
+                images = this.flattenedImageFormat(); // validation
+
+                if (!(images.length < 1)) {
+                  _context2.next = 7;
+                  break;
+                }
+
+                return _context2.abrupt("return", this.toast.add("\uD83D\uDC21&nbsp; Tidak ada gambar satu pun"));
+
+              case 7:
+                if (!(images.length > 0 && (!images[0].caption || images[0].caption.trim().length < 1))) {
+                  _context2.next = 9;
+                  break;
+                }
+
+                return _context2.abrupt("return", this.toast.add("\uD83D\uDE0F&nbsp; Slide pertama gambar harus diisi caption"));
+
+              case 9:
+                body = Object.assign({
+                  title: title,
+                  slug: slug,
+                  tags: tags,
+                  keyword: keyword,
+                  content: JSON.stringify(images)
+                }, objectData);
+                Object.keys(key2str).forEach(function (key) {
+                  body[key] = _this9.doFlattenLinkFormat(key);
+                });
+                this.setState({
+                  savingStatus: 'PROCESSING',
+                  publish: false
+                });
+                return _context2.abrupt("return", new Promise(function (resolve) {
+                  clearTimeout(_this9.autoSaveAllTimeout);
+
+                  _this9.request({
+                    method: 'PUT',
+                    route: routes.post_publish.replace(/slug/g, id),
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                  }).then(function () {
+                    _this9.isContentDirty = false;
+                    return resolve(body);
+                  })["finally"](function () {
+                    _this9.setState({
+                      publish: true,
+                      savingStatus: 'Failed'
+                    });
+                  })["catch"](function () {});
+                }));
+
+              case 13:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function saveWholeContent() {
+        return _saveWholeContent.apply(this, arguments);
       }
 
-      var body = {
-        status: 'publish',
-        title: title,
-        slug: slug,
-        tags: tags,
-        keyword: keyword,
-        content: JSON.stringify(images)
-      };
-      Object.keys(key2str).forEach(function (key) {
-        body[key] = _this9.doFlattenLinkFormat(key);
-      });
-      this.setState({
-        savingStatus: 'PUBLISHING',
-        publish: false
-      });
-      this.request({
-        method: 'PUT',
-        route: routes.post_update.replace(/slug/g, id),
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-      }).then(function () {});
-    }
+      return saveWholeContent;
+    }()
   }, {
     key: "disablePublish",
     value: function disablePublish() {
@@ -14790,9 +14872,30 @@ function (_Component) {
       this.toast = new _toast__WEBPACK_IMPORTED_MODULE_5__["default"]();
     }
   }, {
+    key: "addKeyboardShortcut",
+    value: function addKeyboardShortcut() {
+      var _this10 = this;
+
+      var status = this.state.status;
+      window.addEventListener('keydown', function (e) {
+        var key = _this10.isMac() ? 'metaKey' : 'ctrlKey';
+
+        if (status == 'draft' && e[key] && e.key == 's') {
+          e.preventDefault();
+          if (!_this10.isContentDirty) return _this10.toast.add('🤘&nbsp; Post sudah tersimpan sebagai draft');
+
+          _this10.saveWholeContent({
+            status: 'draft'
+          }).then(function () {
+            _this10.toast.add("\uD83D\uDD96&nbsp; Post sudah disimpan sebagai draft");
+          });
+        }
+      });
+    }
+  }, {
     key: "addSortable",
     value: function addSortable() {
-      var _this10 = this;
+      var _this11 = this;
 
       var el = document.querySelector('.image-files');
       if (el) this.sortable = sortablejs__WEBPACK_IMPORTED_MODULE_8__["default"].create(el, {
@@ -14814,11 +14917,11 @@ function (_Component) {
 
           ;
 
-          _this10.setState({
-            images: arrayMove(_this10.state.images, e.oldIndex, e.newIndex)
+          _this11.setState({
+            images: arrayMove(_this11.state.images, e.oldIndex, e.newIndex)
           });
 
-          _this10.flattenedImageFormat(true);
+          _this11.flattenedImageFormat(true);
         }
       });
     } // addSimplemde() {
@@ -14931,7 +15034,7 @@ function (_Component) {
   }, {
     key: "addDropzone",
     value: function addDropzone() {
-      var _this11 = this;
+      var _this12 = this;
 
       var dropzone = $('.dropzone');
 
@@ -14960,13 +15063,13 @@ function (_Component) {
         onDragdone();
         var files = e.dataTransfer.files;
 
-        _this11.handleFiles(files);
+        _this12.handleFiles(files);
       });
     }
   }, {
     key: "handleFiles",
     value: function handleFiles(files) {
-      var _this12 = this;
+      var _this13 = this;
 
       if (!(files instanceof FileList)) files = files.target.files; // check uploader first
 
@@ -14978,35 +15081,35 @@ function (_Component) {
 
           files.forEach(function (file) {
             // validate each file
-            _this12.validateImage({
+            _this13.validateImage({
               selectedFile: file
             }).then(function () {
               // if file is an valid image file
-              _this12.addImage({
+              _this13.addImage({
                 file: file
               }).then(function (_ref7) {
                 var id = _ref7.id,
                     node = _ref7.node;
 
-                _this12.handleImage(id, node, file);
+                _this13.handleImage(id, node, file);
               });
             })["catch"](function (error) {
-              _this12.toast.add(error);
+              _this13.toast.add(error);
             });
           });
         }
       })["catch"](function (error) {
-        _this12.toast.add(error);
+        _this13.toast.add(error);
       });
     }
   }, {
     key: "isUploadAllowed",
     value: function isUploadAllowed() {
-      var _this$state3 = this.state,
-          id = _this$state3.id,
-          title = _this$state3.title,
-          slug = _this$state3.slug,
-          slugOk = _this$state3.slugOk;
+      var _this$state4 = this.state,
+          id = _this$state4.id,
+          title = _this$state4.title,
+          slug = _this$state4.slug,
+          slugOk = _this$state4.slugOk;
       return new Promise(function (resolve, reject) {
         // if(!id && title.trim().length < 1) {
         // 	return reject('😢&nbsp; Harap isi judul terlebih dahulu');
@@ -15031,7 +15134,7 @@ function (_Component) {
   }, {
     key: "removeImage",
     value: function removeImage(id) {
-      var _this14 = this;
+      var _this15 = this;
 
       var force = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
       var currentImage = this.findImageById(id);
@@ -15050,7 +15153,7 @@ function (_Component) {
       // 	return this.toast.add(`😙&nbsp; Sabar, masih menghapus gambar yang lain`)
 
       function updateState(autoSave) {
-        var _this13 = this;
+        var _this14 = this;
 
         this.setState(function (_ref8) {
           var images = _ref8.images;
@@ -15062,9 +15165,9 @@ function (_Component) {
           };
         }, function () {
           if (autoSave) {
-            _this13.flattenedImageFormat(true);
+            _this14.flattenedImageFormat(true);
 
-            _this13.statusSaved();
+            _this14.statusSaved();
           }
         });
       }
@@ -15072,6 +15175,7 @@ function (_Component) {
       if (currentImage.status !== 'UPLOADED') {
         updateState.call(this);
       } else {
+        this.isContentDirty = true;
         this.request({
           route: routes.post_delete_image,
           method: 'DELETE',
@@ -15084,7 +15188,7 @@ function (_Component) {
           })
         }).then(function (_ref9) {
           var status = _ref9.status;
-          if (status) updateState.call(_this14, true);
+          if (status) updateState.call(_this15, true);
         })["catch"](function (error) {});
         this.updateImage(id, {
           status: 'DELETING'
@@ -15099,14 +15203,14 @@ function (_Component) {
   }, {
     key: "addImage",
     value: function addImage(_ref10) {
-      var _this15 = this;
+      var _this16 = this;
 
       var _ref10$file = _ref10.file,
           file = _ref10$file === void 0 ? undefined : _ref10$file;
       return new Promise(function (resolve, reject) {
-        var id = _this15.generateID();
+        var id = _this16.generateID();
 
-        _this15.setState(function (prevState) {
+        _this16.setState(function (prevState) {
           // collect images from previous state
           var images = [].concat(_toConsumableArray(prevState.images), [{
             id: id,
@@ -15128,15 +15232,15 @@ function (_Component) {
   }, {
     key: "validateImage",
     value: function validateImage(_ref11) {
-      var _this16 = this;
+      var _this17 = this;
 
       var selectedFile = _ref11.selectedFile;
       return new Promise(function (resolve, reject) {
-        if (!_this16.allowedMediaTypes.includes(selectedFile.type)) {
+        if (!_this17.allowedMediaTypes.includes(selectedFile.type)) {
           return reject("\uD83D\uDEB7&nbsp; Jenis berkas ".concat(selectedFile.name, " tidak didukung"));
         }
 
-        if (selectedFile.size > _this16.maxFileSize) {
+        if (selectedFile.size > _this17.maxFileSize) {
           return reject('🐠&nbsp; Ukuran berkas maks. 5MB');
         }
 
@@ -15146,7 +15250,7 @@ function (_Component) {
   }, {
     key: "handleImage",
     value: function handleImage(id, element, selectedFile) {
-      var _this17 = this;
+      var _this18 = this;
 
       var selectedFileType = selectedFile ? selectedFile.type : false;
       this.validateImage({
@@ -15154,7 +15258,7 @@ function (_Component) {
       }).then(function () {
         var promisePreview = function promisePreview() {
           return new Promise(function (resolve, reject) {
-            if (_this17.allowedImageTypes.includes(selectedFileType)) {
+            if (_this18.allowedImageTypes.includes(selectedFileType)) {
               var img = element.querySelector('img'); // set selected image into the src attribute via createObjectURL API
 
               var urlMedia = URL.createObjectURL(selectedFile);
@@ -15162,7 +15266,7 @@ function (_Component) {
 
               img.classList.remove('hidden');
               return resolve(urlMedia);
-            } else if (_this17.allowedVideoTypes.includes(selectedFileType)) {
+            } else if (_this18.allowedVideoTypes.includes(selectedFileType)) {
               var video = element.querySelector('video'),
                   videoSource = video.querySelector('source'),
                   canvas = element.querySelector('canvas'),
@@ -15204,7 +15308,7 @@ function (_Component) {
         };
 
         promisePreview().then(function (urlMedia) {
-          var currentImage = _this17.updateImage(id, {
+          var currentImage = _this18.updateImage(id, {
             isDirty: true,
             status: 'UPLOADING',
             file: selectedFile,
@@ -15212,7 +15316,7 @@ function (_Component) {
             url: urlMedia
           });
 
-          _this17.uploadImage(currentImage);
+          _this18.uploadImage(currentImage);
         })["catch"](function (error) {
           return console.log(error);
         });
@@ -15252,16 +15356,29 @@ function (_Component) {
     value: function abortImage(image) {
       this.statusSaved();
       image.controller.abort();
-      this.removeImage(image.id);
+
+      this._removeImage(image.id);
+    }
+  }, {
+    key: "_removeImage",
+    value: function _removeImage(id) {
+      this.setState(function (_ref12) {
+        var images = _ref12.images;
+        return {
+          images: images.filter(function (item) {
+            return item.id !== id;
+          })
+        };
+      });
     }
   }, {
     key: "uploadImage",
     value: function uploadImage(image) {
-      var _this18 = this;
+      var _this19 = this;
 
-      var _this$state4 = this.state,
-          id = _this$state4.id,
-          publicFolder = _this$state4.publicFolder;
+      var _this$state5 = this.state,
+          id = _this$state5.id,
+          publicFolder = _this$state5.publicFolder;
       var formData = new FormData();
       if (id) formData.append('id', id);
       if (publicFolder) formData.append('public_folder', publicFolder);
@@ -15283,15 +15400,15 @@ function (_Component) {
         method: 'POST',
         body: formData,
         signal: image.controller.signal
-      }).then(function (_ref12) {
-        var _ref12$data = _ref12.data,
-            name = _ref12$data.name,
-            url = _ref12$data.url,
-            path = _ref12$data.path,
-            videoThumbnailUrl = _ref12$data.video_thumbnail_url,
-            videoThumbnailName = _ref12$data.video_thumbnail_name;
+      }).then(function (_ref13) {
+        var _ref13$data = _ref13.data,
+            name = _ref13$data.name,
+            url = _ref13$data.url,
+            path = _ref13$data.path,
+            videoThumbnailUrl = _ref13$data.video_thumbnail_url,
+            videoThumbnailName = _ref13$data.video_thumbnail_name;
 
-        var currentImage = _this18.updateImage(image.id, {
+        var currentImage = _this19.updateImage(image.id, {
           status: 'UPLOADED',
           isAbort: undefined,
           name: name,
@@ -15301,14 +15418,14 @@ function (_Component) {
           videoThumbnailName: videoThumbnailName
         });
 
-        _this18.flattenedImageFormat(true); // run auto-save, temp solution
+        _this19.flattenedImageFormat(true); // run auto-save, temp solution
 
 
-        _this18.statusSaved();
+        _this19.statusSaved();
       })["catch"](function (error) {
-        _this18.isContentDirty = false; // force delete unsupported image
+        _this19.isContentDirty = false; // force delete unsupported image
 
-        _this18.removeImage(image.id, true);
+        _this19._removeImage(image.id);
       });
     }
   }, {
@@ -15354,11 +15471,11 @@ function (_Component) {
   }, {
     key: "slugOnInput",
     value: function slugOnInput(e) {
-      var _this19 = this;
+      var _this20 = this;
 
-      var _this$state5 = this.state,
-          title = _this$state5.title,
-          id = _this$state5.id;
+      var _this$state6 = this.state,
+          title = _this$state6.title,
+          id = _this$state6.id;
       var slug = Object(_utils_slugify__WEBPACK_IMPORTED_MODULE_2__["default"])(e.target.value);
       this.setState({
         slug: slug,
@@ -15373,29 +15490,27 @@ function (_Component) {
       });
       this.checkSlugTimeout && clearTimeout(this.checkSlugTimeout);
       this.checkSlugTimeout = setTimeout(function () {
-        _this19.request({
+        _this20.request({
           method: 'POST',
           route: routes.check_slug,
           headers: {
             'Content-Type': 'application/json'
           },
-          signal: _this19.slugController.signal,
+          signal: _this20.slugController.signal,
           body: body
         }).then(function (res) {
-          _this19.setState({
+          _this20.setState({
             slugOk: true
           });
 
-          _this19.startAutoSaveAll({
+          _this20.startAutoSaveAll({
             slug: slug,
             title: title
           });
         })["catch"](function (error) {
-          _this19.setState({
+          _this20.setState({
             slugOk: false
           });
-
-          _this19.disablePublish();
         });
       }, 2000);
     }
@@ -15446,6 +15561,23 @@ function (_Component) {
     value: function isUploadingImage() {
       return this.uploadingImageStatus().uploadingImage > 0 ? true : false;
     }
+  }, {
+    key: "OS",
+    value: function OS() {
+      return function (ua) {
+        if (ua.indexOf('Windows') != -1) return 'WINDOWS';else if (ua.indexOf('Mac') != -1) return 'MAC';else if (ua.indexOf('Linux') != -1) return 'LINUX';
+      }(window.navigator.userAgent);
+    }
+  }, {
+    key: "isWindows",
+    value: function isWindows() {
+      return this.OS() == 'WINDOWS' ? true : false;
+    }
+  }, {
+    key: "isMac",
+    value: function isMac() {
+      return this.OS() == 'MAC' ? true : false;
+    }
     /**
      * Fixing image format for database
      * @param  {Boolean} autoSave 	Auto save the output?
@@ -15460,16 +15592,16 @@ function (_Component) {
       var now = arguments.length > 1 ? arguments[1] : undefined;
       var images = this.state.images;
       var newImages = [];
-      images.forEach(function (_ref13) {
-        var id = _ref13.id,
-            status = _ref13.status,
-            caption = _ref13.caption,
-            name = _ref13.name,
-            size = _ref13.size,
-            url = _ref13.url,
-            file = _ref13.file,
-            videoThumbnailName = _ref13.videoThumbnailName,
-            videoThumbnailUrl = _ref13.videoThumbnailUrl;
+      images.forEach(function (_ref14) {
+        var id = _ref14.id,
+            status = _ref14.status,
+            caption = _ref14.caption,
+            name = _ref14.name,
+            size = _ref14.size,
+            url = _ref14.url,
+            file = _ref14.file,
+            videoThumbnailName = _ref14.videoThumbnailName,
+            videoThumbnailUrl = _ref14.videoThumbnailUrl;
         if (!name) name = file.name;
         if (!size) size = file.size;
 
@@ -15516,11 +15648,11 @@ function (_Component) {
   }, {
     key: "autoSaveCaption",
     value: function autoSaveCaption() {
-      var _this20 = this; // run auto-save after 2000s (when user has no activity on the textarea)
+      var _this21 = this; // run auto-save after 2000s (when user has no activity on the textarea)
 
 
       this.autoSaveTimeout = setTimeout(function () {
-        _this20.setCaptionToImage();
+        _this21.setCaptionToImage();
       }, 2000);
     }
     /**
@@ -15541,7 +15673,7 @@ function (_Component) {
   }, {
     key: "setCaption",
     value: function setCaption(id) {
-      var _this21 = this;
+      var _this22 = this;
 
       this.currentImageId = id; // set caption element
 
@@ -15550,16 +15682,16 @@ function (_Component) {
       var currentImage = this.findImageById(id); // set value
 
       setTimeout(function () {
-        if (currentImage.caption) _this21.captionArea.value = currentImage.caption;else _this21.captionArea.value = '';
+        if (currentImage.caption) _this22.captionArea.value = currentImage.caption;else _this22.captionArea.value = '';
       }, 0); // show the modal first
 
       this.showCaptionModal(); // when user typing
 
       this.captionArea.addEventListener('change', function () {
         // clear the autosave timeout
-        clearTimeout(_this21.autoSaveTimeout); // start auto-saving again
+        clearTimeout(_this22.autoSaveTimeout); // start auto-saving again
 
-        _this21.autoSaveCaption();
+        _this22.autoSaveCaption();
       });
     }
     /**
@@ -15625,7 +15757,7 @@ function (_Component) {
   }, {
     key: "addLinkToKey",
     value: function addLinkToKey() {
-      var _this22 = this;
+      var _this23 = this;
 
       var currentLinkKey = this.state.currentLinkKey;
       var currentLinkData = this.state[currentLinkKey];
@@ -15635,11 +15767,11 @@ function (_Component) {
         var newLink = {};
         newLink[currentLinkKey] = currentLinkData;
         newLink[currentLinkKey].push({
-          id: _this22.generateID(),
+          id: _this23.generateID(),
           value: ''
         });
 
-        _this22.setState(newLink);
+        _this23.setState(newLink);
       }; // first time link
 
 
@@ -15651,7 +15783,7 @@ function (_Component) {
 
       if (invalidInput.length < 1) {
         setTimeout(function () {
-          _this22.lastLinkInput().focus();
+          _this23.lastLinkInput().focus();
         }, 0);
       }
 
@@ -15748,12 +15880,12 @@ function (_Component) {
   }, {
     key: "getAllInvalidInputLink",
     value: function getAllInvalidInputLink() {
-      var _this23 = this;
+      var _this24 = this;
 
       var invalid = [],
           currentInputName = 'link-' + this.state.currentLinkKey;
       document.querySelectorAll('[name=' + currentInputName + ']').forEach(function (input) {
-        if (!_this23.validateLink(input.value)) {
+        if (!_this24.validateLink(input.value)) {
           invalid.push(input);
         }
       });
@@ -15795,12 +15927,12 @@ function (_Component) {
   }, {
     key: "checkButtonLinkDisabled",
     value: function checkButtonLinkDisabled() {
-      var _this24 = this;
+      var _this25 = this;
 
       setTimeout(function () {
-        var invalid = _this24.getAllInvalidInputLink();
+        var invalid = _this25.getAllInvalidInputLink();
 
-        var currentLinkData = _this24.currentLinkData();
+        var currentLinkData = _this25.currentLinkData();
 
         var submitBtn = document.querySelector('.add-link-btn');
 
@@ -15827,11 +15959,11 @@ function (_Component) {
   }, {
     key: "saveFirstStep",
     value: function saveFirstStep(e) {
-      var _this25 = this;
+      var _this26 = this;
 
-      var _this$state6 = this.state,
-          title = _this$state6.title,
-          slug = _this$state6.slug;
+      var _this$state7 = this.state,
+          title = _this$state7.title,
+          slug = _this$state7.slug;
 
       if (title.trim().length < 1) {
         document.querySelector('[name=title]').focus();
@@ -15842,6 +15974,7 @@ function (_Component) {
         Object(_utils_adds__WEBPACK_IMPORTED_MODULE_6__["default"])(button.classList, 'pointer-events-none opacity-50');
         button.disabled = true;
         this.request({
+          route: routes.post_store,
           method: 'POST',
           body: JSON.stringify({
             title: title,
@@ -15850,14 +15983,14 @@ function (_Component) {
           headers: {
             'Content-Type': 'application/json'
           }
-        }).then(function (_ref14) {
-          var data = _ref14.data;
+        }).then(function (_ref15) {
+          var data = _ref15.data;
 
-          _this25.setID(data.id);
+          _this26.setID(data.id);
 
-          _this25.setPublicFolder(data.public_folder);
+          _this26.setPublicFolder(data.public_folder);
 
-          _this25.addDOMFunctionality();
+          _this26.addDOMFunctionality();
         })["finally"](function () {
           Object(_utils_removes__WEBPACK_IMPORTED_MODULE_7__["default"])(button.classList, 'pointer-events-none opacity-50');
           button.disabled = false;
@@ -15867,19 +16000,21 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this26 = this;
+      var _this27 = this;
 
       var message = this.props.message;
-      var _this$state7 = this.state,
-          id = _this$state7.id,
-          title = _this$state7.title,
-          slug = _this$state7.slug,
-          images = _this$state7.images,
-          keyword = _this$state7.keyword,
-          currentLinkKey = _this$state7.currentLinkKey,
-          publish = _this$state7.publish,
-          statusSaving = _this$state7.statusSaving,
-          edit = _this$state7.edit;
+      var _this$state8 = this.state,
+          id = _this$state8.id,
+          title = _this$state8.title,
+          slug = _this$state8.slug,
+          images = _this$state8.images,
+          keyword = _this$state8.keyword,
+          currentLinkKey = _this$state8.currentLinkKey,
+          publish = _this$state8.publish,
+          statusSaving = _this$state8.statusSaving,
+          edit = _this$state8.edit,
+          stateStatus = _this$state8.stateStatus,
+          status = _this$state8.status;
 
       var _this$uploadingImageS = this.uploadingImageStatus(),
           uploadingImage = _this$uploadingImageS.uploadingImage,
@@ -15902,9 +16037,11 @@ function (_Component) {
       })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "ml-auto flex items-center"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "text-gray-600 text-sm mr-6 save-status"
+        className: "text-gray-600 text-sm mr-6 save-status capitalize"
       }, statusSaving), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
-        onClick: this.publishWholeContent.bind(this),
+        onClick: this.publishWholeContent.bind(this, {
+          status: 'publish'
+        }),
         className: "items-center bg-gradient text-white px-4 py-2 text-sm rounded mr-6 shadow-md hover:shadow-none flex" + (!publish || this.isUploadingImage() ? ' pointer-events-none opacity-50' : '')
       }, "Publish Post"))))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "caption-modal overflow-y-auto fixed top-0 left-0 w-full h-full flex z-20 items-start justify-center hidden"
@@ -15930,7 +16067,61 @@ function (_Component) {
         className: "flex py-12 -mx-4 justify-center"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "w-full lg:w-6/12 px-4 md:w-8/12"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      }, stateStatus == 'LOADING' && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "text-center"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("svg", {
+        version: "1.1",
+        className: "logo-loader border-2 border-gray-200 rounded-lg",
+        id: "Layer_1",
+        xmlns: "http://www.w3.org/2000/svg",
+        xmlnsXlink: "http://www.w3.org/1999/xlink",
+        x: "0px",
+        y: "0px",
+        viewBox: "0 0 1000 1000",
+        enableBackground: "new 0 0 1000 1000",
+        xmlSpace: "preserve"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("path", {
+        fillRule: "evenodd",
+        clipRule: "evenodd",
+        fill: "#FFFFFF",
+        d: "M1000,900c0,55.229-44.771,100-100,100H100 C44.771,1000,0,955.229,0,900V100C0,44.771,44.771,0,100,0h800c55.229,0,100,44.771,100,100V900z"
+      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("path", {
+        fillRule: "evenodd",
+        clipRule: "evenodd",
+        fill: "#6979BB",
+        d: "M845.011,504.683c-11.729-8.214-20.504-13.022-27.63-19.614 c-18.121-16.767-26.005-38.331-25.948-62.748c0.092-39.378,0.668-78.757,0.774-118.137c0.145-54.508-18.146-75.122-71.923-76.043 c-21.097-0.362-19.121-11.155-19.735-25.244c-0.699-15.985,6.727-19.816,20.519-18.663c27.164,2.271,54.6,2.571,80.78,11.594 c30.365,10.464,49.07,31.357,54.434,63.097c8.521,50.399,3.39,101.269,3.813,151.912c0.271,32.254,7.085,58.239,42.411,67.664 c14.718,3.927,12.789,15.968,13.412,27.417c0.648,11.893-3.614,19.263-14.883,22.574c-31.535,9.271-40.672,32.007-40.929,62.699 c-0.422,50.634,3.305,101.312-2.48,151.938c-3.558,31.127-19.648,51.534-47.457,63.815c-31.398,13.866-64.805,14.396-98.198,13.683 c-16.771-0.358-14.147-14.142-14.868-22.8c-0.753-9.06,1.769-20.31,16.476-19.697c10.881,0.454,21.172-2.208,31.619-4.213 c31.281-6.001,43.749-18.748,45.057-51.562c1.777-44.66,2.454-89.425,1.67-134.112 C791.249,549.987,801.566,519.676,845.011,504.683z"
+      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("path", {
+        fillRule: "evenodd",
+        clipRule: "evenodd",
+        fill: "#3F4F58",
+        d: "M719.775,607.116c-24.218-16.028-46.734-30.998-69.324-45.857 c-19.446-12.791-38.885-25.598-58.508-38.114c-10.844-6.914-16.913-16.083-4.951-25.267c43.108-33.096,87.087-65.056,132.22-98.546 c5.952,20.052,2.338,32.873-13.645,43.398c-22.788,15.008-44.349,31.88-66.458,47.922c-23.566,17.105-23.595,17.111,1.782,33.435 c20.697,13.314,40.88,27.563,62.329,39.532C719.869,572.911,725.476,585.112,719.775,607.116z"
+      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("path", {
+        fillRule: "evenodd",
+        clipRule: "evenodd",
+        fill: "#43525C",
+        d: "M518.568,616.226c-0.869,12.495-5.34,22.586-17.917,22.945 c-13.949,0.399-19.066-10.677-19.223-22.715c-0.161-12.176,5.256-23.341,18.875-23.146 C514.043,593.508,517.855,604.885,518.568,616.226z"
+      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("path", {
+        fillRule: "evenodd",
+        clipRule: "evenodd",
+        fill: "#6979BB",
+        d: "M157.989,504.683c11.729-8.214,20.503-13.022,27.629-19.614 c18.121-16.767,26.005-38.331,25.948-62.748c-0.092-39.378-0.667-78.757-0.773-118.137c-0.145-54.508,18.146-75.122,71.922-76.043 c21.097-0.362,19.122-11.155,19.736-25.244c0.699-15.985-6.727-19.816-20.52-18.663c-27.164,2.271-54.6,2.571-80.781,11.594 c-30.365,10.464-49.069,31.357-54.434,63.097c-8.52,50.399-3.389,101.269-3.812,151.912c-0.27,32.254-7.085,58.239-42.411,67.664 c-14.718,3.927-12.79,15.968-13.413,27.417c-0.648,11.893,3.614,19.263,14.883,22.574c31.536,9.271,40.672,32.007,40.929,62.699 c0.42,50.634-3.305,101.312,2.48,151.938c3.558,31.127,19.648,51.534,47.456,63.815c31.398,13.866,64.806,14.396,98.199,13.683 c16.77-0.358,14.147-14.142,14.867-22.8c0.754-9.06-1.768-20.31-16.474-19.697c-10.881,0.454-21.171-2.208-31.62-4.213 c-31.282-6.001-43.748-18.748-45.056-51.562c-1.778-44.66-2.455-89.425-1.67-134.112 C211.751,549.987,201.434,519.676,157.989,504.683z"
+      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("path", {
+        fillRule: "evenodd",
+        clipRule: "evenodd",
+        fill: "#3F4F58",
+        d: "M283.225,607.116c24.217-16.028,46.733-30.998,69.324-45.857 c19.447-12.791,38.885-25.598,58.508-38.114c10.844-6.914,16.913-16.083,4.951-25.267c-43.108-33.096-87.087-65.056-132.219-98.546 c-5.954,20.052-2.337,32.873,13.644,43.398c22.789,15.008,44.35,31.88,66.458,47.922c23.567,17.105,23.595,17.111-1.782,33.435 c-20.697,13.314-40.879,27.563-62.329,39.532C283.131,572.911,277.523,585.112,283.225,607.116z"
+      })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
+        className: "mt-2"
+      }, "Memuat data")), stateStatus !== 'LOADING' && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, id && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, status.toUpperCase() == 'PUBLISH' ? react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "py-4 px-6 mb-4 bg-teal-100 text-teal-600 border-2 border-teal-200 rounded text-sm leading-loose"
+      }, "Post ini sudah dipublikasikan \u2013 semua orang dapat melihatnya. ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
+        href: routes.single + slug,
+        className: "border-b border-teal-600 pb-1 font-semibold"
+      }, "Lihat post")) : react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "py-4 px-6 mb-4 bg-blue-100 text-blue-600 border-2 border-blue-200 rounded text-sm leading-loose"
+      }, "Post ini belum dipublikasikan. Tekan tombol \"Publish Post\" untuk mempublikasikan post ini, atau tekan tombol kombinasi ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("kbd", {
+        className: "border p-1 border-blue-600 rounded"
+      }, this.isMac() ? 'Command' : 'Ctrl', "+S"), " untuk menyimpannya sebagai draft.")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "border-2 border-gray-200 p-8 rounded"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h1", {
         className: "text-indigo-600 text-xl font-semibold"
@@ -16027,7 +16218,7 @@ function (_Component) {
           key: image.id,
           className: "bg-white flex justify-center w-full mb-4 rounded border-2 border-gray-200 hover:border-gray-400"
         }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-          className: "handle flex-shrink-0 p-2 items-center flex border-r-2 border-gray-200 bg-gray-100 mr-4 cursor-move" + (_this26.isUploadingImage() ? ' pointer-events-none' : '')
+          className: "handle flex-shrink-0 p-2 items-center flex border-r-2 border-gray-200 bg-gray-100 mr-4 cursor-move" + (_this27.isUploadingImage() ? ' pointer-events-none' : '')
         }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("svg", {
           xmlns: "http://www.w3.org/2000/svg",
           className: "w-4 fill-current text-gray-600",
@@ -16066,7 +16257,7 @@ function (_Component) {
           className: "w-16 h-16 mr-4 flex-shrink-0 py-4"
         }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("img", {
           className: 'rounded' + (image.name && image.url ? '' : ' hidden'),
-          src: image.url
+          src: image.videoThumbnailUrl || image.url
         }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("video", {
           className: "hidden rounded"
         }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("source", null)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("canvas", {
@@ -16079,16 +16270,16 @@ function (_Component) {
           className: "text-indigo-600 mb-1"
         }, image.name ? image.name : image.file.name), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
           className: "text-xs text-gray-600"
-        }, _this26.humanFileSize(image.size ? image.size : image.file.size)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        }, _this27.humanFileSize(image.size ? image.size : image.file.size)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
           className: "flex mt-2 text-sm"
         }, !image.isAbort && image.isAbort !== undefined && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
           className: "cursor-pointer text-red-600",
-          onClick: _this26.abortImage.bind(_this26, image)
+          onClick: _this27.abortImage.bind(_this27, image)
         }, "Batalkan"), (image.isDirty && image.isAbort == undefined && !image.isAbort || !image.isDirty && edit) && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-          onClick: _this26.removeImage.bind(_this26, image.id),
+          onClick: _this27.removeImage.bind(_this27, image.id),
           className: "text-red-600 cursor-pointer"
         }, "Hapus"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-          onClick: _this26.setCaption.bind(_this26, image.id),
+          onClick: _this27.setCaption.bind(_this27, image.id),
           className: "text-teal-600 cursor-pointer ml-4"
         }, "Tentukan Deskripsi ", image.caption ? '👍' : '')))));
       })))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
@@ -16103,7 +16294,7 @@ function (_Component) {
         className: "flex mb-4 overflow-x-auto flex-no-wrap"
       }, Object.keys(key2str).map(function (name, index) {
         return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-          onClick: _this26.setLinkKey.bind(_this26, name),
+          onClick: _this27.setLinkKey.bind(_this27, name),
           key: name,
           className: 'px-4 py-2 border-t border-r border-b ' + (currentLinkKey == name ? 'bg-indigo-600 text-white' : 'text-gray-600 hover:bg-gray-100') + ' cursor-pointer border-gray-200 text-sm flex-1 justify-center flex items-center text-center' + (index == 0 ? ' border-l rounded-tl rounded-bl' : index == Object.keys(key2str).length - 1 ? ' rounded-tr rounded-br' : '')
         }, key2str[name]);
@@ -16116,9 +16307,9 @@ function (_Component) {
           key: link.id,
           className: "bg-white shadow rounded mb-4 text-sm text-blue-500 flex"
         }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
-          onKeyDown: _this26.linkKeydownHandle.bind(_this26),
-          onKeyUp: _this26.linkKeyupHandle.bind(_this26),
-          onChange: _this26.linkInputHandle.bind(_this26, link.id),
+          onKeyDown: _this27.linkKeydownHandle.bind(_this27),
+          onKeyUp: _this27.linkKeyupHandle.bind(_this27),
+          onChange: _this27.linkInputHandle.bind(_this27, link.id),
           tabIndex: "6",
           type: "text",
           name: 'link-' + currentLinkKey,
@@ -16127,7 +16318,7 @@ function (_Component) {
           defaultValue: link.value
         }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
           type: "button",
-          onClick: _this26.removeLinkFromKey.bind(_this26, link.id),
+          onClick: _this27.removeLinkFromKey.bind(_this27, link.id),
           className: "uppercase font-semibold bg-red-500 text-white px-4 flex items-center cursor-pointer hover:bg-red-600 rounded-tr rounded-br"
         }, "Hapus"));
       })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
@@ -16135,7 +16326,7 @@ function (_Component) {
         onClick: this.addLinkToKey.bind(this),
         tabIndex: "7",
         className: "add-link-btn bg-white w-full shadow rounded py-3 px-4 text-sm text-blue-500 text-center cursor-pointer hover:bg-indigo-600 hover:text-white"
-      }, "Tambah URL"))))))));
+      }, "Tambah URL")))))))));
     }
   }]);
 

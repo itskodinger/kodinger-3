@@ -134,6 +134,41 @@ module.exports = {
   			},
   			'.transition': {
   				transition: 'all .5s'
+  			},
+  			'.logo-loader': {
+  			  width: '100px',
+  			  display: 'inline-block'
+  			},
+
+  			'.logo-loader path:not(:first-child)': {
+  			  fill: 'transparent',
+  			  animationName: 'LogoLoader',
+  			  animationDuration: '3s',
+  			  animationIterationCount: 'infinite',
+  			  stroke: 'rgb(105, 121, 187)',
+  			  strokeWidth: '5',
+  			},
+
+  			'@keyframes LogoLoader': {
+  			  '0%': {
+  			    strokeDasharray: 300,
+  			    strokeDashoffset: 300,
+  			  },
+  			  '25%': {
+  			    strokeDasharray: 0,
+  			    strokeDashoffset: 0,
+  			  },
+  			  '50%': {
+  			    fill: 'rgb(105, 121, 187)',
+  			  },
+  			  '75%': {
+  			    strokeDasharray: 0,
+  			    strokeDashoffset: 0,
+  			  },
+  			  '100%': {
+  			    strokeDasharray: 300,
+  			    strokeDashoffset: 300,  			  	
+  			  }
   			}
   		}
 

@@ -8,6 +8,7 @@ use Requests\PostCreateRequest;
 use Requests\PostUpdateRequest;
 use Requests\PostCheckSlugRequest;
 use Requests\PostUploadImageRequest;
+use Requests\PostPublishRequest;
 use App\Http\Controllers\Controller;
 use Services\PostService;
 use Illuminate\Support\Str;
@@ -70,6 +71,28 @@ class PostApiController extends Controller
 	 * @return JSON          
 	 */
 	public function update(Request $request, $id) 
+	{
+		$post = $this->postService->findAndUpdate($id, $request);
+
+		if(!$post)
+		{
+			return response()->json([
+				'status' => false
+			])->status(500);
+		}
+
+		return response()->json([
+			'status' => true
+		]);
+	}
+
+	/**
+	 * Publish post
+	 * @param  PostPublishRequest $request
+	 * @param  String  $id     
+	 * @return JSON          
+	 */
+	public function publish(PostPublishRequest $request, $id) 
 	{
 		$post = $this->postService->findAndUpdate($id, $request);
 

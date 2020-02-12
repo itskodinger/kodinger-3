@@ -124,7 +124,7 @@ class PostService
 
 	public function content(...$args)
 	{
-		$this->init = $this->model()->whereType(null);
+		$this->init = $this->model()->whereType(null)->whereStatus('publish');
 
 		return $this->paginate(...$args);
 	}
