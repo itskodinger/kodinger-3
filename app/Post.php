@@ -42,7 +42,6 @@ class Post extends Model
     	'is_post_saved', 
     	'is_post_loved',
     	'post_card',
-        'pages',
         'pages_object',
         'examples_object',
         'helps_object',
@@ -76,7 +75,7 @@ class Post extends Model
 
     public function getFirstSlideMediaAttribute()
     {
-        return count($this->content_object) > 0 ? $this->content_object[0]->url : '';
+        return count($this->content_object) > 0 ? ($this->content_object[0]->video_thumbnail_url ?? $this->content_object[0]->url) : '';
     }
 
     public function getFirstSlideCaptionAttribute()

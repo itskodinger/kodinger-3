@@ -37,7 +37,7 @@
 
 			            	@if($r['name'] == $tag)
 			            		<div class="text-lg absolute right-0">
-			            			<span class="mr-3 cursor-pointer text-red-600" onclick="window.location.href=fullUrlWithQuery(['tag'])">
+			            			<span class="mr-3 cursor-pointer text-red-600 dispose-tag">
 			            				&times;
 			            			</span>
 			            		</div>

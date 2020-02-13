@@ -192,3 +192,8 @@ $('.tag-search input').addEventListener('blur', function(e) {
 		tagSearchCollection(false);
 	}, 500);
 });
+
+if($('.dispose-tag'))
+	$('.dispose-tag').addEventListener('click', () => {
+		window.location.href = fullUrlWithQuery(['tag'], true);
+	});

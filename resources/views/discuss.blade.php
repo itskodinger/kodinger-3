@@ -9,5 +9,7 @@
         Tidak ada diskusi
     @endforelse
 
-    {!! $comments->links('vendor.pagination.simple-default') !!}
+    <div class="inline-block w-full mt-5">
+	    {!! $comments->links('vendor.pagination.simple-default') !!}
+	</div>
 @stop

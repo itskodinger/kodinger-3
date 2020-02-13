@@ -1,11 +1,9 @@
-import objExtend from './obj-extend';
-
 /**
  * Laravel-like Request's fullUrlWithQuery method
  * @param  {Object} newQuery New query
  * @return {String}          Generated URL
  */
-function fullUrlWithQuery(newQuery)
+function fullUrlWithQuery(newQuery, baseurl=false)
 {
 	// get current URL params
 	let params = window.location.search;
@@ -22,7 +20,7 @@ function fullUrlWithQuery(newQuery)
 		// if object given
 		if(typeof newQuery === 'object' && Object.prototype.toString.call(newQuery) !== '[object Array]') {
 			// then extend with current URL params
-			params = objExtend(params, newQuery);
+			params = Object.assign(params, newQuery);
 		}else{
 			// if array given
 			if(Object.prototype.toString.call(newQuery) === '[object Array]') {
@@ -38,7 +36,9 @@ function fullUrlWithQuery(newQuery)
 
 	params = (new URLSearchParams(params).toString());
 
-	return params ? '?' + params : '';
+	const prependUrl = window.location.origin + window.location.pathname;
+
+	return (baseurl ? prependUrl : '') + (params ? '?' + params : '');
 }
 
 export default fullUrlWithQuery;

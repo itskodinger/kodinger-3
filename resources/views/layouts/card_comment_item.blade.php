@@ -13,6 +13,8 @@
                         @csrf
                     </form>
                 </div>
-                {!! $comment->markdown !!}
+                <div class="break-all">
+                    {!! $comment->markdown !!}
+                </div>
             </div>
         </div>

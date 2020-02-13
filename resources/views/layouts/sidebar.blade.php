@@ -5,12 +5,14 @@
         <h4 class="font-bold mb-3 text-indigo-600">Konten Populer</h4>
         <div class="rounded">
             @if($post->popular() !== null)
-{{--             <img src="{{ $post->popular()->images[0] }}" alt="{{ $post->popular()->title }}" class="rounded-lg">
+            <a href="@route('single', $post->popular()->slug)">
+                <img src="{{ $post->popular()->thumbnail }}" alt="{{ $post->popular()->title }}" class="rounded-lg">
+            </a>
             <div class="bg-white p-5 rounded-lg mx-4 -mt-16 relative border-2 border-gray-200">
                 <h4 class="text-indigo-500 font-semibold hover:text-indigo-700"><a href="@route('single', $post->popular()->slug)">{{ $post->popular()->title }}</a></h4>
                 <p class="text-gray-600 text-sm mt-2">{{ $post->popular()->views }} Views</p>
             </div>
- --}}            @endif
+            @endif
         </div>
 
         <h4 class="mt-10 font-bold mb-3 text-indigo-600">Paling Banyak Disukai</h4>

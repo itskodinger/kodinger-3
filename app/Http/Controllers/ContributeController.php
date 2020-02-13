@@ -47,11 +47,12 @@ class ContributeController extends Controller
 		if(!in_array($col, recommend_fields())) return abort(404);
 
 		$post = $this->postService->findBySlug($slug);
+		$allowed = $post->user_id == auth()->user()->id ? false : true;
 
 		if(!$post)
 			return abort(404);
 
-		return view('contribute.create', compact('post', 'col'));
+		return view('contribute.create', compact('post', 'col', 'allowed'));
 	}
 
 	/**

@@ -4,6 +4,11 @@
     <div class="container mx-auto">
         <div class="flex py-12 -mx-6 justify-center">
             <div class="w-8/12 px-6">
+            	@if(!$allowed)
+            	<div class="py-4 px-6 mb-4 bg-orange-100 text-orange-600 border-2 border-orange-200 rounded text-sm leading-loose">
+            		Kamu tidak dapat berkontribusi ke post sendiri – kamu dapat menyuntingnya <a class="border-b border-orange-600 pb-1" href="@route('post', $post->id)">di sini</a>.
+            	</div>
+            	@endif
             	<form method="post" id="form">
 	            	<div class="p-8 bg-white border-2 border-gray-200 rounded">
 	            		<div class="flex hidden" id="success-message">
@@ -27,34 +32,36 @@
 
 		            		<p class="mb-2 text-gray-600">Post Terkait</p>
 		            		<a href="@route('single', $post->slug)" class="flex items-center bg-gray-100 hover:bg-gray-200 hover:border-gray-300 border border-gray-200 mb-8 p-3 rounded">
-		            			<div class="bg-cover w-16 h-16 rounded" style="background-image: url({{ nl_array_first($post->images) }});"></div>	
+		            			<div class="bg-cover w-16 h-16 rounded" style="background-image: url('{!! $post->thumbnail !!}');"></div>
 		            			<div class="ml-4">
 		            				<h4 class="font-semibold text-indigo-600">{{ $post->title }}</h4>
-		            				<p class="text-sm text-gray-600 mt-1">{{ truncate($post->content, 60) }}</p>
+		            				<p class="text-sm text-gray-600 mt-1">{{ truncate($post->first_slide_caption, 60) }}</p>
 		            			</div>
 		            		</a>
 
-		            		<p class="mb-2 text-gray-600">Rekomendasikan link {{ key2str($col) }}</p>
-		            		<div class="bg-gray-100 border border-gray-200 rounded p-4">
-		            			<div id="links">
-		            				<div class="list">
+		            		@if($allowed)
+			            		<p class="mb-2 text-gray-600">Rekomendasikan link {{ key2str($col) }}</p>
+			            		<div class="bg-gray-100 border border-gray-200 rounded p-4">
+			            			<div id="links">
+			            				<div class="list">
+					            		</div>
 				            		</div>
+				            		<div class="hidden">
+				            			<div id="link-item" class="bg-white shadow rounded mb-4 text-sm text-blue-500 flex">
+				            				<div class="hidden link-id"></div>
+				            				<input tabindex="2" type="text" name="{{ $col }}[]" value="" placeholder="Contoh: https://kodinger.com/tutorial-javascript" class="url w-full py-3 px-4 rounded outline-none">
+				            				<div class="link-delete uppercase font-semibold bg-red-500 text-white px-4 flex items-center cursor-pointer hover:bg-red-600 rounded-tr rounded-br">Hapus</div>
+				            			</div>
+				            		</div>
+			            			<div id="link-add" tabindex="1" class="bg-white shadow rounded py-3 px-4 text-sm text-blue-500 text-center cursor-pointer hover:bg-indigo-600 hover:text-white">Tambah URL</div>
 			            		</div>
-			            		<div class="hidden">
-			            			<div id="link-item" class="bg-white shadow rounded mb-4 text-sm text-blue-500 flex">
-			            				<div class="hidden link-id"></div>
-			            				<input tabindex="2" type="text" name="{{ $col }}[]" value="" placeholder="Contoh: https://kodinger.com/tutorial-javascript" class="url w-full py-3 px-4 rounded outline-none">
-			            				<div class="link-delete uppercase font-semibold bg-red-500 text-white px-4 flex items-center cursor-pointer hover:bg-red-600 rounded-tr rounded-br">Hapus</div>
-			            			</div>
-			            		</div>
-		            			<div id="link-add" tabindex="1" class="bg-white shadow rounded py-3 px-4 text-sm text-blue-500 text-center cursor-pointer hover:bg-indigo-600 hover:text-white">Tambah URL</div>
-		            		</div>
 
-							@button([
-								'class' => 'w-full mt-8 pointer-events-none opacity-75 submit-btn'
-							])
-								Kirim
-							@endbutton
+								@button([
+									'class' => 'w-full mt-8 pointer-events-none opacity-75 submit-btn'
+								])
+									Kirim
+								@endbutton
+							@endif
 						</div>
 	            	</div>
 	            </form>
@@ -64,6 +71,8 @@
 @stop
 
 @push('js')
-	<script>const post_id = '{{ $post->id }}', col = '{{ $col }}'; </script> 
-	<script src="{{ mix('js/contribute.js') }}"></script>
+	@if($allowed)
+		<script>const post_id = '{{ $post->id }}', col = '{{ $col }}'; </script> 
+		<script src="{{ mix('js/contribute.js') }}"></script>
+	@endif
 @endpush
