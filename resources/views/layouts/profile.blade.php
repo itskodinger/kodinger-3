@@ -36,10 +36,10 @@
                 </ul>
             </div>
             <div class="lg:w-9/12 px-4 lg:py-12 w-full flex-shrink-0">
-                <div class="border-2 border-gray-200 rounded-lg">
+                <div class="border-2 border-indigo-200 rounded-lg bg-indigo-100">
                     <div class="container mx-auto">
                         <div class="flex md:p-10 p-6 flex-col md:flex-row">
-                            <img src="{{ $user->the_avatar }}" class="w-40 h-40 rounded-lg inline-block border-2 border-gray-200">
+                            <img src="{{ $user->the_avatar }}" class="w-40 h-40 rounded-lg inline-block border-2 border-indigo-200">
                             <div class="md:ml-10 md:mt-0 mt-10">
                                 <h1 class="font-bold text-xl">{{ $user->name }}</h1>
                                 <div class="text-gray-600 text-sm">{{ $user->the_username }} &nbsp;&bull;&nbsp; bergabung {{ $user->created_at->diffForHumans() }}</div>

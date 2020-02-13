@@ -3148,6 +3148,7 @@ function _arrayWithoutHoles(arr) {
 
 var posts = _libs_post__WEBPACK_IMPORTED_MODULE_1__["post"].init('.posts', {
   url: routes.discover,
+  discover: true,
   carousel: false,
   truncate_content: true,
   lazyimage: false,
@@ -3221,7 +3222,6 @@ $('#discover-form').addEventListener('submit', function (e) {
       form = this,
       tags = tagify.value,
       btn = $('.publish-button');
-  var shimmer = posts.shimmer.add('prepend');
   var tag_ids = '';
   tags.forEach(function (item) {
     tag_ids += item.id + ',';
@@ -3233,6 +3233,7 @@ $('#discover-form').addEventListener('submit', function (e) {
   } else if (tags.length < 1) {
     tagify.DOM.input.focus();
   } else {
+    var shimmer = posts.shimmer.add('prepend');
     Object(_utils_adds__WEBPACK_IMPORTED_MODULE_4__["default"])(btn.classList, 'pointer-events-none opacity-50');
     btn.disabled = true;
     window.scrollTo({
@@ -4741,9 +4742,7 @@ var post = {
         data: data,
         direct: true,
         prepend: prepend
-      }, args))["catch"](function (error) {
-        console.log(error);
-      });
+      }, args))["catch"](function (error) {});
     };
 
     var output = {

@@ -3,6 +3,7 @@
 @section('profile_content')
     <h1 class="mb-4 text-lg flex items-center">Pengaturan</h1>
     @include('flash::message')
+    @alert
     <form enctype="multipart/form-data" method="post" action="@route('setting_update')">
         @csrf
         @card

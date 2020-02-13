@@ -6,8 +6,8 @@
             'body'       => $message['message']
         ])
     @else
-        <div class="p-4 border-l-4 mb-4 rounded
-                    {{ ($message['level']  == 'success' ? 'border-teal-600 bg-teal-100 text-teal-600' : '') }}
+        <div class="py-4 px-6 border-2 mb-4 rounded text-sm leading-loose
+                    {{ ($message['level']  == 'success' ? 'border-teal-200 bg-teal-100 text-teal-600' : '') }}
                     {{ ($message['level']  == 'danger' ? 'border-red-600 bg-red-100 text-red-600' : '') }}
                     {{ $message['important'] ? 'alert-important' : '' }}"
                     role="alert"

@@ -13,6 +13,7 @@ use App\Contribute;
 use App\Jobs\FetchDiscoverUrlPreview;
 use Services\UserService;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class PostService
@@ -104,6 +105,7 @@ class PostService
 	public function createDiscover($request)
 	{
 		$adds = [
+			'id' => Str::uuid(),
 			'slug' => uniqid(), 
 			'type' => 'link',
 			'tags' => explode(',', $request->tags),

@@ -1496,7 +1496,7 @@ const post = {
 				prepend,
 				...args
 			}).catch(function(error) {
-				console.log(error)
+				
 			});
 		}
 

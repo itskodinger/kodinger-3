@@ -7,6 +7,7 @@ import showLoginAlert from './comps/show-login-alert';
 
 let posts = post.init('.posts', {
     url: routes.discover,
+    discover: true,
     carousel: false,
     truncate_content: true,
     lazyimage: false,
@@ -106,8 +107,6 @@ $('#discover-form').addEventListener('submit', function(e) {
         tags = tagify.value,
         btn = $('.publish-button');
 
-    const shimmer = posts.shimmer.add('prepend');
-
     let tag_ids = '';
     tags.forEach(function(item){
         tag_ids += item.id + ',';
@@ -119,6 +118,7 @@ $('#discover-form').addEventListener('submit', function(e) {
     } else if(tags.length < 1) {
         tagify.DOM.input.focus();
     } else {
+        const shimmer = posts.shimmer.add('prepend');
         adds(btn.classList, 'pointer-events-none opacity-50');
         btn.disabled = true;
 

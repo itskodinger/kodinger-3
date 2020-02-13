@@ -57,6 +57,8 @@ class Post extends Model
 
     public function getThumbnailAttribute()
     {
+        if($this->type == 'link') return false;
+
         $content = $this->content_object;
         $first_slide = $content[0];
 
@@ -65,21 +67,29 @@ class Post extends Model
 
     public function getThumbnailTypeAttribute()
     {
+        if($this->type == 'link') return false;
+
         return pathinfo($this->thumbnail, PATHINFO_EXTENSION);
     }
 
     public function getThumbnailIsVideoAttribute()
     {
+        if($this->type == 'link') return false;
+
         return is_video($this->thumbnail) ? true : false;
     }
 
     public function getFirstSlideMediaAttribute()
     {
+        if($this->type == 'link') return false;
+
         return count($this->content_object) > 0 ? ($this->content_object[0]->video_thumbnail_url ?? $this->content_object[0]->url) : '';
     }
 
     public function getFirstSlideCaptionAttribute()
     {
+        if($this->type == 'link') return false;
+
         return count($this->content_object) > 0 ? ($this->content_object[0]->caption ?? '') : '';
     }
 

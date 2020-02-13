@@ -3536,9 +3536,7 @@ var post = {
         data: data,
         direct: true,
         prepend: prepend
-      }, args))["catch"](function (error) {
-        console.log(error);
-      });
+      }, args))["catch"](function (error) {});
     };
 
     var output = {
