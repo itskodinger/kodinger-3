@@ -51,7 +51,10 @@ module.exports = {
 			'.tooltip': {
 				position: 'relative'
 			},
-			'.tooltip::before': {
+			'.tooltip::after': {
+				textTransform: 'initial',
+				letterSpacing: 'initial',
+				fontWeight: 'initial',
 				display: 'none',
 				position: 'absolute',
 				zIndex: '10',
@@ -64,7 +67,7 @@ module.exports = {
 				width: '100%',
 				content: 'attr(data-title)'
 			},
-			'.tooltip:hover::before': {
+			'.tooltip:hover::after': {
 				display: 'block'
 			},
 			'.custom-checkbox label': {
@@ -87,6 +90,11 @@ module.exports = {
 				backgroundImage: `url("data:image/svg+xml,%3Csvg stroke='%23fff' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg data-name='Layer 2'%3E%3Cg data-name='checkmark'%3E%3Crect width='24' height='24' opacity='0'/%3E%3Cpath fill='%23fff' d='M9.86 18a1 1 0 0 1-.73-.32l-4.86-5.17a1 1 0 1 1 1.46-1.37l4.12 4.39 8.41-9.2a1 1 0 1 1 1.48 1.34l-9.14 10a1 1 0 0 1-.73.33z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
 				backgroundColor: theme('colors.indigo.500'),
 				borderColor: theme('colors.indigo.600')
+			},
+			'.custom-checkbox-sm label::before': {
+				width: '15px',
+				height: '15px',
+				marginRight: '7px'
 			}
   		}
 

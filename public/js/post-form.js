@@ -14422,12 +14422,12 @@ function (_Component) {
       var path = url.pathname.split(/\/post\//g);
 
       if (path[1]) {
-        var id = path[1];
-        this.setID(id);
+        var _id = path[1];
+        this.setID(_id);
         this.setState({
           stateStatus: 'LOADING'
         });
-        this.getDataById(id).then(function (data) {
+        this.getDataById(_id).then(function (data) {
           _this2.setState(_objectSpread({
             stateStatus: 'LOADED'
           }, data));
@@ -14495,6 +14495,7 @@ function (_Component) {
       return function (newImages, images) {
         images.forEach(function (image, key) {
           newImages[key] = _objectSpread({}, image);
+          if (image.single_caption) newImages[key].singleCaption = image.single_caption;
           newImages[key].videoThumbnailUrl = image.video_thumbnail_url;
           newImages[key].videoThumbnailName = image.video_thumbnail_name;
         });
@@ -14764,7 +14765,15 @@ function (_Component) {
                   var images = _this9.flattenedImageFormat(); // validation
 
 
-                  if (objectData && objectData.status.toUpperCase() == 'PUBLISH' && images.length < 1) {
+                  if (_this9.isUploadingImage()) {
+                    _this9.toast.add("\uD83D\uDDBC&nbsp; Sedang mengunggah media, post akan otomatis tersimpan bila proses telah selesai");
+
+                    return reject();
+                  } else if (_this9.isDeletingImage()) {
+                    _this9.toast.add("\uD83D\uDC0C&nbsp; Sedang menghapus media, post akan otomatis tersimpan bila proses telah selesai");
+
+                    return reject();
+                  } else if (objectData && objectData.status.toUpperCase() == 'PUBLISH' && images.length < 1) {
                     _this9.toast.add("\uD83D\uDC21&nbsp; Tidak ada gambar satu pun");
 
                     return reject();
@@ -15330,18 +15339,18 @@ function (_Component) {
     }
     /**
      * Update image state by id
-     * @param  {Integer} id  Image ID
+     * @param  {Integer|Object} idOrObj  Image ID or image object
      * @param  {Object} obj  New object
      * @return {Object}      Updated object
      */
 
   }, {
     key: "updateImage",
-    value: function updateImage(id, obj) {
+    value: function updateImage(idOrObj, obj) {
       // get images data from state
       var images = this.state.images; // find current image element in array by given id
 
-      var currentImage = this.findImageById(id);
+      var currentImage = _typeof(idOrObj) == 'object' ? idOrObj : this.findImageById(id);
       Object(_utils_obj_extend__WEBPACK_IMPORTED_MODULE_4__["default"])(currentImage, obj);
       this.setState({
         images: images
@@ -15544,10 +15553,14 @@ function (_Component) {
       var uploadingImage = images.filter(function (image) {
         return image.status == 'UPLOADING';
       });
+      var deletingImage = images.filter(function (image) {
+        return image.status == 'DELETING';
+      });
       var uploadedImage = images.filter(function (image) {
         return image.status == 'UPLOADED';
       });
       return {
+        deletingImage: deletingImage.length,
         uploadingImage: uploadingImage.length,
         totalImage: images.length,
         uploadedImage: uploadedImage.length
@@ -15557,6 +15570,11 @@ function (_Component) {
     key: "isUploadingImage",
     value: function isUploadingImage() {
       return this.uploadingImageStatus().uploadingImage > 0 ? true : false;
+    }
+  }, {
+    key: "isDeletingImage",
+    value: function isDeletingImage() {
+      return this.uploadingImageStatus().deletingImage > 0 ? true : false;
     }
   }, {
     key: "OS",
@@ -15593,6 +15611,7 @@ function (_Component) {
         var id = _ref13.id,
             status = _ref13.status,
             caption = _ref13.caption,
+            singleCaption = _ref13.singleCaption,
             name = _ref13.name,
             size = _ref13.size,
             type = _ref13.type,
@@ -15612,7 +15631,8 @@ function (_Component) {
             size: size,
             type: type,
             status: status,
-            id: id
+            id: id,
+            single_caption: singleCaption
           };
           if (videoThumbnailName) newImageData['video_thumbnail_name'] = videoThumbnailName;
           if (videoThumbnailUrl) newImageData['video_thumbnail_url'] = videoThumbnailUrl;
@@ -16015,6 +16035,19 @@ function (_Component) {
       });
     }
   }, {
+    key: "singleCaption",
+    value: function singleCaption() {
+      var images = this.state.images;
+
+      if (images.length > 0) {
+        var image = images[0];
+        this.updateImage(image, {
+          singleCaption: image.singleCaption ? false : true
+        });
+        this.flattenedImageFormat(true);
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
       var _this27 = this;
@@ -16227,8 +16260,21 @@ function (_Component) {
         className: "hidden",
         onChange: this.handleFiles.bind(this)
       }))), images.length > 0 && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "mt-6 text-xs uppercase font-semibold tracking-wider mb-2 text-gray-600"
-      }, "Media yang dipilih ", this.isUploadingImage() ? '(' + uploadedImage + '/' + totalImage + ')' : '')), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "mt-6 text-xs uppercase font-semibold tracking-wider mb-2 text-gray-600 flex"
+      }, "Media yang dipilih ", this.isUploadingImage() ? '(' + uploadedImage + '/' + totalImage + ')' : '', react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "ml-auto text-blue-600"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "custom-checkbox custom-checkbox-sm"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+        type: "checkbox",
+        id: "single-caption",
+        onChange: this.singleCaption.bind(this),
+        checked: images[0].singleCaption
+      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+        className: "tooltip",
+        htmlFor: "single-caption",
+        "data-title": "Ceklis opsi ini untuk menggunakan keterangan pada slide pertama untuk semua slide."
+      }, "Single caption"))))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "image-files"
       }, images.map(function (image) {
         return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {

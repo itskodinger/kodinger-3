@@ -18,8 +18,6 @@ class Post extends Model
 		'slug',
 		'content',
 		'keyword',
-		'images',
-		'inspirations',
 		'pages',
 		'tutorials',
 		'helps',
@@ -53,16 +51,32 @@ class Post extends Model
         'thumbnail_is_video',
         'first_slide_media',
         'first_slide_caption',
+        'is_single_caption'
     ];
+
+    public function getIsSingleCaptionAttribute()
+    {
+        if($this->type == 'link') return false;
+
+        return optional($this->first_slide)->single_caption ? true : false;
+    }
+
+    public function getFirstSlideAttribute()
+    {
+        if($this->type == 'link') return false;
+
+        $content = $this->content_object;
+        if(!$content) return false;
+        $first_slide = $content[0];
+
+        return $first_slide;
+    }
 
     public function getThumbnailAttribute()
     {
         if($this->type == 'link') return false;
 
-        $content = $this->content_object;
-        $first_slide = $content[0];
-
-        return $first_slide->video_thumbnail_url ?? $first_slide->url;
+        return $this->first_slide->video_thumbnail_url ?? $this->first_slide->url ?? '';
     }
 
     public function getThumbnailTypeAttribute()
@@ -83,7 +97,7 @@ class Post extends Model
     {
         if($this->type == 'link') return false;
 
-        return count($this->content_object) > 0 ? ($this->content_object[0]->video_thumbnail_url ?? $this->content_object[0]->url) : '';
+        return $this->first_slide->video_thumbnail_url ?? $this->first_slide->url ?? '';
     }
 
     public function getFirstSlideCaptionAttribute()
@@ -108,19 +122,9 @@ class Post extends Model
     	return in_array($this->id, user_post_loves());
     }
 
-    public function getRawImagesAttribute()
-    {
-        return array2nl($this->images);
-    }
-
     public function getImagesAttribute($value)
     {
     	return nl_array($value);
-    }
-
-    public function getRawInspirationsAttribute()
-    {
-        return array2nl($this->inspirations);
     }
 
     public function getInspirationsAttribute($value)
@@ -180,6 +184,8 @@ class Post extends Model
         if($content_object)
         {
             return $content_object;
+        }else{
+            return [];
         }
     }
 

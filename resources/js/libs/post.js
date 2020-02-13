@@ -132,8 +132,12 @@ let api = {
 						0: 1,
 					},
 					onChange: function() {
-						finds(element, '[data-index]').forEach(el => el.classList.add('hidden'));
-						find(element, '[data-index="'+ cr.currentSlide +'"]').classList.remove('hidden');
+						const captions = finds(element, '[data-index]');
+
+						if(captions.length > 0) {
+							captions.forEach(el => el.classList.add('hidden'));
+							find(element, '[data-index="'+ cr.currentSlide +'"]').classList.remove('hidden');
+						}
 					}
 	            });
 
@@ -657,11 +661,11 @@ let api = {
 				        </a></h4>`
 			        : ''}
 
-			        ${!options.discover && options.truncate_content ?
+			        ${!options.discover && (options.truncate_content || (!options.truncate_content && post.is_single_caption)) ?
 				        `<div class="mb-5">${post.first_slide_caption}</div>`
 			        : ''}
 
-			        ${!options.discover && !options.truncate_content ?
+			        ${!options.discover && !options.truncate_content && !post.is_single_caption ?
 			        	post.content_object.map((slide, index) => {
 				        	return `<div data-index="${index}" class="mb-5 ${index != 0 ? 'hidden' : ''}">${slide.caption || '<i>Tidak ada keterangan</i>'}</div>`;
 			        	}).join('')

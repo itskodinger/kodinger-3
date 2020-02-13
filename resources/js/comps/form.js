@@ -160,6 +160,7 @@ class Form extends Component {
 		return ((newImages, images) => {
 			images.forEach((image, key) => {
 				newImages[key] = {...image};
+				if(image.single_caption) newImages[key].singleCaption = image.single_caption;
 				newImages[key].videoThumbnailUrl = image.video_thumbnail_url;
 				newImages[key].videoThumbnailName = image.video_thumbnail_name;
 			});
@@ -348,7 +349,15 @@ class Form extends Component {
 			const images = this.flattenedImageFormat();
 
 			// validation
-			if(objectData && objectData.status.toUpperCase() == 'PUBLISH' && images.length < 1) {
+			if(this.isUploadingImage()) {
+				this.toast.add(`🖼&nbsp; Sedang mengunggah media, post akan otomatis tersimpan bila proses telah selesai`);
+
+				return reject();
+			}else if(this.isDeletingImage()) {
+				this.toast.add(`🐌&nbsp; Sedang menghapus media, post akan otomatis tersimpan bila proses telah selesai`);
+
+				return reject();
+			}else if(objectData && objectData.status.toUpperCase() == 'PUBLISH' && images.length < 1) {
 				this.toast.add(`🐡&nbsp; Tidak ada gambar satu pun`);
 
 				return reject();
@@ -907,16 +916,16 @@ class Form extends Component {
 
 	/**
 	 * Update image state by id
-	 * @param  {Integer} id  Image ID
+	 * @param  {Integer|Object} idOrObj  Image ID or image object
 	 * @param  {Object} obj  New object
 	 * @return {Object}      Updated object
 	 */
-	updateImage(id, obj) {
+	updateImage(idOrObj, obj) {
 		// get images data from state
 		let images = this.state.images;
 
 		// find current image element in array by given id
-		const currentImage = this.findImageById(id);
+		const currentImage = typeof idOrObj == 'object' ? idOrObj : this.findImageById(id);
 
 		objExtend(currentImage, obj);
 
@@ -1105,11 +1114,16 @@ class Form extends Component {
 			return image.status == 'UPLOADING';
 		});
 
+		let deletingImage = images.filter((image) => {
+			return image.status == 'DELETING';
+		});
+
 		let uploadedImage = images.filter((image) => {
 			return image.status == 'UPLOADED';
 		});
 
 		return {
+			deletingImage: deletingImage.length,
 			uploadingImage: uploadingImage.length,
 			totalImage: images.length,
 			uploadedImage: uploadedImage.length
@@ -1118,6 +1132,10 @@ class Form extends Component {
 
 	isUploadingImage() {
 		return this.uploadingImageStatus().uploadingImage > 0 ? true : false;
+	}
+
+	isDeletingImage() {
+		return this.uploadingImageStatus().deletingImage > 0 ? true : false;
 	}
 
 	OS() {
@@ -1146,13 +1164,13 @@ class Form extends Component {
 		const { images } = this.state;
 
 		let newImages = [];
-		images.forEach(({id, status, caption, name, size, type, url, file, videoThumbnailName, videoThumbnailUrl}) => {
+		images.forEach(({id, status, caption, singleCaption, name, size, type, url, file, videoThumbnailName, videoThumbnailUrl}) => {
 			if(!name) name = file.name;
 			if(!size) size = file.size;
 			if(!type) type = file.type;
 
 			if(status == 'UPLOADED') {
-				let newImageData = {caption, url, name, size, type, status, id};
+				let newImageData = {caption, url, name, size, type, status, id, single_caption: singleCaption};
 
 				if(videoThumbnailName) newImageData['video_thumbnail_name'] = videoThumbnailName;
 				if(videoThumbnailUrl) newImageData['video_thumbnail_url'] = videoThumbnailUrl;
@@ -1537,6 +1555,20 @@ class Form extends Component {
 		}));
 	}
 
+	singleCaption() {
+		const { images } = this.state;
+
+		if(images.length > 0) {
+			const image = images[0];
+
+			this.updateImage(image, {
+				singleCaption: image.singleCaption ? false : true
+			});
+
+			this.flattenedImageFormat(true);
+		}
+	}
+
 	render() {
 		const { message } = this.props;
 		const { 
@@ -1706,8 +1738,14 @@ class Form extends Component {
 
 												{images.length > 0 && (
 													<>
-														<div className="mt-6 text-xs uppercase font-semibold tracking-wider mb-2 text-gray-600">
+														<div className="mt-6 text-xs uppercase font-semibold tracking-wider mb-2 text-gray-600 flex">
 															Media yang dipilih { this.isUploadingImage() ? '(' + uploadedImage + '/' + totalImage + ')' : '' }
+															<div className="ml-auto text-blue-600">
+																<div className="custom-checkbox custom-checkbox-sm">
+																	<input type="checkbox" id="single-caption" onChange={this.singleCaption.bind(this)} checked={images[0].singleCaption} />
+																	<label className="tooltip" htmlFor="single-caption" data-title="Ceklis opsi ini untuk menggunakan keterangan pada slide pertama untuk semua slide.">Single caption</label>
+																</div>
+															</div>
 														</div>
 													</>
 												)}

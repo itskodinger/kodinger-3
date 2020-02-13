@@ -32,7 +32,6 @@ Kodinger 3 merupakan project dari tim Kodinger untuk refactoring website utama K
 - More more more more
 
 ## RN
-- Add UTM to the every URLs
 
 ## Setup
 - Add the `MIX_PROXY=your_proxy_here.test` key-value to your `.env`

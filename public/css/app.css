@@ -11814,7 +11814,10 @@ video {
   position: relative;
 }
 
-.tooltip::before {
+.tooltip::after {
+  text-transform: initial;
+  letter-spacing: initial;
+  font-weight: initial;
   display: none;
   position: absolute;
   z-index: 10;
@@ -11828,7 +11831,7 @@ video {
   content: attr(data-title);
 }
 
-.tooltip:hover::before {
+.tooltip:hover::after {
   display: block;
 }
 
@@ -11855,6 +11858,12 @@ video {
   background-image: url("data:image/svg+xml,%3Csvg stroke='%23fff' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg data-name='Layer 2'%3E%3Cg data-name='checkmark'%3E%3Crect width='24' height='24' opacity='0'/%3E%3Cpath fill='%23fff' d='M9.86 18a1 1 0 0 1-.73-.32l-4.86-5.17a1 1 0 1 1 1.46-1.37l4.12 4.39 8.41-9.2a1 1 0 1 1 1.48 1.34l-9.14 10a1 1 0 0 1-.73.33z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   background-color: #667eea;
   border-color: #5a67d8;
+}
+
+.custom-checkbox-sm label::before {
+  width: 15px;
+  height: 15px;
+  margin-right: 7px;
 }
 
 .hover\:counter:hover {
@@ -11906,7 +11915,10 @@ video {
   position: relative;
 }
 
-.hover\:tooltip:hover::before {
+.hover\:tooltip:hover::after {
+  text-transform: initial;
+  letter-spacing: initial;
+  font-weight: initial;
   display: none;
   position: absolute;
   z-index: 10;
@@ -11920,7 +11932,7 @@ video {
   content: attr(data-title);
 }
 
-.hover\:tooltip:hover:hover::before {
+.hover\:tooltip:hover:hover::after {
   display: block;
 }
 
@@ -11947,6 +11959,12 @@ video {
   background-image: url("data:image/svg+xml,%3Csvg stroke='%23fff' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg data-name='Layer 2'%3E%3Cg data-name='checkmark'%3E%3Crect width='24' height='24' opacity='0'/%3E%3Cpath fill='%23fff' d='M9.86 18a1 1 0 0 1-.73-.32l-4.86-5.17a1 1 0 1 1 1.46-1.37l4.12 4.39 8.41-9.2a1 1 0 1 1 1.48 1.34l-9.14 10a1 1 0 0 1-.73.33z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   background-color: #667eea;
   border-color: #5a67d8;
+}
+
+.hover\:custom-checkbox-sm:hover label::before {
+  width: 15px;
+  height: 15px;
+  margin-right: 7px;
 }
 
 .spin {
@@ -23422,7 +23440,10 @@ html {
     position: relative;
   }
 
-  .sm\:tooltip::before {
+  .sm\:tooltip::after {
+    text-transform: initial;
+    letter-spacing: initial;
+    font-weight: initial;
     display: none;
     position: absolute;
     z-index: 10;
@@ -23436,7 +23457,7 @@ html {
     content: attr(data-title);
   }
 
-  .sm\:tooltip:hover::before {
+  .sm\:tooltip:hover::after {
     display: block;
   }
 
@@ -23463,6 +23484,12 @@ html {
     background-image: url("data:image/svg+xml,%3Csvg stroke='%23fff' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg data-name='Layer 2'%3E%3Cg data-name='checkmark'%3E%3Crect width='24' height='24' opacity='0'/%3E%3Cpath fill='%23fff' d='M9.86 18a1 1 0 0 1-.73-.32l-4.86-5.17a1 1 0 1 1 1.46-1.37l4.12 4.39 8.41-9.2a1 1 0 1 1 1.48 1.34l-9.14 10a1 1 0 0 1-.73.33z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     background-color: #667eea;
     border-color: #5a67d8;
+  }
+
+  .sm\:custom-checkbox-sm label::before {
+    width: 15px;
+    height: 15px;
+    margin-right: 7px;
   }
 
   .sm\:hover\:counter:hover {
@@ -23514,7 +23541,10 @@ html {
     position: relative;
   }
 
-  .sm\:hover\:tooltip:hover::before {
+  .sm\:hover\:tooltip:hover::after {
+    text-transform: initial;
+    letter-spacing: initial;
+    font-weight: initial;
     display: none;
     position: absolute;
     z-index: 10;
@@ -23528,7 +23558,7 @@ html {
     content: attr(data-title);
   }
 
-  .sm\:hover\:tooltip:hover:hover::before {
+  .sm\:hover\:tooltip:hover:hover::after {
     display: block;
   }
 
@@ -23555,6 +23585,12 @@ html {
     background-image: url("data:image/svg+xml,%3Csvg stroke='%23fff' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg data-name='Layer 2'%3E%3Cg data-name='checkmark'%3E%3Crect width='24' height='24' opacity='0'/%3E%3Cpath fill='%23fff' d='M9.86 18a1 1 0 0 1-.73-.32l-4.86-5.17a1 1 0 1 1 1.46-1.37l4.12 4.39 8.41-9.2a1 1 0 1 1 1.48 1.34l-9.14 10a1 1 0 0 1-.73.33z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     background-color: #667eea;
     border-color: #5a67d8;
+  }
+
+  .sm\:hover\:custom-checkbox-sm:hover label::before {
+    width: 15px;
+    height: 15px;
+    margin-right: 7px;
   }
 }
 
@@ -34738,7 +34774,10 @@ html {
     position: relative;
   }
 
-  .md\:tooltip::before {
+  .md\:tooltip::after {
+    text-transform: initial;
+    letter-spacing: initial;
+    font-weight: initial;
     display: none;
     position: absolute;
     z-index: 10;
@@ -34752,7 +34791,7 @@ html {
     content: attr(data-title);
   }
 
-  .md\:tooltip:hover::before {
+  .md\:tooltip:hover::after {
     display: block;
   }
 
@@ -34779,6 +34818,12 @@ html {
     background-image: url("data:image/svg+xml,%3Csvg stroke='%23fff' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg data-name='Layer 2'%3E%3Cg data-name='checkmark'%3E%3Crect width='24' height='24' opacity='0'/%3E%3Cpath fill='%23fff' d='M9.86 18a1 1 0 0 1-.73-.32l-4.86-5.17a1 1 0 1 1 1.46-1.37l4.12 4.39 8.41-9.2a1 1 0 1 1 1.48 1.34l-9.14 10a1 1 0 0 1-.73.33z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     background-color: #667eea;
     border-color: #5a67d8;
+  }
+
+  .md\:custom-checkbox-sm label::before {
+    width: 15px;
+    height: 15px;
+    margin-right: 7px;
   }
 
   .md\:hover\:counter:hover {
@@ -34830,7 +34875,10 @@ html {
     position: relative;
   }
 
-  .md\:hover\:tooltip:hover::before {
+  .md\:hover\:tooltip:hover::after {
+    text-transform: initial;
+    letter-spacing: initial;
+    font-weight: initial;
     display: none;
     position: absolute;
     z-index: 10;
@@ -34844,7 +34892,7 @@ html {
     content: attr(data-title);
   }
 
-  .md\:hover\:tooltip:hover:hover::before {
+  .md\:hover\:tooltip:hover:hover::after {
     display: block;
   }
 
@@ -34871,6 +34919,12 @@ html {
     background-image: url("data:image/svg+xml,%3Csvg stroke='%23fff' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg data-name='Layer 2'%3E%3Cg data-name='checkmark'%3E%3Crect width='24' height='24' opacity='0'/%3E%3Cpath fill='%23fff' d='M9.86 18a1 1 0 0 1-.73-.32l-4.86-5.17a1 1 0 1 1 1.46-1.37l4.12 4.39 8.41-9.2a1 1 0 1 1 1.48 1.34l-9.14 10a1 1 0 0 1-.73.33z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     background-color: #667eea;
     border-color: #5a67d8;
+  }
+
+  .md\:hover\:custom-checkbox-sm:hover label::before {
+    width: 15px;
+    height: 15px;
+    margin-right: 7px;
   }
 }
 
@@ -46054,7 +46108,10 @@ html {
     position: relative;
   }
 
-  .lg\:tooltip::before {
+  .lg\:tooltip::after {
+    text-transform: initial;
+    letter-spacing: initial;
+    font-weight: initial;
     display: none;
     position: absolute;
     z-index: 10;
@@ -46068,7 +46125,7 @@ html {
     content: attr(data-title);
   }
 
-  .lg\:tooltip:hover::before {
+  .lg\:tooltip:hover::after {
     display: block;
   }
 
@@ -46095,6 +46152,12 @@ html {
     background-image: url("data:image/svg+xml,%3Csvg stroke='%23fff' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg data-name='Layer 2'%3E%3Cg data-name='checkmark'%3E%3Crect width='24' height='24' opacity='0'/%3E%3Cpath fill='%23fff' d='M9.86 18a1 1 0 0 1-.73-.32l-4.86-5.17a1 1 0 1 1 1.46-1.37l4.12 4.39 8.41-9.2a1 1 0 1 1 1.48 1.34l-9.14 10a1 1 0 0 1-.73.33z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     background-color: #667eea;
     border-color: #5a67d8;
+  }
+
+  .lg\:custom-checkbox-sm label::before {
+    width: 15px;
+    height: 15px;
+    margin-right: 7px;
   }
 
   .lg\:hover\:counter:hover {
@@ -46146,7 +46209,10 @@ html {
     position: relative;
   }
 
-  .lg\:hover\:tooltip:hover::before {
+  .lg\:hover\:tooltip:hover::after {
+    text-transform: initial;
+    letter-spacing: initial;
+    font-weight: initial;
     display: none;
     position: absolute;
     z-index: 10;
@@ -46160,7 +46226,7 @@ html {
     content: attr(data-title);
   }
 
-  .lg\:hover\:tooltip:hover:hover::before {
+  .lg\:hover\:tooltip:hover:hover::after {
     display: block;
   }
 
@@ -46187,6 +46253,12 @@ html {
     background-image: url("data:image/svg+xml,%3Csvg stroke='%23fff' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg data-name='Layer 2'%3E%3Cg data-name='checkmark'%3E%3Crect width='24' height='24' opacity='0'/%3E%3Cpath fill='%23fff' d='M9.86 18a1 1 0 0 1-.73-.32l-4.86-5.17a1 1 0 1 1 1.46-1.37l4.12 4.39 8.41-9.2a1 1 0 1 1 1.48 1.34l-9.14 10a1 1 0 0 1-.73.33z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     background-color: #667eea;
     border-color: #5a67d8;
+  }
+
+  .lg\:hover\:custom-checkbox-sm:hover label::before {
+    width: 15px;
+    height: 15px;
+    margin-right: 7px;
   }
 }
 
@@ -57370,7 +57442,10 @@ html {
     position: relative;
   }
 
-  .xl\:tooltip::before {
+  .xl\:tooltip::after {
+    text-transform: initial;
+    letter-spacing: initial;
+    font-weight: initial;
     display: none;
     position: absolute;
     z-index: 10;
@@ -57384,7 +57459,7 @@ html {
     content: attr(data-title);
   }
 
-  .xl\:tooltip:hover::before {
+  .xl\:tooltip:hover::after {
     display: block;
   }
 
@@ -57411,6 +57486,12 @@ html {
     background-image: url("data:image/svg+xml,%3Csvg stroke='%23fff' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg data-name='Layer 2'%3E%3Cg data-name='checkmark'%3E%3Crect width='24' height='24' opacity='0'/%3E%3Cpath fill='%23fff' d='M9.86 18a1 1 0 0 1-.73-.32l-4.86-5.17a1 1 0 1 1 1.46-1.37l4.12 4.39 8.41-9.2a1 1 0 1 1 1.48 1.34l-9.14 10a1 1 0 0 1-.73.33z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     background-color: #667eea;
     border-color: #5a67d8;
+  }
+
+  .xl\:custom-checkbox-sm label::before {
+    width: 15px;
+    height: 15px;
+    margin-right: 7px;
   }
 
   .xl\:hover\:counter:hover {
@@ -57462,7 +57543,10 @@ html {
     position: relative;
   }
 
-  .xl\:hover\:tooltip:hover::before {
+  .xl\:hover\:tooltip:hover::after {
+    text-transform: initial;
+    letter-spacing: initial;
+    font-weight: initial;
     display: none;
     position: absolute;
     z-index: 10;
@@ -57476,7 +57560,7 @@ html {
     content: attr(data-title);
   }
 
-  .xl\:hover\:tooltip:hover:hover::before {
+  .xl\:hover\:tooltip:hover:hover::after {
     display: block;
   }
 
@@ -57503,5 +57587,11 @@ html {
     background-image: url("data:image/svg+xml,%3Csvg stroke='%23fff' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg data-name='Layer 2'%3E%3Cg data-name='checkmark'%3E%3Crect width='24' height='24' opacity='0'/%3E%3Cpath fill='%23fff' d='M9.86 18a1 1 0 0 1-.73-.32l-4.86-5.17a1 1 0 1 1 1.46-1.37l4.12 4.39 8.41-9.2a1 1 0 1 1 1.48 1.34l-9.14 10a1 1 0 0 1-.73.33z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     background-color: #667eea;
     border-color: #5a67d8;
+  }
+
+  .xl\:hover\:custom-checkbox-sm:hover label::before {
+    width: 15px;
+    height: 15px;
+    margin-right: 7px;
   }
 }

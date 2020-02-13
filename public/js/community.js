@@ -2382,10 +2382,14 @@ var api = {
             0: 1
           },
           onChange: function onChange() {
-            Object(_utils_finds__WEBPACK_IMPORTED_MODULE_8__["default"])(element, '[data-index]').forEach(function (el) {
-              return el.classList.add('hidden');
-            });
-            Object(_utils_find__WEBPACK_IMPORTED_MODULE_9__["default"])(element, '[data-index="' + cr.currentSlide + '"]').classList.remove('hidden');
+            var captions = Object(_utils_finds__WEBPACK_IMPORTED_MODULE_8__["default"])(element, '[data-index]');
+
+            if (captions.length > 0) {
+              captions.forEach(function (el) {
+                return el.classList.add('hidden');
+              });
+              Object(_utils_find__WEBPACK_IMPORTED_MODULE_9__["default"])(element, '[data-index="' + cr.currentSlide + '"]').classList.remove('hidden');
+            }
           }
         });
         Object(_utils_find__WEBPACK_IMPORTED_MODULE_9__["default"])(element, '.prev').addEventListener('click', function () {
@@ -2759,7 +2763,7 @@ var api = {
         } else {
           return "<img src=\"".concat(img, "\" alt=\"image\">");
         }
-      }).join(""), "\n\t\t\t        </div>\n\n\t\t\t        ").concat(_post.content_object.length > 1 && options.carousel !== false ? "\n\t\t\t\t        <button class=\"prev\">&lsaquo;</button>\n\t\t\t\t        <button class=\"next\">&rsaquo;</button>" : '', "\n\t\t\t    </div>\n\t\t\t    ") : '', "\n\n\t\t\t    <div class=\"p-6 text-sm text-gray-700 leading-relaxed\">\n\t\t\t        ").concat(_post.title ? "<h4 class=\"text-lg mb-2 text-black font-bold\"><a class=\"text-indigo-700\" href=\"".concat(routes.single + _post.slug, "\">\n\t\t\t\t            ").concat(_post.title, "\n\t\t\t\t        </a></h4>") : '', "\n\n\t\t\t        ").concat(!options.discover && options.truncate_content ? "<div class=\"mb-5\">".concat(_post.first_slide_caption, "</div>") : '', "\n\n\t\t\t        ").concat(!options.discover && !options.truncate_content ? _post.content_object.map(function (slide, index) {
+      }).join(""), "\n\t\t\t        </div>\n\n\t\t\t        ").concat(_post.content_object.length > 1 && options.carousel !== false ? "\n\t\t\t\t        <button class=\"prev\">&lsaquo;</button>\n\t\t\t\t        <button class=\"next\">&rsaquo;</button>" : '', "\n\t\t\t    </div>\n\t\t\t    ") : '', "\n\n\t\t\t    <div class=\"p-6 text-sm text-gray-700 leading-relaxed\">\n\t\t\t        ").concat(_post.title ? "<h4 class=\"text-lg mb-2 text-black font-bold\"><a class=\"text-indigo-700\" href=\"".concat(routes.single + _post.slug, "\">\n\t\t\t\t            ").concat(_post.title, "\n\t\t\t\t        </a></h4>") : '', "\n\n\t\t\t        ").concat(!options.discover && (options.truncate_content || !options.truncate_content && _post.is_single_caption) ? "<div class=\"mb-5\">".concat(_post.first_slide_caption, "</div>") : '', "\n\n\t\t\t        ").concat(!options.discover && !options.truncate_content && !_post.is_single_caption ? _post.content_object.map(function (slide, index) {
         return "<div data-index=\"".concat(index, "\" class=\"mb-5 ").concat(index != 0 ? 'hidden' : '', "\">").concat(slide.caption || '<i>Tidak ada keterangan</i>', "</div>");
       }).join('') : '', "\n\n\t\t\t        <div class=\"flex flex-wrap\">\n\t\t\t        ").concat(_post.tags.map(function (tag) {
         if (tag.tag !== null) {
