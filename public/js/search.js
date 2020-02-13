@@ -3595,6 +3595,7 @@ var posts = _libs_post__WEBPACK_IMPORTED_MODULE_0__["post"].init('.posts', {
   url: url,
   carousel: false,
   truncate_content: true,
+  discover: discover,
   type: _libs_post__WEBPACK_IMPORTED_MODULE_0__["types"][type],
   lazyimage: lazyimage,
   params: function params(_params) {

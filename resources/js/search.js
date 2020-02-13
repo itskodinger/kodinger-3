@@ -10,6 +10,7 @@ let posts = post.init('.posts', {
     url: url,
     carousel: false,
     truncate_content: true,
+    discover,
     type: types[type],
     lazyimage,
     params: params => ({

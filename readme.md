@@ -24,14 +24,15 @@ Kodinger 3 merupakan project dari tim Kodinger untuk refactoring website utama K
 - Search (done)
 - Off-canvasify overflow (bug) (done)
 - Ajax to REST (endpoint) (done)
-- More more more more
-
-## RN
 - Otomatis add image ke post ketika upload tanpa ID post (later)
 - Otomatis update slug ketika `checkSlug`
 - Simplify form.js's fetch function (ok)
-- Send generated video thumbnail to the server
-- Lazyload first video slide content
+- Send generated video thumbnail to the server (ok)
+- Lazyload first video slide content (ok)
+- More more more more
+
+## RN
+- Add UTM to the every URLs
 
 ## Setup
 - Add the `MIX_PROXY=your_proxy_here.test` key-value to your `.env`

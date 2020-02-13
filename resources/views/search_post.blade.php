@@ -4,6 +4,7 @@
 	<script>
 		const type = 'POST',
 			  url = routes.post,
+			  discover = false,
 			  lazyimage = true,
 			  wrap = false;
 	</script>

@@ -5,6 +5,7 @@
 		const type = 'COMMUNITY',
 			  url = routes.communities,
 			  lazyimage = false,
+			  discover = false,
 			  wrap = {
 			  	tag: 'div',
 			  	attrs: {
