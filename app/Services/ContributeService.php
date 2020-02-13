@@ -19,6 +19,23 @@ class ContributeService
 		return Contribute::with(['user', 'post']);
 	}
 
+	private function myPosts()
+	{
+		return $this->model()->whereHas('post', function($query) {
+			$query->whereUserId(auth()->user()->id);
+		});
+	}
+
+	public function onMyPosts()
+	{
+		return $this->myPosts()->paginate();
+	}
+
+	public function onMyPostsDraft()
+	{
+		return $this->myPosts()->where('status', 'draft')->paginate();
+	}
+
 	public function total()
 	{
 		return $this->model()->count();
@@ -89,7 +106,7 @@ class ContributeService
 
 		$column = $contribute->column_name;
 		$row = $model::find($contribute->row_id);
-		$value = ($row->{$column} ? $row->{$column} . "\r\n" : '') . rtrim($contribute->value, "\r\n");
+		$value = ($row->{'raw_' . $column} ? $row->{'raw_' . $column} . "\r\n" : '') . rtrim($contribute->value, "\r\n");
 
 		$row->update([
 			$column => $value

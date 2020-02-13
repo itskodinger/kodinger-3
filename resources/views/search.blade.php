@@ -20,7 +20,7 @@
             	</div>
 
             	<div class="flex mt-6 items-center">
-	        		<div class="w-full hidden tag-search relative z-10">
+	        		<div class="hidden tag-search relative z-10">
 	        			<input type="text" name="tag" class="w-64 border-2 border-gray-200 px-6 py-2 mr-2 text-sm focus:outline-none focus:border-indigo-600 rounded-full" placeholder="Cari tag">
 	        		</div>
 	            	<div class="flex flex-no-wrap overflow-x-auto tags">

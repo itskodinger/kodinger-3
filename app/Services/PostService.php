@@ -312,7 +312,7 @@ class PostService
 
 	public function findBySlug($slug, $views=false)
 	{
-		$post = $this->model()->whereSlug($slug)->first();
+		$post = $this->model()->whereSlug($slug)->whereStatus('publish')->first();
 
 		if($post && $views) {
 			$post->update(['views' => ($post->views ?? 0) + 1]);
@@ -323,7 +323,7 @@ class PostService
 
 	public function popular()
 	{
-		$posts = $this->model()->orderBy('views', 'desc')->first();
+		$posts = $this->model()->orderBy('views', 'desc')->whereStatus('publish')->where('type', null)->first();
 
 		return $posts;
 	}

@@ -19,7 +19,7 @@ function array2nl($array)
 		$nl .= $ar . "\r\n";
 	}
 
-	return $nl;
+	return rtrim($nl, "\r\n");
 }
 
 function nl_list($str, $class='', $tag='div', $plus=null)
@@ -369,4 +369,9 @@ function link_nl2obj($str)
 	}
 
 	return $new_array;
+}
+
+function can($str)
+{
+	return auth()->user()->can($str);
 }

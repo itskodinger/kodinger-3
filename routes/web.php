@@ -40,7 +40,7 @@ Route::group(['prefix' => 'posts', 'as' => 'post.'], function()
 {
 	Route::group(['middleware' => 'auth'], function() 
 	{
-		Route::get('/create', 'PostController@create')->name('create')->middleware('permission:post-create');
+		// Route::get('/create', 'PostController@create')->name('create')->middleware('permission:post-create');
 		Route::get('/', 'PostController@index')->name('index')->middleware('permission:post-list');
 		Route::get('/{id}/publish', 'PostController@publish')->name('publish')->middleware('permission:post-publish');
 		Route::get('/{id}/edit', 'PostController@edit')->name('edit')->middleware('permission:post-update');
@@ -90,6 +90,7 @@ Route::get('/contact', 'FrontendController@contact')->name('contact');
 Route::get('/discover/{tag?}', 'FrontendController@discover')->name('discover');
 Route::get('/{slug}/loves', 'FrontendController@profileLoves')->name('loves');
 Route::get('/saves', 'FrontendController@profileSaves')->name('saves');
+Route::get('/contribute/myposts', 'FrontendController@contributesMyPosts')->name('contribute.myposts');
 Route::get('/{slug?}/contributes', 'FrontendController@contributes')->name('contributes');
 Route::get('/{slug?}/delete', 'FrontendController@deletePost')->name('deletePost');
 Route::get('/{slug}/discuss', 'FrontendController@discuss')->name('discuss');

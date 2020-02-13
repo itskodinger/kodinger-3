@@ -221,6 +221,21 @@ class FrontendController extends Controller
 	}
 
 	/**
+	 * User's post contributions page
+	 * @param  String $slug User's username
+	 * @return view
+	 */
+	public function contributesMyPosts()
+	{
+		$user = auth()->user();
+		$contributes = $this->contributeService->onMyPosts();
+
+		$myposts = true;
+
+		return view('contributes', compact('contributes', 'user', 'myposts'));
+	}
+
+	/**
 	 * Search Page
 	 * @return view
 	 */
@@ -264,10 +279,16 @@ class FrontendController extends Controller
 	 * Create a new post
 	 * @return view
 	 */
-	public function post()
+	public function post($id)
 	{
-		$type = 'create';
+		if($id) 
+		{
+			$post = $this->postService->find($id);
 
-		return view('post_form', compact('type'));
+			if($post->user_id !== auth()->user()->id && !auth()->user()->can('post-update')) 
+				return abort(403);
+		}
+
+		return view('post_form');
 	}
 }
