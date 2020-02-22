@@ -28,8 +28,8 @@ class AppServiceProvider extends ServiceProvider
     {
         \Doctrine\DBAL\Types\Type::addType('uuid', 'Ramsey\Uuid\Doctrine\UuidType');
         
-        // if(env('APP_ENV') == 'production')
-        //     URL::forceScheme('https');
+        if(env('APP_ENV') == 'production')
+            URL::forceScheme('https');
 
         \Carbon\Carbon::setLocale(config('app.locale'));
 
