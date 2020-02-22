@@ -5,7 +5,7 @@ function nl_array($str)
 	if(!$str)
 		return [];
 
-	$arr = explode("\r\n", $str);
+	$arr = explode("\n", $str);
 
 	return $arr;
 }
@@ -16,10 +16,10 @@ function array2nl($array)
 
 	foreach($array as $ar)
 	{
-		$nl .= $ar . "\r\n";
+		$nl .= $ar . "\n";
 	}
 
-	return rtrim($nl, "\r\n");
+	return rtrim($nl, "\n");
 }
 
 function nl_list($str, $class='', $tag='div', $plus=null)
@@ -351,8 +351,8 @@ function login_features()
 
 function link_nl2obj($str)
 {
-	$str = rtrim($str, "\r\n");
-	$link_array = explode("\r\n", $str);
+	$str = rtrim($str, "\n");
+	$link_array = explode("\n", $str);
 
 	$new_array = [];
 
