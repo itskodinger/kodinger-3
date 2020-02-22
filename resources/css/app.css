@@ -5,6 +5,7 @@
 
 @tailwind utilities;
 
+/* purgecss start ignore */
 html {
 	scroll-behavior: smooth;
 }
@@ -47,6 +48,7 @@ html {
 		bg-indigo-900
 		rounded;
 }
+/* purgecss end ignore */
 
 .nav-active {
 	@apply
