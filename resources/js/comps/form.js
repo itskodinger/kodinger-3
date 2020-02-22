@@ -925,7 +925,7 @@ class Form extends Component {
 		let images = this.state.images;
 
 		// find current image element in array by given id
-		const currentImage = typeof idOrObj == 'object' ? idOrObj : this.findImageById(id);
+		const currentImage = typeof idOrObj == 'object' ? idOrObj : this.findImageById(idOrObj);
 
 		objExtend(currentImage, obj);
 
