@@ -279,7 +279,7 @@ class FrontendController extends Controller
 	 * Create a new post
 	 * @return view
 	 */
-	public function post($id)
+	public function post($id=false)
 	{
 		if($id) 
 		{
