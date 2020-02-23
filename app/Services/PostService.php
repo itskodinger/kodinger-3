@@ -220,11 +220,10 @@ class PostService
 		// create sub-directory
 		Storage::disk('spaces')->makeDirectory($blurry_path);
 
-		// upload image
+		// upload media (image/video)
 		Storage::disk('spaces')->putFileAs($base . $public_folder, $image, $name, 'public');
 		// upload blurry
 		Storage::disk('spaces')->put($blurry_path . '/' . ($video_thumbnail ? $video_thumbnail_name : $name), $blurry, 'public');
-
 
 		$output = [
 			'post_id' => $id,

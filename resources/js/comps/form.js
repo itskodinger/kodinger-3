@@ -1004,6 +1004,8 @@ class Form extends Component {
 		.catch((error) => {
 			this.isContentDirty = false;
 
+			console.log(error);
+
 			// force delete unsupported image
 			this._removeImage(image.id);
 		});
@@ -1757,7 +1759,9 @@ class Form extends Component {
 																	<svg xmlns="http://www.w3.org/2000/svg" className="w-4 fill-current text-gray-600" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="menu"><rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"/><rect x="3" y="11" width="18" height="2" rx=".95" ry=".95"/><rect x="3" y="16" width="18" height="2" rx=".95" ry=".95"/><rect x="3" y="6" width="18" height="2" rx=".95" ry=".95"/></g></g></svg>
 																</div>
 																<div className="w-16 h-16 mr-4 flex-shrink-0 py-4">
-																	<img className={'rounded' + (image.name && image.url ? '' : ' hidden')} src={image.videoThumbnailUrl || image.url} />
+																	<a href={image.videoThumbnailUrl || image.url} target="_blank">
+																		<img className={'rounded' + (image.name && image.url ? '' : ' hidden')} src={image.videoThumbnailUrl || image.url} />
+																	</a>
 																	<video className="hidden rounded"><source /></video>
 																	<canvas className="hidden"></canvas>
 																</div>
