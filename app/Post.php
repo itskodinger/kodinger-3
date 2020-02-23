@@ -187,8 +187,11 @@ class Post extends Model
             foreach($content_object as $k => $content)
             {
                 $new_content_object[$k] = $content;
-                $new_content_object[$k]->caption_raw = $content->caption;
-                $new_content_object[$k]->caption = $content->caption ? Markdown::convertToHtml($content->caption) : '';
+                if(isset($content->caption))
+                {
+                    $new_content_object[$k]->caption_raw = $content->caption;
+                    $new_content_object[$k]->caption = $content->caption ? Markdown::convertToHtml($content->caption) : '';
+                }
             }
 
             return $new_content_object;
