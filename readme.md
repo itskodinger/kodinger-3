@@ -31,7 +31,15 @@ Kodinger 3 merupakan project dari tim Kodinger untuk refactoring website utama K
 - Lazyload first video slide content (ok)
 - More more more more
 
-## RN
+## RN & BUGS
+- Read-mode (single page)
+- Generate video thumbnail kadang bug – kalo ukuranya gede (maybe)
+- Upload multiple media kadang beberapanya gagal kalo ada aktivitas XHR lain (input tag, atau auto save)
+- Multi-line tags di post card harusnya kasih margin
+- Add 'Tambah Baru' link di alert ketika post berhasil diterbitkan
+- Apakah memungkinkan untuk menambah post di mobile?
+- Perbaiki layout di mobile
+- Lebih bagus kalo bisa ekstrak teks dan url dari gambar, ini bisa pakai tesseract or something
 
 ## Setup
 - Add the `MIX_PROXY=your_proxy_here.test` key-value to your `.env`
