@@ -1010,7 +1010,13 @@ class TagSeeder extends Seeder
             ["name" => "crypto-trading-bots"],
             ["name" => "combining-and-splitting-value"],
             ["name" => "collaboration"],
-            ["name" => "coderlife"]
+            ["name" => "coderlife"],
+	    ["name" => "macos"],
+	    ["name" => "terminal"],
+	    ["name" => "svg"],
+            ["name" => "animation"],
+            ["name" => "package"],
+            ["name" => "composer"],
     		// ['name' => '']
     	];
 
