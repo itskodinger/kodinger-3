@@ -15,7 +15,7 @@ class PostUploadImageRequest extends FormRequest
     public function rules()
     {
         return [
-            'image' => ['max:5000', 'mimes:png,jpeg,bmp,png,webp,svg,mp4,webm,ogg', new StorageFileExist($this->public_folder, $this->name)],
+            'image' => ['max:10000', 'mimes:png,jpeg,bmp,png,webp,svg,mp4,webm,ogg', new StorageFileExist($this->public_folder, $this->name)],
         ];
     }
 }
