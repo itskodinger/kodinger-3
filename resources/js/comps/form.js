@@ -236,6 +236,7 @@ class Form extends Component {
 
 		// reject
 		if(!id || statusSaving.toUpperCase() == 'PROCESSING') return false;
+		if(this.isUploadingImage()) return false;
 
 		this.isContentDirty = true;
 
@@ -1706,7 +1707,7 @@ class Form extends Component {
 				            			<>
 					            		{ status.toUpperCase() == 'PUBLISH' ?
 						            		<div className="py-4 px-6 mb-4 bg-teal-100 text-teal-600 border-2 border-teal-200 rounded text-sm leading-loose">
-						            			Post ini sudah dipublikasikan – semua orang dapat melihatnya. <a href={routes.single + slug} className="border-b border-teal-600 pb-1 font-semibold">Lihat post</a>
+						            			Post ini sudah dipublikasikan – semua orang dapat melihatnya. <a href={routes.single + slug} className="border-b border-teal-600 pb-1 font-semibold">Lihat post</a> atau <a href={routes.form} className="border-b border-teal-600 pb-1 font-semibold">Buat post baru</a>
 						            		</div>
 						            		:
 						            		<div className="py-4 px-6 mb-4 bg-blue-100 text-blue-600 border-2 border-blue-200 rounded text-sm leading-loose">
@@ -1800,7 +1801,7 @@ class Form extends Component {
 																<div className="w-full py-4 pr-4">
 																	<div className={'text-xs float-right font-semibold tracking-wider inline-block' + (image.status == 'UPLOADED' ? ' text-teal-600' : ' text-orange-600')}>{image.status}</div>
 																	<div className="text-indigo-600 mb-1">{image.name ? image.name : image.file.name}</div>
-																	<div className="text-xs text-gray-600">{this.humanFileSize(image.size ?  image.size : image.file.size)}</div>
+																	<div className="text-xs text-gray-600">{this.humanFileSize(image.size || image.size == 0 ?  image.size : image.file.size)}</div>
 																	<div className="flex mt-2 text-sm">
 																	{(!image.isAbort && image.isAbort !== undefined) &&
 																		<div className="cursor-pointer text-red-600" onClick={this.abortImage.bind(this, image)}>Batalkan</div>

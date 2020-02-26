@@ -54,6 +54,11 @@ class Post extends Model
         'is_single_caption'
     ];
 
+    public function getTitleAttribute($value)
+    {
+        return e($value);
+    }
+
     public function getIsSingleCaptionAttribute()
     {
         if($this->type == 'link') return false;

@@ -50,6 +50,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function getNameAttribute($value)
+    {
+        return e($value);
+    }
+
     public function getIsMeAttribute()
     {
         return auth()->check() && auth()->id() == $this->id;
