@@ -75,7 +75,7 @@ class Form extends Component {
 			...this.allowedVideoTypes
 		];
 
-		this.maxFileSize = 5000000; // 2 mb
+		this.maxFileSize = 10000000; // 10 mb
 	}
 
 	/**
@@ -820,7 +820,7 @@ class Form extends Component {
 			}
 
 			if(selectedFile.size > this.maxFileSize) {
-				return reject('🐠&nbsp; Ukuran berkas maks. 5MB');
+				return reject('🐠&nbsp; Ukuran berkas maks. 10MB');
 			}
 
 			return resolve();
@@ -1707,7 +1707,7 @@ class Form extends Component {
 				            			<>
 					            		{ status.toUpperCase() == 'PUBLISH' ?
 						            		<div className="py-4 px-6 mb-4 bg-teal-100 text-teal-600 border-2 border-teal-200 rounded text-sm leading-loose">
-						            			Post ini sudah dipublikasikan – semua orang dapat melihatnya. <a href={routes.single + slug} className="border-b border-teal-600 pb-1 font-semibold">Lihat post</a> atau <a href={routes.form} className="border-b border-teal-600 pb-1 font-semibold">Buat post baru</a>
+						            			Post ini sudah dipublikasikan – semua orang dapat melihatnya. <a href={routes.single + slug} className="border-b border-teal-600 pb-1 font-semibold">Lihat post</a> atau <a href={routes.post_form} className="border-b border-teal-600 pb-1 font-semibold">Buat post baru</a>
 						            		</div>
 						            		:
 						            		<div className="py-4 px-6 mb-4 bg-blue-100 text-blue-600 border-2 border-blue-200 rounded text-sm leading-loose">
@@ -1764,7 +1764,7 @@ class Form extends Component {
 													<div className="p-20 text-center">
 														<h4 className="text-xl">Tarik gambar atau video kamu ke sini</h4>
 														<p className="text-sm mt-2 text-gray-600">
-															Maksimal: 5MB. Format yang didukung: {[...this.allowedImageTypesReadable, ...this.allowedVideoTypesReadable].join(', ')}
+															Maksimal: 10MB. Format yang didukung: {[...this.allowedImageTypesReadable, ...this.allowedVideoTypesReadable].join(', ')}
 														</p>
 														<label className="mt-6 text-indigo-600 font-semibold inline-block cursor-pointer" htmlFor="images-input" tabIndex="5">Browse</label>
 														<input type="file" multiple id="images-input" className="hidden" onChange={this.handleFiles.bind(this)} />
@@ -1800,7 +1800,7 @@ class Form extends Component {
 																</div>
 																<div className="w-full py-4 pr-4">
 																	<div className={'text-xs float-right font-semibold tracking-wider inline-block' + (image.status == 'UPLOADED' ? ' text-teal-600' : ' text-orange-600')}>{image.status}</div>
-																	<div className="text-indigo-600 mb-1">{image.name ? image.name : image.file.name}</div>
+																	<div className="text-indigo-600 mb-1 break-all">{image.name ? image.name : image.file.name}</div>
 																	<div className="text-xs text-gray-600">{this.humanFileSize(image.size || image.size == 0 ?  image.size : image.file.size)}</div>
 																	<div className="flex mt-2 text-sm">
 																	{(!image.isAbort && image.isAbort !== undefined) &&

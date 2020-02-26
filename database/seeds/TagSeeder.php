@@ -1011,12 +1011,14 @@ class TagSeeder extends Seeder
             ["name" => "combining-and-splitting-value"],
             ["name" => "collaboration"],
             ["name" => "coderlife"],
-	    ["name" => "macos"],
-	    ["name" => "terminal"],
-	    ["name" => "svg"],
+            ["name" => "macos"],
+            ["name" => "terminal"],
+            ["name" => "svg"],
             ["name" => "animation"],
             ["name" => "package"],
             ["name" => "composer"],
+            ["name" => "books"],
+            ["name" => "ebooks"],
     		// ['name' => '']
     	];
 
