@@ -661,7 +661,7 @@ let api = {
 				        </a></h4>`
 			        : ''}
 
-			        ${!options.discover && (options.truncate_content || (!options.truncate_content && post.is_single_caption)) ?
+			        ${!options.discover && post.type !== 'link' && (options.truncate_content || (!options.truncate_content && post.is_single_caption)) ?
 				        `<div class="mb-3">${post.first_slide_caption}</div>`
 			        : ''}
 
