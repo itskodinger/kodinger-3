@@ -238,7 +238,7 @@ function teams()
 {
 	return [
 		[
-			'name' => 'Muhamad Nauval Azhar',
+			'name' => 'Nauval',
 			'as' => 'Indie Developer',
 			'image' => 'https://nauv.al/_next/static/images/avatar-c34ecc5ffde4989ff598ed9a480aa9c8.jpeg',
 			'github' => 'https://github.com/nauvalazhar',
