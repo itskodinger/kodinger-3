@@ -42,6 +42,7 @@ Kodinger 3 merupakan project dari tim Kodinger untuk refactoring website utama K
 - Apakah memungkinkan untuk menambah post di mobile? (hold)
 - Perbaiki layout di mobile
 - Lebih bagus kalo bisa ekstrak teks dan url dari gambar, ini bisa pakai tesseract or something
+- Help page/documentation
 - Upgrade server!!!!
 - Ganti cloud storage!!!!
 
