@@ -336,7 +336,9 @@ class Form extends Component {
 		.then(() => {
 			window.location.reload();
 		})
-		.catch(() => {});
+		.catch((err) => {
+			console.log(err);
+		});
 	}
 
 	async saveWholeContent(objectData={}, route=false) {
@@ -1166,6 +1168,7 @@ class Form extends Component {
 
 		let newImages = [];
 		images.forEach(({id, status, caption, singleCaption, name, size, type, url, file, videoThumbnailName, videoThumbnailUrl}) => {
+			size = size.toString();
 			if(!name) name = file.name;
 			if(!size) size = file.size;
 			if(!type) type = file.type;
@@ -1716,7 +1719,7 @@ class Form extends Component {
 						            	}
 						            	</>
 						            }
-									<div className="border-2 border-gray-200 p-8 rounded">
+									<div className="border-2 border-gray-200 p-6 md:p-8 rounded">
 								        <h1 className="text-indigo-600 text-xl font-semibold">{edit ? 'Perbarui Post' : 'Buat Post'}</h1>
 								        <p className="mb-4 mt-2 text-sm text-gray-600">Bagikan pengetahuan kamu dengan developer lain; begitu pula dengan developer lain, mereka akan melakukan hal serupa.</p>
 
@@ -1756,12 +1759,12 @@ class Form extends Component {
 
 									{ id && (
 									<>
-										<div className="border-2 border-gray-200 p-8 rounded mt-10">
+										<div className="border-2 border-gray-200 p-6 md:p-8 rounded mt-10">
 									        <h2 className="text-indigo-600 mb-4 text-xl font-semibold">Media</h2>
 
 											<div className="mb-6">
 												<div className="dropzone rounded-lg border-2 border-dashed border-gray-300 w-full flex items-center justify-center">
-													<div className="p-20 text-center">
+													<div className="p-10 md:p-20 text-center">
 														<h4 className="text-xl">Tarik gambar atau video kamu ke sini</h4>
 														<p className="text-sm mt-2 text-gray-600">
 															Maksimal: 10MB. Format yang didukung: {[...this.allowedImageTypesReadable, ...this.allowedVideoTypesReadable].join(', ')}
@@ -1787,21 +1790,21 @@ class Form extends Component {
 												<div className="image-files">
 													{ images.map((image) => {
 														return (
-															<div data-id={image.id} key={image.id} className="bg-white flex justify-center w-full mb-4 rounded border-2 border-gray-200 hover:border-gray-400">
-																<div className={`handle flex-shrink-0 p-2 items-center flex border-r-2 border-gray-200 bg-gray-100 mr-4 cursor-move` + (this.isUploadingImage() ? ' pointer-events-none' : '')}>
+															<div data-id={image.id} key={image.id} className="bg-white flex justify-center flex-col md:flex-row w-full mb-4 rounded border-2 border-gray-200 hover:border-gray-400">
+																<div className={`handle flex-shrink-0 p-2 items-center flex md:border-r-2 md:border-gray-200 bg-gray-100 md:mr-4 cursor-move` + (this.isUploadingImage() ? ' pointer-events-none' : '')}>
 																	<svg xmlns="http://www.w3.org/2000/svg" className="w-4 fill-current text-gray-600" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="menu"><rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"/><rect x="3" y="11" width="18" height="2" rx=".95" ry=".95"/><rect x="3" y="16" width="18" height="2" rx=".95" ry=".95"/><rect x="3" y="6" width="18" height="2" rx=".95" ry=".95"/></g></g></svg>
 																</div>
-																<div className="w-16 h-16 mr-4 flex-shrink-0 py-4">
+																<div className="md:w-16 md:h-16 w-full h-auto md:p-0 p-4 md:mr-2 pb-0 flex-shrink-0 md:py-4">
 																	<a href={image.videoThumbnailUrl || image.url} target="_blank" onClick={this.lightbox.bind(this, image.videoThumbnailUrl || image.url)}>
 																		<img className={'rounded' + (image.name && image.url ? '' : ' hidden')} src={image.videoThumbnailUrl || image.url} />
 																	</a>
 																	<video className="hidden rounded"><source /></video>
 																	<canvas className="hidden"></canvas>
 																</div>
-																<div className="w-full py-4 pr-4">
-																	<div className={'text-xs float-right font-semibold tracking-wider inline-block' + (image.status == 'UPLOADED' ? ' text-teal-600' : ' text-orange-600')}>{image.status}</div>
-																	<div className="text-indigo-600 mb-1 break-all">{image.name ? image.name : image.file.name}</div>
-																	<div className="text-xs text-gray-600">{this.humanFileSize(image.size || image.size == 0 ?  image.size : image.file.size)}</div>
+																<div className="w-full md:py-4 md:pr-4 p-4 overflow-hidden">
+																	<div className={'text-xs mb-2 font-semibold tracking-wider inline-block' + (image.status == 'UPLOADED' ? ' text-teal-600' : ' text-orange-600')}>{image.status}</div>
+																	<div className="text-indigo-600 mb-1 truncate" title={image.name || image.file.name}>{image.name || image.file.name}</div>
+																	<div className="text-xs text-gray-600">{this.humanFileSize(image.size.toString() ?  image.size : image.file.size)}</div>
 																	<div className="flex mt-2 text-sm">
 																	{(!image.isAbort && image.isAbort !== undefined) &&
 																		<div className="cursor-pointer text-red-600" onClick={this.abortImage.bind(this, image)}>Batalkan</div>
@@ -1822,7 +1825,7 @@ class Form extends Component {
 												</div>
 											</div>
 										</div>
-										<div className="border-2 border-gray-200 p-8 rounded mt-10">
+										<div className="border-2 border-gray-200 p-6 md:p-8 rounded mt-10">
 									        <h2 className="text-indigo-600 mb-4 text-xl font-semibold">Tautan <span className="text-xs text-gray-600 font-normal">(Optional)</span></h2>
 									        <p className="leading-relaxed mb-6 mt-2 text-sm text-gray-600">Sertakan tautan referensi, seperti halaman GitHub terkait; tautan tutorial, seperti tulisan dari blog sesorang; tautan komunitas, seperti halaman pencarian StackOverflow atau GitHub issue; tautan demo, seperti halaman hasil contoh implementasi <i>library</i>, <i>framework</i>, atau <i>programming language</i> yang dibahas.</p>
 
@@ -1856,7 +1859,7 @@ class Form extends Component {
 						            		</div>
 								        </div>
 								        { status.toUpperCase() == 'PUBLISH' &&
-											<div className="border-2 border-gray-200 p-8 rounded mt-10">
+											<div className="border-2 border-gray-200 p-6 md:p-8 rounded mt-10">
 										        <h2 className="text-orange-600 mb-4 text-xl font-semibold">Visibilitas</h2>
 										        <p className="leading-relaxed mb-6 mt-2 text-sm text-gray-600">Post ini sudah dipublikasikan dan semua orang dapat mengakses post ini melalui tautan, beranda, mesin pencari, atau cara lainnya. Kamu dapat mengubah status post ini menjadi "draft" untuk menyembunyikannya dari semua orang.</p>
 

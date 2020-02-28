@@ -133,7 +133,9 @@ class PostService
 
 	public function both(...$args)
 	{
-		$this->init = $this->model();
+		$status = request()->status ?? 'publish';
+
+		$this->init = $this->model()->whereStatus($status);
 
 		return $this->paginate(...$args);
 	}

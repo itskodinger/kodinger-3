@@ -9,6 +9,7 @@ module.exports = {
   variants: {
   	borderColor: ['responsive', 'hover', 'focus', 'focus-within'],
   	opacity: ['responsive', 'hover', 'focus', 'group-hover'],
+    textColor: ['responsive', 'hover', 'focus', 'group-hover'],
   },
   plugins: [
   	function({ addUtilities, theme }) {

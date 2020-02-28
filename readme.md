@@ -35,13 +35,15 @@ Kodinger 3 merupakan project dari tim Kodinger untuk refactoring website utama K
 - Read-mode (single page)
 - Generate video thumbnail kadang bug – kalo ukuranya gede (maybe), eh tapi kalo ukurannya kecil juga kadang gak bisa lho
 - Upload multiple media kadang beberapanya gagal kalo ada aktivitas XHR lain (input tag, atau auto save)
-- Multi-line tags di post card harusnya kasih margin
+- Multi-line tags di post card harusnya kasih margin (ok)
 - Add 'Tambah Baru' link di alert ketika post berhasil diterbitkan (done)
-- Apakah memungkinkan untuk menambah post di mobile?
+- Apakah memungkinkan untuk menambah post di mobile? (hold)
 - Perbaiki layout di mobile
 - Lebih bagus kalo bisa ekstrak teks dan url dari gambar, ini bisa pakai tesseract or something
-- Hide draft post from public (home, profile page, other places)
+- Hide draft post from public (home, profile page, other places) (done)
 - Page untuk daftar post draft
+- Upgrade server!!!!
+- Ganti cloud storage!!!!
 
 ## Setup
 - Add the `MIX_PROXY=your_proxy_here.test` key-value to your `.env`

@@ -86,6 +86,12 @@ html {
 			h-auto
 			overflow-hidden;
 	}
+
+	.rightbar {
+		position: sticky;
+		top: 20px;
+		z-index: 1;
+	}
 }
 
 @screen md {

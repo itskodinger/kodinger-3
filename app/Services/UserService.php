@@ -145,6 +145,7 @@ class UserService
                 'hireable' => $user->user['hireable'],
                 'github' => $user->user['html_url'],
                 'company' => $user->user['company'],
+                'status' => 'active'
             ]);
 
             User::find($user->id)->assignRole('member');

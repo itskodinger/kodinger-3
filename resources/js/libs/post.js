@@ -593,7 +593,7 @@ let api = {
 				        `: ''}
 				    </div>
 
-				    <div class="shimmer border rounded mx-6">
+				    <div class="md:border border-b border-t md:rounded md:mx-6">
 
 				        ${post.post_card.has_embeddable_code ? `
 
@@ -611,7 +611,7 @@ let api = {
 
 				        <div class="p-4 border-t bg-gray-100">
 				        
-				            <h2 class="text-lg font-semibold hover:text-indigo-600"><a href="${post.post_card.url}">${post.post_card.title}</a></h2>
+				            <h2 class="md:text-lg mb-2 text-base font-semibold hover:text-indigo-600"><a href="${post.post_card.url}">${post.post_card.title}</a></h2>
 
 				            ${post.post_card.description ? `
 				                <p class="text-gray-600 text-sm break-all">${ post.post_card.description.substr(0, 200)}</p>
@@ -662,19 +662,19 @@ let api = {
 			        : ''}
 
 			        ${!options.discover && (options.truncate_content || (!options.truncate_content && post.is_single_caption)) ?
-				        `<div class="mb-5">${post.first_slide_caption}</div>`
+				        `<div class="mb-3">${post.first_slide_caption}</div>`
 			        : ''}
 
 			        ${!options.discover && !options.truncate_content && !post.is_single_caption ?
 			        	post.content_object.map((slide, index) => {
-				        	return `<div data-index="${index}" class="mb-5 ${index != 0 ? 'hidden' : ''}">${slide.caption || '<i>Tidak ada keterangan</i>'}</div>`;
+				        	return `<div data-index="${index}" class="mb-3 ${index != 0 ? 'hidden' : ''}">${slide.caption || '<i>Tidak ada keterangan</i>'}</div>`;
 			        	}).join('')
 		        	: ''}
 
 			        <div class="flex flex-wrap">
 			        ${post.tags.map(function(tag) {
 			        	if(tag.tag !== null) {
-		                    return `<a class="border border-gray-300 bg-gray-100 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded-full py-2 px-4 text-xs" href="${routes.search + fullUrlWithQuery({tag: tag.tag.name})}">
+		                    return `<a class="mt-2 border border-gray-300 bg-gray-100 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded-full py-2 px-4 text-xs" href="${routes.search + fullUrlWithQuery({tag: tag.tag.name})}">
 		                        #${ tag.tag.name }
 		                    </a>`;			        		
 			        	}else {

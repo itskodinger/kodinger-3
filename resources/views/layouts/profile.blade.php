@@ -37,15 +37,39 @@
             </div>
             <div class="lg:w-9/12 px-4 lg:py-12 w-full flex-shrink-0">
                 @useralert
-                <div class="border-2 border-gray-200 rounded-lg bg-gray-100">
-                    <div class="container mx-auto">
+                <div class="shadow-md rounded-lg relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-full bg-cover bg-center" style="filter: blur(10px);background-image: url({{ $user->the_avatar  }});"></div>
+                    <div class="absolute top-0 left-0 w-full h-full z-1 bg-indigo-900 opacity-75"></div>
+                    <div class="container mx-auto relative">
                         <div class="flex md:p-10 p-6 flex-col md:flex-row">
-                            <img src="{{ $user->the_avatar }}" class="w-40 h-40 rounded-lg inline-block border-2 border-gray-200">
+                            <img src="{{ $user->the_avatar }}" class="w-40 h-40 rounded-lg inline-block border-2 border-indigo-600">
                             <div class="md:ml-10 md:mt-0 mt-10">
-                                <h1 class="font-bold text-xl">{{ $user->name }}</h1>
-                                <div class="text-gray-600 text-sm">{{ $user->the_username }} &nbsp;&bull;&nbsp; bergabung {{ $user->created_at->diffForHumans() }}</div>
-                                <p class="mt-3 text-base">{{ $user->location }}</p>
-                                <p class="text-sm my-4 mb-5 text-gray-600 leading-relaxed">{{ $user->bio }}</p>
+                                <h1 class="font-bold text-xl text-white">{!! $user->name !!}</h1>
+                                <div class="text-gray-400 text-sm">{{ $user->the_username }}</div>
+                                <div class="flex md:flex-row flex-col">
+                                    @if($user->location)
+                                    <p class="mt-3 text-base text-gray-200 flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 mr-2 fill-current text-gray-400" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="home"><rect width="24" height="24" opacity="0"/><path d="M20.42 10.18L12.71 2.3a1 1 0 0 0-1.42 0l-7.71 7.89A2 2 0 0 0 3 11.62V20a2 2 0 0 0 1.89 2h14.22A2 2 0 0 0 21 20v-8.38a2.07 2.07 0 0 0-.58-1.44zM10 20v-6h4v6zm9 0h-3v-7a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v7H5v-8.42l7-7.15 7 7.19z"/></g></g></svg>
+                                        {{ $user->location }}
+                                    </p>
+                                    @endif
+                                    <p class="mt-3 text-base text-gray-200 flex items-center md:ml-4">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 mr-2 fill-current text-gray-400" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="clock"><rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"/><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><path d="M16 11h-3V8a1 1 0 0 0-2 0v4a1 1 0 0 0 1 1h4a1 1 0 0 0 0-2z"/></g></g></svg>
+                                        {{ $user->created_at->diffForHumans() }}
+                                    </p>
+                                    @if($user->company)
+                                    <p class="mt-3 text-base text-gray-200 flex items-center md:ml-4">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 mr-2 fill-current text-gray-400" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="code"><rect width="24" height="24" transform="rotate(90 12 12)" opacity="0"/><path d="M8.64 5.23a1 1 0 0 0-1.41.13l-5 6a1 1 0 0 0 0 1.27l4.83 6a1 1 0 0 0 .78.37 1 1 0 0 0 .78-1.63L4.29 12l4.48-5.36a1 1 0 0 0-.13-1.41z"/><path d="M21.78 11.37l-4.78-6a1 1 0 0 0-1.41-.15 1 1 0 0 0-.15 1.41L19.71 12l-4.48 5.37a1 1 0 0 0 .13 1.41A1 1 0 0 0 16 19a1 1 0 0 0 .77-.36l5-6a1 1 0 0 0 .01-1.27z"/></g></g></svg>
+                                        {{ $user->company }}
+                                    </p>
+                                    @endif
+                                </div>
+                                <p class="text-sm my-4 mb-5 text-gray-100 leading-relaxed">{{ $user->bio }}</p>
+
+                                <a href="{{ $user->github }}?ref=kodinger_profile" class="mt-4 bg-black hover:bg-white hover:text-black px-4 py-2 group inline-block text-sm rounded text-white items-center inline-flex">
+                                    <svg class="fill-current w-4 text-white inline-block mr-2 group-hover:text-black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><rect width="24" height="24" opacity="0"/><path d="M16.24 22a1 1 0 0 1-1-1v-2.6a2.15 2.15 0 0 0-.54-1.66 1 1 0 0 1 .61-1.67C17.75 14.78 20 14 20 9.77a4 4 0 0 0-.67-2.22 2.75 2.75 0 0 1-.41-2.06 3.71 3.71 0 0 0 0-1.41 7.65 7.65 0 0 0-2.09 1.09 1 1 0 0 1-.84.15 10.15 10.15 0 0 0-5.52 0 1 1 0 0 1-.84-.15 7.4 7.4 0 0 0-2.11-1.09 3.52 3.52 0 0 0 0 1.41 2.84 2.84 0 0 1-.43 2.08 4.07 4.07 0 0 0-.67 2.23c0 3.89 1.88 4.93 4.7 5.29a1 1 0 0 1 .82.66 1 1 0 0 1-.21 1 2.06 2.06 0 0 0-.55 1.56V21a1 1 0 0 1-2 0v-.57a6 6 0 0 1-5.27-2.09 3.9 3.9 0 0 0-1.16-.88 1 1 0 1 1 .5-1.94 4.93 4.93 0 0 1 2 1.36c1 1 2 1.88 3.9 1.52a3.89 3.89 0 0 1 .23-1.58c-2.06-.52-5-2-5-7a6 6 0 0 1 1-3.33.85.85 0 0 0 .13-.62 5.69 5.69 0 0 1 .33-3.21 1 1 0 0 1 .63-.57c.34-.1 1.56-.3 3.87 1.2a12.16 12.16 0 0 1 5.69 0c2.31-1.5 3.53-1.31 3.86-1.2a1 1 0 0 1 .63.57 5.71 5.71 0 0 1 .33 3.22.75.75 0 0 0 .11.57 6 6 0 0 1 1 3.34c0 5.07-2.92 6.54-5 7a4.28 4.28 0 0 1 .22 1.67V21a1 1 0 0 1-.94 1z"/></g></svg>
+                                    GitHub
+                                </a>
                             </div>
                         </div>
                     </div>

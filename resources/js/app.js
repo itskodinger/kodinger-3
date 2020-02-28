@@ -32,7 +32,7 @@ console.log('%c\n\nWith 💚 by Nauval & All contributors. Makasi!', 'font-size:
  * Sidebar toggle (mobile only)
  */
 $$('.side-toggle').forEach(function(item) {
-	const original_html = item.innerHTML;
+	const originalHtml = item.innerHTML;
 	item.addEventListener('click', function(e) {
 		const target = this.dataset.target,
 			  overlay = $('.nav-bottom-overlay');
@@ -46,7 +46,7 @@ $$('.side-toggle').forEach(function(item) {
 		if($(target).className.indexOf('off-canvasify--show') > -1)
 			item.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 inline-block fill-current" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="close"><rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"/><path d="M13.41 12l4.3-4.29a1 1 0 1 0-1.42-1.42L12 10.59l-4.29-4.3a1 1 0 0 0-1.42 1.42l4.3 4.29-4.3 4.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l4.29-4.3 4.29 4.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z"/></g></g></svg>';
 		else
-			item.innerHTML = original_html;
+			item.innerHTML = originalHtml;
 
 		if(target.indexOf('sidebar') > -1) {
 			overlay.style.left = item.clientWidth + 'px';
@@ -80,7 +80,7 @@ $('body').addEventListener('click', function(e) {
 	if(!$('.nav-auto-hide')) {
 		return false;
 	}
-	let scroll, scroll_up = false, scroll_down = false;
+	let scroll, scrollUp = false, scrollDown = false;
 	$('.nav-auto-hide').style.transition = 'all .5s';
 
 	let showNavbar = function() {
@@ -95,25 +95,94 @@ $('body').addEventListener('click', function(e) {
 
 	window.addEventListener('scroll', function(e) {
 		if(scroll){
-			if(window.scrollY < scroll && !scroll_up) {
+			if(window.scrollY < scroll && !scrollUp) {
 				showNavbar();
 
-				scroll_up = true;
-				scroll_down = false;
+				scrollUp = true;
+				scrollDown = false;
 			}
 
-			if(window.scrollY > scroll && !scroll_down) {
-				scroll_up = false;
+			if(window.scrollY > scroll && !scrollDown) {
+				scrollUp = false;
 			}
 
-			if(window.scrollY > scroll && window.scrollY > 300 && !scroll_down) {
+			if(window.scrollY > scroll && window.scrollY > 300 && !scrollDown) {
 				hideNavbar();
 				
-				scroll_up = false;
-				scroll_down = true;
+				scrollUp = false;
+				scrollDown = true;
 			}
 		}
 
 		scroll = window.scrollY;
+	});
+})();
+
+// sticky sidebar when reach bottom edge
+(function(sticked) {
+	const sidebar = $('#sidebar');
+	const sidebarHeight = sidebar.clientHeight;
+	const sidebarWidth = sidebar.clientWidth;
+	const sidebarLeft = sidebar.offsetLeft;
+	const sidebarBottomEdge = sidebarHeight + sidebar.offsetTop;
+	const windowHeight = window.outerHeight;
+
+	function sticky(e) {
+		const viewport = window.scrollY + windowHeight - 100;
+
+		if(viewport > sidebarBottomEdge && !sticked) {
+			sidebar.style.bottom = '0';
+			sidebar.style.position = 'fixed';
+			sidebar.style.width = `${sidebarWidth}px`;
+			sidebar.style.left = `${sidebarLeft}px`;
+			sidebar.style.top = 'initial';
+			sidebar.style.bottom = '20px';
+			sidebar.style.zIndex = 1;
+
+			sticked = true;
+		}
+
+		if(viewport < sidebarBottomEdge && sticked) {
+			sidebar.style.transition = 'initial';
+			sidebar.style.position = 'static';
+			sidebar.style.top = 'initial';
+
+			sticked = false;
+		}
+	}
+
+	if(sidebar) {
+		if(window.outerWidth > 640) {
+			window.addEventListener('scroll', sticky);
+		}
+	}
+})(false);
+
+// On Boarding
+(function() {
+	const modal = $('.onboarding-modal');
+
+	if(window.localStorage && !!!window.localStorage.getItem('boarding'))
+		modal.classList.remove('hidden');
+
+	const boarding = new Siema({
+	    selector: $('.boarding')
+	});
+
+	$$('.boarding-close').forEach(btn => btn.addEventListener('click', (e) => {
+		e.preventDefault();
+
+		modal.classList.add('hidden');
+
+		if(window.localStorage)
+			window.localStorage.setItem('boarding', false);
+	}));
+
+	['prev', 'next'].forEach(method => {
+		((btns, boarding, method) => btns.forEach((btn) => btn.addEventListener('click', (e) => {
+		    e.preventDefault();
+
+		    boarding[method]();
+		})))($$('.boarding-' + method), boarding, method);
 	});
 })();

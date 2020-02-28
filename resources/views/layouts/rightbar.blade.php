@@ -1,6 +1,6 @@
 @inject('tag', 'Services\TagService')
 
-<div class="off-canvasify" id="rightbar">
+<div class="off-canvasify rightbar" id="rightbar">
     <div class="mx-auto p-4 sm:p-0 sm:mx-0">
         <h4 class="font-bold mb-3 text-indigo-600">Topik Populer</h4>
         <div class="bg-white rounded border-2 border-gray-200">
