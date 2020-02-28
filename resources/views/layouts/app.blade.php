@@ -255,10 +255,10 @@
                                     </a></li>
                                     <li class="w-full h-px bg-gray-200"></li>
                                     @endcan
-                                    <li><a class="flex py-3 px-5 text-sm text-gray-800 hover:bg-indigo-100 rounded-tr rounded-tl" href="@route('post')">
+                                    {{-- <li><a class="flex py-3 px-5 text-sm text-gray-800 hover:bg-indigo-100 rounded-tr rounded-tl" href="@route('post')">
                                     	<svg class="w-4 mr-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="edit-2"><rect width="24" height="24" opacity="0"/><path d="M19 20H5a1 1 0 0 0 0 2h14a1 1 0 0 0 0-2z"/><path d="M5 18h.09l4.17-.38a2 2 0 0 0 1.21-.57l9-9a1.92 1.92 0 0 0-.07-2.71L16.66 2.6A2 2 0 0 0 14 2.53l-9 9a2 2 0 0 0-.57 1.21L4 16.91a1 1 0 0 0 .29.8A1 1 0 0 0 5 18zM15.27 4L18 6.73l-2 1.95L13.32 6zm-8.9 8.91L12 7.32l2.7 2.7-5.6 5.6-3 .28z"/></g></g></svg>
                                         Buat Post
-                                    </a></li>
+                                    </a></li> --}}
                                     <li><a class="flex py-3 px-5 text-sm text-gray-800 hover:bg-indigo-100 rounded-tr rounded-tl" href="@route('single', auth()->user()->the_username)">
                                         <svg class="w-4 mr-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="person"><rect width="24" height="24" opacity="0"/><path d="M12 11a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0-6a2 2 0 1 1-2 2 2 2 0 0 1 2-2z"/><path d="M12 13a7 7 0 0 0-7 7 1 1 0 0 0 2 0 5 5 0 0 1 10 0 1 1 0 0 0 2 0 7 7 0 0 0-7-7z"/></g></g></svg>
                                         Profile
