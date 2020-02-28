@@ -1804,7 +1804,7 @@ class Form extends Component {
 																<div className="w-full md:py-4 md:pr-4 p-4 overflow-hidden">
 																	<div className={'text-xs mb-2 font-semibold tracking-wider inline-block' + (image.status == 'UPLOADED' ? ' text-teal-600' : ' text-orange-600')}>{image.status}</div>
 																	<div className="text-indigo-600 mb-1 truncate" title={image.name || image.file.name}>{image.name || image.file.name}</div>
-																	<div className="text-xs text-gray-600">{this.humanFileSize(image.size.toString() ?  image.size : image.file.size)}</div>
+																	<div className="text-xs text-gray-600">{this.humanFileSize(image.size || image.size == 0 ?  image.size : image.file.size)}</div>
 																	<div className="flex mt-2 text-sm">
 																	{(!image.isAbort && image.isAbort !== undefined) &&
 																		<div className="cursor-pointer text-red-600" onClick={this.abortImage.bind(this, image)}>Batalkan</div>
