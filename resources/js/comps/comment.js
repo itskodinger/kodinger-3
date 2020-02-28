@@ -41,7 +41,7 @@ let commentActions = {
                 <a class="mt-5 text-red-600 cursor-pointer text-xs mr-3">Delete</a>
             `;
         },
-        auth: true,
+        isMine: true,
         listener: {
             on: 'click',
             handler: function(obj, event) {
@@ -141,10 +141,10 @@ function commentAdd(obj, classes, method, target)
 
     item = str2dom(item);
 
-    Object.keys(commentActions).forEach(function(action) {
-        action = commentActions[action];
+    Object.keys(commentActions).forEach(function(actionKey) {
+        let action = commentActions[actionKey];
 
-        if((('auth' in action && action.auth) == auth) || !('auth' in action)) {
+        if((('auth' in action && action.auth) == auth) || (('isMine' in action && action.isMine) == obj.is_mine) || (!('auth' in action) && !('isMine' in action))) {
             let act = str2dom(
                 typeof action == 'object' ? action.markup.call(obj) : action.call(obj)
             );
