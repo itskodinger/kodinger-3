@@ -1168,10 +1168,11 @@ class Form extends Component {
 
 		let newImages = [];
 		images.forEach(({id, status, caption, singleCaption, name, size, type, url, file, videoThumbnailName, videoThumbnailUrl}) => {
-			size = size.toString();
-			if(!name) name = file.name;
-			if(!size) size = file.size;
-			if(!type) type = file.type;
+			if(typeof size == 'number') size = size.toString();
+
+			name = name || file.name;
+			size = size || file.size;
+			type = type || file.type;
 
 			if(status == 'UPLOADED') {
 				let newImageData = {caption, url, name, size, type, status, id, single_caption: singleCaption};

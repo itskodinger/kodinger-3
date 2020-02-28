@@ -121,6 +121,8 @@ $('body').addEventListener('click', function(e) {
 // sticky sidebar when reach bottom edge
 window.sidebarSticky = function() {
 	const sidebar = $('#sidebar');
+	if(!sidebar) return false;
+	
 	const sidebarHeight = sidebar.clientHeight;
 	const sidebarWidth = sidebar.clientWidth;
 	const sidebarLeft = sidebar.offsetLeft;
@@ -159,7 +161,7 @@ window.sidebarSticky = function() {
 	}
 };
 
-if(!sidebar || sidebar !== 'manual') sidebarSticky();
+if(typeof sidebar == 'undefined' || sidebar !== 'manual') sidebarSticky();
 
 // On Boarding
 (function() {
