@@ -343,9 +343,10 @@
 	    @endif
     </div>
 
-    <!-- Scripts -->
     {{-- temp --}}
     <script src="https://cdn.jsdelivr.net/npm/siema@1.5.1/dist/siema.min.js"></script>
+
+    @stack('vars')
     <script>
         const routes = {!! routes_js() !!},
             user = {!! user_js() !!},

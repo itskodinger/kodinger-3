@@ -674,7 +674,7 @@ let api = {
 			        <div class="flex flex-wrap">
 			        ${post.tags.map(function(tag) {
 			        	if(tag.tag !== null) {
-		                    return `<a class="mt-2 border border-gray-300 bg-gray-100 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded-full py-2 px-4 text-xs" href="${routes.search + fullUrlWithQuery({tag: tag.tag.name})}">
+		                    return `<a class="mt-2 border border-gray-300 bg-gray-100 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded py-1 px-3 text-xs" href="${routes.search + fullUrlWithQuery({tag: tag.tag.name})}">
 		                        #${ tag.tag.name }
 		                    </a>`;			        		
 			        	}else {
@@ -683,28 +683,21 @@ let api = {
 			        }).join('')}
 			        </div>
 
-			        <div class="mt-8">
-			            <div class="flex w-full items-center">
-			                <a data-love ${ post.is_post_loved ? 'data-loved' : '' } class="w-12 h-12 hover:bg-gray-100 rounded-full text-gray-600 flex items-center justify-center border-2 border-gray-200" href="#">
-			                    <span></span>
-			                </a>
-			                <a class="ml-2 w-12 h-12 hover:bg-gray-100 rounded-full text-gray-600 flex items-center justify-center border-2 border-gray-200" href="${routes.single + post.slug + '#comments'}">
-			                    <svg class="stroke-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg> 
-			                </a>
-			                <a data-url="${ routes.single + post.slug }" class="share-button ml-2 w-12 h-12 hover:bg-gray-100 rounded-full text-gray-600 flex items-center justify-center border-2 border-gray-200" href="#">
-			                    <svg class="stroke-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-			                </a>
-			                <a class="ml-2 w-12 h-12 hover:bg-gray-100 rounded-full text-gray-600 flex items-center justify-center border-2 border-gray-200" data-save ${ post.is_post_saved ? 'data-saved' : '' } href="#"></a>
-
-		                	${post.is_mine ? 
-				                `<div class="ml-auto">
-				                	${ post.type !== 'link' ? `<a href="${routes.post_form + '/' + post.id}" class="mr-4">Edit</a>` : ''}
-				                	<a href="${routes.delete_post.replace(/slug/g, post.slug)}" class="text-red-600">Delete</a>
-				                </div>`
-			                : ''}
-			            </div>
-			        </div>
 			    </div>
+		        <div class="border-t border-gray-200">
+		            <div class="flex w-full items-center">
+		                <a data-love ${ post.is_post_loved ? 'data-loved' : '' } class="py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200" href="#">
+		                    <span></span>
+		                </a>
+		                <a class="py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200" href="${routes.single + post.slug + '#comments'}">
+		                    <svg class="stroke-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg> 
+		                </a>
+		                <a data-url="${ routes.single + post.slug }" class="share-button py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200" href="#">
+		                    <svg class="stroke-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+		                </a>
+		                <a class="py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200" data-save ${ post.is_post_saved ? 'data-saved' : '' } href="#"></a>
+		            </div>
+		        </div>
 			</div>`;
 
 			return tpl;

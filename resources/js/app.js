@@ -119,13 +119,14 @@ $('body').addEventListener('click', function(e) {
 })();
 
 // sticky sidebar when reach bottom edge
-(function(sticked) {
+window.sidebarSticky = function() {
 	const sidebar = $('#sidebar');
 	const sidebarHeight = sidebar.clientHeight;
 	const sidebarWidth = sidebar.clientWidth;
 	const sidebarLeft = sidebar.offsetLeft;
 	const sidebarBottomEdge = sidebarHeight + sidebar.offsetTop;
 	const windowHeight = window.outerHeight;
+	let sticked = false;
 
 	function sticky(e) {
 		const viewport = window.scrollY + windowHeight - 100;
@@ -156,7 +157,9 @@ $('body').addEventListener('click', function(e) {
 			window.addEventListener('scroll', sticky);
 		}
 	}
-})(false);
+};
+
+if(!sidebar || sidebar !== 'manual') sidebarSticky();
 
 // On Boarding
 (function() {

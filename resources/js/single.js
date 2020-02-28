@@ -61,6 +61,8 @@ mypost.onRender.then(function({lastData: {data}}) {
     });
 
     setTimeout(function() {
+        sidebarSticky();
+
         $$('[data-fetch]').forEach(function(item) {
             let url = item.dataset.fetch;
 

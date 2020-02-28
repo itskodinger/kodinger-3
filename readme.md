@@ -29,19 +29,19 @@ Kodinger 3 merupakan project dari tim Kodinger untuk refactoring website utama K
 - Simplify form.js's fetch function (ok)
 - Send generated video thumbnail to the server (ok)
 - Lazyload first video slide content (ok)
+- Multi-line tags di post card harusnya kasih margin (ok)
+- Add 'Tambah Baru' link di alert ketika post berhasil diterbitkan (done)
+- Hide draft post from public (home, profile page, other places) (done)
+- Page untuk daftar post draft
 - More more more more
 
 ## RN & BUGS
 - Read-mode (single page)
 - Generate video thumbnail kadang bug – kalo ukuranya gede (maybe), eh tapi kalo ukurannya kecil juga kadang gak bisa lho
 - Upload multiple media kadang beberapanya gagal kalo ada aktivitas XHR lain (input tag, atau auto save)
-- Multi-line tags di post card harusnya kasih margin (ok)
-- Add 'Tambah Baru' link di alert ketika post berhasil diterbitkan (done)
 - Apakah memungkinkan untuk menambah post di mobile? (hold)
 - Perbaiki layout di mobile
 - Lebih bagus kalo bisa ekstrak teks dan url dari gambar, ini bisa pakai tesseract or something
-- Hide draft post from public (home, profile page, other places) (done)
-- Page untuk daftar post draft
 - Upgrade server!!!!
 - Ganti cloud storage!!!!
 

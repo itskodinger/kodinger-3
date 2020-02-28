@@ -281,6 +281,8 @@ class FrontendController extends Controller
 	 */
 	public function post($id=false)
 	{
+		if(!auth()->check()) return abort(403);
+
 		if($id) 
 		{
 			$post = $this->postService->find($id);

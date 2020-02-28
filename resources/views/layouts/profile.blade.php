@@ -1,10 +1,14 @@
 @extends('layouts.app')
 
+@push('vars')
+    <script>const sidebar = 'manual';</script>
+@endpush
+
 @section('content')
     <div class="container mx-auto pb-20 md:pb-0 px-4 sm:px-0">
         <div class="flex -mx-4 flex-col lg:flex-row">
             <div class="lg:w-3/12 px-4 lg:py-0 flex-shrink-0 w-full">
-                <ul class="flex lg:flex-col flex-row lg:py-12 mb-4 mt-6 -mx-3 lg:mx-0 md:flex-wrap flex-no-wrap overflow-x-auto">
+                <ul class="lg:sticky lg:top-0 flex lg:flex-col flex-row lg:py-12 mb-4 mt-6 -mx-3 lg:mx-0 md:flex-wrap flex-no-wrap overflow-x-auto">
                     <li><a class="text-sm md:text-base flex px-3 py-4 rounded {{ is_route('single', ' text-indigo-600 font-bold', 'hover:text-indigo-600 text-gray-600') }}" href="@route('single', $user->the_username)">
                         <svg class="md:w-6 w-4 fill-current mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="edit-2"><rect width="24" height="24" opacity="0"/><path d="M19 20H5a1 1 0 0 0 0 2h14a1 1 0 0 0 0-2z"/><path d="M5 18h.09l4.17-.38a2 2 0 0 0 1.21-.57l9-9a1.92 1.92 0 0 0-.07-2.71L16.66 2.6A2 2 0 0 0 14 2.53l-9 9a2 2 0 0 0-.57 1.21L4 16.91a1 1 0 0 0 .29.8A1 1 0 0 0 5 18zM15.27 4L18 6.73l-2 1.95L13.32 6zm-8.9 8.91L12 7.32l2.7 2.7-5.6 5.6-3 .28z"/></g></g></svg>
                         Post
