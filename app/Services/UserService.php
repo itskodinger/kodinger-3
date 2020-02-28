@@ -133,7 +133,7 @@ class UserService
 			Storage::disk('spaces')->put($path . '/80/' . $avatar, $img80, 'public');			
 
             $user = User::create([
-                'name'     => $user->name,
+                'name'     => $user->name ?? $user->nickname,
                 'email'    => !empty($user->email)? $user->email : '' ,
                 'username' => $user->nickname,
                 'provider' => $provider,
