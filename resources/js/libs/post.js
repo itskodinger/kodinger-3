@@ -662,7 +662,7 @@ let api = {
 			        : ''}
 
 			        ${!options.discover && post.type !== 'link' && (options.truncate_content || (!options.truncate_content && post.is_single_caption)) ?
-				        `<div class="mb-3">${post.first_slide_caption}</div>`
+				        `<div class="mb-3">${options.truncate_content ? post.first_slide_caption_truncated : post.first_slide_caption}</div>`
 			        : ''}
 
 			        ${!options.discover && !options.truncate_content && !post.is_single_caption ?

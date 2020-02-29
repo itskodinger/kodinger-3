@@ -51,6 +51,7 @@ class Post extends Model
         'thumbnail_is_video',
         'first_slide_media',
         'first_slide_caption',
+        'first_slide_caption_truncated',
         'is_single_caption'
     ];
 
@@ -110,6 +111,13 @@ class Post extends Model
         if($this->type == 'link') return false;
 
         return count($this->content_object) > 0 ? ($this->content_object[0]->caption ?? '') : '';
+    }
+
+    public function getFirstSlideCaptionTruncatedAttribute()
+    {
+        if($this->type == 'link') return false;
+
+        return $this->first_slide_caption ? truncate(strip_tags($this->first_slide_caption), 100) : '';
     }
 
     public function getPostTypeAttribute()
