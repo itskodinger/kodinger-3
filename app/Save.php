@@ -17,6 +17,6 @@ class Save extends Model
 
 	public function post()
 	{
-		return $this->belongsTo('App\Post', 'row_id');
+		return $this->belongsTo('App\Post', 'row_id')->whereStatus('publish');
 	}
 }

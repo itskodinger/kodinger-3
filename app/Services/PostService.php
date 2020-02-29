@@ -90,14 +90,18 @@ class PostService
 
 	public function myLovesBySlug($user, $request)
 	{
-		$posts = $user->lovePosts()->with($this->with('post', ['post']))->has('post')->paginate(10);	
+		$posts = $user->lovePosts()->with($this->with('post', ['post']))
+				->has('post')
+				->paginate(10);	
 
 		return $posts;
 	}
 
 	public function mySavesBySlug($user, $request)
 	{
-		$posts = $user->savePosts()->with($this->with('post', ['post']))->has('post')->paginate(10);	
+		$posts = $user->savePosts()->with($this->with('post', ['post']))
+				->has('post')
+				->paginate(10);	
 
 		return $posts;
 	}
