@@ -345,7 +345,7 @@ let api = {
 				// adding click event to the close button element
 				$('.share-modal .share-modal-close').addEventListener('click', function() {
 					// yes, destroy the cjs instance
-					cjs.destroy();
+					if(cjs) cjs.destroy();
 					// let share-modal-dialog sleep
 					$('.share-modal').classList.add('hidden');
 					// bring back the overflow behavior to the body element
