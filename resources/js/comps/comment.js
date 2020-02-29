@@ -89,7 +89,7 @@ let commentActions = {
 let quoteTemplate = function(data) {
     return `
         <div class="quoted-cmt cursor-pointer hover:bg-teal-200 bg-teal-100 border border-teal-200 mb-2 py-2 px-4 text-sm rounded">
-            <div class="text-xs text-teal-600">Original by <span class="font-bold">${data.name}</span></div>
+            <div class="text-xs text-teal-600">Oleh <span class="font-bold">${data.name}</span></div>
             <div class="overflow-hidden h-22 break-all" style="max-height: 40px;">${data.content}</div>
         </div>
     `;

@@ -1279,7 +1279,7 @@ class Form extends Component {
 			currentLinkKey: key
 		});
 
-		this.checkButtonLinkDisabled();
+		// this.checkButtonLinkDisabled();
 	}
 
 	/**
@@ -1338,8 +1338,19 @@ class Form extends Component {
 			}, 0);
 		}
 
+		$$('.invalid-link').forEach(inv => inv.remove());
 		if(invalidInput.length > 0) {
-			invalidInput[0].focus();
+			const input = invalidInput[0];
+			input.focus();
+
+			let message = 'URL tidak valid, periksa kembali'; 
+
+			if(input.value.trim() < 1)
+				message = 'Masukkan URL yang ingin kamu gunakan.';
+			else if(input.value.search(/^http:\/\/|https:\/\//g) < 0)
+				message = 'Tambahkan <code>http://</code> atau <code>https://</code> di awal URL kamu.';
+
+			input.parentNode.insertAdjacentHTML('afterend', '<p class="invalid-link mb-4 text-red-600 text-sm -mt-2">'+ message +'</p>');
 		}
 
 		if(
@@ -1350,7 +1361,7 @@ class Form extends Component {
 			addNewEmptyLink();
 		}
 
-		this.checkButtonLinkDisabled();
+		// this.checkButtonLinkDisabled();
 	}
 
 	currentLinkData() {
@@ -1452,6 +1463,10 @@ class Form extends Component {
 		const currentLinkData = this.currentLinkData();
 		const currentLinkKey = this.state.currentLinkKey;
 
+		const invalidAlert = $('#link-' + id + ' + .invalid-link');
+		if(invalidAlert)
+			invalidAlert.remove();
+
 		const updatedLinkData = {};
 		updatedLinkData[currentLinkKey] = [
 			...currentLinkData.filter((item) => {
@@ -1463,7 +1478,7 @@ class Form extends Component {
 
 		this.flattenLinkFormat(updatedLinkData, true)
 
-		this.checkButtonLinkDisabled();
+		// this.checkButtonLinkDisabled();
 	}
 
 	linkKeydownHandle(e) {
@@ -1482,7 +1497,7 @@ class Form extends Component {
 	}
 
 	linkKeyupHandle(e) {
-		this.checkButtonLinkDisabled();
+		// this.checkButtonLinkDisabled();
 	}
 
 	checkButtonLinkDisabled() {
@@ -1499,7 +1514,7 @@ class Form extends Component {
 
 			function disableButton() {
 				submitBtn.classList.add('pointer-events-none');
-				submitBtn.classList.add('opacity-75');								
+				submitBtn.classList.add('opacity-75');
 			}
 
 			// first time
@@ -1845,10 +1860,11 @@ class Form extends Component {
 									        </div>
 
 						            		<div className="bg-gray-100 border border-gray-200 rounded p-4">
+							            		<p className="text-sm mb-3 text-gray-600">Masukkan URL valid dengan <code>http://</code> atau <code>https://</code>.</p>
 					            				<div className="list">
 					            					{ this.state[currentLinkKey].map((link, id) => {
 							            				return (
-							            					<div key={link.id} className="bg-white shadow rounded mb-4 text-sm text-blue-500 flex">
+							            					<div key={link.id} className="bg-white shadow rounded mb-4 text-sm text-blue-500 flex" id={'link-' + link.id}>
 								            					<input onKeyDown={this.linkKeydownHandle.bind(this)} onKeyUp={this.linkKeyupHandle.bind(this)} onChange={this.linkInputHandle.bind(this, link.id)} tabIndex="6" type="text" name={'link-' + currentLinkKey} placeholder="Contoh: https://kodinger.com/tutorial-javascript" className="url w-full py-3 px-4 rounded outline-none" defaultValue={link.value} />
 								            					<button type="button" onClick={this.removeLinkFromKey.bind(this, link.id)} className="uppercase font-semibold bg-red-500 text-white px-4 flex items-center cursor-pointer hover:bg-red-600 rounded-tr rounded-br">Hapus</button>
 								            				</div>

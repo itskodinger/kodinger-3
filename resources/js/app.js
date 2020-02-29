@@ -122,7 +122,7 @@ $('body').addEventListener('click', function(e) {
 window.sidebarSticky = function() {
 	const sidebar = $('#sidebar');
 	if(!sidebar) return false;
-	
+
 	const sidebarHeight = sidebar.clientHeight;
 	const sidebarWidth = sidebar.clientWidth;
 	const sidebarLeft = sidebar.offsetLeft;
@@ -189,5 +189,14 @@ if(typeof sidebar == 'undefined' || sidebar !== 'manual') sidebarSticky();
 
 		    boarding[method]();
 		})))($$('.boarding-' + method), boarding, method);
+	});
+
+	$('.boarding-login').addEventListener('click', function(e) {
+		e.preventDefault();
+
+		if(window.localStorage)
+			window.localStorage.setItem('boarding', false);
+
+		window.location.href = this.dataset.href;
 	});
 })();
