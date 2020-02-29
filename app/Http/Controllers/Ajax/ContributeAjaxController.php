@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Ajax;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Services\ContributeService;
 use Requests\ContributeCreateRequest;
 
-class ContributeApiController extends Controller
+class ContributeAjaxController extends Controller
 {
 
 	public $contributeService;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Ajax;
 
 use Illuminate\Http\Request;
 use Requests\PostDiscoverCreateRequest;
@@ -13,7 +13,7 @@ use App\Http\Controllers\Controller;
 use Services\PostService;
 use Illuminate\Support\Str;
 
-class PostApiController extends Controller
+class PostAjaxController extends Controller
 {
 	public $postService;
 

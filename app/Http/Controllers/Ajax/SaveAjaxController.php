@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Ajax;
 
 use Services\SaveService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class SaveApiController extends Controller
+class SaveAjaxController extends Controller
 {
     public $saveService;
 

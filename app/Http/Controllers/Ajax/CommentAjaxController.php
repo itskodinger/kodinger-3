@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Ajax;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Services\CommentService;
 use Requests\CommentCreateRequest;
 
-class CommentApiController extends Controller
+class CommentAjaxController extends Controller
 {
 
 	public $commentService;

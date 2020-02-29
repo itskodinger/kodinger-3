@@ -1,6 +1,7 @@
-import Siema from 'siema';
+import {tns} from "tiny-slider/src/tiny-slider";
+import 'tiny-slider/dist/tiny-slider.css';
 // needs better solution; error when using dynamic import
-window.Siema = Siema;
+window.tns = tns;
 import { post } from './libs/post';
 
 require('./comps/comment');

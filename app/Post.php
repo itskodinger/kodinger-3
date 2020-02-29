@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use GrahamCampbell\Markdown\Facades\Markdown;
+use App\Utils\Kdgrdown;
 use Postcard;
 use Illuminate\Database\Eloquent\SoftDeletes;
 

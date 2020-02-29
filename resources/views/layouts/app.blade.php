@@ -200,7 +200,6 @@
             </div>
         </div>
     </div>
-    @guest
     <div class="login-alert overflow-y-auto fixed top-0 left-0 w-full h-full flex z-20 md:items-center items-start justify-center hidden">
         <div class="fixed bg-black opacity-50 w-screen h-screen"></div>
         <div class="p-10 sm:w-4/12 lg:w-4/12 md:w-6/12 w-full h-full md:h-auto bg-white relative md:rounded shadow-lg">
@@ -209,7 +208,6 @@
             @include('layouts.login_content')
         </div>
     </div>
-    @endguest
     <div id="app">
     	@if(@$navbar !== false)
         <nav class="primary-nav {{!isset($auto_hide) ? 'nav-auto-hide ' : ''}}bg-white border-b-2 border-indigo-600 top-0 shadow mb-4 py-3 fixed left-0 w-full z-10">

@@ -62,31 +62,31 @@ class LoginController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function logout(Request $request)
-    {
+    // public function logout(Request $request)
+    // {
 
-        $guards = array_keys(config('auth.guards'));
+    //     $guards = array_keys(config('auth.guards'));
 
-        foreach($guards as $guard) {
+    //     foreach($guards as $guard) {
 
-            if(
-                method_exists($this->auth->guard($guard), 'logout') &&
-                $this->auth->guard($guard)->check()
-            ) {
+    //         if(
+    //             method_exists($this->auth->guard($guard), 'logout') &&
+    //             $this->auth->guard($guard)->check()
+    //         ) {
 
-                $this->auth->shouldUse($guard);
+    //             $this->auth->shouldUse($guard);
 
-                $this->auth->guard($guard)->logout();
+    //             $this->auth->guard($guard)->logout();
 
-            }
+    //         }
 
-        }
+    //     }
 
-        $request->session()->invalidate();
+    //     $request->session()->invalidate();
 
-        return $this->loggedOut($request) ?: redirect('/')->cookie(
-                self::TOKEN_NAME,
-                'UNAUTHENTICATED'
-            );
-    }
+    //     return $this->loggedOut($request) ?: redirect('/')->cookie(
+    //             self::TOKEN_NAME,
+    //             'UNAUTHENTICATED'
+    //         );
+    // }
 }

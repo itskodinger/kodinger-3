@@ -286,7 +286,7 @@ class Form extends Component {
 		});
 	}
 
-	async _request({ route, body, method, signal, token, headers }) {
+	async _request({ route, body, method, signal, headers }) {
 		headers = Object.assign({
 			'X-CSRF-TOKEN': token,
 			'Accept': 'application/json'

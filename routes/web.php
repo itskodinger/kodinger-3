@@ -11,6 +11,16 @@
 |
 */
 
+// testing markdown
+// Route::get('/md', function() {
+// 	$down = new App\Utils\Kdgrdown();
+
+// 	return e($down->text('
+// Hello
+// ![](http://google.com)
+// 	'));
+// });
+
 Route::get('leave', RedirectorPageController::class)->name('leave.kodinger');
 Route::get('privacy-policy', function() {
 	return view('privacy-policy');

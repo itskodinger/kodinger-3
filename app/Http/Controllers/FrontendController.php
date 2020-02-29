@@ -202,7 +202,7 @@ class FrontendController extends Controller
 		if(!$setting)
 			return redirect()->back()->withErrors();
 
-		flash()->success('User setting saved successfully');
+		flash()->success('Profile berhasil diperbarui');
 
 		return redirect()->back();
 	}

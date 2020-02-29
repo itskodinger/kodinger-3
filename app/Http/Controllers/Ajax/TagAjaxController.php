@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Ajax;
 
 use App\Http\Controllers\Controller;
 use Services\TagService;
 use Illuminate\Http\Request;
 
-class TagApiController extends Controller
+class TagAjaxController extends Controller
 {
 	public $tagService;
 

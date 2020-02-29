@@ -43,6 +43,9 @@ Kodinger 3 merupakan project dari tim Kodinger untuk refactoring website utama K
 - Perbaiki layout di mobile
 - Lebih bagus kalo bisa ekstrak teks dan url dari gambar, ini bisa pakai tesseract or something
 - Help page/documentation
+- Markdown parser (post caption, comment reply)
+- Auto-resize carousel (ok)
+- Image cropper (create content page)
 - Upgrade server!!!!
 - Ganti cloud storage!!!!
 

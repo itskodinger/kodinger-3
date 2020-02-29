@@ -126,23 +126,36 @@ let api = {
 		 */
 		carousel: function(element) {
 			try {
-	            var cr = new window.Siema({
-	                selector: find(element, '.carousel'),
-					perPage: {
-						0: 1,
-					},
-					onChange: function() {
-						const captions = finds(element, '[data-index]');
-
-						if(captions.length > 0) {
-							captions.forEach(el => el.classList.add('hidden'));
-							find(element, '[data-index="'+ cr.currentSlide +'"]').classList.remove('hidden');
-						}
-					}
+	            var cr = new window.tns({
+	                container: find(element, '.carousel'),
+	                controls: false,
+	                nav: false,
+					items: 1,
+					autoHeight: true,
+					loop: false,
+					mouseDrag: true,
 	            });
 
-	            find(element, '.prev').addEventListener('click', () => cr.prev());
-	            find(element, '.next').addEventListener('click', () => cr.next());
+	            const firstImg = find(element, '.carousel img:first-child');
+
+	            firstImg.addEventListener('load', () => {
+	            	// just make sure
+	            	setTimeout(() => cr.updateSliderHeight(), 500);
+	            });
+
+	            cr.events.on('indexChanged', () => {
+	            	const currentSlide = cr.getInfo().index;
+
+					const captions = finds(element, '[data-index]');
+
+					if(captions.length > 0) {
+						captions.forEach(el => el.classList.add('hidden'));
+						find(element, '[data-index="'+ currentSlide +'"]').classList.remove('hidden');
+					}
+	            })
+
+	            find(element, '.prev').addEventListener('click', () => cr.goTo('prev'));
+	            find(element, '.next').addEventListener('click', () => cr.goTo('next'));
 			} catch(e) {
 				console.warn('Failed when attaching carousel: ', e);
 			}
