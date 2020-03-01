@@ -1,10 +1,3 @@
-# Overview
+# Ikhtisar
 
----
-
-- [First Section](#section-1)
-
-<a name="section-1"></a>
-## First Section
-
-Write something cool.. 🦊
+Halaman ini akan memandu kamu agar menjadi warga Kodinger yang baik dan patuh terhadap aturan di sini dan Negara ini.

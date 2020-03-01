@@ -1,5 +1,9 @@
 # Tentang Markdown 
 
+Dewasa ini, banyak sekali *platform* yang menggunakan Markdown untuk format penulisannya, termasuk kami.
+
+---
+
 Kami menggunakan Markdown untuk format penulisan. Sebagai *programmer*, mayoritas dari kita sudah mengenal Markdown, atau bahkan sudah menguasainya. Tapi, untuk pendatang baru atau *programmer* yang baru belajar, mungkin belum pernah menulis Markdown atau bahkan kenal saja tidak.
 
 - [Apa Itu Markdown?](#what-is-markdown)

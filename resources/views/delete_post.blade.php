@@ -10,15 +10,15 @@
 
                         <div class="bg-red-100 border-l-4 border-red-500 text-red-700 px-4 py-2 mb-4" role="alert">
                             <p class="font-bold">Perhatian</p>
-                            <p>Post akan dihapus secara permanent dan tidak dapat dikembalikan.</p>
+                            <p>Post akan dihapus secara permanent dan tidak dapat dikembalikan. <a href="@docs('content')#deleting-content" target="_blank" class="border-b border-red-500 text-red-700" target="_blank">Pelajari selengkapnya</a>.</p>
                         </div>
 
 	            		<p class="mb-2 text-gray-600">Post Terkait</p>
                         <a href="" class="flex bg-gray-100 hover:bg-gray-200 hover:border-gray-300 border border-gray-200 mb-8 p-3 rounded">
-	            			<div class="bg-cover w-24 rounded flex-shrink-0" style="background-image: url({{$post_card['thumbnail'] ?? ''}});"></div>	
+	            			<div class="bg-cover w-24 rounded flex-shrink-0" style="background-image: url({{$post->first_slide_media ?? $post_card['thumbnail'] ?? ''}});"></div>	
 	            			<div class="ml-4 w-full">
-	            				<h4 class="font-semibold text-indigo-600">{{ $post_card['title'] ?? '' }}</h4>
-	            				<p class="text-sm text-gray-600 mt-1">{{ $post_card['description'] ?? '' }}</p>
+	            				<h4 class="font-semibold text-indigo-600">{{ $post->title ?? $post_card['title'] ?? '' }}</h4>
+	            				<p class="text-sm text-gray-600 mt-1">{{ $post->first_slide_caption_truncated ?? $post_card['description'] ?? '' }}</p>
 	            			</div>
 	            		</a>
 
@@ -31,7 +31,7 @@
 	            		</form>
 
 						<div class="text-center">
-							<a href="@route('discover')" class="text-gray-600 mt-5 hover:text-indigo-600 inline-block">Kembali</a>
+							<a href="@route('single', auth()->user()->the_username)" class="text-gray-600 mt-5 hover:text-indigo-600 inline-block">Batalkan</a>
 						</div>
 					</div>
             	</div>

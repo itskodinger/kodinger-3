@@ -1700,7 +1700,7 @@ class Form extends Component {
 				    <div className="fixed bg-black opacity-50 w-screen h-screen"></div>
 				    <div className="p-10 my-0 md:my-10 sm:w-6/12 lg:w-6/12 md:w-8/12 w-full h-full md:h-auto bg-white relative md:rounded shadow-lg">
 				        <h2 className="text-xl font-bold">Tentukan Deskripsi</h2>
-				        <p className="text-sm text-gray-600 mt-2 leading-relaxed">Berikan deskripsi pada slide ini. Kamu dapat mengosongkan deskripsi bila tidak ada.</p>
+				        <p className="text-sm text-gray-600 mt-2 leading-relaxed">Berikan deskripsi pada slide ini. Kamu dapat mengosongkan deskripsi bila tidak ada. <a href={routes.docs + '/create-content#captioning'} className="border-b border-indigo-600 text-indigo-600">Pelajari selengkapnya</a> tentang mengisi keterangan.</p>
 				        <div className="mt-6 mb-5">
 				        	<div className="flex">
 				        		<button onClick={this.captionSwitch.bind(this, 'editor')} className="border-t-2 border-l-2 rounded-tl-lg text-sm px-4 py-2 border-gray-200">Editor</button>
@@ -1718,7 +1718,7 @@ class Form extends Component {
 					        	        <path d="M238.371257,157.892216 L18.3952096,157.892216 C8.43113772,157.892216 0,149.461078 0,139.497006 L0,18.3952096 C0,8.43113772 8.43113772,0 18.3952096,0 L237.60479,0 C247.568862,0 256,8.43113772 256,18.3952096 L256,139.497006 C256,149.461078 248.335329,157.892216 238.371257,157.892216 L238.371257,157.892216 Z M18.3952096,12.2634731 C15.3293413,12.2634731 12.2634731,15.3293413 12.2634731,18.3952096 L12.2634731,139.497006 C12.2634731,143.329341 15.3293413,145.628743 18.3952096,145.628743 L237.60479,145.628743 C241.437126,145.628743 243.736527,142.562874 243.736527,139.497006 L243.736527,18.3952096 C243.736527,14.5628743 240.670659,12.2634731 237.60479,12.2634731 C238.371257,12.2634731 18.3952096,12.2634731 18.3952096,12.2634731 L18.3952096,12.2634731 Z M36.7904192,121.101796 L36.7904192,36.7904192 L61.3173653,36.7904192 L85.8443114,67.4491018 L110.371257,36.7904192 L134.898204,36.7904192 L134.898204,121.101796 L110.371257,121.101796 L110.371257,72.8143713 L85.8443114,103.473054 L61.3173653,72.8143713 L61.3173653,121.101796 L36.7904192,121.101796 L36.7904192,121.101796 Z M190.850299,121.101796 L154.05988,80.4790419 L178.586826,80.4790419 L178.586826,36.7904192 L203.113772,36.7904192 L203.113772,79.7125749 L227.640719,79.7125749 L190.850299,121.101796 L190.850299,121.101796 Z"></path>
 					        	    </g>
 					        	</svg>
-					        	<p className="text-xs text-gray-600"><a className="text-indigo-600" target="_blank" href="@docs('markdown')#supported-markdown">Markdown</a></p>
+					        	<p className="text-xs text-gray-600"><a className="text-indigo-600" target="_blank" href={routes.docs + '/markdown#supported-markdown'}>Markdown</a></p>
 				        	</div>
 				        </div>
 				        <button onClick={this.closeCaptionModal.bind(this)} className="bg-indigo-600 p-4 text-sm text-white font-semibold rounded shadow block w-full text-center" type="button">Simpan Perubahan</button>
@@ -1784,7 +1784,7 @@ class Form extends Component {
 						            }
 									<div className="border-2 border-gray-200 p-6 md:p-8 rounded">
 								        <h1 className="text-indigo-600 text-xl font-semibold">{edit ? 'Perbarui Post' : 'Buat Post'}</h1>
-								        <p className="mb-4 mt-2 text-sm text-gray-600">Bagikan pengetahuan kamu dengan developer lain; begitu pula dengan developer lain, mereka akan melakukan hal serupa.</p>
+								        <p className="mb-4 mt-2 text-sm text-gray-600">Bagikan pengetahuan kamu dengan developer lain; begitu pula dengan developer lain, mereka akan melakukan hal serupa. <a className="text-indigo-600 border-b border-indigo-600" target="_blank" href={routes.docs + '/content'}>Pelajari selengkapnya</a> tentang membuat konten dan <a className="text-indigo-600 border-b border-indigo-600" target="_blank" href={routes.docs + '/content'}>best practice</a>-nya.</p>
 
 										<div className="mb-6 mt-6">
 											<label className="mb-1 text-sm inline-block text-gray-600">Judul</label>
@@ -1824,6 +1824,7 @@ class Form extends Component {
 									<>
 										<div className="border-2 border-gray-200 p-6 md:p-8 rounded mt-10">
 									        <h2 className="text-indigo-600 mb-4 text-xl font-semibold">Media</h2>
+									        <p className="leading-relaxed mb-6 mt-2 text-sm text-gray-600">Kamu dapat mengunggah gambar atau video dalam satu konten yang sama. <a href={routes.docs + '/content#form-media'} className="text-indigo-600 border-b border-indigo-600" target="_blank">Pelajari selengkapnya</a> tentang media.</p>
 
 											<div className="mb-6">
 												<div className="dropzone rounded-lg border-2 border-dashed border-gray-300 w-full flex items-center justify-center">
@@ -1890,7 +1891,7 @@ class Form extends Component {
 										</div>
 										<div className="border-2 border-gray-200 p-6 md:p-8 rounded mt-10">
 									        <h2 className="text-indigo-600 mb-4 text-xl font-semibold">Tautan <span className="text-xs text-gray-600 font-normal">(Optional)</span></h2>
-									        <p className="leading-relaxed mb-6 mt-2 text-sm text-gray-600">Sertakan tautan referensi, seperti halaman GitHub terkait; tautan tutorial, seperti tulisan dari blog sesorang; tautan komunitas, seperti halaman pencarian StackOverflow atau GitHub issue; tautan demo, seperti halaman hasil contoh implementasi <i>library</i>, <i>framework</i>, atau <i>programming language</i> yang dibahas.</p>
+									        <p className="leading-relaxed mb-6 mt-2 text-sm text-gray-600">Sertakan tautan referensi yang relevan dengan konten, bisa tautan ke halaman resmi situs web, tutorial, <code>code playground</code>, atau yang lainnya. <a href={routes.docs + '/content#form-links'} className="border-b border-indigo-600 text-indigo-600" target="_blank">Pelajari selengkapnya</a> tentang tautan.</p>
 
 									        <div className="flex mb-4 overflow-x-auto flex-no-wrap">
 									        	{ Object.keys(key2str).map((name, index) => {

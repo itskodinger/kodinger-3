@@ -306,6 +306,7 @@ function routes_js()
         "profile_saves" => route('saves'),
         "communities" => route('ajax.community.index'),
         "search" => route('search'),
+        "docs" => route('larecipe.show', ['1.0', ''])
 	]);
 }
 

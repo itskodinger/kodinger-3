@@ -7,6 +7,7 @@
     - [Markdown](/{{route}}/{{version}}/markdown)
 
 - ## Best Practice
+    - [Aturan](/{{route}}/{{version}}/rules)
     - [Mendesain Konten](/{{route}}/{{version}}/design-content)
     - [Membuat Konten](/{{route}}/{{version}}/create-content)
     - [Berbagi Tautan](/{{route}}/{{version}}/discover)

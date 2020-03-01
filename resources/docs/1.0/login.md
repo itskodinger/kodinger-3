@@ -1,5 +1,9 @@
 # Tentang Login
 
+Tidak ada fitur yang dibatasi ketika kamu tidak login, kecuali fitur yang memang membutuhkan autentikasi sebagai identitas pengguna.
+
+---
+
 Pada dasarnya, kamu dapat beraktivitas di Kodinger tanpa harus login, seperti melihat-lihat konten salah satunya. Namun, terdapat beberapa aktivitas yang memerlukan data pengguna, yang sederhananya kamu harus login untuk melakukan aktivitas tersebut, seperti berbagi tautan dari web eksternal, membuat konten post, dan lain sebagainya.
 
 Kami tidak ingin menyulitkan diri sendiri dan orang lain dengan membuat metode registrasi yang rumit, seperti kamu harus mengisi nama, surel, nama pengguna, dan lain sebagainya secara manual. Untuk itu kami menerapkan metode yang lebih mudah, yaitu "One-click Login".

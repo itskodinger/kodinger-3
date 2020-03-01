@@ -270,7 +270,7 @@ class FrontendController extends Controller
 		if(!$post->is_mine)
 			return abort(404);
 
-		$post_card = $post->post_card->toArray();
+		$post_card = optional($post->post_card)->toArray();
 
 		return view('delete_post', compact('post', 'post_card'));
 	}

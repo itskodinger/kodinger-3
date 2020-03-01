@@ -1,5 +1,9 @@
 # Tentang Konten
 
+Sebelum membuat konten, kamu harus memamahi "konten" yang terdapat di Kodinger.
+
+---
+
 Pada dasarnya, Kodinger dibangun untuk berbagi pengetahuan yang kami miliki. Namun, seiring perkembangan Kodinger dan ini adalah kali ke-3 kami merancang ulang situs Kodinger ini, maka terciptalah ide untuk membuat sesuatu yang memungkinkan orang lain berbagi pengetahuannya – bukan hanya kami.
 
 - [Bagaimana Cara Membuat Konten](#how-to-create-content)
@@ -58,7 +62,7 @@ Format konten di sini berbeda dengan platform *blogging* biasanya. Kami mengedep
 
 Sering kami jumpai, pembaca sudah membaca artikel yang begitu panjang, namun masih tidak paham teknologi tersebut sebenarnya mengatasi masalah apa, berangkat dari sini kami tertarik untuk  memperbaiki hal semacam itu.
 
-Bidang ini dapat kamu isi dengan beberapa gambar atau video, masing-masing *file* maksimal berukuran **5MB**. Kami tidak membatasi berapa gambar atau video yang dapat kamu unggah, tapi biasanya kami hanya memerlukan 9 gambar dan 1 video untuk menjelaskan sesuatu – seperti di Instagram.
+Bidang ini dapat kamu isi dengan beberapa gambar atau video, masing-masing *file* maksimal berukuran **10MB**. Kami tidak membatasi berapa gambar atau video yang dapat kamu unggah, tapi biasanya kami hanya memerlukan 9 gambar dan 1 video untuk menjelaskan sesuatu – seperti di Instagram.
 
 Pada dasarnya, masing-masing gambar atau video dapat kamu berikan keterangan atau deskripsi. Namun, seringnya, kamu hanya ingin mengisi satu keterangan saja untuk semua slide (gambar atau video); untuk mengaktifkan fitur ini, kamu perlu menceklis opsi "Single Caption" setelah mengunggah semua media.
 
@@ -79,6 +83,7 @@ Pada dasarnya, masing-masing gambar atau video dapat kamu berikan keterangan ata
 
 Bidang ini wajib? **Ya, minimal satu slide**.
 
+<a name="form-links"></a>
 ### Tautan
 Ketika kamu membahas suatu *library*, *framework*, bahasa pemrograman, atau teknologi lainnya, kamu perlu mencantumkan beberapa jenis tautan:
 
@@ -134,3 +139,8 @@ Untuk menghapus konten, kamu dapat mengikuti langkah-langkah ini:
 3. Klik tombol "Hapus" yang ada di bagian bawah dan di sisi kanan konten
 
 **Catatan:** pikirkan ulang sebelum melakukan aksi ini, karena kamu tidak dapat mengembalikan konten yang sudah dihapus.
+
+<a name="best-practice-content"></a>
+## Best Practice
+
+Setelah membaca halaman ini, sangat disarankan kamu untuk membaca halaman tentang tips-tips membuat konten yang baik dan sesuai kaidah Kodinger. Silahkan pergi ke [halaman ini](create-content).
