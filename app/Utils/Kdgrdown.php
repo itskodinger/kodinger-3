@@ -35,6 +35,8 @@ class Kdgrdown
         # make sure no definitions are set
         $this->DefinitionData = array();
 
+        $text = e($text);
+
         # standardize line breaks
         $text = str_replace(array("\r\n", "\r"), "\n", $text);
 

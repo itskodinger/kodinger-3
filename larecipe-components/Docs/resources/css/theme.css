@@ -1,0 +1,79 @@
+/**************************************/
+/**************** Root ****************/
+/**************************************/
+:root {
+	--primary: #5a67d8;
+	--documentation: white;
+	--navbar: white;
+}
+
+/**************************************/
+/*************** Sidebar **************/
+/**************************************/
+.sidebar {
+  background-color: transparent;
+  padding: 40px;
+}
+
+.sidebar ul li h2 {
+	padding-left: 0;
+	text-transform: uppercase;
+	font-size: 12px;
+	letter-spacing: 1.3px;
+	color: #a0aec0;
+	font-weight: 600;
+}
+.sidebar ul li:not(:first-child) h2 {
+	margin-top: 20px;
+}
+
+.sidebar ul li a,
+.sidebar ul li ul li a {
+	color: #718096;
+	padding-left: 0;
+	font-size: 14px;
+	font-weight: normal;
+}
+
+.sidebar ul li a:hover,
+.sidebar ul li ul li a:hover {
+	padding-left: initial;
+	color: var(--primary);
+}
+
+.sidebar>ul>li>ul>li.is-active {
+	padding-left: 0;
+}
+.sidebar>ul>li>ul>li.is-active::before {
+	display: none;
+}
+.sidebar>ul>li>ul>li.is-active a {
+	padding-left: initial;
+	color: var(--primary);
+}
+
+.documentation p {
+	line-height: 28px;
+	margin-bottom: 20px;
+}
+
+.documentation ul,
+.documentation ol {
+	margin-bottom: 20px;
+}
+
+.documentation h1 {
+	margin-bottom: 20px;
+}
+.documentation h4 {
+	margin-bottom: 10px;
+}
+
+.documentation img {
+	border: 2px solid #000;
+	border-radius: 5px;
+	margin: 20px 0;
+}
+.documentation p + img {
+	margin-top: 0;
+}

@@ -52,6 +52,10 @@ class AppServiceProvider extends ServiceProvider
             return "<?php echo route($expression); ?>";
         });
 
+        Blade::directive('docs', function($expression) {
+            return "<?php echo route('larecipe.show', ['1.0', $expression]); ?>";
+        });
+
         Blade::directive('api', function($expression) {
             return "<?php echo route('api.' . $expression); ?>";
         });

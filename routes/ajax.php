@@ -1,6 +1,6 @@
 <?php
 
-Route::get('tags', 'Api\TagAjaxController@index')->name('tags');
+Route::get('tags', 'TagAjaxController@index')->name('tags');
 Route::group(['prefix' => 'tags', 'as' => 'tag.'], function() 
 {
 	Route::get('/search', 'TagAjaxController@search')->name('search');
