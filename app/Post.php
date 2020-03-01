@@ -56,6 +56,13 @@ class Post extends Model
         'is_single_caption'
     ];
 
+    protected function markdownParse()
+    {
+        return new Kdgrdown([
+            'safe' => true,
+        ]);
+    }
+
     public function getTitleAttribute($value)
     {
         return e($value);
@@ -204,7 +211,7 @@ class Post extends Model
                 if(isset($content->caption))
                 {
                     $new_content_object[$k]->caption_raw = $content->caption;
-                    $new_content_object[$k]->caption = $content->caption ? Markdown::convertToHtml($content->caption) : '';
+                    $new_content_object[$k]->caption = $content->caption ? $this->markdownParse()->text($content->caption) : '';
                 }
             }
 
@@ -216,12 +223,12 @@ class Post extends Model
 
     public function getMarkdownAttribute()
     {
-        return Markdown::convertToHtml($this->content ?? '');
+        return $this->markdownParse()->text($this->content ?? '');
     }
 
     public function getMarkdownTruncateAttribute()
     {
-        return utf8_encode(truncate(Markdown::convertToHtml($this->content ?? ''), 100));
+        return utf8_encode(truncate($this->markdownParse()->text($this->content ?? ''), 100));
     }
 
     public function getIsMineAttribute()

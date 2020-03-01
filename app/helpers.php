@@ -279,6 +279,7 @@ function routes_js()
         "save" => route('ajax.saves.store'),
         "post" => route('ajax.post.posts'),
         "post_form" => route('post'),
+        "post_markdown" => route('ajax.post.markdown'),
         "delete_post" => route('deletePost', 'slug'),
         "post_both" => route('ajax.post.both'),
         "post_store" => route('ajax.post.store'),

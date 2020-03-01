@@ -14,6 +14,113 @@ html {
 	width: 100%;
 }
 
+.comment-truncate {
+	@apply
+		overflow-hidden;
+
+	max-height: 200px;
+	background-image: linear-gradient(to bottom, transparent, transparent, transparent, #f2f2f2);
+}
+
+.markdowned {
+	@apply
+		text-sm;
+}
+
+.markdowned p:not(:last-child) {
+	@apply
+		mb-4;
+}
+
+.markdowned a {
+	@apply
+		text-indigo-600;
+}
+
+.markdowned h5,
+.markdowned h6 {
+	@apply
+		border-b
+		pb-1
+		mb-4
+		font-bold;
+}
+
+.markdowned h5 {
+	@apply
+		text-xl;
+}
+
+.markdowned h6 {
+	@apply
+		text-lg;
+}
+
+.markdowned ul,
+.markdowned ol {
+	@apply
+		pl-6
+		mb-4;
+}
+
+.markdowned ul li p,
+.markdowned ol li p {
+	@apply
+		mb-0;
+}
+
+.markdowned ul li ul,
+.markdowned ul li ol,
+.markdowned ol li ul,
+.markdowned ol li ol {
+	@apply
+		mt-4;
+}
+
+.markdowned ul li,
+.markdowned ol li {
+	@apply
+		mb-2;
+}
+
+.markdowned ul {
+	@apply
+		list-disc;
+}
+
+.markdowned ol {
+	@apply
+		list-decimal;
+}
+
+.markdowned pre,
+.markdowned code {
+	@apply
+		bg-gray-100
+		border
+		border-gray-200
+		rounded
+		p-1;
+}
+
+.markdowned pre {
+	@apply
+		p-3
+		mb-4;
+}
+.markdowned pre code {
+	@apply
+		bg-transparent
+		border-none
+		rounded-none
+		p-0;
+}
+
+.markdowned hr {
+	@apply 
+		my-4;
+}
+
 .prev, .next {
 	@apply
 		absolute

@@ -25,6 +25,11 @@ class Kdgrdown
 
     # ~
 
+    function __construct($opts)
+    {
+        $this->options = array_merge(['safe' => false, 'comment' => false], $opts);
+    }
+
     function text($text)
     {
         # make sure no definitions are set
@@ -186,6 +191,7 @@ class Kdgrdown
             }
 
             $text = $indent > 0 ? substr($line, $indent) : $line;
+
 
             # ~
 
@@ -518,7 +524,7 @@ class Kdgrdown
                 $level ++;
             }
 
-            if ($level > 6)
+            if ($level <= 4 || $level > 6)
             {
                 return;
             }
@@ -856,7 +862,7 @@ class Kdgrdown
 
     protected function blockTable($Line, array $Block = null)
     {
-        if ( ! isset($Block) or isset($Block['type']) or isset($Block['interrupted']))
+        if ( ! isset($Block) or isset($Block['type']) or isset($Block['interrupted']) or $this->options['safe'])
         {
             return;
         }
@@ -1227,7 +1233,7 @@ class Kdgrdown
 
     protected function inlineImage($Excerpt)
     {
-        if ( ! isset($Excerpt['text'][1]) or $Excerpt['text'][1] !== '[')
+        if ( ! isset($Excerpt['text'][1]) or $Excerpt['text'][1] !== '[' or $this->options['safe'])
         {
             return;
         }
@@ -1261,6 +1267,8 @@ class Kdgrdown
 
     protected function inlineLink($Excerpt)
     {
+        if($this->options['safe'] and !$this->options['comment']) return;
+
         $Element = array(
             'name' => 'a',
             'handler' => 'line',
@@ -1406,6 +1414,8 @@ class Kdgrdown
 
     protected function inlineUrl($Excerpt)
     {
+        if($this->options['safe']) return;
+
         if ($this->urlsLinked !== true or ! isset($Excerpt['text'][2]) or $Excerpt['text'][2] !== '/')
         {
             return;

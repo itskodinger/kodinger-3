@@ -17,7 +17,7 @@ let commentTemplate = function(data) {
                     <h4 class="mb-1 font-bold text-sm"><a class="text-indigo-600 cmt-name" href="${routes.base_url +'/'+ data.username}">${data.name}</a> <span class="text-gray-600 font-normal">(${data.username})</span></h4>
                     <div class="text-sm text-gray-700">
                         <div class="quoted-cmt-wrapper"></div>
-                        <div class="cmt-content mb-2 text-base break-all">${data.content}</div>
+                        <div class="cmt-content mb-2 text-base break-all markdowned">${data.content}</div>
                     </div>
                     <div class="cmt-actions opacity-25 group-hover:opacity-100"></div>
                 </div>
@@ -90,7 +90,7 @@ let quoteTemplate = function(data) {
     return `
         <div class="quoted-cmt cursor-pointer hover:bg-teal-200 bg-teal-100 border border-teal-200 mb-2 py-2 px-4 text-sm rounded">
             <div class="text-xs text-teal-600">Oleh <span class="font-bold">${data.name}</span></div>
-            <div class="overflow-hidden h-22 break-all" style="max-height: 40px;">${data.content}</div>
+            <div class="overflow-hidden h-22 break-all markdowned" style="max-height: 40px;">${data.content}</div>
         </div>
     `;
 }
@@ -191,6 +191,19 @@ function commentAdd(obj, classes, method, target)
         target.parentNode.insertBefore(item, target);
     else
         comments[method](item);
+
+    const content = find(item, '.cmt-content');
+
+    if(content.clientHeight > 200) {
+        content.classList.add('comment-truncate');
+        content.parentNode.insertAdjacentHTML('afterend', '<p class="text-center text-sm text-indigo-600 read-more-wrapper"><a class="read-more cursor-pointer">Tampilkan Semuanya</a></p>');
+
+        const readMoreWrapper = content.parentNode.parentNode.querySelector('.read-more-wrapper');
+        readMoreWrapper.addEventListener('click', function() {
+            content.classList.remove('comment-truncate');
+            readMoreWrapper.remove();
+        });
+    }
 
     return item;
 }

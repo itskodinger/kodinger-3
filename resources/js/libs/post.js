@@ -667,11 +667,11 @@ let api = {
 			    </div>
 			    ` : ''}
 
-			    <div class="p-6 text-sm text-gray-700 leading-relaxed">
+			    <div class="p-6 text-gray-700 text-sm leading-relaxed">
 			        ${post.title ?
-				        `<h4 class="text-lg mb-2 text-black font-bold"><a class="text-indigo-700" href="${routes.single + post.slug}">
+				        `<h2 class="text-xl mb-2 text-black font-bold"><a class="text-indigo-700" href="${routes.single + post.slug}">
 				            ${post.title}
-				        </a></h4>`
+				        </a></h2>`
 			        : ''}
 
 			        ${!options.discover && post.type !== 'link' && (options.truncate_content || (!options.truncate_content && post.is_single_caption)) ?
@@ -680,7 +680,7 @@ let api = {
 
 			        ${!options.discover && !options.truncate_content && !post.is_single_caption ?
 			        	post.content_object.map((slide, index) => {
-				        	return `<div data-index="${index}" class="mb-3 ${index != 0 ? 'hidden' : ''}">${slide.caption || '<i>Tidak ada keterangan</i>'}</div>`;
+				        	return `<div data-index="${index}" class="mb-3 markdowned ${index != 0 ? 'hidden' : ''}">${slide.caption || '<i>Tidak ada keterangan</i>'}</div>`;
 			        	}).join('')
 		        	: ''}
 

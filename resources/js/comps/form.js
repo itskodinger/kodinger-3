@@ -1220,6 +1220,8 @@ class Form extends Component {
 		const captionModal = $('.caption-modal');
 		captionModal.classList.remove('hidden');
 
+		this.captionSwitch('editor');
+
 		$('body').classList.add('overflow-hidden');
 	}
 
@@ -1589,6 +1591,34 @@ class Form extends Component {
 		}
 	}
 
+	captionSwitch(mode) {
+		if(mode == 'editor') {
+			document.querySelector('.caption-editor').classList.remove('hidden');
+			document.querySelector('.caption-preview').classList.add('hidden');
+		}else if(mode == 'preview') {
+			document.querySelector('.caption-editor').classList.add('hidden');
+			document.querySelector('.caption-preview').classList.remove('hidden');
+
+			const caption = document.querySelector('.caption-area').value.trim();
+
+			this.request({
+				route: routes.post_markdown,
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: 'post',
+				body: JSON.stringify({caption})
+			})
+			.then((data) => {
+				if("parsed" in data)
+					document.querySelector('.caption-preview').innerHTML = data.parsed;
+			})
+			.catch(error => {
+				document.querySelector('.caption-preview').innerHTML = "Gagal parsing markdown, coba kembali.";	
+			});
+		}
+	}
+
 	lightbox(url, e) {
 		e.preventDefault();
 
@@ -1671,8 +1701,25 @@ class Form extends Component {
 				    <div className="p-10 my-0 md:my-10 sm:w-6/12 lg:w-6/12 md:w-8/12 w-full h-full md:h-auto bg-white relative md:rounded shadow-lg">
 				        <h2 className="text-xl font-bold">Tentukan Deskripsi</h2>
 				        <p className="text-sm text-gray-600 mt-2 leading-relaxed">Berikan deskripsi pada slide ini. Kamu dapat mengosongkan deskripsi bila tidak ada.</p>
-				        <div className="mt-6">
-				        	<textarea className="caption-area w-full border-2 border-gray-200 h-64 mb-5 rounded-lg p-4"></textarea>
+				        <div className="mt-6 mb-5">
+				        	<div className="flex">
+				        		<button onClick={this.captionSwitch.bind(this, 'editor')} className="border-t-2 border-l-2 rounded-tl-lg text-sm px-4 py-2 border-gray-200">Editor</button>
+				        		<button onClick={this.captionSwitch.bind(this, 'preview')} className="border-t-2 border-l-2 rounded-tr-lg text-sm border-r-2 px-4 py-2 border-gray-200">Preview</button>
+				        	</div>
+				        	<div className="caption-editor">
+					        	<textarea className="caption-area text-sm w-full border-2 border-gray-200 h-64 rounded-br-lg rounded-bl-lg p-4"></textarea>
+				        	</div>
+				        	<div className="caption-preview p-4 hidden border-gray-200 border-2 mb-2 rounded-bl-lg rounded-br-lg text-sm overflow-auto markdowned">
+				        		Parsing ...
+				        	</div>
+				        	<div className="flex items-center">
+					        	<svg width="20px" className="mr-2 fill-current text-gray-600" viewBox="0 0 256 158" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid">
+					        	    <g>
+					        	        <path d="M238.371257,157.892216 L18.3952096,157.892216 C8.43113772,157.892216 0,149.461078 0,139.497006 L0,18.3952096 C0,8.43113772 8.43113772,0 18.3952096,0 L237.60479,0 C247.568862,0 256,8.43113772 256,18.3952096 L256,139.497006 C256,149.461078 248.335329,157.892216 238.371257,157.892216 L238.371257,157.892216 Z M18.3952096,12.2634731 C15.3293413,12.2634731 12.2634731,15.3293413 12.2634731,18.3952096 L12.2634731,139.497006 C12.2634731,143.329341 15.3293413,145.628743 18.3952096,145.628743 L237.60479,145.628743 C241.437126,145.628743 243.736527,142.562874 243.736527,139.497006 L243.736527,18.3952096 C243.736527,14.5628743 240.670659,12.2634731 237.60479,12.2634731 C238.371257,12.2634731 18.3952096,12.2634731 18.3952096,12.2634731 L18.3952096,12.2634731 Z M36.7904192,121.101796 L36.7904192,36.7904192 L61.3173653,36.7904192 L85.8443114,67.4491018 L110.371257,36.7904192 L134.898204,36.7904192 L134.898204,121.101796 L110.371257,121.101796 L110.371257,72.8143713 L85.8443114,103.473054 L61.3173653,72.8143713 L61.3173653,121.101796 L36.7904192,121.101796 L36.7904192,121.101796 Z M190.850299,121.101796 L154.05988,80.4790419 L178.586826,80.4790419 L178.586826,36.7904192 L203.113772,36.7904192 L203.113772,79.7125749 L227.640719,79.7125749 L190.850299,121.101796 L190.850299,121.101796 Z"></path>
+					        	    </g>
+					        	</svg>
+					        	<p className="text-xs text-gray-600">Markdown</p>
+				        	</div>
 				        </div>
 				        <button onClick={this.closeCaptionModal.bind(this)} className="bg-indigo-600 p-4 text-sm text-white font-semibold rounded shadow block w-full text-center" type="button">Simpan Perubahan</button>
 				    </div>

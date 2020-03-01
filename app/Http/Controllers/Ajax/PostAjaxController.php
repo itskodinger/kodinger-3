@@ -12,6 +12,7 @@ use Requests\PostPublishRequest;
 use App\Http\Controllers\Controller;
 use Services\PostService;
 use Illuminate\Support\Str;
+use App\Utils\Kdgrdown;
 
 class PostAjaxController extends Controller
 {
@@ -170,6 +171,19 @@ class PostAjaxController extends Controller
     		'url' => $request->url,
     		'title' => $title
     	], 200);
+    }
+
+    /**
+     * Parse markdown from client
+     *
+     * @param Request $request Request
+     * @return JSON
+     */
+    public function markdown(Request $request)
+    {
+    	return response()->json([
+    		'parsed' => (new Kdgrdown(['safe' => true]))->text($request->caption)
+    	]);
     }
 
     /**

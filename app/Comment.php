@@ -3,8 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use GrahamCampbell\Markdown\Facades\Markdown;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Utils\Kdgrdown;
 
 class Comment extends Model
 {
@@ -28,7 +28,7 @@ class Comment extends Model
 
     public function getMarkdownAttribute()
     {
-        return Markdown::convertToHtml($this->content);
+        return (new Kdgrdown(['safe' => true, 'comment' => true]))->text($this->content);
     }
 
     public function getIsMineAttribute()
