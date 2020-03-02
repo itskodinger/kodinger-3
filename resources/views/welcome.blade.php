@@ -1,5 +1,14 @@
 @extends('layouts.app', ['title' => 'Where developers share their knowledge', 'footer' => false])
 
+@push('meta')
+    <meta property="og:title" content="Kodinger">
+    <meta property="og:description" content="Where developers share their knowledge.">
+    <meta property="og:image" content="https://kodinger-cdn.sgp1.cdn.digitaloceanspaces.com/public/utils/kodinger-thumbnail.png">
+    <meta property="og:url" content="https://kodinger.com">
+    <meta name="twitter:card" content="summary_large_image">
+@endpush
+
+
 @section('content')
     <div class="container mx-auto px-4 sm:px-0">
         <div class="flex py-12 -mx-4 pb-10">
