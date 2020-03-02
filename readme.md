@@ -33,20 +33,20 @@ Kodinger 3 merupakan project dari tim Kodinger untuk refactoring website utama K
 - Add 'Tambah Baru' link di alert ketika post berhasil diterbitkan (done)
 - Hide draft post from public (home, profile page, other places) (done)
 - Page untuk daftar post draft
+- Help page/documentation (ok)
+- Markdown parser (post caption, comment reply) (ok)
+- Auto-resize carousel (ok)
 - More more more more
 
 ## RN & BUGS
 - Read-mode (single page)
 - Generate video thumbnail kadang bug – kalo ukuranya gede (maybe), eh tapi kalo ukurannya kecil juga kadang gak bisa lho
-- Upload multiple media kadang beberapanya gagal kalo ada aktivitas XHR lain (input tag, atau auto save)
+- Upload multiple media kadang beberapanya gagal kalo ada aktivitas XHR lain (input tag, atau auto save) (hold)
 - Apakah memungkinkan untuk menambah post di mobile? (hold)
-- Perbaiki layout di mobile
-- Lebih bagus kalo bisa ekstrak teks dan url dari gambar, ini bisa pakai tesseract or something
-- Help page/documentation
-- Markdown parser (post caption, comment reply)
-- Auto-resize carousel (ok)
-- Image cropper (create content page)
-- Upgrade server!!!!
+- Perbaiki layout di mobile (hold)
+- Lebih bagus kalo bisa ekstrak teks dan url dari gambar, ini bisa pakai tesseract or something (hold)
+- Image cropper (create content page) (hold)
+- Upgrade server!!!! 
 - Ganti cloud storage!!!!
 
 ## Setup
