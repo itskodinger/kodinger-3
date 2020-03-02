@@ -53,7 +53,11 @@ Pada dasarnya kami mendukung semua sintaksis yang ada pada Markdown kecuali bebe
 - Link
 - Table
 - Image
-- Kode HTML
+- Kode HTML (kecuali di dalam kode blok atau kode inline)
+- H1 (# Header)
+- H2 (## Header)
+- H3 (### Header)
+- H4 (#### Header)
 
 Pada saat memberikan keterangan pada gambar/video yang terdapat di konten yang kamu buat, kamu tidak bisa menggunakan beberapa sintaksis Markdown di atas. Begitpula pada komentar, kamu juga tidak dapat menggunakan sintaksis Markdown di atas, tapi, kami akan –secara otomatis– menerjemahkan URL di dalam isi komentar menjadi *clickable link*.
 
