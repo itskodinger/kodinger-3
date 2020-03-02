@@ -42,8 +42,8 @@
 		            		@if($allowed)
 			            		<p class="mb-2 text-gray-600">Rekomendasikan link {{ key2str($col) }}</p>
 			            		<div class="bg-gray-100 border border-gray-200 rounded p-4">
-				            		<p className="text-sm mb-3 text-gray-600">Masukkan URL valid dengan <code>http://</code> atau <code>https://</code>.</p>
-				            		
+				            		<p class="text-sm mb-3 text-gray-600">Masukkan URL valid dengan <code>http://</code> atau <code>https://</code>.</p>
+
 			            			<div id="links">
 			            				<div class="list">
 					            		</div>
