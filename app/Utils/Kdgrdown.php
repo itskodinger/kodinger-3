@@ -346,7 +346,7 @@ class Kdgrdown
                     'handler' => 'element',
                     'text' => array(
                         'name' => 'code',
-                        'text' => $text,
+                        'text' => html_entity_decode($text),
                     ),
                 ),
             );
@@ -498,7 +498,7 @@ class Kdgrdown
             return $Block;
         }
 
-        $Block['element']['text']['text'] .= "\n".$Line['body'];
+        $Block['element']['text']['text'] .= html_entity_decode("\n".$Line['body']);
 
         return $Block;
     }
@@ -1160,7 +1160,7 @@ class Kdgrdown
                 'extent' => strlen($matches[0]),
                 'element' => array(
                     'name' => 'code',
-                    'text' => $text,
+                    'text' => html_entity_decode($text),
                 ),
             );
         }

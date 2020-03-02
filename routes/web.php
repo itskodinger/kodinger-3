@@ -12,9 +12,9 @@
 */
 
 Route::get('leave', RedirectorPageController::class)->name('leave.kodinger');
-Route::get('privacy-policy', function() {
-	return view('privacy-policy');
-});
+// Route::get('privacy-policy', function() {
+// 	return view('privacy-policy');
+// });
 
 Auth::routes(['register' => false]);
 

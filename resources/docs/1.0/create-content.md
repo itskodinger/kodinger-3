@@ -82,7 +82,7 @@ Misal, anggaplah kamu sedang membahas Node JS, ketimbang membahas bagaimana cara
 
 Usaha kamu adalah menyederhanakan penjelasan tentang sesuatu sehingga lebih mudah dipahami oleh orang yang sama-sekali tidak tahu tentang hal itu. Tentu, kamu tidak perlu memaksakan semuanya dimuat dalam satu *slide*, kamu boleh menjelaskannya menjadi bersambung dalam beberapa *slide* atau media.
 
-Terakhir, setiap keterangan yang terdapat di setiap media kamu dapat menulisnya dengan format Markdown yang telah disesuaikan. [Pelajari selengkapnya](markdown) tentang Markdown di Kodinger.
+Terakhir, setiap keterangan yang terdapat di setiap media kamu dapat menulisnya dengan format Markdown yang telah disesuaikan. [Pelajari selengkapnya](markdown) tentang Markdown di Kodinger dan juga kamu bisa mempelajari [cara membuat desain konten dengan Figma](design-content).
 
 <a name="links"></a>
 ## Tautan

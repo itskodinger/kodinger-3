@@ -1,7 +1,7 @@
-@extends('layouts.app', ['title' => $post->title, 'footer' => false])
+@extends('layouts.app', ['title' => $post->post_card ? $post->post_card->toArray()['title'] : $post->title, 'footer' => false])
 
 @push('meta')
-	<meta property="og:title" content="{{$post->title}}">
+	<meta property="og:title" content="{{$post->post_card ? $post->post_card->toArray()['title'] : $post->title}}">
 	<meta property="og:description" content="Lihat selengkapnya di Kodinger">
 	<meta property="og:image" content="{{ $post->thumbnail ? $post->thumbnail : $post->post_card->toArray()['thumbnail'] }}">
 	<meta property="og:url" content="@route('single', $post->slug)">
@@ -55,11 +55,13 @@
                 <div class="mx-auto p-4 sm:p-0 sm:mx-0 mb-8">
                     <h4 class="font-bold mb-3 text-orange-500">Opsi</h4>
                     <div class="bg-white rounded border-2 border-gray-200">
+                        @if($post->type !== 'link')
                         <a class="flex items-center hover:bg-gray-100 px-5 py-4 border-b border-gray-100" href="@route('post', $post->id)">
                             <div class="text-sm text-gray-600 font-semibold truncate">Sunting</div>
                         </a>
+                        @endif
                         <a class="flex items-center hover:bg-gray-100 px-5 py-4" href="@route('deletePost', $post->slug)">
-                            <div class="text-sm text-gray-600 font-semibold truncate">Hapus</div>
+                            <div class="text-sm text-red-600 font-semibold truncate">Hapus</div>
                         </a>
                     </div>
                 </div>

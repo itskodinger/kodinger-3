@@ -119,6 +119,7 @@ class FrontendController extends Controller
 		{
 			$user = $this->userService->findByUsername($slug);
 
+
 			if(!$user) return abort(404);
 
 			$posts = $user->posts()->paginate(10);
@@ -286,6 +287,8 @@ class FrontendController extends Controller
 		if($id) 
 		{
 			$post = $this->postService->find($id);
+
+			if($post->type == 'link') return abort(404);
 
 			if($post->user_id !== auth()->user()->id && !auth()->user()->can('post-update')) 
 				return abort(403);

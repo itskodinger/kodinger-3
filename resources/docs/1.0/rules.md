@@ -26,3 +26,10 @@ Beberapa hal yang perlu kamu hindari dalam beraktivitas di Kodinger:
 - Tidak ada senioritas di sini, semuanya sama, jangan merasa paling jago
 
 **Catatan:** Perlu diingat setiap aturan yang tidak tertulis di atas (secara eksplisit) bukan berarti diperbolehkan, karena pada dasarnya kamu juga harus taat pada aturan yang ada di Negara tercinta kita ini.
+
+<a name="punishment"></a>
+## Hukuman
+
+Setiap aturan wajib dipatuhi, di manapun itu. Dibalik aturan terdapat hukuman yang berdiri menanti para pelanggar aturan. Di Kodinger, hukuman paling berat adalah diblok dari Kodinger, akunnya akan dihapus, juga akan di-*blacklist* dari sini. Kami sangat berhati-hati dalam memutuskan hal ini, mengingat kami membangun *platform* ini agar dapat digunakan oleh siapa saja.
+
+Namun, sangat memungkinkan kamu bukan hanya melanggar aturan di Kodinger, melainkan melanggar aturan yang sudah ditetapkan di Indonesia ini. **Kami tidak bertanggung jawab atas pelanggaran yang dilakukan oleh setiap individu warga Kodinger, setiap pelanggaran yang dilakukan oleh setiap individu warga Kodinger adalah tanggung jawab pelanggar tersebut**.

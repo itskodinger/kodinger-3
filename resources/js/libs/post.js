@@ -597,15 +597,6 @@ let api = {
 			    </div>
 
 			    ${ post.type == 'link' ? `
-				    <div class="px-6 text-sm text-gray-700 leading-loose">
-				        ${post.status == 'CONTAINS_PORNOGRAPHIC' ? `
-				            <div class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 px-4 py-2 mb-4" role="alert">
-				                <p class="font-bold">Hati-hati</p>
-				                <p>Post ini mungkin mengandung konten ponografi</p>
-				            </div>
-				        `: ''}
-				    </div>
-
 				    <div class="md:border border-b border-t md:rounded md:mx-6">
 
 				        ${post.post_card.has_embeddable_code ? `

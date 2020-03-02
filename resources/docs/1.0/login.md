@@ -29,10 +29,10 @@ Sayangnya, sampai saat ini kami hanya mendukung platform GitHub dan belum menduk
 ## Kenapa GitHub?
 Mungkin kamu bertanya kenapa kami hanya mendukung GitHub dan kenapa harus GitHub? Sedangkan orang-orang cenderung memiliki akun sosial media, seperti Facebook, Twitter, atau yang lainnya.
 
-Alasannya sederhana, Kodinger dibangun untuk orang-orang yang sudah memiliki pemahaman seputar teknologi informasi, khususnya untuk *programmer*, *coder*, *developer*, atau sejenisnya. Lebih spesifiknya, untuk *programmer*, *coder*, atau *developer* yang berada di tingkat menengah ke bawah. Namun, pada dasarnya kami tidak membatasi untuk orang-orang dengan profesi tadi saja – situs ini dapat diakses oleh siapappun.
+Alasannya sederhana, Kodinger dibangun untuk orang-orang yang sudah memiliki pemahaman seputar teknologi informasi, khususnya untuk *programmer*, *coder*, *developer*, atau sejenisnya. Lebih spesifiknya, untuk *programmer*, *coder*, atau *developer* yang berada di tingkat menengah ke bawah. Namun, pada dasarnya kami tidak membatasi untuk orang-orang dengan profesi tadi saja – situs ini dapat diakses oleh siapapun.
 
-Tentu, tidak semua *programmer* memiliki akun GitHub, bisa jadi mereka menggunakan layanan Git yang lain. Tapi, karena GitHub salah satu layanan Git yang paling populer hingga saat ini, juga sudah menjadi rumah untuk komunitas open-source, maka dari itu kami memilih GitHub.
+Tentu, tidak semua *programmer* memiliki akun GitHub, bisa jadi mereka menggunakan layanan Git yang lain. Tapi, karena GitHub salah satu layanan Git yang paling populer hingga saat ini, juga sudah menjadi rumah untuk komunitas *open-source*, maka dari itu kami memilih GitHub.
 
-Juga, melibatkan para *programmer* (di Indonesia) agar menjadi pegiat open-source adalah salah satu visi jangka panjang kami.
+Juga, melibatkan para *programmer* (di Indonesia) agar menjadi pegiat *open-source* adalah salah satu visi jangka panjang kami.
 
 Jadi, bila kamu belum memiliki akun GitHub, kamu dapat membuatnya secara gratis di situs resminya, yaitu [GitHub.com](https://github.com).

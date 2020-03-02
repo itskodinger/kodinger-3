@@ -24,6 +24,8 @@ Pada dasarnya, Kodinger dibangun untuk berbagi pengetahuan yang kami miliki. Nam
 4. Klik tombol "Simpan &amp; Lanjutkan"
 5. Setelah berhasil, kamu akan melihat bidang lain di dalam form yang perlu diisi
 
+Kamu masih bingung konten apa yang ingin kamu buat? Kamu bisa membaca [dokumen ini](design-content) untuk mencari ide konten untuk diterbitkan.
+
 <a name="how-to-fill-the-form"></a>
 ## Bagaimana Cara Mengisi Form?
 Setelah menginisialisasi konten, kamu perlu melengkapi beberapa bidang yang wajib diisi. Terdapat beberapa bidang di dalam form, diantaranya:
@@ -143,4 +145,4 @@ Untuk menghapus konten, kamu dapat mengikuti langkah-langkah ini:
 <a name="best-practice-content"></a>
 ## Best Practice
 
-Setelah membaca halaman ini, sangat disarankan kamu untuk membaca halaman tentang tips-tips membuat konten yang baik dan sesuai kaidah Kodinger. Silahkan pergi ke [halaman ini](create-content).
+Setelah membaca halaman ini, sangat disarankan kamu untuk membaca halaman tentang tips-tips membuat konten yang baik dan sesuai kaidah Kodinger. Silahkan pergi ke [halaman ini](create-content). Selain itu, kamu juga dapat mempelajari cara [mendesain konten dengan Figma](design-content) di sini.
