@@ -268,7 +268,7 @@ class FrontendController extends Controller
 	{
 		$post = $this->postService->findBySlug($slug);
 
-		if(!$post->is_mine)
+		if(!auth()->check() || (!$post->is_mine && !auth()->user()->can('post-update')))
 			return abort(404);
 
 		$post_card = optional($post->post_card)->toArray();

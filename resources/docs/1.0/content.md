@@ -123,8 +123,12 @@ Ketika kamu menjeda untuk membuat konten, seringkali kamu menutup tab halaman un
 Untuk itu kamu dapat menyunting konten yang sudah terbit atau masih draf, dengan cara:
 
 1. Pergi ke halaman dasbor pengguna (https://kodinger.com/@nama_pengguna_kamu), di halaman tersebut akan tampil semua konten yang kamu miliki
-2. Cari konten yang hendak disunting 
-3. Klik tombol "Sunting" yang ada di bagian bawah dan di sisi kanan konten
+2. Cari konten yang hendak disunting
+3. Klik tombol diskusi atau klik gambar pada konten untuk menuju ke halaman detail konten
+4. Di samping kanan atas terlihat bagian opsi, di sana terdapat 2 tombol: Sunting dan Hapus
+5. Klik tombol "Sunting" dan kamu akan diarahkan ke halaman penyuntingan konten
+
+Di halaman ini kamu dapat menyunting apapun yang ada di konten kamu, sama seperti ketika kamu membuat konten tersebut pertama kali.
 
 <a name="content-visibility"></a>
 ## Mengatur Visibilitas Konten
@@ -138,7 +142,10 @@ Untuk menghapus konten, kamu dapat mengikuti langkah-langkah ini:
 
 1. Pergi ke halaman dasbor pengguna (https://kodinger.com/@nama_pengguna_kamu), di halaman tersebut akan tampil semua konten yang kamu miliki
 2. Cari konten yang hendak dihapus
-3. Klik tombol "Hapus" yang ada di bagian bawah dan di sisi kanan konten
+3. Klik tombol diskusi atau klik gambar pada konten untuk menuju ke halaman detail konten
+4. Di samping kanan atas terlihat bagian opsi, di sana terdapat 2 tombol: Sunting dan Hapus
+5. Klik tombol "Hapus" dan kamu akan diarahkan ke halaman konfirmasi penghapusan konten
+6. Klik tombol "Hapus" untuk mengonfirmasi penghapusan konten dan konten akan dihapus secara permanen
 
 **Catatan:** pikirkan ulang sebelum melakukan aksi ini, karena kamu tidak dapat mengembalikan konten yang sudah dihapus.
 
