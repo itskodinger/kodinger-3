@@ -70,8 +70,7 @@ class Postcard implements Arrayable, Jsonable {
      */
     public function getDefaultThumbnail()
     {
-        // temp
-        return 'https://s2.googleusercontent.com/s2/favicons?domain_url=' . $this->getUrl();
+        return 'https://kodinger-cdn.sgp1.cdn.digitaloceanspaces.com/public/utils/404-image.png';
     }
 
     /**
