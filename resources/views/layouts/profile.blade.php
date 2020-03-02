@@ -45,9 +45,11 @@
                     <div class="absolute top-0 left-0 w-full h-full bg-cover bg-center" style="filter: blur(10px);background-image: url({{ $user->the_avatar  }});"></div>
                     <div class="absolute top-0 left-0 w-full h-full z-1 bg-indigo-900 opacity-75"></div>
                     <div class="container mx-auto relative">
+                        @isme($user)
                         <div class="absolute right-0 p-6">
                             <a href="@route('setting')" class="bg-white text-black text-xs py-1 px-3 rounded hover:bg-gray-200">Edit Profile</a>
                         </div>
+                        @endisme
                         <div class="flex md:p-10 p-6 flex-col md:flex-row">
                             <img src="{{ $user->the_avatar }}" class="w-40 h-40 rounded-lg inline-block border-2 border-indigo-600">
                             <div class="md:ml-10 md:mt-0 mt-10">
