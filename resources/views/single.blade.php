@@ -51,7 +51,7 @@
 	            </div>
             </div>
             <div class="lg:w-3/12 lg:px-4 md:hidden lg:block">
-                @if(auth()->check() && auth()->user()->id == $post->user->id)
+                @if(auth()->check() && (auth()->user()->id == $post->user->id || auth()->user()->can('post-update')))
                 <div class="mx-auto p-4 sm:p-0 sm:mx-0 mb-8">
                     <h4 class="font-bold mb-3 text-orange-500">Opsi</h4>
                     <div class="bg-white rounded border-2 border-gray-200">
