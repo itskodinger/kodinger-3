@@ -46,7 +46,7 @@
                 'label' => 'Tautan',
                 'type' => 'text',
                 'value' => $user->link,
-                'help' => 'Tautan ke website eksternal miliki kamu, seperti website portofolio, resume atau semacamnya – agar orang lain dapat mengenal kamu lebih jauh.'
+                'help' => 'Gunakan http:// atau https://. Tautan ke website eksternal miliki kamu, seperti website portofolio, resume atau semacamnya – agar orang lain dapat mengenal kamu lebih jauh.'
             ])
 
             @field([
@@ -62,7 +62,7 @@
                 'label' => 'GitHub',
                 'type' => 'text',
                 'value' => $user->github,
-                'help' => 'URL ke akun GitHub kamu. Disarankan untuk mempublikasikan beberapa proyek kamu di GitHub agar orang lain dapat melihat portofolio kamu dengan mudah.'
+                'help' => 'Gunakan http:// atau https://. URL ke akun GitHub kamu. Disarankan untuk mempublikasikan beberapa proyek kamu di GitHub agar orang lain dapat melihat portofolio kamu dengan mudah.'
             ])
 
             @field([

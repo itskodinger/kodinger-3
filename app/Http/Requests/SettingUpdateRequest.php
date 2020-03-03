@@ -16,6 +16,8 @@ class SettingUpdateRequest extends FormRequest
         return [
             'name' => 'required|min:3|max:20',
             'avatar' => 'nullable|image',
+            'github' => 'nullable|url',
+            'link' => 'nullable|url',
             'bio' => 'nullable|min:10|max:255'
         ];
     }
