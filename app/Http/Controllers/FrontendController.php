@@ -249,6 +249,11 @@ class FrontendController extends Controller
 
 		$pluck = $tags->pluck('name')->all();
 		$tag = $request->tag;
+
+		$tag_check = $this->tagService->exists($tag);
+
+		if(!$tag_check) return abort(404);
+
 		if($tag && !in_array($tag, $pluck))
 			$tags = array_merge([['name' => $tag]], $tags->toArray());
 		else

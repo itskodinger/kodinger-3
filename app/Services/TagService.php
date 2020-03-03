@@ -26,6 +26,11 @@ class TagService
 		return $res;
 	}
 
+	public function exists($tag)
+	{
+		return $this->model()->whereName($tag)->count();
+	}
+
 	public function popular($method_or_take=false, $args=false)
 	{
 		$tags = PostTag::groupBy('tag_id')
