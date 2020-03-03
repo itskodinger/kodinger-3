@@ -1696,7 +1696,7 @@ class Form extends Component {
 		            </div>
 	            </nav>
 
-				<div className="caption-modal overflow-y-auto fixed top-0 left-0 w-full h-full flex z-20 items-start justify-center hidden">
+				<div className="caption-modal overflow-y-auto fixed top-0 left-0 w-full h-full flex z-30 items-start justify-center hidden">
 				    <div className="fixed bg-black opacity-50 w-screen h-screen"></div>
 				    <div className="p-10 my-0 md:my-10 sm:w-6/12 lg:w-6/12 md:w-8/12 w-full h-full md:h-auto bg-white relative md:rounded shadow-lg">
 				        <h2 className="text-xl font-bold">Tentukan Deskripsi</h2>
@@ -1914,7 +1914,9 @@ class Form extends Component {
 							            				return (
 							            					<div key={link.id} className="bg-white shadow rounded mb-4 text-sm text-blue-500 flex" id={'link-' + link.id}>
 								            					<input onKeyDown={this.linkKeydownHandle.bind(this)} onKeyUp={this.linkKeyupHandle.bind(this)} onChange={this.linkInputHandle.bind(this, link.id)} tabIndex="6" type="text" name={'link-' + currentLinkKey} placeholder="Contoh: https://kodinger.com/tutorial-javascript" className="url w-full py-3 px-4 rounded outline-none" defaultValue={link.value} />
-								            					<button type="button" onClick={this.removeLinkFromKey.bind(this, link.id)} className="uppercase font-semibold bg-red-500 text-white px-4 flex items-center cursor-pointer hover:bg-red-600 rounded-tr rounded-br">Hapus</button>
+								            					<button type="button" onClick={this.removeLinkFromKey.bind(this, link.id)} className="uppercase font-semibold bg-red-500 text-white px-4 flex items-center cursor-pointer hover:bg-red-600 rounded-tr rounded-br">
+								            						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-5 fill-current text-white"><g data-name="Layer 2"><g data-name="trash"><rect width="24" height="24" opacity="0"/><path d="M21 6h-5V4.33A2.42 2.42 0 0 0 13.5 2h-3A2.42 2.42 0 0 0 8 4.33V6H3a1 1 0 0 0 0 2h1v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V8h1a1 1 0 0 0 0-2zM10 4.33c0-.16.21-.33.5-.33h3c.29 0 .5.17.5.33V6h-4zM18 19a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V8h12z"/></g></g></svg>
+								            					</button>
 								            				</div>
 						            					);
 							            			})}
