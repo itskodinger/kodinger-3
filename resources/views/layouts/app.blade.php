@@ -152,7 +152,7 @@
                     <div class="bg-white md:p-10 p-8 text-center">
                         <h2 class="md:text-2xl text-lg font-semibold">Open Source</h2>
                         <div class="text-sm text-gray-600">
-                            <p class="mt-2">Demi untuk memajukan komuntasi open source di Indonesia, kami menjadikan sumber kode Kodinger 3 ini open source. Silahkan <a class="border-b border-gray-600" href="https://github.com/itskodinger/kodinger-3" target="_blank">berkontribusi</a>.</p>
+                            <p class="mt-2">Demi untuk memajukan komunitas open source di Indonesia, kami menjadikan sumber kode Kodinger 3 ini open source. Silahkan <a class="border-b border-gray-600" href="https://github.com/itskodinger/kodinger-3" target="_blank">berkontribusi</a>.</p>
                         </div>
 
                         <div class="flex mt-6 -mx-2">

@@ -55,22 +55,6 @@ $title = $post->post_card ? $post->post_card->toArray()['title'] : $post->title;
 	            </div>
             </div>
             <div class="lg:w-3/12 lg:px-4 md:hidden lg:block">
-                @if(auth()->check() && (auth()->user()->id == $post->user->id || auth()->user()->can('post-update')))
-                <div class="mx-auto p-4 sm:p-0 sm:mx-0 mb-8">
-                    <h4 class="font-bold mb-3 text-orange-500">Opsi</h4>
-                    <div class="bg-white rounded border-2 border-gray-200">
-                        @if($post->type !== 'link')
-                        <a class="flex items-center hover:bg-gray-100 px-5 py-4 border-b border-gray-100" href="@route('post', $post->id)">
-                            <div class="text-sm text-gray-600 font-semibold truncate">Sunting</div>
-                        </a>
-                        @endif
-                        <a class="flex items-center hover:bg-gray-100 px-5 py-4" href="@route('deletePost', $post->slug)">
-                            <div class="text-sm text-red-600 font-semibold truncate">Hapus</div>
-                        </a>
-                    </div>
-                </div>
-                @endif
-
             	@rightbar
             </div>
         </div>
