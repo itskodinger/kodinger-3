@@ -1,7 +1,7 @@
 @inject('tag', 'Services\TagService')
 
 <div class="off-canvasify rightbar" id="rightbar">
-    @if(request()->route()->getName() == 'single' && auth()->check() && (auth()->user()->id == $post->user->id || auth()->user()->can('post-update')))
+    @if(request()->route()->getName() == 'single' && isset($post) && auth()->check() && (auth()->user()->id == $post->user->id || auth()->user()->can('post-update')))
     <div class="mx-auto p-4 sm:p-0 sm:mx-0 mb-8">
         <h4 class="font-bold mb-3 text-orange-500">Opsi</h4>
         <div class="bg-white rounded border-2 border-gray-200">
