@@ -17,6 +17,7 @@
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 
+    @if(env('APP_ENV') == 'production')
     <!-- Matomo -->
     <script type="text/javascript">
       var _paq = window._paq || [];
@@ -32,6 +33,7 @@
       })();
     </script>
     <!-- End Matomo Code -->
+    @endif
 </head>
 <body class="h-screen bg-white">
     <div class="onboarding-modal overflow-y-auto fixed top-0 left-0 w-full h-full flex z-50 md:items-center items-start justify-center hidden">
