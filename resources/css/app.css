@@ -106,15 +106,15 @@ html {
 .markdowned pre {
 	@apply
 		p-3
-		mb-4;
+		mb-4
+		overflow-auto
 }
 .markdowned pre code {
 	@apply
 		bg-transparent
 		border-none
 		rounded-none
-		p-0
-		overflow-auto;
+		p-0;
 }
 
 .markdowned hr {
