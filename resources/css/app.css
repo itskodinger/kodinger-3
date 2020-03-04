@@ -113,7 +113,8 @@ html {
 		bg-transparent
 		border-none
 		rounded-none
-		p-0;
+		p-0
+		overflow-auto;
 }
 
 .markdowned hr {
