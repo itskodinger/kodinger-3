@@ -17,6 +17,9 @@ let mypost = post.init('.post', {
 mypost.onRender.then(function({lastData: {data}}) {
 	$('#comment-box').classList.remove('hidden');
 
+    if(window.outerWidth < 640)
+        $('#links-info-alert').classList.remove('hidden');
+
 	/**
 	 * Links
 	 */

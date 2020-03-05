@@ -49,6 +49,9 @@ $title = $post->post_card ? $post->post_card->toArray()['title'] : $post->title;
             </div>
             <div class="w-full lg:w-6/12 px-4 md:w-8/12">
             	<div class="post"></div>
+                <div class="mb-6 -mt-5 border-2 border-blue-200 text-blue-600 text-sm bg-blue-100 rounded p-4 block sm:hidden" id="links-info-alert">
+                    Tekan tombol "<span class="font-bold">L</span>" di navigasi bawah untuk menampilkan tautan referensi.
+                </div>
                 <div id="comment-box" class="bg-white rounded border-2 border-gray-200 mb-12 hidden">
                 	<h2 class="py-4 px-6 font-bold">Diskusi</h2>
 	            	@include('layouts.card_comment')
