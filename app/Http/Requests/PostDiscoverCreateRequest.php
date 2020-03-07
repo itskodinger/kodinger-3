@@ -14,7 +14,7 @@ class PostDiscoverCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'pages' => 'required',
+            'pages' => 'required|url',
             'tags' => 'required'
         ];
     }

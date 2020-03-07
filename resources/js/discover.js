@@ -168,6 +168,8 @@ $('#discover-form').addEventListener('submit', function(e) {
 
             if(error.status == 401)
                 showLoginAlert();
+            else if(error.status == 422)
+                link.focus();
         });
     }
 
