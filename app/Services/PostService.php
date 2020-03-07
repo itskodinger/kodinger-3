@@ -116,6 +116,10 @@ class PostService
 			'status' => 'processing'
 		];
 
+		$request->merge([
+			'pages' => filter_var($request->pages, FILTER_SANITIZE_SPECIAL_CHARS)
+		]);
+
 		$post = $this->create($request, $adds);
 
 		// pusher is too expensive

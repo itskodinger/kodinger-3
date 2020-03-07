@@ -606,21 +606,23 @@ let api = {
 				            </div>`
 				        : // else
 				        `
+				        	<a href="${post.post_card.url}" target="_blank">
 				        	${post.post_card.thumbnail !== null ? 
 					            `<img src="${post.post_card.thumbnail}" class="w-full h-64 object-cover">`
 				            : // else
 					            `<img src="${post.post_card.default_thumbnail}" class="w-full h-64 object-scale-down">`
 					        }
+					        </a>
 				        `}
 
 				        <div class="p-4 border-t bg-gray-100">
 				        
-				            <h2 class="md:text-lg mb-2 text-base font-semibold hover:text-indigo-600"><a href="${post.post_card.url}">${post.post_card.title}</a></h2>
+				            <h2 class="md:text-lg mb-2 text-base font-semibold hover:text-indigo-600"><a target="_blank" href="${post.post_card.url}">${post.post_card.title}</a></h2>
 
 				            ${post.post_card.description ? `
-				                <p class="text-gray-600 text-sm break-all">${ post.post_card.description.substr(0, 200)}</p>
+				                <p class="text-gray-600 text-sm break-all"><a target="_blank" href="${post.post_card.url}">${ post.post_card.description.substr(0, 200)}</a></p>
 				            ` : ''}
-				            <div class="uppercase tracking-wider text-xs mt-3 text-teal-500 font-semibold">${ getHostname(post.post_card.url) }</div>
+				            <div class="uppercase tracking-wider text-xs mt-3 text-teal-500 font-semibold"><a target="_blank" href="${getHostname(post.post_card.url)}">${ getHostname(post.post_card.url) }</a></div>
 				        </div>
 				    </div>
 			    ` : ``}

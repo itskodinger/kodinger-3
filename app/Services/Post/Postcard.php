@@ -47,7 +47,7 @@ class Postcard implements Arrayable, Jsonable {
 
         if($title instanceof PostAttribute) return $title->value;
 
-        return $this->post->title ?? get_title_by_url($this->getUrl());
+        return !$this->post->title ? get_title_by_url($this->getUrl()) : $this->post->title;
     }
 
     /**
