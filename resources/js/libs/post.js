@@ -326,7 +326,7 @@ let api = {
 			// then append all buttons to the modal element
 			if($$('.share-buttons a').length < 1) {
 				// this is share button template
-				let share_btn = '<a href="" class="text-white shadow-md mb-3 py-3 px-4 flex justify-center items-center rounded text-sm"></a>';
+				let share_btn = '<a href="" target="_blank" class="text-white shadow-md mb-3 py-3 px-4 flex justify-center items-center rounded text-sm"></a>';
 
 				// show all the buttons from the `uris` key (see the uris var form destructuring object above)
 				for(let i=0; i < uris.length; i++) {
