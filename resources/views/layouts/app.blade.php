@@ -36,6 +36,20 @@
     @endif
 </head>
 <body class="h-screen bg-white">
+
+    @if(auth()->check() && auth()->user()->hasDraftPost())
+    <div class="drafted-post-alert fixed bottom-0 right-0 z-20 p-6 w-4/12 hidden">
+        <div class="bg-yellow-400 p-6 rounded shadow-lg relative">
+            <div class="drafted-post-alert-close absolute top-0 right-0 p-2 text-yellow-800 text-3xl z-1 leading-none mr-2 opacity-50 hover:opacity-100 cursor-pointer">&times;</div>
+            <h2 class="text-yellow-900 font-semibold text-lg">Hai, @firstName, terbitkan konten kamu</h2>
+            <p class="text-sm mt-2 text-yellow-800">Kamu setidaknya memiliki {{ auth()->user()->draftedPostsCount() }} konten yang belum diterbitkan sama sekali. Jangan membuat pembaca konten kamu menunggu, mari terbitkan konten!</p>
+            <div class="inline-block mt-4">
+                <a href="#" data-href="@route('single', [auth()->user()->the_username, 'status' => 'draft'])" class="text-yellow-800 font-semibold border-b border-yellow-800 pb-1 drafted-post-alert-view">Lihat Konten</a>
+            </div>
+        </div>
+    </div>
+    @endif
+
     <div class="onboarding-modal overflow-y-auto fixed top-0 left-0 w-full h-full flex z-50 md:items-center items-start justify-center hidden">
         <div class="fixed bg-black opacity-50 w-screen h-screen"></div>
         <div class="overflow-y-auto sm:w-8/12 lg:w-4/12 md:w-6/12 w-full h-full md:h-auto relative bg-white sm:bg-transparent">

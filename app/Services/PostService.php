@@ -36,6 +36,26 @@ class PostService
 		return new Post;
 	}
 
+	private function _draftedPosts()
+	{
+		return $this->model()->whereStatus('draft')->wherePublishedAt(null);
+	}
+
+	public function draftedPostsCount()
+	{
+		return $this->_draftedPosts()->count();
+	}
+
+	public function hasDraftedPosts()
+	{
+		return $this->_draftedPosts()->count() > 0 ? true : false;
+	}
+
+	public function draftedPosts()
+	{
+		return $this->_draftedPosts()->get();
+	}
+
 	public function checkSlug($slug)
 	{
 		return $this->model()->whereSlug($slug)->count();

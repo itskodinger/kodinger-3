@@ -200,3 +200,30 @@ if(typeof sidebar == 'undefined' || sidebar !== 'manual') sidebarSticky();
 		window.location.href = this.dataset.href;
 	});
 })();
+
+(function() {
+	const alert = $('.drafted-post-alert');
+
+	if(!alert) return;
+
+	if(window.localStorage && !!!window.localStorage.getItem('drafted-post-alert'))
+		alert.classList.remove('hidden');
+
+	$$('.drafted-post-alert-close').forEach(btn => btn.addEventListener('click', (e) => {
+		e.preventDefault();
+
+		alert.classList.add('hidden');
+
+		if(window.localStorage)
+			window.localStorage.setItem('drafted-post-alert', false);
+	}));
+
+	$('.drafted-post-alert-view').addEventListener('click', function(e) {
+		e.preventDefault();
+
+		if(window.localStorage)
+			window.localStorage.setItem('drafted-post-alert', false);
+
+		window.location.href = this.dataset.href;
+	});	
+})();

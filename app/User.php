@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Passport\HasApiTokens;
+use Facades\Services\PostService;
 
 class User extends Authenticatable
 {
@@ -49,6 +50,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function hasDraftPost()
+    {
+        return PostService::hasDraftedPosts();
+    }
+
+    public function draftedPostsCount()
+    {
+        return PostService::draftedPostsCount();
+    }
 
     public function getNameAttribute($value)
     {

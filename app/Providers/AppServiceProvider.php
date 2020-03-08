@@ -48,6 +48,10 @@ class AppServiceProvider extends ServiceProvider
             return $user->isme;
         });
 
+        Blade::directive('firstName', function($expression) {
+            return "<?php echo auth()->user()->first_name; ?>";
+        });
+
         Blade::directive('route', function($expression) {
             return "<?php echo route($expression); ?>";
         });
