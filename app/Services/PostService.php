@@ -15,6 +15,7 @@ use Services\UserService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\ImageManagerStatic as Image;
+use Carbon\Carbon;
 
 class PostService
 {
@@ -85,7 +86,7 @@ class PostService
 			});
 		}
 
-		return $discover->orderBy('created_at', 'desc')->paginate($num);
+		return $discover->orderBy('published_at', 'desc')->paginate($num);
 	}
 
 	public function myLovesBySlug($user, $request)
@@ -113,7 +114,8 @@ class PostService
 			'slug' => uniqid(), 
 			'type' => 'link',
 			'tags' => explode(',', $request->tags),
-			'status' => 'processing'
+			'status' => 'processing',
+			'published_at' => Carbon::now()
 		];
 
 		$request->merge([
@@ -186,7 +188,7 @@ class PostService
 			}
 		}
 
-		$posts = $posts->orderBy('created_at', 'desc')->paginate($num);
+		$posts = $posts->orderBy('published_at', 'desc')->paginate($num);
 
 		$posts->appends(['search' => $req_search, 'type' => $req_type]);
 
@@ -292,6 +294,18 @@ class PostService
 		return $data;
 	}
 
+	public function publish($id, $request)
+	{
+		$post = $this->find($id);
+
+		if(strtoupper($post->status) == 'DRAFT' && !$post->published_at)
+		{
+			$request = $request->merge(['published_at' => Carbon::now()]);
+		}
+
+		return $this->findAndUpdate($id, $request);
+	}
+
 	public function findAndUpdate($id, $request)
 	{
 		if(is_array($request)) {
@@ -354,14 +368,14 @@ class PostService
 		return $posts;
 	}
 
-	public function publish($id)
-	{
-		$post = $this->model()->find($id);
+	// public function publish($id)
+	// {
+	// 	$post = $this->model()->find($id);
 
-		$update = $post->update(['status' => 'publish']);
+	// 	$update = $post->update(['status' => 'publish']);
 
-		return $update;
-	}
+	// 	return $update;
+	// }
 
 	public function delete($id)
 	{

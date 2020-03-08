@@ -27,7 +27,8 @@ class Post extends Model
 		'views',
 		'user_id',
 		'type',
-        'public_folder'
+        'public_folder',
+        'published_at'
 	];
 
     protected $appends = [
@@ -195,7 +196,7 @@ class Post extends Model
 
     public function getTimeAttribute()
     {
-    	return $this->created_at->diffForHumans();
+    	return $this->published_at->diffForHumans();
     }
 
     public function getContentObjectAttribute()
@@ -316,6 +317,10 @@ class Post extends Model
 
     protected $casts = [
         'id' => 'string'
+    ];
+
+    protected $dates = [
+        'published_at'
     ];
 
     public $incrementing = false;

@@ -95,7 +95,7 @@ class PostAjaxController extends Controller
 	 */
 	public function publish(PostPublishRequest $request, $id) 
 	{
-		$post = $this->postService->findAndUpdate($id, $request);
+		$post = $this->postService->publish($id, $request);
 
 		if(!$post)
 		{
