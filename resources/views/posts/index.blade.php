@@ -4,7 +4,8 @@
 	<h2 class="mb-2 text-gray-600 text-lg flex items-center">Semua Content
         <span class="ml-6">
             <a class="text-indigo-600" href="@current(['type' => 'link'])">Discover</a> | 
-            <a class="text-indigo-600" href="@current(['type' => 'content'])">Content</a>
+            <a class="text-indigo-600" href="@current(['type' => 'content'])">Content</a> | 
+            <a class="text-indigo-600" href="@current(['status' => 'draft'])">Hanya Draft</a>
         </span>
 		{{-- @button(['tag' => 'a', 'href' => route('post.create'), 'class' => 'text-sm ml-auto'])
 			Tambah Konten
@@ -30,6 +31,7 @@
         			{!! method_field('delete') !!}
         			@csrf
         		</form>
+                <a class="mx-3 text-indigo-600" href="@route('single', $post->user->the_username)">{!! $post->user->name !!}</a>
         	</div>
     	</div>
     	@endforeach

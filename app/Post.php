@@ -196,6 +196,9 @@ class Post extends Model
 
     public function getTimeAttribute()
     {
+        if(!$this->published_at)
+            return $this->created_at->diffForHumans();
+        
     	return $this->published_at->diffForHumans();
     }
 

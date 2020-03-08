@@ -206,11 +206,16 @@ class PostService
 					return $query->whereUsername($request->username);
 				});
 			}
+
+			if(isset($request->status))
+			{
+				$posts = $posts->whereStatus($request->status);
+			}
 		}
 
 		$posts = $posts->orderBy('published_at', 'desc')->paginate($num);
 
-		$posts->appends(['search' => $req_search, 'type' => $req_type]);
+		$posts->appends(['search' => $req_search, 'type' => $req_type, 'status' => $request->status]);
 
 		return $posts;
 	}
