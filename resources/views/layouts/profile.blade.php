@@ -9,9 +9,12 @@
         <div class="flex -mx-4 flex-col lg:flex-row">
             <div class="lg:w-3/12 px-4 lg:py-0 flex-shrink-0 w-full">
                 <ul class="lg:sticky lg:top-0 flex lg:flex-col flex-row lg:py-12 mb-4 mt-6 -mx-3 lg:mx-0 md:flex-wrap flex-no-wrap overflow-x-auto">
-                    <li><a class="text-sm md:text-base flex px-3 py-4 rounded {{ is_route('single', ' text-indigo-600 font-bold', 'hover:text-indigo-600 text-gray-600') }}" href="@route('single', $user->the_username)">
+                    <li><a class="relative text-sm md:text-base flex px-3 py-4 rounded {{ is_route('single', ' text-indigo-600 font-bold', 'hover:text-indigo-600 text-gray-600') }}" href="@route('single', $user->the_username)">
                         <svg class="md:w-6 w-4 fill-current mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="person"><rect width="24" height="24" opacity="0"/><path d="M12 11a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0-6a2 2 0 1 1-2 2 2 2 0 0 1 2-2z"/><path d="M12 13a7 7 0 0 0-7 7 1 1 0 0 0 2 0 5 5 0 0 1 10 0 1 1 0 0 0 2 0 7 7 0 0 0-7-7z"/></g></g></svg>
-                        Profile
+                        Profile 
+                        @isme($user)
+                        <div class="text-red-600 ml-1 -mt-2 text-lg" title="Konten Draft: {{ $user->draftedPostsCount() }}">&bull;</div>
+                        @endisme
                     </a></li>
                     <li><a class="text-sm md:text-base flex px-3 py-4 rounded {{ is_route('discuss', ' text-indigo-600 font-bold', 'hover:text-indigo-600 text-gray-600') }}" href="@route('discuss', $user->the_username)">
                         <svg class="md:w-6 w-4 fill-current mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="message-square"><rect width="24" height="24" opacity="0"/><circle cx="12" cy="11" r="1"/><circle cx="16" cy="11" r="1"/><circle cx="8" cy="11" r="1"/><path d="M19 3H5a3 3 0 0 0-3 3v15a1 1 0 0 0 .51.87A1 1 0 0 0 3 22a1 1 0 0 0 .51-.14L8 19.14a1 1 0 0 1 .55-.14H19a3 3 0 0 0 3-3V6a3 3 0 0 0-3-3zm1 13a1 1 0 0 1-1 1H8.55a3 3 0 0 0-1.55.43l-3 1.8V6a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1z"/></g></g></svg>

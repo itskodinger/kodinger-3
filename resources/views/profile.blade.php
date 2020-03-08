@@ -6,7 +6,7 @@
 	    @isme($user)
 	    <div class="ml-auto">
 		    <a class="text-sm border-b font-semibold border-teal-600 text-teal-600 mr-1" href="@current(['status' => 'publish'])">Publish</a>
-		    <a class="text-sm border-b font-semibold border-orange-600 text-orange-600" href="@current(['status' => 'draft'])">Draft</a>
+		    <a class="text-sm border-b font-semibold border-orange-600 text-orange-600" href="@current(['status' => 'draft'])">Draft {{ $user->hasDraftPost() ? '(' . $user->draftedPostsCount() . ')' : '' }}</a>
 		</div>
 	    @endisme
 	</div>
