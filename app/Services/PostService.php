@@ -38,7 +38,7 @@ class PostService
 
 	private function _draftedPosts()
 	{
-		return $this->model()->whereStatus('draft')->wherePublishedAt(null)->whereDeletedAt(null);
+		return $this->model()->whereStatus('draft')->wherePublishedAt(null)->whereUserId(auth()->user()->id);
 	}
 
 	public function draftedPostsCount()

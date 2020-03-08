@@ -61,6 +61,11 @@ class User extends Authenticatable
         return PostService::draftedPostsCount();
     }
 
+    public function draftedPosts()
+    {
+        return PostService::draftedPosts();
+    }
+
     public function getNameAttribute($value)
     {
         return e($value);
