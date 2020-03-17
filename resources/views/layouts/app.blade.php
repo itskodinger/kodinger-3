@@ -38,7 +38,7 @@
 <body class="h-screen bg-white">
 
     @if(auth()->check() && auth()->user()->hasDraftPost())
-    <div class="drafted-post-alert fixed bottom-0 right-0 z-20 p-6 w-4/12 hidden">
+    <div class="drafted-post-alert fixed bottom-0 right-0 z-50 p-6 md:w-4/12 w-full hidden">
         <div class="bg-yellow-400 p-6 rounded shadow-lg relative">
             <div class="drafted-post-alert-close absolute top-0 right-0 p-2 text-yellow-800 text-3xl z-1 leading-none mr-2 opacity-50 hover:opacity-100 cursor-pointer">&times;</div>
             <h2 class="text-yellow-900 font-semibold text-lg">Hai, @firstName, terbitkan konten kamu</h2>
