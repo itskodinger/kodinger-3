@@ -1678,7 +1678,7 @@ class Form extends Component {
 
 		return (
 			<>
-				<nav className="bg-white border-b-2 border-indigo-600 top-0 shadow mb-4 py-3 fixed left-0 w-full z-10">
+				<nav className="bg-white border-b border-gray-200 top-0 shadow mb-4 py-3 fixed left-0 w-full z-10">
 				    <div className="container mx-auto sm:px-6 px-4 md:px-0">
 				        <div className="flex items-center justify-center">
 				            <a href={routes.base_url} className="text-lg flex-shrink-0 font-semibold text-indigo-600 no-underline">
@@ -1688,7 +1688,7 @@ class Form extends Component {
 				            	<div className="text-gray-600 text-sm mr-6 save-status capitalize">
 				            		{statusSaving}
 				            	</div>
-				            	<button onClick={this.publishWholeContent.bind(this, {status: newStatus ? newStatus : 'publish'})} className={`items-center bg-gradient text-white px-4 py-2 text-sm rounded mr-6 shadow-md hover:shadow-none flex` + (!publish || this.isUploadingImage() ? ' pointer-events-none opacity-50' : '')}>
+				            	<button onClick={this.publishWholeContent.bind(this, {status: newStatus ? newStatus : 'publish'})} className={`items-center text-white px-4 py-2 text-sm rounded mr-6 flex` + (!publish || this.isUploadingImage() ? ' pointer-events-none opacity-50' : '')}>
 				            		{edit && status.toUpperCase() == 'PUBLISH' ? 'Simpan Perubahan' : 'Publish Post'}
 				            	</button>
 				            </div>
@@ -1703,8 +1703,8 @@ class Form extends Component {
 				        <p className="text-sm text-gray-600 mt-2 leading-relaxed">Berikan deskripsi pada slide ini. Kamu dapat mengosongkan deskripsi bila tidak ada. <a href={routes.docs + '/create-content#captioning'} className="border-b border-indigo-600 text-indigo-600">Pelajari selengkapnya</a> tentang mengisi keterangan.</p>
 				        <div className="mt-6 mb-5">
 				        	<div className="flex">
-				        		<button onClick={this.captionSwitch.bind(this, 'editor')} className="border-t-2 border-l-2 rounded-tl-lg text-sm px-4 py-2 border-gray-200">Editor</button>
-				        		<button onClick={this.captionSwitch.bind(this, 'preview')} className="border-t-2 border-l-2 rounded-tr-lg text-sm border-r-2 px-4 py-2 border-gray-200">Preview</button>
+				        		<button onClick={this.captionSwitch.bind(this, 'editor')} className="border-t border-l rounded-tl-lg text-sm px-4 py-2 border-gray-200">Editor</button>
+				        		<button onClick={this.captionSwitch.bind(this, 'preview')} className="border-t border-l rounded-tr-lg text-sm border-r px-4 py-2 border-gray-200">Preview</button>
 				        	</div>
 				        	<div className="caption-editor">
 					        	<textarea className="caption-area text-sm w-full border border-gray-200 h-64 rounded-br-lg rounded-bl-lg p-4"></textarea>
@@ -1855,7 +1855,7 @@ class Form extends Component {
 													{ images.map((image) => {
 														return (
 															<div data-id={image.id} key={image.id} className="bg-white flex justify-center flex-col md:flex-row w-full mb-4 rounded border border-gray-200 hover:border-gray-400">
-																<div className={`handle flex-shrink-0 p-2 items-center flex md:border-r-2 md:border-gray-200 bg-gray-100 md:mr-4 cursor-move` + (this.isUploadingImage() ? ' pointer-events-none' : '')}>
+																<div className={`handle flex-shrink-0 p-2 items-center flex md:border-r md:border-gray-200 bg-gray-100 md:mr-4 cursor-move` + (this.isUploadingImage() ? ' pointer-events-none' : '')}>
 																	<svg xmlns="http://www.w3.org/2000/svg" className="w-4 fill-current text-gray-600" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="menu"><rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"/><rect x="3" y="11" width="18" height="2" rx=".95" ry=".95"/><rect x="3" y="16" width="18" height="2" rx=".95" ry=".95"/><rect x="3" y="6" width="18" height="2" rx=".95" ry=".95"/></g></g></svg>
 																</div>
 																<div className="md:w-16 md:h-16 w-full h-auto md:p-0 p-4 md:mr-2 pb-0 flex-shrink-0 md:py-4">
