@@ -1707,9 +1707,9 @@ class Form extends Component {
 				        		<button onClick={this.captionSwitch.bind(this, 'preview')} className="border-t-2 border-l-2 rounded-tr-lg text-sm border-r-2 px-4 py-2 border-gray-200">Preview</button>
 				        	</div>
 				        	<div className="caption-editor">
-					        	<textarea className="caption-area text-sm w-full border-2 border-gray-200 h-64 rounded-br-lg rounded-bl-lg p-4"></textarea>
+					        	<textarea className="caption-area text-sm w-full border border-gray-200 h-64 rounded-br-lg rounded-bl-lg p-4"></textarea>
 				        	</div>
-				        	<div className="caption-preview p-4 hidden border-gray-200 border-2 mb-2 rounded-bl-lg rounded-br-lg text-sm overflow-auto markdowned">
+				        	<div className="caption-preview p-4 hidden border-gray-200 border mb-2 rounded-bl-lg rounded-br-lg text-sm overflow-auto markdowned">
 				        		Parsing ...
 				        	</div>
 				        	<div className="flex items-center">
@@ -1730,7 +1730,7 @@ class Form extends Component {
 
 			            	{ stateStatus == 'LOADING' &&
 					            <div className="text-center">
-					            	<svg version="1.1" className="logo-loader border-2 border-gray-200 rounded-lg" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1000 1000" enableBackground="new 0 0 1000 1000" xmlSpace="preserve">
+					            	<svg version="1.1" className="logo-loader border border-gray-200 rounded-lg" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1000 1000" enableBackground="new 0 0 1000 1000" xmlSpace="preserve">
 					            	<path fillRule="evenodd" clipRule="evenodd" fill="#FFFFFF" d="M1000,900c0,55.229-44.771,100-100,100H100
 					            		C44.771,1000,0,955.229,0,900V100C0,44.771,44.771,0,100,0h800c55.229,0,100,44.771,100,100V900z"/>
 				            		<path fillRule="evenodd" clipRule="evenodd" fill="#6979BB" d="M845.011,504.683c-11.729-8.214-20.504-13.022-27.63-19.614
@@ -1772,27 +1772,27 @@ class Form extends Component {
 				            		{ id &&
 				            			<>
 					            		{ status.toUpperCase() == 'PUBLISH' ?
-						            		<div className="py-4 px-6 mb-4 bg-teal-100 text-teal-600 border-2 border-teal-200 rounded text-sm leading-loose">
+						            		<div className="py-4 px-6 mb-4 bg-teal-100 text-teal-600 border border-teal-200 rounded text-sm leading-loose">
 						            			Post ini sudah dipublikasikan – semua orang dapat melihatnya. <a href={routes.single + slug} className="border-b border-teal-600 pb-1 font-semibold">Lihat post</a> atau <a href={routes.post_form} className="border-b border-teal-600 pb-1 font-semibold">Buat post baru</a>
 						            		</div>
 						            		:
-						            		<div className="py-4 px-6 mb-4 bg-blue-100 text-blue-600 border-2 border-blue-200 rounded text-sm leading-loose">
+						            		<div className="py-4 px-6 mb-4 bg-blue-100 text-blue-600 border border-blue-200 rounded text-sm leading-loose">
 						            			Post ini belum dipublikasikan. Tekan tombol "Publish Post" untuk mempublikasikan post ini, atau tekan tombol kombinasi <kbd className="border p-1 border-blue-600 rounded">{this.isMac() ? 'Command' : 'Ctrl'}+S</kbd> untuk menyimpannya sebagai draft.
 						            		</div>
 						            	}
 						            	</>
 						            }
-									<div className="border-2 border-gray-200 p-6 md:p-8 rounded">
+									<div className="border border-gray-200 p-6 md:p-8 rounded">
 								        <h1 className="text-indigo-600 text-xl font-semibold">{edit ? 'Perbarui Post' : 'Buat Post'}</h1>
 								        <p className="mb-4 mt-2 text-sm text-gray-600">Bagikan pengetahuan kamu dengan developer lain; begitu pula dengan developer lain, mereka akan melakukan hal serupa. <a className="text-indigo-600 border-b border-indigo-600" target="_blank" href={routes.docs + '/content'}>Pelajari selengkapnya</a> tentang membuat konten dan <a className="text-indigo-600 border-b border-indigo-600" target="_blank" href={routes.docs + '/content'}>best practice</a>-nya.</p>
 
 										<div className="mb-6 mt-6">
 											<label className="mb-1 text-sm inline-block text-gray-600">Judul</label>
-											<input onChange={this.titleOnInput.bind(this)} type="text" name="title" className="text-gray-600 border-2 border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600" autoComplete="off" tabIndex="1" defaultValue={title} />
+											<input onChange={this.titleOnInput.bind(this)} type="text" name="title" className="text-gray-600 border border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600" autoComplete="off" tabIndex="1" defaultValue={title} />
 										</div>
 										<div className="mb-6 mt-6">
 											<label className="mb-1 text-sm inline-block text-gray-600">Slug</label>
-											<input onChange={this.slugOnInput.bind(this)} onBlur={this.slugOnBlur.bind(this)} type="text" name="slug" className="text-gray-600 border-2 border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600" autoComplete="off" defaultValue={slug} tabIndex="2" />
+											<input onChange={this.slugOnInput.bind(this)} onBlur={this.slugOnBlur.bind(this)} type="text" name="slug" className="text-gray-600 border border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600" autoComplete="off" defaultValue={slug} tabIndex="2" />
 											<p className="mt-2 text-sm text-indigo-600">{routes.single.replace(/slug/g, '') + slug}</p>
 										</div>
 										{ !id && 
@@ -1805,11 +1805,11 @@ class Form extends Component {
 											<>
 												<div className="mb-6">
 													<label className="mb-1 text-sm inline-block text-gray-600">Topik</label>
-													<input type="text" name="tags[]" className="tags text-gray-600 border-2 border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600" tabIndex="3" />
+													<input type="text" name="tags[]" className="tags text-gray-600 border border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600" tabIndex="3" />
 												</div>
 												<div>
 													<label className="mb-1 text-sm inline-block text-gray-600">Design Keyword <span className="text-xs">(Optional)</span></label>
-													<input onChange={this.keywordOnInput.bind(this)} type="text" name="keyword" className="text-gray-600 border-2 border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600" tabIndex="4" defaultValue={keyword} />
+													<input onChange={this.keywordOnInput.bind(this)} type="text" name="keyword" className="text-gray-600 border border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600" tabIndex="4" defaultValue={keyword} />
 													<p className="mt-2 text-xs text-indigo-600">
 														<span className="tooltip cursor-help border-b border-dotted border-indigo-600" data-title="Keyword ini bukan untuk SEO, melainkan digunakan untuk mencari inspirasi desain ke situs di luar Kodinger, seperti Dribbble, Behance, atau Uplabs. Jadi, bila kamu sedang membahas library carousel, maka kamu dapat mengisi keyword dengan 'carousel'. Lalu, sistem akan menggunakan kata 'carousel' tadi untuk digunakan sebagai keyword pencarian ke 3 situs tadi.">
 															Saya harus mengisi ini dengan apa?
@@ -1822,12 +1822,12 @@ class Form extends Component {
 
 									{ id && (
 									<>
-										<div className="border-2 border-gray-200 p-6 md:p-8 rounded mt-10">
+										<div className="border border-gray-200 p-6 md:p-8 rounded mt-10">
 									        <h2 className="text-indigo-600 mb-4 text-xl font-semibold">Media</h2>
 									        <p className="leading-relaxed mb-6 mt-2 text-sm text-gray-600">Kamu dapat mengunggah gambar atau video dalam satu konten yang sama. <a href={routes.docs + '/content#form-media'} className="text-indigo-600 border-b border-indigo-600" target="_blank">Pelajari selengkapnya</a> tentang media.</p>
 
 											<div className="mb-6">
-												<div className="dropzone rounded-lg border-2 border-dashed border-gray-300 w-full flex items-center justify-center">
+												<div className="dropzone rounded-lg border border-dashed border-gray-300 w-full flex items-center justify-center">
 													<div className="p-10 md:p-20 text-center">
 														<h4 className="text-xl">Tarik gambar atau video kamu ke sini</h4>
 														<p className="text-sm mt-2 text-gray-600">
@@ -1854,7 +1854,7 @@ class Form extends Component {
 												<div className="image-files">
 													{ images.map((image) => {
 														return (
-															<div data-id={image.id} key={image.id} className="bg-white flex justify-center flex-col md:flex-row w-full mb-4 rounded border-2 border-gray-200 hover:border-gray-400">
+															<div data-id={image.id} key={image.id} className="bg-white flex justify-center flex-col md:flex-row w-full mb-4 rounded border border-gray-200 hover:border-gray-400">
 																<div className={`handle flex-shrink-0 p-2 items-center flex md:border-r-2 md:border-gray-200 bg-gray-100 md:mr-4 cursor-move` + (this.isUploadingImage() ? ' pointer-events-none' : '')}>
 																	<svg xmlns="http://www.w3.org/2000/svg" className="w-4 fill-current text-gray-600" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="menu"><rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"/><rect x="3" y="11" width="18" height="2" rx=".95" ry=".95"/><rect x="3" y="16" width="18" height="2" rx=".95" ry=".95"/><rect x="3" y="6" width="18" height="2" rx=".95" ry=".95"/></g></g></svg>
 																</div>
@@ -1889,7 +1889,7 @@ class Form extends Component {
 												</div>
 											</div>
 										</div>
-										<div className="border-2 border-gray-200 p-6 md:p-8 rounded mt-10">
+										<div className="border border-gray-200 p-6 md:p-8 rounded mt-10">
 									        <h2 className="text-indigo-600 mb-4 text-xl font-semibold">Tautan <span className="text-xs text-gray-600 font-normal">(Optional)</span></h2>
 									        <p className="leading-relaxed mb-6 mt-2 text-sm text-gray-600">Sertakan tautan referensi yang relevan dengan konten, bisa tautan ke halaman resmi situs web, tutorial, <code>code playground</code>, atau yang lainnya. <a href={routes.docs + '/content#form-links'} className="border-b border-indigo-600 text-indigo-600" target="_blank">Pelajari selengkapnya</a> tentang tautan.</p>
 
@@ -1926,7 +1926,7 @@ class Form extends Component {
 						            		</div>
 								        </div>
 								        { status.toUpperCase() == 'PUBLISH' &&
-											<div className="border-2 border-gray-200 p-6 md:p-8 rounded mt-10">
+											<div className="border border-gray-200 p-6 md:p-8 rounded mt-10">
 										        <h2 className="text-orange-600 mb-4 text-xl font-semibold">Visibilitas</h2>
 										        <p className="leading-relaxed mb-6 mt-2 text-sm text-gray-600">Post ini sudah dipublikasikan dan semua orang dapat mengakses post ini melalui tautan, beranda, mesin pencari, atau cara lainnya. Kamu dapat mengubah status post ini menjadi "draft" untuk menyembunyikannya dari semua orang.</p>
 
