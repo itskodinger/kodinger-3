@@ -1,22 +1,29 @@
 @inject('post', 'Services\PostService')
 
+@php
+$random = $post->random();
+@endphp
+
 <div class="off-canvasify sidebar" id="sidebar">
     <div class="mx-auto p-4 sm:p-0 sm:mx-0">
-        <h4 class="font-bold mb-3 text-indigo-600">Konten Populer</h4>
+        <h4 class="font-bold mb-3 text-indigo-600">Mungkin Kamu Suka</h4>
         <div class="rounded">
-            @if($post->popular() !== null)
-            <a href="@route('single', $post->popular()->slug)">
-                <img src="{{ $post->popular()->thumbnail }}" alt="{{ $post->popular()->title }}" class="rounded-lg">
+            @if($random !== null)
+            <a href="@route('single', $random->slug)">
+                <img src="{{ $random->thumbnail }}" alt="{{ $random->title }}" class="rounded">
             </a>
-            <div class="bg-white p-5 rounded-lg mx-4 -mt-16 relative border-2 border-gray-200">
-                <h4 class="text-indigo-500 font-semibold hover:text-indigo-700"><a href="@route('single', $post->popular()->slug)">{{ $post->popular()->title }}</a></h4>
-                <p class="text-gray-600 text-sm mt-2">{{ $post->popular()->views }} Views</p>
+            <h4 class="text-indigo-500 mt-3 font-semibold hover:text-indigo-700 text-lg"><a href="@route('single', $random->slug)">{!! $random->title !!}</a></h4>
+            <div class="mt-2 -mx-1">
+                @foreach($random->tags->slice(0, 3) as $tag)
+                <a class="text-gray-600 text-sm mx-1" href="@route('search', ['tag' => $tag->tag->name])">#{!! $tag->tag->name !!}</a>
+                @endforeach
             </div>
+            <p class="text-gray-600 text-sm mt-2">oleh <a class="font-semibold text-black" href="@route('single', $random->user->the_username)">{{ $random->user->name }}</a></p>
             @endif
         </div>
 
         <h4 class="mt-10 font-bold mb-3 text-indigo-600">Paling Banyak Disukai</h4>
-        <div class="bg-white rounded border-2 border-gray-200">
+        <div class="bg-white rounded border border-gray-200">
             @foreach($post->loved() as $post)
             @isset($post->post)
             <a class="flex items-center hover:bg-gray-100 px-5 py-4 border-b border-gray-100" href="@route('single', $post->post->slug)">
@@ -33,7 +40,7 @@
                 <div class="text-sm font-light text-gray-300 mt-2">
                     Dapatkan informasi seputar teknologi web di Instagram.
                 </div>
-                <a href="https://instagram.com/itskodinger" target="_blank" class="inline-block mt-5 bg-white hover:bg-transparent hover:text-white hover:border-white border-2 border-transparent text-purple-600 py-2 px-6 uppercase font-semibold tracking-wider rounded text-xs">Follow</a>
+                <a href="https://instagram.com/itskodinger" target="_blank" class="inline-block mt-5 bg-white hover:bg-transparent hover:text-white hover:border-white border border-transparent text-purple-600 py-2 px-6 uppercase font-semibold tracking-wider rounded text-xs">Follow</a>
                 <p class="uppercase text-xs tracking-wider mt-8 opacity-50">Tersedia juga di:</p>
                 <div class="flex justify-center mt-2">
                     <a href="https://www.facebook.com/itskodinger"><svg class="w-6 text-white fill-current mx-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="facebook"><rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"/><path d="M17 3.5a.5.5 0 0 0-.5-.5H14a4.77 4.77 0 0 0-5 4.5v2.7H6.5a.5.5 0 0 0-.5.5v2.6a.5.5 0 0 0 .5.5H9v6.7a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-6.7h2.62a.5.5 0 0 0 .49-.37l.72-2.6a.5.5 0 0 0-.48-.63H13V7.5a1 1 0 0 1 1-.9h2.5a.5.5 0 0 0 .5-.5z"/></g></g></svg></a>

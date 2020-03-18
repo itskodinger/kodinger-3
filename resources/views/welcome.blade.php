@@ -1,8 +1,8 @@
-@extends('layouts.app', ['title' => 'Where developers share their knowledge', 'footer' => false])
+@extends('layouts.app', ['title' => 'Dari coder untuk semua orang', 'footer' => false])
 
 @push('meta')
     <meta property="og:title" content="Kodinger">
-    <meta property="og:description" content="Where developers share their knowledge.">
+    <meta property="og:description" content="Dari coder untuk semua orang.">
     <meta property="og:image" content="https://kodinger-cdn.sgp1.cdn.digitaloceanspaces.com/public/utils/kodinger-thumbnail.png">
     <meta property="og:url" content="https://kodinger.com">
     <meta name="twitter:card" content="summary_large_image">

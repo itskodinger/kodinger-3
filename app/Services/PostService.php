@@ -371,7 +371,14 @@ class PostService
 
 	public function popular()
 	{
-		$posts = $this->model()->orderBy('views', 'desc')->whereStatus('publish')->where('type', null)->first();
+		$posts = $this->model()->orderBy('views', 'desc')->whereStatus('publish')->whereNull('type')->first();
+
+		return $posts;
+	}
+
+	public function random()
+	{
+		$posts = $this->model()->inRandomOrder()->whereStatus('publish')->whereNull('type')->first();
 
 		return $posts;
 	}

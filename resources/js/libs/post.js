@@ -75,7 +75,7 @@ let api = {
 				action: 'copy',
 				icon: '<svg class="w-4 fill-current mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="link-2"><rect width="24" height="24" opacity="0"/><path d="M13.29 9.29l-4 4a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l4-4a1 1 0 0 0-1.42-1.42z"/><path d="M12.28 17.4L11 18.67a4.2 4.2 0 0 1-5.58.4 4 4 0 0 1-.27-5.93l1.42-1.43a1 1 0 0 0 0-1.42 1 1 0 0 0-1.42 0l-1.27 1.28a6.15 6.15 0 0 0-.67 8.07 6.06 6.06 0 0 0 9.07.6l1.42-1.42a1 1 0 0 0-1.42-1.42z"/><path d="M19.66 3.22a6.18 6.18 0 0 0-8.13.68L10.45 5a1.09 1.09 0 0 0-.17 1.61 1 1 0 0 0 1.42 0L13 5.3a4.17 4.17 0 0 1 5.57-.4 4 4 0 0 1 .27 5.95l-1.42 1.43a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l1.42-1.42a6.06 6.06 0 0 0-.6-9.06z"/></g></g></svg>',
 				name: 'Copy Link',
-				class: 'text-gray-600 border-2 border-gray-400 hover:bg-gray-200 cursor-pointer',
+				class: 'text-gray-600 border border-gray-400 hover:bg-gray-200 cursor-pointer',
 				rm_class: 'shadow-md mb-3'
 			},
 		]
@@ -129,7 +129,7 @@ let api = {
 	            var cr = new window.tns({
 	                container: find(element, '.carousel'),
 	                controls: false,
-	                nav: false,
+	                nav: true,
 					items: 1,
 					autoHeight: true,
 					loop: false,
@@ -247,7 +247,7 @@ let api = {
 		love: function(parent, post_id) {
 			let ic_love = '<svg class="stroke-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>',
 				ic_unlove = '<svg class="fill-current text-red-600" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>',
-			    ic_spin = '<svg class="w-6 stroke-current spin" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="6"></line><line x1="12" y1="18" x2="12" y2="22"></line><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line><line x1="2" y1="12" x2="6" y2="12"></line><line x1="18" y1="12" x2="22" y2="12"></line><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line></svg>';
+			    ic_spin = '<svg class="stroke-current spin" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="6"></line><line x1="12" y1="18" x2="12" y2="22"></line><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line><line x1="2" y1="12" x2="6" y2="12"></line><line x1="18" y1="12" x2="22" y2="12"></line><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line></svg>';
 
 			function toggle_icon_love(is_loved, item) 
 			{
@@ -486,10 +486,10 @@ let api = {
 		 */
 		community: function({post: community, options}) {
 			let tpl = `
-	    		<div class="bg-white rounded border-2 border-gray-200 w-full">
+	    		<div class="bg-white rounded border border-gray-200 w-full">
 	    			<div class="pb-8 pt-6 px-6">
 	    				<div class="float-right">
-	    					<a target="_blank" ${ community.website ? `href="${community.website}" `:'' }class="${!community.website ? 'pointer-events-none opacity-50 ':''}flex leading-relaxed items-center hover:bg-indigo-600 hover:text-white hover:border-indigo-600 border-2 border-gray-200 uppercase text-xs font-semibold tracking-wider py-1 px-3 rounded-full">
+	    					<a target="_blank" ${ community.website ? `href="${community.website}" `:'' }class="${!community.website ? 'pointer-events-none opacity-50 ':''}flex leading-relaxed items-center hover:bg-indigo-600 hover:text-white hover:border-indigo-600 border border-gray-200 uppercase text-xs font-semibold tracking-wider py-1 px-3 rounded-full">
 	    						Website
 	    						<svg class="ml-1 w-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="arrow-forward"><rect width="24" height="24" transform="rotate(-90 12 12)" opacity="0"/><path d="M5 13h11.86l-3.63 4.36a1 1 0 0 0 1.54 1.28l5-6a1.19 1.19 0 0 0 .09-.15c0-.05.05-.08.07-.13A1 1 0 0 0 20 12a1 1 0 0 0-.07-.36c0-.05-.05-.08-.07-.13a1.19 1.19 0 0 0-.09-.15l-5-6A1 1 0 0 0 14 5a1 1 0 0 0-.64.23 1 1 0 0 0-.13 1.41L16.86 11H5a1 1 0 0 0 0 2z"/></g></g></svg>
 	    					</a>
@@ -540,7 +540,7 @@ let api = {
 		communityShimmer: function() {
 			let tpl = `
 		    	<div class="w-full">
-		    		<div class="bg-white rounded border-2 border-gray-200">
+		    		<div class="bg-white rounded border border-gray-200">
 		    			<div class="pb-8 pt-6 px-6">
 		    				<div class="float-right">
 		    					<div class="flex py-1 px-3 rounded-full bg-gray-200 w-16 h-6">
@@ -577,7 +577,7 @@ let api = {
 		 */
 		post: function({post, options}) {
 			let tpl = `
-			<div class="bg-white rounded border-2 border-gray-200 mb-10">
+			<div class="bg-white rounded border border-gray-200 mb-10">
 			    <div class="flex p-6 items-center">
 			        <a href="${routes.single + post.user.the_username}">
 			            <img class="rounded w-12 rounded border" src="${ post.user.the_avatar_sm }">
@@ -716,7 +716,7 @@ let api = {
 		 */
 		postShimmer: function(shi_class) {
 			let tpl = `
-				<div class="${shi_class} bg-white rounded border-2 border-gray-200 mb-10">
+				<div class="${shi_class} bg-white rounded border border-gray-200 mb-10">
 				    <div class="flex p-6 items-center">
 					    <div class="w-12 h-12 bg-gray-200 rounded"></div>
 				        <div class="ml-3">
@@ -764,7 +764,7 @@ let api = {
 		 */
 		discoverShimmer: function(shi_class) {
 			let tpl = `
-				<div class="${shi_class} bg-white rounded border-2 border-gray-200 mb-10">
+				<div class="${shi_class} bg-white rounded border border-gray-200 mb-10">
 				    <div class="flex p-6 items-center">
 					    <div class="w-12 h-12 bg-gray-200 rounded"></div>
 				        <div class="ml-3">

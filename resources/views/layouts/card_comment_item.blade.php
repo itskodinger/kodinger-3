@@ -1,4 +1,4 @@
-        <div class="bg-white mb-4 border-2 border-gray-200 rounded">
+        <div class="bg-white mb-4 border border-gray-200 rounded">
             <div class="py-3 px-6 text-sm italic inline-block text-gray-600 font-light">
                 <a class="not-italic text-gray-900 font-bold" href="@route('single', optional($comment->user)->the_username ?? '')">{{ optional($comment->user)->name ?? 'Unknown User' }}</a>
                 berkomentar di

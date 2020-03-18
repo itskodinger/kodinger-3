@@ -344,9 +344,9 @@ function type_icons($key)
 function login_features()
 {
 	return [
-		'Menyukai post',
-		'Menyimpan post',
-		'Berdiskusi dengan anggota yang lain',
+		'Menyukai konten',
+		'Menyimpan konten',
+		'Membuat konten',
 		'Berbagi tautan dengan komunitas'
 	];
 }
@@ -391,4 +391,9 @@ function safe_file_name($string, $force_lowercase=true, $anal=false)
             mb_strtolower($clean, 'UTF-8') :
             strtolower($clean) :
         $clean;
+}
+
+function is_home()
+{
+	return request()->route()->getName() == 'index' ? true : false;
 }

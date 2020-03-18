@@ -9,14 +9,14 @@ import adds from '../utils/adds';
  */
 let commentTemplate = function(data) {
     return `
-        <div id="discuss-${data.id}" class="group px-6 py-3 rounded-bl rounded-br cmt-${data.id}">
+        <div id="discuss-${data.id}" class="group bg-white rounded border border-gray-200 mb-6 p-6 cmt-${data.id}">
             <div class="flex">
-                <img class="rounded-full w-10 h-10 flex-shrink-0" src="${data.avatar}">
-                <div class="ml-3 w-full">
+                <img class="rounded w-10 h-10 flex-shrink-0" src="${data.avatar}">
+                <div class="ml-5 w-full">
                     <p class="mx-1 text-blue-500 text-xs font-semibold float-right cmt-time">${data.time}</p>
-                    <h4 class="mb-1 font-bold text-sm"><a class="text-indigo-600 cmt-name" href="${routes.base_url +'/'+ data.username}">${data.name}</a> <span class="text-gray-600 font-normal">(${data.username})</span></h4>
+                    <h4 class="mb-1 font-bold"><a class="text-indigo-600 cmt-name" href="${routes.base_url +'/'+ data.username}">${data.name}</a> <span class="text-gray-600 font-normal">(${data.username})</span></h4>
                     <div class="text-sm text-gray-700">
-                        <div class="quoted-cmt-wrapper"></div>
+                        <div class="quoted-cmt-wrapper my-2"></div>
                         <div class="cmt-content mb-2 text-base break-all markdowned">${data.content}</div>
                     </div>
                     <div class="cmt-actions opacity-25 group-hover:opacity-100"></div>
