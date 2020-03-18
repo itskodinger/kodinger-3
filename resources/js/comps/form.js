@@ -1678,7 +1678,7 @@ class Form extends Component {
 
 		return (
 			<>
-				<nav className="bg-white border-b border-gray-200 top-0 shadow mb-4 py-3 fixed left-0 w-full z-10">
+				<nav className="bg-white border-b border-gray-200 top-0 mb-4 py-3 fixed left-0 w-full z-10">
 				    <div className="container mx-auto sm:px-6 px-4 md:px-0">
 				        <div className="flex items-center justify-center">
 				            <a href={routes.base_url} className="text-lg flex-shrink-0 font-semibold text-indigo-600 no-underline">
@@ -1688,7 +1688,7 @@ class Form extends Component {
 				            	<div className="text-gray-600 text-sm mr-6 save-status capitalize">
 				            		{statusSaving}
 				            	</div>
-				            	<button onClick={this.publishWholeContent.bind(this, {status: newStatus ? newStatus : 'publish'})} className={`items-center text-white px-4 py-2 text-sm rounded mr-6 flex` + (!publish || this.isUploadingImage() ? ' pointer-events-none opacity-50' : '')}>
+				            	<button onClick={this.publishWholeContent.bind(this, {status: newStatus ? newStatus : 'publish'})} className={`items-center bg-indigo-600 text-white px-4 py-2 text-sm rounded mr-6 flex` + (!publish || this.isUploadingImage() ? ' pointer-events-none opacity-50' : '')}>
 				            		{edit && status.toUpperCase() == 'PUBLISH' ? 'Simpan Perubahan' : 'Publish Post'}
 				            	</button>
 				            </div>
