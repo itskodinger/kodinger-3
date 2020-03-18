@@ -6,7 +6,6 @@ $random = $post->random();
 
 <div class="off-canvasify sidebar" id="sidebar">
     <div class="mx-auto p-4 sm:p-0 sm:mx-0">
-        <h4 class="font-bold mb-3 text-indigo-600">Mungkin Kamu Suka</h4>
         <div class="rounded">
             @if($random !== null)
             <a href="@route('single', $random->slug)">
