@@ -170,15 +170,22 @@ let api = {
 			    ic_unsave = '<svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="bookmark"><rect width="24" height="24" opacity="0"/><path d="M6 21a1 1 0 0 1-.49-.13A1 1 0 0 1 5 20V5.33A2.28 2.28 0 0 1 7.2 3h9.6A2.28 2.28 0 0 1 19 5.33V20a1 1 0 0 1-.5.86 1 1 0 0 1-1 0l-5.67-3.21-5.33 3.2A1 1 0 0 1 6 21z"/></g></g></svg>',
 			    ic_spin = '<svg class="fill-current spin" xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="6"></line><line x1="12" y1="18" x2="12" y2="22"></line><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line><line x1="2" y1="12" x2="6" y2="12"></line><line x1="18" y1="12" x2="22" y2="12"></line><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line></svg>';
 
-			function toggle_icon_save(is_saved, item)
+			function toggle_icon_save(is_saved, item, calc=false)
 			{
-				if(find(item, 'svg'))
-					find(item, 'svg').remove();
+				if(find(item, 'span svg'))
+					find(item, ' span svg').remove();
 
-				if(is_saved)
-					item.append(str2dom(ic_unsave));
-				else
-					item.append(str2dom(ic_save));
+				if(is_saved){
+					find(item, 'span').append(str2dom(ic_unsave));
+
+					if(calc)
+						find(item, '.post-save-count').innerText = parseInt(find(item, '.post-save-count').innerText) + 1;
+				}else{
+					find(item, 'span').append(str2dom(ic_save));
+
+					if(calc)
+						find(item, '.post-save-count').innerText = parseInt(find(item, '.post-save-count').innerText) - 1;
+				}
 			}
 
 			finds(parent, '[data-save]').forEach(function(item){
@@ -191,10 +198,10 @@ let api = {
 
 					item.classList.add('pointer-events-none');
 
-					if(find(item, 'svg'))
-						find(item, 'svg').remove();
+					if(find(item, 'span svg'))
+						find(item, 'span svg').remove();
 
-					item.append(str2dom(ic_spin));
+					find(item, 'span').append(str2dom(ic_spin));
 
 					const saving = (async function() {
 						const res = await fetch(routes.save, {
@@ -219,14 +226,14 @@ let api = {
 						return Promise.resolve(json);
 					})()
 					.finally(function() {
-						find(item, 'svg').remove();
+						find(item, 'span svg').remove();
 						item.classList.remove('pointer-events-none');
 					})
 					.then(function(res) {
 						is_saved = res.saved; 
 						item.dataset.saved = res.saved;
 
-						toggle_icon_save(is_saved, item);
+						toggle_icon_save(is_saved, item, true);
 					})
 					.catch(function(error) {
 						toggle_icon_save(false, item);
@@ -249,12 +256,20 @@ let api = {
 				ic_unlove = '<svg class="fill-current text-red-600" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>',
 			    ic_spin = '<svg class="stroke-current spin" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="6"></line><line x1="12" y1="18" x2="12" y2="22"></line><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line><line x1="2" y1="12" x2="6" y2="12"></line><line x1="18" y1="12" x2="22" y2="12"></line><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line></svg>';
 
-			function toggle_icon_love(is_loved, item) 
+			function toggle_icon_love(is_loved, item, calc=false) 
 			{
-				if(is_loved)
+				if(is_loved){
 					find(item, 'span').append(str2dom(ic_unlove));
-				else
+
+					if(calc)
+						find(item, '.post-love-count').innerText = parseInt(find(item, '.post-love-count').innerText) + 1;
+				}
+				else {
 					find(item, 'span').append(str2dom(ic_love));
+
+					if(calc)
+						find(item, '.post-love-count').innerText = parseInt(find(item, '.post-love-count').innerText) - 1;
+				}
 			}
 
 			finds(parent, '[data-love]').forEach(function(item) {
@@ -301,7 +316,7 @@ let api = {
 						is_loved = res.saved; 
 						item.dataset.loved = res.saved;
 
-						toggle_icon_love(is_loved, item);
+						toggle_icon_love(is_loved, item, true);
 					})
 					.catch(function(error) {
 						toggle_icon_love(false, item);
@@ -662,7 +677,7 @@ let api = {
 
 			    <div class="p-6 text-gray-700 text-sm leading-relaxed">
 			        ${post.title ?
-				        `<h2 class="text-xl mb-2 text-black font-bold"><a class="text-indigo-700" href="${routes.single + post.slug}">
+				        `<h2 class="text-xl mb-2 text-black font-bold"><a class="text-indigo-600" href="${routes.single + post.slug}">
 				            ${post.title}
 				        </a></h2>`
 			        : ''}
@@ -693,15 +708,20 @@ let api = {
 		        <div class="border-t border-gray-200">
 		            <div class="flex w-full items-center">
 		                <a data-love ${ post.is_post_loved ? 'data-loved' : '' } class="py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200" href="#">
-		                    <span></span>
+		                    <span></span> 
+		                    <div class="ml-2 inline-block post-love-count">${post.total_loves}</div>
 		                </a>
 		                <a class="py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200" href="${routes.single + post.slug + '#comments'}">
 		                    <svg class="stroke-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg> 
+		                    <div class="ml-2 inline-block post-comment-count">${post.total_comments}</div>
+		                </a>
+		                <a class="py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200" data-save ${ post.is_post_saved ? 'data-saved' : '' } href="#">
+		                	<span></span>
+		                    <div class="ml-2 inline-block post-save-count">${post.total_saves}</div>
 		                </a>
 		                <a data-url="${ routes.single + post.slug }" class="share-button py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200" href="#">
 		                    <svg class="stroke-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
 		                </a>
-		                <a class="py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200" data-save ${ post.is_post_saved ? 'data-saved' : '' } href="#"></a>
 		            </div>
 		        </div>
 			</div>`;

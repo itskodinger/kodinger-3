@@ -11,7 +11,7 @@ $random = $post->random();
             <a href="@route('single', $random->slug)">
                 <img src="{{ $random->thumbnail }}" alt="{{ $random->title }}" class="rounded">
             </a>
-            <h4 class="text-indigo-500 mt-3 font-semibold hover:text-indigo-700 text-lg"><a href="@route('single', $random->slug)">{!! $random->title !!}</a></h4>
+            <h4 class="text-indigo-600 mt-3 font-semibold hover:text-indigo-700 text-lg"><a href="@route('single', $random->slug)">{!! $random->title !!}</a></h4>
             <div class="mt-2 -mx-1">
                 @foreach($random->tags->slice(0, 3) as $tag)
                 <a class="text-gray-600 text-sm mx-1" href="@route('search', ['tag' => $tag->tag->name])">#{!! $tag->tag->name !!}</a>

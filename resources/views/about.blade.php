@@ -8,7 +8,7 @@
         <div class="flex mt-8 -mx-4">
             @foreach(teams() as $team)
             <div class="w-4/12 mx-4">
-                <div class="bg-white rounded border-2 border-gray-300 hover:border-indigo-600 px-4 py-8 text-center">
+                <div class="bg-white rounded border border-gray-300 hover:border-indigo-600 px-4 py-8 text-center">
                     <img class="w-24 rounded-full inline" src="{{ $team['image'] }}">
                     <h2 class="text-lg mt-2 text-indigo-600 font-bold">{{$team['name']}}</h2>
                     <p class="text-gray-500 font-semibold text-xs uppercase tracking-wider">{{$team['as']}}</p>

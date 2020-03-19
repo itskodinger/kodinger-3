@@ -54,7 +54,10 @@ class Post extends Model
         'first_slide_media',
         'first_slide_caption',
         'first_slide_caption_truncated',
-        'is_single_caption'
+        'is_single_caption',
+        'total_comments',
+        'total_loves',
+        'total_saves'
     ];
 
     protected function markdownParse()
@@ -317,6 +320,31 @@ class Post extends Model
 	public function attributes() {
 		return $this->hasMany(PostAttribute::class);
 	}
+
+    public function loves()
+    {
+        return $this->hasMany('App\Save', 'row_id')->whereMethod('love');
+    }
+
+    public function saves()
+    {
+        return $this->hasMany('App\Save', 'row_id')->whereMethod('save');
+    }
+
+    public function getTotalCommentsAttribute()
+    {
+        return $this->comments->count();
+    }
+
+    public function getTotalLovesAttribute()
+    {
+        return $this->loves->count();
+    }
+
+    public function getTotalSavesAttribute()
+    {
+        return $this->saves->count();
+    }
 
     protected $casts = [
         'id' => 'string'

@@ -1,10 +1,23 @@
 module.exports = {
   theme: {
     extend: {
+		colors: {
+			indigo: {
+				100: '#EAEFFF',
+				200: '#CAD8FF',
+				300: '#A9C0FF',
+				400: '#6991FF',
+				500: '#2962FF',
+				600: '#2558E6',
+				700: '#193B99',
+				800: '#122C73',
+				900: '#0C1D4D',
+			},
+		},
     	cursor: {
     		help: 'help'
-    	}
-    }
+    	},
+    },
   },
   variants: {
   	borderColor: ['responsive', 'hover', 'focus', 'focus-within'],

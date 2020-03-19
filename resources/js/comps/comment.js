@@ -298,6 +298,8 @@ function commentRemove(id, event)
             cmt.remove();
         else
             cmt.classList.removes('opacity-50 pointer-events-none');
+
+        $('.single-post .post-comment-count').innerText = parseInt($('.single-post .post-comment-count').innerText) - 1;
     });
 }
 
@@ -416,6 +418,8 @@ function comment(content)
             content: res.data.markdown,
             reply: res.data.reply
         }, false, 'after', $('.cmt-' + temp_id));
+
+        $('.single-post .post-comment-count').innerText = parseInt($('.single-post .post-comment-count').innerText) + 1;
 
         $('.cmt-' + temp_id).remove();
 

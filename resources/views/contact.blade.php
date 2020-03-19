@@ -3,7 +3,7 @@
 @section('content')
     <div class="container mx-auto">
         <div class="py-12 -mx-4">
-            <div class="w-6/12 mx-auto border-2 rounded border-gray-200">
+            <div class="w-6/12 mx-auto border rounded border-gray-200">
                 <div class="p-8">
                     <h1 class="text-indigo-600 text-xl font-semibold">Contact</h1>
                     <p class="mt-2 text-gray-600">Bila kamu menemukan bug keamanan di situs ini, memiliki pertanyaan seputar bisnis atau sponsorship, kamu bisa menghubungi kami melalui alamat di bawah.</p>
