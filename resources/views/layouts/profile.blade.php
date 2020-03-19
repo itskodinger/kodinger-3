@@ -54,7 +54,7 @@
                         </div>
                         @endisme
                         <div class="flex md:p-10 p-6 flex-col md:flex-row">
-                            <img src="{{ $user->the_avatar }}" class="w-40 h-40 rounded-lg inline-block border border-gray-200">
+                            <img src="{{ $user->the_avatar }}" class="w-40 h-40 rounded-lg inline-block border border-gray-200 flex-shrink-0">
                             <div class="md:ml-10 md:mt-0 mt-10">
                                 <h1 class="font-bold text-2xl text-black">{!! $user->name !!}</h1>
                                 <div class="text-gray-600 text-sm">{{ $user->the_username }}</div>
