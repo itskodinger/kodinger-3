@@ -301,4 +301,22 @@ class FrontendController extends Controller
 
 		return view('post_form');
 	}
+
+	/**
+	 * Scenes page
+	 * @return  view
+	 */
+	public function scenes()
+	{
+		return view('scenes');
+	}
+
+	/**
+	 * Scene page
+	 * @return  view
+	 */
+	public function scene()
+	{
+		return view('scene');
+	}
 }

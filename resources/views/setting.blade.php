@@ -73,7 +73,7 @@
                 'help' => 'Cantumkan perusahaan tempat kamu bekerja sekarang.'
             ])
 
-            <h4 class="mb-1 mt-6 text-lg font-semibold text-indigo-500">Pengaturan Akun</h4>
+            <h4 id="account-setting" class="mb-1 mt-6 text-lg font-semibold text-indigo-500">Pengaturan Akun</h4>
             <p class="mb-5 text-sm text-gray-500 font-light">Informasi akun tidak dapat kamu ubah sendiri, kamu perlu menghubungi salah satu admin untuk membuat permintaan pengubahan informasi akun.</p>
 
             @field([
@@ -87,9 +87,9 @@
             @field([
                 'name' => 'username',
                 'label' => 'Username',
-                'type' => 'div',
+                'type' => (enable_username() ? 'input' : 'div'),
                 'value' => $user->username,
-                'help' => 'Username digunakan oleh orang lain untuk menyebut kamu di dalam sebuah diskusi atau post.'
+                'help' => (enable_username() ? '<span class="text-red-600 font-bold">Username tidak dapat diubah kembali setelah ini, tentukan username dengan benar.</span> ' : '') . 'Username digunakan oleh orang lain untuk menyebut kamu di dalam sebuah diskusi atau post.'
             ])
 
             @field([

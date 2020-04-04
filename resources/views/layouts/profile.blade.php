@@ -60,17 +60,17 @@
                                 <div class="text-gray-600 text-sm">{{ $user->the_username }}</div>
                                 <div class="flex md:flex-row flex-col">
                                     @if($user->location)
-                                    <p class="mt-3 text-base text-gray-600 flex items-center">
+                                    <p class="mt-3 text-base text-gray-600 flex items-center md:mr-4">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 mr-2 fill-current text-gray-400" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="home"><rect width="24" height="24" opacity="0"/><path d="M20.42 10.18L12.71 2.3a1 1 0 0 0-1.42 0l-7.71 7.89A2 2 0 0 0 3 11.62V20a2 2 0 0 0 1.89 2h14.22A2 2 0 0 0 21 20v-8.38a2.07 2.07 0 0 0-.58-1.44zM10 20v-6h4v6zm9 0h-3v-7a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v7H5v-8.42l7-7.15 7 7.19z"/></g></g></svg>
                                         {{ $user->location }}
                                     </p>
                                     @endif
-                                    <p class="mt-3 text-base text-gray-600 flex items-center md:ml-4">
+                                    <p class="mt-3 text-base text-gray-600 flex items-center md:mr-4">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 mr-2 fill-current text-gray-400" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="clock"><rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"/><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><path d="M16 11h-3V8a1 1 0 0 0-2 0v4a1 1 0 0 0 1 1h4a1 1 0 0 0 0-2z"/></g></g></svg>
                                         {{ $user->created_at->diffForHumans() }}
                                     </p>
                                     @if($user->company)
-                                    <p class="mt-3 text-base text-gray-600 flex items-center md:ml-4">
+                                    <p class="mt-3 text-base text-gray-600 flex items-center md:mr-4">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 mr-2 fill-current text-gray-400" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="code"><rect width="24" height="24" transform="rotate(90 12 12)" opacity="0"/><path d="M8.64 5.23a1 1 0 0 0-1.41.13l-5 6a1 1 0 0 0 0 1.27l4.83 6a1 1 0 0 0 .78.37 1 1 0 0 0 .78-1.63L4.29 12l4.48-5.36a1 1 0 0 0-.13-1.41z"/><path d="M21.78 11.37l-4.78-6a1 1 0 0 0-1.41-.15 1 1 0 0 0-.15 1.41L19.71 12l-4.48 5.37a1 1 0 0 0 .13 1.41A1 1 0 0 0 16 19a1 1 0 0 0 .77-.36l5-6a1 1 0 0 0 .01-1.27z"/></g></g></svg>
                                         {{ $user->company }}
                                     </p>

@@ -35,6 +35,7 @@
         "@yaireo/tagify": "^3.2.6",
         "clipboard": "^2.0.4",
         "list.js": "^1.5.0",
+        "plyr": "^3.5.10",
         "siema": "^1.5.1",
         "simplemde": "^1.11.2",
         "sortablejs": "^1.10.2",

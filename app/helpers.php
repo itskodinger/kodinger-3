@@ -397,3 +397,13 @@ function is_home()
 {
 	return request()->route()->getName() == 'index' ? true : false;
 }
+
+function is_provider_google() 
+{
+	return auth()->user()->provider == 'google' ? true : false;
+}
+
+function enable_username()
+{
+	return is_provider_google() && auth()->user()->provider_id == auth()->user()->username;
+}

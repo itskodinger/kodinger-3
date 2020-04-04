@@ -93,10 +93,20 @@ class UserService
 			$avatar = $avatar_name;
 		}
 
+		$except = [
+			'email', 
+			'provider'
+		];
+
+		if(enable_username())
+		{
+			$except = array_push($except, 'username');
+		}
+
 		// save new user data
 		return auth()->user()->update([
 			'avatar' => $avatar
-		] + $request->except(['email', 'username', 'provider']));
+		] + $request->except($except));
 	}
 
 	public function cropAvatar($the_image)
@@ -112,7 +122,8 @@ class UserService
 
 	public function register($user, $provider)
 	{
-        $auth_user = User::where('provider_id', $user->id)->first();
+        $auth_user = User::where('email', $user->email)->first();
+
         if ($auth_user) {
             return $auth_user;
         }
@@ -135,16 +146,16 @@ class UserService
             $user = User::create([
                 'name'     => $user->name ?? $user->nickname,
                 'email'    => !empty($user->email)? $user->email : '' ,
-                'username' => $user->nickname,
+                'username' => $user->nickname ?? $user->id,
                 'provider' => $provider,
                 'provider_id' => $user->id,
                 'avatar' => $avatar,
-                'bio' => $user->user['bio'],
-                'link' => $user->user['blog'],
-                'location' => $user->user['location'],
-                'hireable' => $user->user['hireable'],
-                'github' => $user->user['html_url'],
-                'company' => $user->user['company'],
+                'bio' => $user->user['bio'] ?? '',
+                'link' => $user->user['blog'] ?? '',
+                'location' => $user->user['location'] ?? '',
+                'hireable' => $user->user['hireable'] ?? '',
+                'github' => $user->user['html_url'] ?? '',
+                'company' => $user->user['company'] ?? '',
                 'status' => 'active'
             ]);
 
