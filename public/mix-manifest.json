@@ -1,15 +1,15 @@
 {
-    "/js/app.js": "/js/app.js?id=23b7dfe1e7bcaecfc320",
-    "/css/app.css": "/css/app.css?id=f1de42fb93bbb31b16c2",
-    "/js/community.js": "/js/community.js?id=d9fe4197d774bd444419",
-    "/js/contribute.js": "/js/contribute.js?id=2d409d25c5a95de2317f",
-    "/js/discover.js": "/js/discover.js?id=822cc1dd953687e9096e",
-    "/js/home.js": "/js/home.js?id=47670d04230f3ed43c6a",
-    "/js/post-form.js": "/js/post-form.js?id=236ea45e01d55159fdcf",
-    "/js/profile.js": "/js/profile.js?id=9562af37b3acd6c8918c",
-    "/js/profile-loves.js": "/js/profile-loves.js?id=599a92c18a2367e76b31",
-    "/js/profile-saves.js": "/js/profile-saves.js?id=a77ac7d92bde1adbe897",
-    "/js/search.js": "/js/search.js?id=243a7ca6c124d7f8c323",
-    "/js/setting.js": "/js/setting.js?id=36a12338661b65b4e8b2",
-    "/js/single.js": "/js/single.js?id=0fcdfcca944a94d99942"
+    "/js/app.js": "/js/app.js",
+    "/css/app.css": "/css/app.css",
+    "/js/community.js": "/js/community.js",
+    "/js/contribute.js": "/js/contribute.js",
+    "/js/discover.js": "/js/discover.js",
+    "/js/home.js": "/js/home.js",
+    "/js/post-form.js": "/js/post-form.js",
+    "/js/profile.js": "/js/profile.js",
+    "/js/profile-loves.js": "/js/profile-loves.js",
+    "/js/profile-saves.js": "/js/profile-saves.js",
+    "/js/search.js": "/js/search.js",
+    "/js/setting.js": "/js/setting.js",
+    "/js/single.js": "/js/single.js"
 }
