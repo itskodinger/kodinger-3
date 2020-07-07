@@ -6,6 +6,7 @@
     "/js/discover.js": "/js/discover.js",
     "/js/home.js": "/js/home.js",
     "/js/post-form.js": "/js/post-form.js",
+    "/js/post-markdown.js": "/js/post-markdown.js",
     "/js/profile.js": "/js/profile.js",
     "/js/profile-loves.js": "/js/profile-loves.js",
     "/js/profile-saves.js": "/js/profile-saves.js",

@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 8);
+/******/ 	return __webpack_require__(__webpack_require__.s = 9);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -5074,14 +5074,14 @@ var player = new plyr__WEBPACK_IMPORTED_MODULE_0___default.a('#player');
 
 /***/ }),
 
-/***/ 8:
+/***/ 9:
 /*!*************************************!*\
   !*** multi ./resources/js/scene.js ***!
   \*************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Library/WebServer/Documents/kd/resources/js/scene.js */"./resources/js/scene.js");
+module.exports = __webpack_require__(/*! D:\server\www\kdgr\resources\js\scene.js */"./resources/js/scene.js");
 
 
 /***/ })

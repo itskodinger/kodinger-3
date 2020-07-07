@@ -35,12 +35,6 @@ mix.postCss('resources/css/app.css', 'public/css', [
    tailwind('./tailwind.config.js')
 ]);
 
-mix.browserSync({
-	proxy: process.env.MIX_PROXY,
-	host: process.env.MIX_PROXY,
-	open: 'external'
-});
-
 // when production mode
 if (mix.inProduction()) {
 	// purge tailwind! and do versioning

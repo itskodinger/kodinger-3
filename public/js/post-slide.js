@@ -81,39 +81,30 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 11);
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./resources/js/setting.js":
-/*!*********************************!*\
-  !*** ./resources/js/setting.js ***!
-  \*********************************/
-/*! no static exports found */
+/***/ "./resources/js/post-slide.js":
+/*!************************************!*\
+  !*** ./resources/js/post-slide.js ***!
+  \************************************/
+/*! no exports provided */
 /***/ (function(module, exports) {
 
-var avatar_field = $('.avatar-field');
-avatar_field.addEventListener('change', function () {
-  var reader = new FileReader();
-
-  reader.onload = function (e) {
-    $('#avatar').style.backgroundImage = 'url(' + e.target.result + ')';
-  };
-
-  reader.readAsDataURL(this.files[0]);
-});
+throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index.js):\nError: ENOENT: no such file or directory, open 'D:\\server\\www\\kdgr\\resources\\js\\post-slide.js'");
 
 /***/ }),
 
-/***/ 11:
-/*!***************************************!*\
-  !*** multi ./resources/js/setting.js ***!
-  \***************************************/
+/***/ 6:
+/*!******************************************!*\
+  !*** multi ./resources/js/post-slide.js ***!
+  \******************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! D:\server\www\kdgr\resources\js\setting.js */"./resources/js/setting.js");
+module.exports = __webpack_require__(/*! D:\server\www\kdgr\resources\js\post-slide.js */"./resources/js/post-slide.js");
 
 
 /***/ })

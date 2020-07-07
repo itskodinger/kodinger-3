@@ -6,7 +6,7 @@
         <h4 class="font-bold mb-3 text-orange-500">Opsi</h4>
         <div class="bg-white rounded border border-gray-200">
             @if($post->type !== 'link')
-            <a class="flex items-center hover:bg-gray-100 px-5 py-4 border-b border-gray-100" href="@route('post', $post->id)">
+            <a class="flex items-center hover:bg-gray-100 px-5 py-4 border-b border-gray-100" href="@route('post.slide', $post->id)">
                 <div class="text-sm text-gray-600 font-semibold truncate">Sunting</div>
             </a>
             @endif

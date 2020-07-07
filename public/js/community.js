@@ -3891,7 +3891,7 @@ function wrapNode(wrap, element) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Library/WebServer/Documents/kd/resources/js/community.js */"./resources/js/community.js");
+module.exports = __webpack_require__(/*! D:\server\www\kdgr\resources\js\community.js */"./resources/js/community.js");
 
 
 /***/ })

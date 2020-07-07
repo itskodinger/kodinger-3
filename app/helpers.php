@@ -278,8 +278,10 @@ function routes_js()
 	return json_encode([
         "save" => route('ajax.saves.store'),
         "post" => route('ajax.post.posts'),
-        "post_form" => route('post'),
+        "post_form" => route('post.slide'),
+        "post_new" => route('post.new'),
         "post_markdown" => route('ajax.post.markdown'),
+        "post_markdown_ns" => route('ajax.post.markdown-ns'),
         "delete_post" => route('deletePost', 'slug'),
         "post_both" => route('ajax.post.both'),
         "post_store" => route('ajax.post.store'),

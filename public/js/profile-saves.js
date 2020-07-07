@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -3923,14 +3923,14 @@ function wrapNode(wrap, element) {
 
 /***/ }),
 
-/***/ 6:
+/***/ 7:
 /*!*********************************************!*\
   !*** multi ./resources/js/profile-saves.js ***!
   \*********************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Library/WebServer/Documents/kd/resources/js/profile-saves.js */"./resources/js/profile-saves.js");
+module.exports = __webpack_require__(/*! D:\server\www\kdgr\resources\js\profile-saves.js */"./resources/js/profile-saves.js");
 
 
 /***/ })

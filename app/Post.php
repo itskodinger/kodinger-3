@@ -28,6 +28,7 @@ class Post extends Model
 		'user_id',
 		'type',
         'public_folder',
+        'cover',
         'published_at'
 	];
 

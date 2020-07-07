@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 13);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -10479,3719 +10479,6 @@ if (false) {} else {
 
 /***/ }),
 
-/***/ "./node_modules/sortablejs/modular/sortable.esm.js":
-/*!*********************************************************!*\
-  !*** ./node_modules/sortablejs/modular/sortable.esm.js ***!
-  \*********************************************************/
-/*! exports provided: default, MultiDrag, Sortable, Swap */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MultiDrag", function() { return MultiDragPlugin; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Sortable", function() { return Sortable; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Swap", function() { return SwapPlugin; });
-function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
-
-/**!
- * Sortable 1.10.2
- * @author	RubaXa   <trash@rubaxa.org>
- * @author	owenm    <owen23355@gmail.com>
- * @license MIT
- */
-function _typeof(obj) {
-  if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
-    _typeof = function _typeof(obj) {
-      return _typeof2(obj);
-    };
-  } else {
-    _typeof = function _typeof(obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
-    };
-  }
-
-  return _typeof(obj);
-}
-
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-
-function _extends() {
-  _extends = Object.assign || function (target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
-    }
-
-    return target;
-  };
-
-  return _extends.apply(this, arguments);
-}
-
-function _objectSpread(target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i] != null ? arguments[i] : {};
-    var ownKeys = Object.keys(source);
-
-    if (typeof Object.getOwnPropertySymbols === 'function') {
-      ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {
-        return Object.getOwnPropertyDescriptor(source, sym).enumerable;
-      }));
-    }
-
-    ownKeys.forEach(function (key) {
-      _defineProperty(target, key, source[key]);
-    });
-  }
-
-  return target;
-}
-
-function _objectWithoutPropertiesLoose(source, excluded) {
-  if (source == null) return {};
-  var target = {};
-  var sourceKeys = Object.keys(source);
-  var key, i;
-
-  for (i = 0; i < sourceKeys.length; i++) {
-    key = sourceKeys[i];
-    if (excluded.indexOf(key) >= 0) continue;
-    target[key] = source[key];
-  }
-
-  return target;
-}
-
-function _objectWithoutProperties(source, excluded) {
-  if (source == null) return {};
-
-  var target = _objectWithoutPropertiesLoose(source, excluded);
-
-  var key, i;
-
-  if (Object.getOwnPropertySymbols) {
-    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
-
-    for (i = 0; i < sourceSymbolKeys.length; i++) {
-      key = sourceSymbolKeys[i];
-      if (excluded.indexOf(key) >= 0) continue;
-      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
-      target[key] = source[key];
-    }
-  }
-
-  return target;
-}
-
-function _toConsumableArray(arr) {
-  return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();
-}
-
-function _arrayWithoutHoles(arr) {
-  if (Array.isArray(arr)) {
-    for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {
-      arr2[i] = arr[i];
-    }
-
-    return arr2;
-  }
-}
-
-function _iterableToArray(iter) {
-  if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);
-}
-
-function _nonIterableSpread() {
-  throw new TypeError("Invalid attempt to spread non-iterable instance");
-}
-
-var version = "1.10.2";
-
-function userAgent(pattern) {
-  if (typeof window !== 'undefined' && window.navigator) {
-    return !!
-    /*@__PURE__*/
-    navigator.userAgent.match(pattern);
-  }
-}
-
-var IE11OrLess = userAgent(/(?:Trident.*rv[ :]?11\.|msie|iemobile|Windows Phone)/i);
-var Edge = userAgent(/Edge/i);
-var FireFox = userAgent(/firefox/i);
-var Safari = userAgent(/safari/i) && !userAgent(/chrome/i) && !userAgent(/android/i);
-var IOS = userAgent(/iP(ad|od|hone)/i);
-var ChromeForAndroid = userAgent(/chrome/i) && userAgent(/android/i);
-var captureMode = {
-  capture: false,
-  passive: false
-};
-
-function on(el, event, fn) {
-  el.addEventListener(event, fn, !IE11OrLess && captureMode);
-}
-
-function off(el, event, fn) {
-  el.removeEventListener(event, fn, !IE11OrLess && captureMode);
-}
-
-function matches(
-/**HTMLElement*/
-el,
-/**String*/
-selector) {
-  if (!selector) return;
-  selector[0] === '>' && (selector = selector.substring(1));
-
-  if (el) {
-    try {
-      if (el.matches) {
-        return el.matches(selector);
-      } else if (el.msMatchesSelector) {
-        return el.msMatchesSelector(selector);
-      } else if (el.webkitMatchesSelector) {
-        return el.webkitMatchesSelector(selector);
-      }
-    } catch (_) {
-      return false;
-    }
-  }
-
-  return false;
-}
-
-function getParentOrHost(el) {
-  return el.host && el !== document && el.host.nodeType ? el.host : el.parentNode;
-}
-
-function closest(
-/**HTMLElement*/
-el,
-/**String*/
-selector,
-/**HTMLElement*/
-ctx, includeCTX) {
-  if (el) {
-    ctx = ctx || document;
-
-    do {
-      if (selector != null && (selector[0] === '>' ? el.parentNode === ctx && matches(el, selector) : matches(el, selector)) || includeCTX && el === ctx) {
-        return el;
-      }
-
-      if (el === ctx) break;
-      /* jshint boss:true */
-    } while (el = getParentOrHost(el));
-  }
-
-  return null;
-}
-
-var R_SPACE = /\s+/g;
-
-function toggleClass(el, name, state) {
-  if (el && name) {
-    if (el.classList) {
-      el.classList[state ? 'add' : 'remove'](name);
-    } else {
-      var className = (' ' + el.className + ' ').replace(R_SPACE, ' ').replace(' ' + name + ' ', ' ');
-      el.className = (className + (state ? ' ' + name : '')).replace(R_SPACE, ' ');
-    }
-  }
-}
-
-function css(el, prop, val) {
-  var style = el && el.style;
-
-  if (style) {
-    if (val === void 0) {
-      if (document.defaultView && document.defaultView.getComputedStyle) {
-        val = document.defaultView.getComputedStyle(el, '');
-      } else if (el.currentStyle) {
-        val = el.currentStyle;
-      }
-
-      return prop === void 0 ? val : val[prop];
-    } else {
-      if (!(prop in style) && prop.indexOf('webkit') === -1) {
-        prop = '-webkit-' + prop;
-      }
-
-      style[prop] = val + (typeof val === 'string' ? '' : 'px');
-    }
-  }
-}
-
-function matrix(el, selfOnly) {
-  var appliedTransforms = '';
-
-  if (typeof el === 'string') {
-    appliedTransforms = el;
-  } else {
-    do {
-      var transform = css(el, 'transform');
-
-      if (transform && transform !== 'none') {
-        appliedTransforms = transform + ' ' + appliedTransforms;
-      }
-      /* jshint boss:true */
-
-    } while (!selfOnly && (el = el.parentNode));
-  }
-
-  var matrixFn = window.DOMMatrix || window.WebKitCSSMatrix || window.CSSMatrix || window.MSCSSMatrix;
-  /*jshint -W056 */
-
-  return matrixFn && new matrixFn(appliedTransforms);
-}
-
-function find(ctx, tagName, iterator) {
-  if (ctx) {
-    var list = ctx.getElementsByTagName(tagName),
-        i = 0,
-        n = list.length;
-
-    if (iterator) {
-      for (; i < n; i++) {
-        iterator(list[i], i);
-      }
-    }
-
-    return list;
-  }
-
-  return [];
-}
-
-function getWindowScrollingElement() {
-  var scrollingElement = document.scrollingElement;
-
-  if (scrollingElement) {
-    return scrollingElement;
-  } else {
-    return document.documentElement;
-  }
-}
-/**
- * Returns the "bounding client rect" of given element
- * @param  {HTMLElement} el                       The element whose boundingClientRect is wanted
- * @param  {[Boolean]} relativeToContainingBlock  Whether the rect should be relative to the containing block of (including) the container
- * @param  {[Boolean]} relativeToNonStaticParent  Whether the rect should be relative to the relative parent of (including) the contaienr
- * @param  {[Boolean]} undoScale                  Whether the container's scale() should be undone
- * @param  {[HTMLElement]} container              The parent the element will be placed in
- * @return {Object}                               The boundingClientRect of el, with specified adjustments
- */
-
-
-function getRect(el, relativeToContainingBlock, relativeToNonStaticParent, undoScale, container) {
-  if (!el.getBoundingClientRect && el !== window) return;
-  var elRect, top, left, bottom, right, height, width;
-
-  if (el !== window && el !== getWindowScrollingElement()) {
-    elRect = el.getBoundingClientRect();
-    top = elRect.top;
-    left = elRect.left;
-    bottom = elRect.bottom;
-    right = elRect.right;
-    height = elRect.height;
-    width = elRect.width;
-  } else {
-    top = 0;
-    left = 0;
-    bottom = window.innerHeight;
-    right = window.innerWidth;
-    height = window.innerHeight;
-    width = window.innerWidth;
-  }
-
-  if ((relativeToContainingBlock || relativeToNonStaticParent) && el !== window) {
-    // Adjust for translate()
-    container = container || el.parentNode; // solves #1123 (see: https://stackoverflow.com/a/37953806/6088312)
-    // Not needed on <= IE11
-
-    if (!IE11OrLess) {
-      do {
-        if (container && container.getBoundingClientRect && (css(container, 'transform') !== 'none' || relativeToNonStaticParent && css(container, 'position') !== 'static')) {
-          var containerRect = container.getBoundingClientRect(); // Set relative to edges of padding box of container
-
-          top -= containerRect.top + parseInt(css(container, 'border-top-width'));
-          left -= containerRect.left + parseInt(css(container, 'border-left-width'));
-          bottom = top + elRect.height;
-          right = left + elRect.width;
-          break;
-        }
-        /* jshint boss:true */
-
-      } while (container = container.parentNode);
-    }
-  }
-
-  if (undoScale && el !== window) {
-    // Adjust for scale()
-    var elMatrix = matrix(container || el),
-        scaleX = elMatrix && elMatrix.a,
-        scaleY = elMatrix && elMatrix.d;
-
-    if (elMatrix) {
-      top /= scaleY;
-      left /= scaleX;
-      width /= scaleX;
-      height /= scaleY;
-      bottom = top + height;
-      right = left + width;
-    }
-  }
-
-  return {
-    top: top,
-    left: left,
-    bottom: bottom,
-    right: right,
-    width: width,
-    height: height
-  };
-}
-/**
- * Checks if a side of an element is scrolled past a side of its parents
- * @param  {HTMLElement}  el           The element who's side being scrolled out of view is in question
- * @param  {String}       elSide       Side of the element in question ('top', 'left', 'right', 'bottom')
- * @param  {String}       parentSide   Side of the parent in question ('top', 'left', 'right', 'bottom')
- * @return {HTMLElement}               The parent scroll element that the el's side is scrolled past, or null if there is no such element
- */
-
-
-function isScrolledPast(el, elSide, parentSide) {
-  var parent = getParentAutoScrollElement(el, true),
-      elSideVal = getRect(el)[elSide];
-  /* jshint boss:true */
-
-  while (parent) {
-    var parentSideVal = getRect(parent)[parentSide],
-        visible = void 0;
-
-    if (parentSide === 'top' || parentSide === 'left') {
-      visible = elSideVal >= parentSideVal;
-    } else {
-      visible = elSideVal <= parentSideVal;
-    }
-
-    if (!visible) return parent;
-    if (parent === getWindowScrollingElement()) break;
-    parent = getParentAutoScrollElement(parent, false);
-  }
-
-  return false;
-}
-/**
- * Gets nth child of el, ignoring hidden children, sortable's elements (does not ignore clone if it's visible)
- * and non-draggable elements
- * @param  {HTMLElement} el       The parent element
- * @param  {Number} childNum      The index of the child
- * @param  {Object} options       Parent Sortable's options
- * @return {HTMLElement}          The child at index childNum, or null if not found
- */
-
-
-function getChild(el, childNum, options) {
-  var currentChild = 0,
-      i = 0,
-      children = el.children;
-
-  while (i < children.length) {
-    if (children[i].style.display !== 'none' && children[i] !== Sortable.ghost && children[i] !== Sortable.dragged && closest(children[i], options.draggable, el, false)) {
-      if (currentChild === childNum) {
-        return children[i];
-      }
-
-      currentChild++;
-    }
-
-    i++;
-  }
-
-  return null;
-}
-/**
- * Gets the last child in the el, ignoring ghostEl or invisible elements (clones)
- * @param  {HTMLElement} el       Parent element
- * @param  {selector} selector    Any other elements that should be ignored
- * @return {HTMLElement}          The last child, ignoring ghostEl
- */
-
-
-function lastChild(el, selector) {
-  var last = el.lastElementChild;
-
-  while (last && (last === Sortable.ghost || css(last, 'display') === 'none' || selector && !matches(last, selector))) {
-    last = last.previousElementSibling;
-  }
-
-  return last || null;
-}
-/**
- * Returns the index of an element within its parent for a selected set of
- * elements
- * @param  {HTMLElement} el
- * @param  {selector} selector
- * @return {number}
- */
-
-
-function index(el, selector) {
-  var index = 0;
-
-  if (!el || !el.parentNode) {
-    return -1;
-  }
-  /* jshint boss:true */
-
-
-  while (el = el.previousElementSibling) {
-    if (el.nodeName.toUpperCase() !== 'TEMPLATE' && el !== Sortable.clone && (!selector || matches(el, selector))) {
-      index++;
-    }
-  }
-
-  return index;
-}
-/**
- * Returns the scroll offset of the given element, added with all the scroll offsets of parent elements.
- * The value is returned in real pixels.
- * @param  {HTMLElement} el
- * @return {Array}             Offsets in the format of [left, top]
- */
-
-
-function getRelativeScrollOffset(el) {
-  var offsetLeft = 0,
-      offsetTop = 0,
-      winScroller = getWindowScrollingElement();
-
-  if (el) {
-    do {
-      var elMatrix = matrix(el),
-          scaleX = elMatrix.a,
-          scaleY = elMatrix.d;
-      offsetLeft += el.scrollLeft * scaleX;
-      offsetTop += el.scrollTop * scaleY;
-    } while (el !== winScroller && (el = el.parentNode));
-  }
-
-  return [offsetLeft, offsetTop];
-}
-/**
- * Returns the index of the object within the given array
- * @param  {Array} arr   Array that may or may not hold the object
- * @param  {Object} obj  An object that has a key-value pair unique to and identical to a key-value pair in the object you want to find
- * @return {Number}      The index of the object in the array, or -1
- */
-
-
-function indexOfObject(arr, obj) {
-  for (var i in arr) {
-    if (!arr.hasOwnProperty(i)) continue;
-
-    for (var key in obj) {
-      if (obj.hasOwnProperty(key) && obj[key] === arr[i][key]) return Number(i);
-    }
-  }
-
-  return -1;
-}
-
-function getParentAutoScrollElement(el, includeSelf) {
-  // skip to window
-  if (!el || !el.getBoundingClientRect) return getWindowScrollingElement();
-  var elem = el;
-  var gotSelf = false;
-
-  do {
-    // we don't need to get elem css if it isn't even overflowing in the first place (performance)
-    if (elem.clientWidth < elem.scrollWidth || elem.clientHeight < elem.scrollHeight) {
-      var elemCSS = css(elem);
-
-      if (elem.clientWidth < elem.scrollWidth && (elemCSS.overflowX == 'auto' || elemCSS.overflowX == 'scroll') || elem.clientHeight < elem.scrollHeight && (elemCSS.overflowY == 'auto' || elemCSS.overflowY == 'scroll')) {
-        if (!elem.getBoundingClientRect || elem === document.body) return getWindowScrollingElement();
-        if (gotSelf || includeSelf) return elem;
-        gotSelf = true;
-      }
-    }
-    /* jshint boss:true */
-
-  } while (elem = elem.parentNode);
-
-  return getWindowScrollingElement();
-}
-
-function extend(dst, src) {
-  if (dst && src) {
-    for (var key in src) {
-      if (src.hasOwnProperty(key)) {
-        dst[key] = src[key];
-      }
-    }
-  }
-
-  return dst;
-}
-
-function isRectEqual(rect1, rect2) {
-  return Math.round(rect1.top) === Math.round(rect2.top) && Math.round(rect1.left) === Math.round(rect2.left) && Math.round(rect1.height) === Math.round(rect2.height) && Math.round(rect1.width) === Math.round(rect2.width);
-}
-
-var _throttleTimeout;
-
-function throttle(callback, ms) {
-  return function () {
-    if (!_throttleTimeout) {
-      var args = arguments,
-          _this = this;
-
-      if (args.length === 1) {
-        callback.call(_this, args[0]);
-      } else {
-        callback.apply(_this, args);
-      }
-
-      _throttleTimeout = setTimeout(function () {
-        _throttleTimeout = void 0;
-      }, ms);
-    }
-  };
-}
-
-function cancelThrottle() {
-  clearTimeout(_throttleTimeout);
-  _throttleTimeout = void 0;
-}
-
-function scrollBy(el, x, y) {
-  el.scrollLeft += x;
-  el.scrollTop += y;
-}
-
-function clone(el) {
-  var Polymer = window.Polymer;
-  var $ = window.jQuery || window.Zepto;
-
-  if (Polymer && Polymer.dom) {
-    return Polymer.dom(el).cloneNode(true);
-  } else if ($) {
-    return $(el).clone(true)[0];
-  } else {
-    return el.cloneNode(true);
-  }
-}
-
-function setRect(el, rect) {
-  css(el, 'position', 'absolute');
-  css(el, 'top', rect.top);
-  css(el, 'left', rect.left);
-  css(el, 'width', rect.width);
-  css(el, 'height', rect.height);
-}
-
-function unsetRect(el) {
-  css(el, 'position', '');
-  css(el, 'top', '');
-  css(el, 'left', '');
-  css(el, 'width', '');
-  css(el, 'height', '');
-}
-
-var expando = 'Sortable' + new Date().getTime();
-
-function AnimationStateManager() {
-  var animationStates = [],
-      animationCallbackId;
-  return {
-    captureAnimationState: function captureAnimationState() {
-      animationStates = [];
-      if (!this.options.animation) return;
-      var children = [].slice.call(this.el.children);
-      children.forEach(function (child) {
-        if (css(child, 'display') === 'none' || child === Sortable.ghost) return;
-        animationStates.push({
-          target: child,
-          rect: getRect(child)
-        });
-
-        var fromRect = _objectSpread({}, animationStates[animationStates.length - 1].rect); // If animating: compensate for current animation
-
-
-        if (child.thisAnimationDuration) {
-          var childMatrix = matrix(child, true);
-
-          if (childMatrix) {
-            fromRect.top -= childMatrix.f;
-            fromRect.left -= childMatrix.e;
-          }
-        }
-
-        child.fromRect = fromRect;
-      });
-    },
-    addAnimationState: function addAnimationState(state) {
-      animationStates.push(state);
-    },
-    removeAnimationState: function removeAnimationState(target) {
-      animationStates.splice(indexOfObject(animationStates, {
-        target: target
-      }), 1);
-    },
-    animateAll: function animateAll(callback) {
-      var _this = this;
-
-      if (!this.options.animation) {
-        clearTimeout(animationCallbackId);
-        if (typeof callback === 'function') callback();
-        return;
-      }
-
-      var animating = false,
-          animationTime = 0;
-      animationStates.forEach(function (state) {
-        var time = 0,
-            target = state.target,
-            fromRect = target.fromRect,
-            toRect = getRect(target),
-            prevFromRect = target.prevFromRect,
-            prevToRect = target.prevToRect,
-            animatingRect = state.rect,
-            targetMatrix = matrix(target, true);
-
-        if (targetMatrix) {
-          // Compensate for current animation
-          toRect.top -= targetMatrix.f;
-          toRect.left -= targetMatrix.e;
-        }
-
-        target.toRect = toRect;
-
-        if (target.thisAnimationDuration) {
-          // Could also check if animatingRect is between fromRect and toRect
-          if (isRectEqual(prevFromRect, toRect) && !isRectEqual(fromRect, toRect) && // Make sure animatingRect is on line between toRect & fromRect
-          (animatingRect.top - toRect.top) / (animatingRect.left - toRect.left) === (fromRect.top - toRect.top) / (fromRect.left - toRect.left)) {
-            // If returning to same place as started from animation and on same axis
-            time = calculateRealTime(animatingRect, prevFromRect, prevToRect, _this.options);
-          }
-        } // if fromRect != toRect: animate
-
-
-        if (!isRectEqual(toRect, fromRect)) {
-          target.prevFromRect = fromRect;
-          target.prevToRect = toRect;
-
-          if (!time) {
-            time = _this.options.animation;
-          }
-
-          _this.animate(target, animatingRect, toRect, time);
-        }
-
-        if (time) {
-          animating = true;
-          animationTime = Math.max(animationTime, time);
-          clearTimeout(target.animationResetTimer);
-          target.animationResetTimer = setTimeout(function () {
-            target.animationTime = 0;
-            target.prevFromRect = null;
-            target.fromRect = null;
-            target.prevToRect = null;
-            target.thisAnimationDuration = null;
-          }, time);
-          target.thisAnimationDuration = time;
-        }
-      });
-      clearTimeout(animationCallbackId);
-
-      if (!animating) {
-        if (typeof callback === 'function') callback();
-      } else {
-        animationCallbackId = setTimeout(function () {
-          if (typeof callback === 'function') callback();
-        }, animationTime);
-      }
-
-      animationStates = [];
-    },
-    animate: function animate(target, currentRect, toRect, duration) {
-      if (duration) {
-        css(target, 'transition', '');
-        css(target, 'transform', '');
-        var elMatrix = matrix(this.el),
-            scaleX = elMatrix && elMatrix.a,
-            scaleY = elMatrix && elMatrix.d,
-            translateX = (currentRect.left - toRect.left) / (scaleX || 1),
-            translateY = (currentRect.top - toRect.top) / (scaleY || 1);
-        target.animatingX = !!translateX;
-        target.animatingY = !!translateY;
-        css(target, 'transform', 'translate3d(' + translateX + 'px,' + translateY + 'px,0)');
-        repaint(target); // repaint
-
-        css(target, 'transition', 'transform ' + duration + 'ms' + (this.options.easing ? ' ' + this.options.easing : ''));
-        css(target, 'transform', 'translate3d(0,0,0)');
-        typeof target.animated === 'number' && clearTimeout(target.animated);
-        target.animated = setTimeout(function () {
-          css(target, 'transition', '');
-          css(target, 'transform', '');
-          target.animated = false;
-          target.animatingX = false;
-          target.animatingY = false;
-        }, duration);
-      }
-    }
-  };
-}
-
-function repaint(target) {
-  return target.offsetWidth;
-}
-
-function calculateRealTime(animatingRect, fromRect, toRect, options) {
-  return Math.sqrt(Math.pow(fromRect.top - animatingRect.top, 2) + Math.pow(fromRect.left - animatingRect.left, 2)) / Math.sqrt(Math.pow(fromRect.top - toRect.top, 2) + Math.pow(fromRect.left - toRect.left, 2)) * options.animation;
-}
-
-var plugins = [];
-var defaults = {
-  initializeByDefault: true
-};
-var PluginManager = {
-  mount: function mount(plugin) {
-    // Set default static properties
-    for (var option in defaults) {
-      if (defaults.hasOwnProperty(option) && !(option in plugin)) {
-        plugin[option] = defaults[option];
-      }
-    }
-
-    plugins.push(plugin);
-  },
-  pluginEvent: function pluginEvent(eventName, sortable, evt) {
-    var _this = this;
-
-    this.eventCanceled = false;
-
-    evt.cancel = function () {
-      _this.eventCanceled = true;
-    };
-
-    var eventNameGlobal = eventName + 'Global';
-    plugins.forEach(function (plugin) {
-      if (!sortable[plugin.pluginName]) return; // Fire global events if it exists in this sortable
-
-      if (sortable[plugin.pluginName][eventNameGlobal]) {
-        sortable[plugin.pluginName][eventNameGlobal](_objectSpread({
-          sortable: sortable
-        }, evt));
-      } // Only fire plugin event if plugin is enabled in this sortable,
-      // and plugin has event defined
-
-
-      if (sortable.options[plugin.pluginName] && sortable[plugin.pluginName][eventName]) {
-        sortable[plugin.pluginName][eventName](_objectSpread({
-          sortable: sortable
-        }, evt));
-      }
-    });
-  },
-  initializePlugins: function initializePlugins(sortable, el, defaults, options) {
-    plugins.forEach(function (plugin) {
-      var pluginName = plugin.pluginName;
-      if (!sortable.options[pluginName] && !plugin.initializeByDefault) return;
-      var initialized = new plugin(sortable, el, sortable.options);
-      initialized.sortable = sortable;
-      initialized.options = sortable.options;
-      sortable[pluginName] = initialized; // Add default options from plugin
-
-      _extends(defaults, initialized.defaults);
-    });
-
-    for (var option in sortable.options) {
-      if (!sortable.options.hasOwnProperty(option)) continue;
-      var modified = this.modifyOption(sortable, option, sortable.options[option]);
-
-      if (typeof modified !== 'undefined') {
-        sortable.options[option] = modified;
-      }
-    }
-  },
-  getEventProperties: function getEventProperties(name, sortable) {
-    var eventProperties = {};
-    plugins.forEach(function (plugin) {
-      if (typeof plugin.eventProperties !== 'function') return;
-
-      _extends(eventProperties, plugin.eventProperties.call(sortable[plugin.pluginName], name));
-    });
-    return eventProperties;
-  },
-  modifyOption: function modifyOption(sortable, name, value) {
-    var modifiedValue;
-    plugins.forEach(function (plugin) {
-      // Plugin must exist on the Sortable
-      if (!sortable[plugin.pluginName]) return; // If static option listener exists for this option, call in the context of the Sortable's instance of this plugin
-
-      if (plugin.optionListeners && typeof plugin.optionListeners[name] === 'function') {
-        modifiedValue = plugin.optionListeners[name].call(sortable[plugin.pluginName], value);
-      }
-    });
-    return modifiedValue;
-  }
-};
-
-function dispatchEvent(_ref) {
-  var sortable = _ref.sortable,
-      rootEl = _ref.rootEl,
-      name = _ref.name,
-      targetEl = _ref.targetEl,
-      cloneEl = _ref.cloneEl,
-      toEl = _ref.toEl,
-      fromEl = _ref.fromEl,
-      oldIndex = _ref.oldIndex,
-      newIndex = _ref.newIndex,
-      oldDraggableIndex = _ref.oldDraggableIndex,
-      newDraggableIndex = _ref.newDraggableIndex,
-      originalEvent = _ref.originalEvent,
-      putSortable = _ref.putSortable,
-      extraEventProperties = _ref.extraEventProperties;
-  sortable = sortable || rootEl && rootEl[expando];
-  if (!sortable) return;
-  var evt,
-      options = sortable.options,
-      onName = 'on' + name.charAt(0).toUpperCase() + name.substr(1); // Support for new CustomEvent feature
-
-  if (window.CustomEvent && !IE11OrLess && !Edge) {
-    evt = new CustomEvent(name, {
-      bubbles: true,
-      cancelable: true
-    });
-  } else {
-    evt = document.createEvent('Event');
-    evt.initEvent(name, true, true);
-  }
-
-  evt.to = toEl || rootEl;
-  evt.from = fromEl || rootEl;
-  evt.item = targetEl || rootEl;
-  evt.clone = cloneEl;
-  evt.oldIndex = oldIndex;
-  evt.newIndex = newIndex;
-  evt.oldDraggableIndex = oldDraggableIndex;
-  evt.newDraggableIndex = newDraggableIndex;
-  evt.originalEvent = originalEvent;
-  evt.pullMode = putSortable ? putSortable.lastPutMode : undefined;
-
-  var allEventProperties = _objectSpread({}, extraEventProperties, PluginManager.getEventProperties(name, sortable));
-
-  for (var option in allEventProperties) {
-    evt[option] = allEventProperties[option];
-  }
-
-  if (rootEl) {
-    rootEl.dispatchEvent(evt);
-  }
-
-  if (options[onName]) {
-    options[onName].call(sortable, evt);
-  }
-}
-
-var pluginEvent = function pluginEvent(eventName, sortable) {
-  var _ref = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
-      originalEvent = _ref.evt,
-      data = _objectWithoutProperties(_ref, ["evt"]);
-
-  PluginManager.pluginEvent.bind(Sortable)(eventName, sortable, _objectSpread({
-    dragEl: dragEl,
-    parentEl: parentEl,
-    ghostEl: ghostEl,
-    rootEl: rootEl,
-    nextEl: nextEl,
-    lastDownEl: lastDownEl,
-    cloneEl: cloneEl,
-    cloneHidden: cloneHidden,
-    dragStarted: moved,
-    putSortable: putSortable,
-    activeSortable: Sortable.active,
-    originalEvent: originalEvent,
-    oldIndex: oldIndex,
-    oldDraggableIndex: oldDraggableIndex,
-    newIndex: newIndex,
-    newDraggableIndex: newDraggableIndex,
-    hideGhostForTarget: _hideGhostForTarget,
-    unhideGhostForTarget: _unhideGhostForTarget,
-    cloneNowHidden: function cloneNowHidden() {
-      cloneHidden = true;
-    },
-    cloneNowShown: function cloneNowShown() {
-      cloneHidden = false;
-    },
-    dispatchSortableEvent: function dispatchSortableEvent(name) {
-      _dispatchEvent({
-        sortable: sortable,
-        name: name,
-        originalEvent: originalEvent
-      });
-    }
-  }, data));
-};
-
-function _dispatchEvent(info) {
-  dispatchEvent(_objectSpread({
-    putSortable: putSortable,
-    cloneEl: cloneEl,
-    targetEl: dragEl,
-    rootEl: rootEl,
-    oldIndex: oldIndex,
-    oldDraggableIndex: oldDraggableIndex,
-    newIndex: newIndex,
-    newDraggableIndex: newDraggableIndex
-  }, info));
-}
-
-var dragEl,
-    parentEl,
-    ghostEl,
-    rootEl,
-    nextEl,
-    lastDownEl,
-    cloneEl,
-    cloneHidden,
-    oldIndex,
-    newIndex,
-    oldDraggableIndex,
-    newDraggableIndex,
-    activeGroup,
-    putSortable,
-    awaitingDragStarted = false,
-    ignoreNextClick = false,
-    sortables = [],
-    tapEvt,
-    touchEvt,
-    lastDx,
-    lastDy,
-    tapDistanceLeft,
-    tapDistanceTop,
-    moved,
-    lastTarget,
-    lastDirection,
-    pastFirstInvertThresh = false,
-    isCircumstantialInvert = false,
-    targetMoveDistance,
-    // For positioning ghost absolutely
-ghostRelativeParent,
-    ghostRelativeParentInitialScroll = [],
-    // (left, top)
-_silent = false,
-    savedInputChecked = [];
-/** @const */
-
-var documentExists = typeof document !== 'undefined',
-    PositionGhostAbsolutely = IOS,
-    CSSFloatProperty = Edge || IE11OrLess ? 'cssFloat' : 'float',
-    // This will not pass for IE9, because IE9 DnD only works on anchors
-supportDraggable = documentExists && !ChromeForAndroid && !IOS && 'draggable' in document.createElement('div'),
-    supportCssPointerEvents = function () {
-  if (!documentExists) return; // false when <= IE11
-
-  if (IE11OrLess) {
-    return false;
-  }
-
-  var el = document.createElement('x');
-  el.style.cssText = 'pointer-events:auto';
-  return el.style.pointerEvents === 'auto';
-}(),
-    _detectDirection = function _detectDirection(el, options) {
-  var elCSS = css(el),
-      elWidth = parseInt(elCSS.width) - parseInt(elCSS.paddingLeft) - parseInt(elCSS.paddingRight) - parseInt(elCSS.borderLeftWidth) - parseInt(elCSS.borderRightWidth),
-      child1 = getChild(el, 0, options),
-      child2 = getChild(el, 1, options),
-      firstChildCSS = child1 && css(child1),
-      secondChildCSS = child2 && css(child2),
-      firstChildWidth = firstChildCSS && parseInt(firstChildCSS.marginLeft) + parseInt(firstChildCSS.marginRight) + getRect(child1).width,
-      secondChildWidth = secondChildCSS && parseInt(secondChildCSS.marginLeft) + parseInt(secondChildCSS.marginRight) + getRect(child2).width;
-
-  if (elCSS.display === 'flex') {
-    return elCSS.flexDirection === 'column' || elCSS.flexDirection === 'column-reverse' ? 'vertical' : 'horizontal';
-  }
-
-  if (elCSS.display === 'grid') {
-    return elCSS.gridTemplateColumns.split(' ').length <= 1 ? 'vertical' : 'horizontal';
-  }
-
-  if (child1 && firstChildCSS["float"] && firstChildCSS["float"] !== 'none') {
-    var touchingSideChild2 = firstChildCSS["float"] === 'left' ? 'left' : 'right';
-    return child2 && (secondChildCSS.clear === 'both' || secondChildCSS.clear === touchingSideChild2) ? 'vertical' : 'horizontal';
-  }
-
-  return child1 && (firstChildCSS.display === 'block' || firstChildCSS.display === 'flex' || firstChildCSS.display === 'table' || firstChildCSS.display === 'grid' || firstChildWidth >= elWidth && elCSS[CSSFloatProperty] === 'none' || child2 && elCSS[CSSFloatProperty] === 'none' && firstChildWidth + secondChildWidth > elWidth) ? 'vertical' : 'horizontal';
-},
-    _dragElInRowColumn = function _dragElInRowColumn(dragRect, targetRect, vertical) {
-  var dragElS1Opp = vertical ? dragRect.left : dragRect.top,
-      dragElS2Opp = vertical ? dragRect.right : dragRect.bottom,
-      dragElOppLength = vertical ? dragRect.width : dragRect.height,
-      targetS1Opp = vertical ? targetRect.left : targetRect.top,
-      targetS2Opp = vertical ? targetRect.right : targetRect.bottom,
-      targetOppLength = vertical ? targetRect.width : targetRect.height;
-  return dragElS1Opp === targetS1Opp || dragElS2Opp === targetS2Opp || dragElS1Opp + dragElOppLength / 2 === targetS1Opp + targetOppLength / 2;
-},
-
-/**
- * Detects first nearest empty sortable to X and Y position using emptyInsertThreshold.
- * @param  {Number} x      X position
- * @param  {Number} y      Y position
- * @return {HTMLElement}   Element of the first found nearest Sortable
- */
-_detectNearestEmptySortable = function _detectNearestEmptySortable(x, y) {
-  var ret;
-  sortables.some(function (sortable) {
-    if (lastChild(sortable)) return;
-    var rect = getRect(sortable),
-        threshold = sortable[expando].options.emptyInsertThreshold,
-        insideHorizontally = x >= rect.left - threshold && x <= rect.right + threshold,
-        insideVertically = y >= rect.top - threshold && y <= rect.bottom + threshold;
-
-    if (threshold && insideHorizontally && insideVertically) {
-      return ret = sortable;
-    }
-  });
-  return ret;
-},
-    _prepareGroup = function _prepareGroup(options) {
-  function toFn(value, pull) {
-    return function (to, from, dragEl, evt) {
-      var sameGroup = to.options.group.name && from.options.group.name && to.options.group.name === from.options.group.name;
-
-      if (value == null && (pull || sameGroup)) {
-        // Default pull value
-        // Default pull and put value if same group
-        return true;
-      } else if (value == null || value === false) {
-        return false;
-      } else if (pull && value === 'clone') {
-        return value;
-      } else if (typeof value === 'function') {
-        return toFn(value(to, from, dragEl, evt), pull)(to, from, dragEl, evt);
-      } else {
-        var otherGroup = (pull ? to : from).options.group.name;
-        return value === true || typeof value === 'string' && value === otherGroup || value.join && value.indexOf(otherGroup) > -1;
-      }
-    };
-  }
-
-  var group = {};
-  var originalGroup = options.group;
-
-  if (!originalGroup || _typeof(originalGroup) != 'object') {
-    originalGroup = {
-      name: originalGroup
-    };
-  }
-
-  group.name = originalGroup.name;
-  group.checkPull = toFn(originalGroup.pull, true);
-  group.checkPut = toFn(originalGroup.put);
-  group.revertClone = originalGroup.revertClone;
-  options.group = group;
-},
-    _hideGhostForTarget = function _hideGhostForTarget() {
-  if (!supportCssPointerEvents && ghostEl) {
-    css(ghostEl, 'display', 'none');
-  }
-},
-    _unhideGhostForTarget = function _unhideGhostForTarget() {
-  if (!supportCssPointerEvents && ghostEl) {
-    css(ghostEl, 'display', '');
-  }
-}; // #1184 fix - Prevent click event on fallback if dragged but item not changed position
-
-
-if (documentExists) {
-  document.addEventListener('click', function (evt) {
-    if (ignoreNextClick) {
-      evt.preventDefault();
-      evt.stopPropagation && evt.stopPropagation();
-      evt.stopImmediatePropagation && evt.stopImmediatePropagation();
-      ignoreNextClick = false;
-      return false;
-    }
-  }, true);
-}
-
-var nearestEmptyInsertDetectEvent = function nearestEmptyInsertDetectEvent(evt) {
-  if (dragEl) {
-    evt = evt.touches ? evt.touches[0] : evt;
-
-    var nearest = _detectNearestEmptySortable(evt.clientX, evt.clientY);
-
-    if (nearest) {
-      // Create imitation event
-      var event = {};
-
-      for (var i in evt) {
-        if (evt.hasOwnProperty(i)) {
-          event[i] = evt[i];
-        }
-      }
-
-      event.target = event.rootEl = nearest;
-      event.preventDefault = void 0;
-      event.stopPropagation = void 0;
-
-      nearest[expando]._onDragOver(event);
-    }
-  }
-};
-
-var _checkOutsideTargetEl = function _checkOutsideTargetEl(evt) {
-  if (dragEl) {
-    dragEl.parentNode[expando]._isOutsideThisEl(evt.target);
-  }
-};
-/**
- * @class  Sortable
- * @param  {HTMLElement}  el
- * @param  {Object}       [options]
- */
-
-
-function Sortable(el, options) {
-  if (!(el && el.nodeType && el.nodeType === 1)) {
-    throw "Sortable: `el` must be an HTMLElement, not ".concat({}.toString.call(el));
-  }
-
-  this.el = el; // root element
-
-  this.options = options = _extends({}, options); // Export instance
-
-  el[expando] = this;
-  var defaults = {
-    group: null,
-    sort: true,
-    disabled: false,
-    store: null,
-    handle: null,
-    draggable: /^[uo]l$/i.test(el.nodeName) ? '>li' : '>*',
-    swapThreshold: 1,
-    // percentage; 0 <= x <= 1
-    invertSwap: false,
-    // invert always
-    invertedSwapThreshold: null,
-    // will be set to same as swapThreshold if default
-    removeCloneOnHide: true,
-    direction: function direction() {
-      return _detectDirection(el, this.options);
-    },
-    ghostClass: 'sortable-ghost',
-    chosenClass: 'sortable-chosen',
-    dragClass: 'sortable-drag',
-    ignore: 'a, img',
-    filter: null,
-    preventOnFilter: true,
-    animation: 0,
-    easing: null,
-    setData: function setData(dataTransfer, dragEl) {
-      dataTransfer.setData('Text', dragEl.textContent);
-    },
-    dropBubble: false,
-    dragoverBubble: false,
-    dataIdAttr: 'data-id',
-    delay: 0,
-    delayOnTouchOnly: false,
-    touchStartThreshold: (Number.parseInt ? Number : window).parseInt(window.devicePixelRatio, 10) || 1,
-    forceFallback: false,
-    fallbackClass: 'sortable-fallback',
-    fallbackOnBody: false,
-    fallbackTolerance: 0,
-    fallbackOffset: {
-      x: 0,
-      y: 0
-    },
-    supportPointer: Sortable.supportPointer !== false && 'PointerEvent' in window,
-    emptyInsertThreshold: 5
-  };
-  PluginManager.initializePlugins(this, el, defaults); // Set default options
-
-  for (var name in defaults) {
-    !(name in options) && (options[name] = defaults[name]);
-  }
-
-  _prepareGroup(options); // Bind all private methods
-
-
-  for (var fn in this) {
-    if (fn.charAt(0) === '_' && typeof this[fn] === 'function') {
-      this[fn] = this[fn].bind(this);
-    }
-  } // Setup drag mode
-
-
-  this.nativeDraggable = options.forceFallback ? false : supportDraggable;
-
-  if (this.nativeDraggable) {
-    // Touch start threshold cannot be greater than the native dragstart threshold
-    this.options.touchStartThreshold = 1;
-  } // Bind events
-
-
-  if (options.supportPointer) {
-    on(el, 'pointerdown', this._onTapStart);
-  } else {
-    on(el, 'mousedown', this._onTapStart);
-    on(el, 'touchstart', this._onTapStart);
-  }
-
-  if (this.nativeDraggable) {
-    on(el, 'dragover', this);
-    on(el, 'dragenter', this);
-  }
-
-  sortables.push(this.el); // Restore sorting
-
-  options.store && options.store.get && this.sort(options.store.get(this) || []); // Add animation state manager
-
-  _extends(this, AnimationStateManager());
-}
-
-Sortable.prototype =
-/** @lends Sortable.prototype */
-{
-  constructor: Sortable,
-  _isOutsideThisEl: function _isOutsideThisEl(target) {
-    if (!this.el.contains(target) && target !== this.el) {
-      lastTarget = null;
-    }
-  },
-  _getDirection: function _getDirection(evt, target) {
-    return typeof this.options.direction === 'function' ? this.options.direction.call(this, evt, target, dragEl) : this.options.direction;
-  },
-  _onTapStart: function _onTapStart(
-  /** Event|TouchEvent */
-  evt) {
-    if (!evt.cancelable) return;
-
-    var _this = this,
-        el = this.el,
-        options = this.options,
-        preventOnFilter = options.preventOnFilter,
-        type = evt.type,
-        touch = evt.touches && evt.touches[0] || evt.pointerType && evt.pointerType === 'touch' && evt,
-        target = (touch || evt).target,
-        originalTarget = evt.target.shadowRoot && (evt.path && evt.path[0] || evt.composedPath && evt.composedPath()[0]) || target,
-        filter = options.filter;
-
-    _saveInputCheckedState(el); // Don't trigger start event when an element is been dragged, otherwise the evt.oldindex always wrong when set option.group.
-
-
-    if (dragEl) {
-      return;
-    }
-
-    if (/mousedown|pointerdown/.test(type) && evt.button !== 0 || options.disabled) {
-      return; // only left button and enabled
-    } // cancel dnd if original target is content editable
-
-
-    if (originalTarget.isContentEditable) {
-      return;
-    }
-
-    target = closest(target, options.draggable, el, false);
-
-    if (target && target.animated) {
-      return;
-    }
-
-    if (lastDownEl === target) {
-      // Ignoring duplicate `down`
-      return;
-    } // Get the index of the dragged element within its parent
-
-
-    oldIndex = index(target);
-    oldDraggableIndex = index(target, options.draggable); // Check filter
-
-    if (typeof filter === 'function') {
-      if (filter.call(this, evt, target, this)) {
-        _dispatchEvent({
-          sortable: _this,
-          rootEl: originalTarget,
-          name: 'filter',
-          targetEl: target,
-          toEl: el,
-          fromEl: el
-        });
-
-        pluginEvent('filter', _this, {
-          evt: evt
-        });
-        preventOnFilter && evt.cancelable && evt.preventDefault();
-        return; // cancel dnd
-      }
-    } else if (filter) {
-      filter = filter.split(',').some(function (criteria) {
-        criteria = closest(originalTarget, criteria.trim(), el, false);
-
-        if (criteria) {
-          _dispatchEvent({
-            sortable: _this,
-            rootEl: criteria,
-            name: 'filter',
-            targetEl: target,
-            fromEl: el,
-            toEl: el
-          });
-
-          pluginEvent('filter', _this, {
-            evt: evt
-          });
-          return true;
-        }
-      });
-
-      if (filter) {
-        preventOnFilter && evt.cancelable && evt.preventDefault();
-        return; // cancel dnd
-      }
-    }
-
-    if (options.handle && !closest(originalTarget, options.handle, el, false)) {
-      return;
-    } // Prepare `dragstart`
-
-
-    this._prepareDragStart(evt, touch, target);
-  },
-  _prepareDragStart: function _prepareDragStart(
-  /** Event */
-  evt,
-  /** Touch */
-  touch,
-  /** HTMLElement */
-  target) {
-    var _this = this,
-        el = _this.el,
-        options = _this.options,
-        ownerDocument = el.ownerDocument,
-        dragStartFn;
-
-    if (target && !dragEl && target.parentNode === el) {
-      var dragRect = getRect(target);
-      rootEl = el;
-      dragEl = target;
-      parentEl = dragEl.parentNode;
-      nextEl = dragEl.nextSibling;
-      lastDownEl = target;
-      activeGroup = options.group;
-      Sortable.dragged = dragEl;
-      tapEvt = {
-        target: dragEl,
-        clientX: (touch || evt).clientX,
-        clientY: (touch || evt).clientY
-      };
-      tapDistanceLeft = tapEvt.clientX - dragRect.left;
-      tapDistanceTop = tapEvt.clientY - dragRect.top;
-      this._lastX = (touch || evt).clientX;
-      this._lastY = (touch || evt).clientY;
-      dragEl.style['will-change'] = 'all';
-
-      dragStartFn = function dragStartFn() {
-        pluginEvent('delayEnded', _this, {
-          evt: evt
-        });
-
-        if (Sortable.eventCanceled) {
-          _this._onDrop();
-
-          return;
-        } // Delayed drag has been triggered
-        // we can re-enable the events: touchmove/mousemove
-
-
-        _this._disableDelayedDragEvents();
-
-        if (!FireFox && _this.nativeDraggable) {
-          dragEl.draggable = true;
-        } // Bind the events: dragstart/dragend
-
-
-        _this._triggerDragStart(evt, touch); // Drag start event
-
-
-        _dispatchEvent({
-          sortable: _this,
-          name: 'choose',
-          originalEvent: evt
-        }); // Chosen item
-
-
-        toggleClass(dragEl, options.chosenClass, true);
-      }; // Disable "draggable"
-
-
-      options.ignore.split(',').forEach(function (criteria) {
-        find(dragEl, criteria.trim(), _disableDraggable);
-      });
-      on(ownerDocument, 'dragover', nearestEmptyInsertDetectEvent);
-      on(ownerDocument, 'mousemove', nearestEmptyInsertDetectEvent);
-      on(ownerDocument, 'touchmove', nearestEmptyInsertDetectEvent);
-      on(ownerDocument, 'mouseup', _this._onDrop);
-      on(ownerDocument, 'touchend', _this._onDrop);
-      on(ownerDocument, 'touchcancel', _this._onDrop); // Make dragEl draggable (must be before delay for FireFox)
-
-      if (FireFox && this.nativeDraggable) {
-        this.options.touchStartThreshold = 4;
-        dragEl.draggable = true;
-      }
-
-      pluginEvent('delayStart', this, {
-        evt: evt
-      }); // Delay is impossible for native DnD in Edge or IE
-
-      if (options.delay && (!options.delayOnTouchOnly || touch) && (!this.nativeDraggable || !(Edge || IE11OrLess))) {
-        if (Sortable.eventCanceled) {
-          this._onDrop();
-
-          return;
-        } // If the user moves the pointer or let go the click or touch
-        // before the delay has been reached:
-        // disable the delayed drag
-
-
-        on(ownerDocument, 'mouseup', _this._disableDelayedDrag);
-        on(ownerDocument, 'touchend', _this._disableDelayedDrag);
-        on(ownerDocument, 'touchcancel', _this._disableDelayedDrag);
-        on(ownerDocument, 'mousemove', _this._delayedDragTouchMoveHandler);
-        on(ownerDocument, 'touchmove', _this._delayedDragTouchMoveHandler);
-        options.supportPointer && on(ownerDocument, 'pointermove', _this._delayedDragTouchMoveHandler);
-        _this._dragStartTimer = setTimeout(dragStartFn, options.delay);
-      } else {
-        dragStartFn();
-      }
-    }
-  },
-  _delayedDragTouchMoveHandler: function _delayedDragTouchMoveHandler(
-  /** TouchEvent|PointerEvent **/
-  e) {
-    var touch = e.touches ? e.touches[0] : e;
-
-    if (Math.max(Math.abs(touch.clientX - this._lastX), Math.abs(touch.clientY - this._lastY)) >= Math.floor(this.options.touchStartThreshold / (this.nativeDraggable && window.devicePixelRatio || 1))) {
-      this._disableDelayedDrag();
-    }
-  },
-  _disableDelayedDrag: function _disableDelayedDrag() {
-    dragEl && _disableDraggable(dragEl);
-    clearTimeout(this._dragStartTimer);
-
-    this._disableDelayedDragEvents();
-  },
-  _disableDelayedDragEvents: function _disableDelayedDragEvents() {
-    var ownerDocument = this.el.ownerDocument;
-    off(ownerDocument, 'mouseup', this._disableDelayedDrag);
-    off(ownerDocument, 'touchend', this._disableDelayedDrag);
-    off(ownerDocument, 'touchcancel', this._disableDelayedDrag);
-    off(ownerDocument, 'mousemove', this._delayedDragTouchMoveHandler);
-    off(ownerDocument, 'touchmove', this._delayedDragTouchMoveHandler);
-    off(ownerDocument, 'pointermove', this._delayedDragTouchMoveHandler);
-  },
-  _triggerDragStart: function _triggerDragStart(
-  /** Event */
-  evt,
-  /** Touch */
-  touch) {
-    touch = touch || evt.pointerType == 'touch' && evt;
-
-    if (!this.nativeDraggable || touch) {
-      if (this.options.supportPointer) {
-        on(document, 'pointermove', this._onTouchMove);
-      } else if (touch) {
-        on(document, 'touchmove', this._onTouchMove);
-      } else {
-        on(document, 'mousemove', this._onTouchMove);
-      }
-    } else {
-      on(dragEl, 'dragend', this);
-      on(rootEl, 'dragstart', this._onDragStart);
-    }
-
-    try {
-      if (document.selection) {
-        // Timeout neccessary for IE9
-        _nextTick(function () {
-          document.selection.empty();
-        });
-      } else {
-        window.getSelection().removeAllRanges();
-      }
-    } catch (err) {}
-  },
-  _dragStarted: function _dragStarted(fallback, evt) {
-    awaitingDragStarted = false;
-
-    if (rootEl && dragEl) {
-      pluginEvent('dragStarted', this, {
-        evt: evt
-      });
-
-      if (this.nativeDraggable) {
-        on(document, 'dragover', _checkOutsideTargetEl);
-      }
-
-      var options = this.options; // Apply effect
-
-      !fallback && toggleClass(dragEl, options.dragClass, false);
-      toggleClass(dragEl, options.ghostClass, true);
-      Sortable.active = this;
-      fallback && this._appendGhost(); // Drag start event
-
-      _dispatchEvent({
-        sortable: this,
-        name: 'start',
-        originalEvent: evt
-      });
-    } else {
-      this._nulling();
-    }
-  },
-  _emulateDragOver: function _emulateDragOver() {
-    if (touchEvt) {
-      this._lastX = touchEvt.clientX;
-      this._lastY = touchEvt.clientY;
-
-      _hideGhostForTarget();
-
-      var target = document.elementFromPoint(touchEvt.clientX, touchEvt.clientY);
-      var parent = target;
-
-      while (target && target.shadowRoot) {
-        target = target.shadowRoot.elementFromPoint(touchEvt.clientX, touchEvt.clientY);
-        if (target === parent) break;
-        parent = target;
-      }
-
-      dragEl.parentNode[expando]._isOutsideThisEl(target);
-
-      if (parent) {
-        do {
-          if (parent[expando]) {
-            var inserted = void 0;
-            inserted = parent[expando]._onDragOver({
-              clientX: touchEvt.clientX,
-              clientY: touchEvt.clientY,
-              target: target,
-              rootEl: parent
-            });
-
-            if (inserted && !this.options.dragoverBubble) {
-              break;
-            }
-          }
-
-          target = parent; // store last element
-        }
-        /* jshint boss:true */
-        while (parent = parent.parentNode);
-      }
-
-      _unhideGhostForTarget();
-    }
-  },
-  _onTouchMove: function _onTouchMove(
-  /**TouchEvent*/
-  evt) {
-    if (tapEvt) {
-      var options = this.options,
-          fallbackTolerance = options.fallbackTolerance,
-          fallbackOffset = options.fallbackOffset,
-          touch = evt.touches ? evt.touches[0] : evt,
-          ghostMatrix = ghostEl && matrix(ghostEl, true),
-          scaleX = ghostEl && ghostMatrix && ghostMatrix.a,
-          scaleY = ghostEl && ghostMatrix && ghostMatrix.d,
-          relativeScrollOffset = PositionGhostAbsolutely && ghostRelativeParent && getRelativeScrollOffset(ghostRelativeParent),
-          dx = (touch.clientX - tapEvt.clientX + fallbackOffset.x) / (scaleX || 1) + (relativeScrollOffset ? relativeScrollOffset[0] - ghostRelativeParentInitialScroll[0] : 0) / (scaleX || 1),
-          dy = (touch.clientY - tapEvt.clientY + fallbackOffset.y) / (scaleY || 1) + (relativeScrollOffset ? relativeScrollOffset[1] - ghostRelativeParentInitialScroll[1] : 0) / (scaleY || 1); // only set the status to dragging, when we are actually dragging
-
-      if (!Sortable.active && !awaitingDragStarted) {
-        if (fallbackTolerance && Math.max(Math.abs(touch.clientX - this._lastX), Math.abs(touch.clientY - this._lastY)) < fallbackTolerance) {
-          return;
-        }
-
-        this._onDragStart(evt, true);
-      }
-
-      if (ghostEl) {
-        if (ghostMatrix) {
-          ghostMatrix.e += dx - (lastDx || 0);
-          ghostMatrix.f += dy - (lastDy || 0);
-        } else {
-          ghostMatrix = {
-            a: 1,
-            b: 0,
-            c: 0,
-            d: 1,
-            e: dx,
-            f: dy
-          };
-        }
-
-        var cssMatrix = "matrix(".concat(ghostMatrix.a, ",").concat(ghostMatrix.b, ",").concat(ghostMatrix.c, ",").concat(ghostMatrix.d, ",").concat(ghostMatrix.e, ",").concat(ghostMatrix.f, ")");
-        css(ghostEl, 'webkitTransform', cssMatrix);
-        css(ghostEl, 'mozTransform', cssMatrix);
-        css(ghostEl, 'msTransform', cssMatrix);
-        css(ghostEl, 'transform', cssMatrix);
-        lastDx = dx;
-        lastDy = dy;
-        touchEvt = touch;
-      }
-
-      evt.cancelable && evt.preventDefault();
-    }
-  },
-  _appendGhost: function _appendGhost() {
-    // Bug if using scale(): https://stackoverflow.com/questions/2637058
-    // Not being adjusted for
-    if (!ghostEl) {
-      var container = this.options.fallbackOnBody ? document.body : rootEl,
-          rect = getRect(dragEl, true, PositionGhostAbsolutely, true, container),
-          options = this.options; // Position absolutely
-
-      if (PositionGhostAbsolutely) {
-        // Get relatively positioned parent
-        ghostRelativeParent = container;
-
-        while (css(ghostRelativeParent, 'position') === 'static' && css(ghostRelativeParent, 'transform') === 'none' && ghostRelativeParent !== document) {
-          ghostRelativeParent = ghostRelativeParent.parentNode;
-        }
-
-        if (ghostRelativeParent !== document.body && ghostRelativeParent !== document.documentElement) {
-          if (ghostRelativeParent === document) ghostRelativeParent = getWindowScrollingElement();
-          rect.top += ghostRelativeParent.scrollTop;
-          rect.left += ghostRelativeParent.scrollLeft;
-        } else {
-          ghostRelativeParent = getWindowScrollingElement();
-        }
-
-        ghostRelativeParentInitialScroll = getRelativeScrollOffset(ghostRelativeParent);
-      }
-
-      ghostEl = dragEl.cloneNode(true);
-      toggleClass(ghostEl, options.ghostClass, false);
-      toggleClass(ghostEl, options.fallbackClass, true);
-      toggleClass(ghostEl, options.dragClass, true);
-      css(ghostEl, 'transition', '');
-      css(ghostEl, 'transform', '');
-      css(ghostEl, 'box-sizing', 'border-box');
-      css(ghostEl, 'margin', 0);
-      css(ghostEl, 'top', rect.top);
-      css(ghostEl, 'left', rect.left);
-      css(ghostEl, 'width', rect.width);
-      css(ghostEl, 'height', rect.height);
-      css(ghostEl, 'opacity', '0.8');
-      css(ghostEl, 'position', PositionGhostAbsolutely ? 'absolute' : 'fixed');
-      css(ghostEl, 'zIndex', '100000');
-      css(ghostEl, 'pointerEvents', 'none');
-      Sortable.ghost = ghostEl;
-      container.appendChild(ghostEl); // Set transform-origin
-
-      css(ghostEl, 'transform-origin', tapDistanceLeft / parseInt(ghostEl.style.width) * 100 + '% ' + tapDistanceTop / parseInt(ghostEl.style.height) * 100 + '%');
-    }
-  },
-  _onDragStart: function _onDragStart(
-  /**Event*/
-  evt,
-  /**boolean*/
-  fallback) {
-    var _this = this;
-
-    var dataTransfer = evt.dataTransfer;
-    var options = _this.options;
-    pluginEvent('dragStart', this, {
-      evt: evt
-    });
-
-    if (Sortable.eventCanceled) {
-      this._onDrop();
-
-      return;
-    }
-
-    pluginEvent('setupClone', this);
-
-    if (!Sortable.eventCanceled) {
-      cloneEl = clone(dragEl);
-      cloneEl.draggable = false;
-      cloneEl.style['will-change'] = '';
-
-      this._hideClone();
-
-      toggleClass(cloneEl, this.options.chosenClass, false);
-      Sortable.clone = cloneEl;
-    } // #1143: IFrame support workaround
-
-
-    _this.cloneId = _nextTick(function () {
-      pluginEvent('clone', _this);
-      if (Sortable.eventCanceled) return;
-
-      if (!_this.options.removeCloneOnHide) {
-        rootEl.insertBefore(cloneEl, dragEl);
-      }
-
-      _this._hideClone();
-
-      _dispatchEvent({
-        sortable: _this,
-        name: 'clone'
-      });
-    });
-    !fallback && toggleClass(dragEl, options.dragClass, true); // Set proper drop events
-
-    if (fallback) {
-      ignoreNextClick = true;
-      _this._loopId = setInterval(_this._emulateDragOver, 50);
-    } else {
-      // Undo what was set in _prepareDragStart before drag started
-      off(document, 'mouseup', _this._onDrop);
-      off(document, 'touchend', _this._onDrop);
-      off(document, 'touchcancel', _this._onDrop);
-
-      if (dataTransfer) {
-        dataTransfer.effectAllowed = 'move';
-        options.setData && options.setData.call(_this, dataTransfer, dragEl);
-      }
-
-      on(document, 'drop', _this); // #1276 fix:
-
-      css(dragEl, 'transform', 'translateZ(0)');
-    }
-
-    awaitingDragStarted = true;
-    _this._dragStartId = _nextTick(_this._dragStarted.bind(_this, fallback, evt));
-    on(document, 'selectstart', _this);
-    moved = true;
-
-    if (Safari) {
-      css(document.body, 'user-select', 'none');
-    }
-  },
-  // Returns true - if no further action is needed (either inserted or another condition)
-  _onDragOver: function _onDragOver(
-  /**Event*/
-  evt) {
-    var el = this.el,
-        target = evt.target,
-        dragRect,
-        targetRect,
-        revert,
-        options = this.options,
-        group = options.group,
-        activeSortable = Sortable.active,
-        isOwner = activeGroup === group,
-        canSort = options.sort,
-        fromSortable = putSortable || activeSortable,
-        vertical,
-        _this = this,
-        completedFired = false;
-
-    if (_silent) return;
-
-    function dragOverEvent(name, extra) {
-      pluginEvent(name, _this, _objectSpread({
-        evt: evt,
-        isOwner: isOwner,
-        axis: vertical ? 'vertical' : 'horizontal',
-        revert: revert,
-        dragRect: dragRect,
-        targetRect: targetRect,
-        canSort: canSort,
-        fromSortable: fromSortable,
-        target: target,
-        completed: completed,
-        onMove: function onMove(target, after) {
-          return _onMove(rootEl, el, dragEl, dragRect, target, getRect(target), evt, after);
-        },
-        changed: changed
-      }, extra));
-    } // Capture animation state
-
-
-    function capture() {
-      dragOverEvent('dragOverAnimationCapture');
-
-      _this.captureAnimationState();
-
-      if (_this !== fromSortable) {
-        fromSortable.captureAnimationState();
-      }
-    } // Return invocation when dragEl is inserted (or completed)
-
-
-    function completed(insertion) {
-      dragOverEvent('dragOverCompleted', {
-        insertion: insertion
-      });
-
-      if (insertion) {
-        // Clones must be hidden before folding animation to capture dragRectAbsolute properly
-        if (isOwner) {
-          activeSortable._hideClone();
-        } else {
-          activeSortable._showClone(_this);
-        }
-
-        if (_this !== fromSortable) {
-          // Set ghost class to new sortable's ghost class
-          toggleClass(dragEl, putSortable ? putSortable.options.ghostClass : activeSortable.options.ghostClass, false);
-          toggleClass(dragEl, options.ghostClass, true);
-        }
-
-        if (putSortable !== _this && _this !== Sortable.active) {
-          putSortable = _this;
-        } else if (_this === Sortable.active && putSortable) {
-          putSortable = null;
-        } // Animation
-
-
-        if (fromSortable === _this) {
-          _this._ignoreWhileAnimating = target;
-        }
-
-        _this.animateAll(function () {
-          dragOverEvent('dragOverAnimationComplete');
-          _this._ignoreWhileAnimating = null;
-        });
-
-        if (_this !== fromSortable) {
-          fromSortable.animateAll();
-          fromSortable._ignoreWhileAnimating = null;
-        }
-      } // Null lastTarget if it is not inside a previously swapped element
-
-
-      if (target === dragEl && !dragEl.animated || target === el && !target.animated) {
-        lastTarget = null;
-      } // no bubbling and not fallback
-
-
-      if (!options.dragoverBubble && !evt.rootEl && target !== document) {
-        dragEl.parentNode[expando]._isOutsideThisEl(evt.target); // Do not detect for empty insert if already inserted
-
-
-        !insertion && nearestEmptyInsertDetectEvent(evt);
-      }
-
-      !options.dragoverBubble && evt.stopPropagation && evt.stopPropagation();
-      return completedFired = true;
-    } // Call when dragEl has been inserted
-
-
-    function changed() {
-      newIndex = index(dragEl);
-      newDraggableIndex = index(dragEl, options.draggable);
-
-      _dispatchEvent({
-        sortable: _this,
-        name: 'change',
-        toEl: el,
-        newIndex: newIndex,
-        newDraggableIndex: newDraggableIndex,
-        originalEvent: evt
-      });
-    }
-
-    if (evt.preventDefault !== void 0) {
-      evt.cancelable && evt.preventDefault();
-    }
-
-    target = closest(target, options.draggable, el, true);
-    dragOverEvent('dragOver');
-    if (Sortable.eventCanceled) return completedFired;
-
-    if (dragEl.contains(evt.target) || target.animated && target.animatingX && target.animatingY || _this._ignoreWhileAnimating === target) {
-      return completed(false);
-    }
-
-    ignoreNextClick = false;
-
-    if (activeSortable && !options.disabled && (isOwner ? canSort || (revert = !rootEl.contains(dragEl)) // Reverting item into the original list
-    : putSortable === this || (this.lastPutMode = activeGroup.checkPull(this, activeSortable, dragEl, evt)) && group.checkPut(this, activeSortable, dragEl, evt))) {
-      vertical = this._getDirection(evt, target) === 'vertical';
-      dragRect = getRect(dragEl);
-      dragOverEvent('dragOverValid');
-      if (Sortable.eventCanceled) return completedFired;
-
-      if (revert) {
-        parentEl = rootEl; // actualization
-
-        capture();
-
-        this._hideClone();
-
-        dragOverEvent('revert');
-
-        if (!Sortable.eventCanceled) {
-          if (nextEl) {
-            rootEl.insertBefore(dragEl, nextEl);
-          } else {
-            rootEl.appendChild(dragEl);
-          }
-        }
-
-        return completed(true);
-      }
-
-      var elLastChild = lastChild(el, options.draggable);
-
-      if (!elLastChild || _ghostIsLast(evt, vertical, this) && !elLastChild.animated) {
-        // If already at end of list: Do not insert
-        if (elLastChild === dragEl) {
-          return completed(false);
-        } // assign target only if condition is true
-
-
-        if (elLastChild && el === evt.target) {
-          target = elLastChild;
-        }
-
-        if (target) {
-          targetRect = getRect(target);
-        }
-
-        if (_onMove(rootEl, el, dragEl, dragRect, target, targetRect, evt, !!target) !== false) {
-          capture();
-          el.appendChild(dragEl);
-          parentEl = el; // actualization
-
-          changed();
-          return completed(true);
-        }
-      } else if (target.parentNode === el) {
-        targetRect = getRect(target);
-        var direction = 0,
-            targetBeforeFirstSwap,
-            differentLevel = dragEl.parentNode !== el,
-            differentRowCol = !_dragElInRowColumn(dragEl.animated && dragEl.toRect || dragRect, target.animated && target.toRect || targetRect, vertical),
-            side1 = vertical ? 'top' : 'left',
-            scrolledPastTop = isScrolledPast(target, 'top', 'top') || isScrolledPast(dragEl, 'top', 'top'),
-            scrollBefore = scrolledPastTop ? scrolledPastTop.scrollTop : void 0;
-
-        if (lastTarget !== target) {
-          targetBeforeFirstSwap = targetRect[side1];
-          pastFirstInvertThresh = false;
-          isCircumstantialInvert = !differentRowCol && options.invertSwap || differentLevel;
-        }
-
-        direction = _getSwapDirection(evt, target, targetRect, vertical, differentRowCol ? 1 : options.swapThreshold, options.invertedSwapThreshold == null ? options.swapThreshold : options.invertedSwapThreshold, isCircumstantialInvert, lastTarget === target);
-        var sibling;
-
-        if (direction !== 0) {
-          // Check if target is beside dragEl in respective direction (ignoring hidden elements)
-          var dragIndex = index(dragEl);
-
-          do {
-            dragIndex -= direction;
-            sibling = parentEl.children[dragIndex];
-          } while (sibling && (css(sibling, 'display') === 'none' || sibling === ghostEl));
-        } // If dragEl is already beside target: Do not insert
-
-
-        if (direction === 0 || sibling === target) {
-          return completed(false);
-        }
-
-        lastTarget = target;
-        lastDirection = direction;
-        var nextSibling = target.nextElementSibling,
-            after = false;
-        after = direction === 1;
-
-        var moveVector = _onMove(rootEl, el, dragEl, dragRect, target, targetRect, evt, after);
-
-        if (moveVector !== false) {
-          if (moveVector === 1 || moveVector === -1) {
-            after = moveVector === 1;
-          }
-
-          _silent = true;
-          setTimeout(_unsilent, 30);
-          capture();
-
-          if (after && !nextSibling) {
-            el.appendChild(dragEl);
-          } else {
-            target.parentNode.insertBefore(dragEl, after ? nextSibling : target);
-          } // Undo chrome's scroll adjustment (has no effect on other browsers)
-
-
-          if (scrolledPastTop) {
-            scrollBy(scrolledPastTop, 0, scrollBefore - scrolledPastTop.scrollTop);
-          }
-
-          parentEl = dragEl.parentNode; // actualization
-          // must be done before animation
-
-          if (targetBeforeFirstSwap !== undefined && !isCircumstantialInvert) {
-            targetMoveDistance = Math.abs(targetBeforeFirstSwap - getRect(target)[side1]);
-          }
-
-          changed();
-          return completed(true);
-        }
-      }
-
-      if (el.contains(dragEl)) {
-        return completed(false);
-      }
-    }
-
-    return false;
-  },
-  _ignoreWhileAnimating: null,
-  _offMoveEvents: function _offMoveEvents() {
-    off(document, 'mousemove', this._onTouchMove);
-    off(document, 'touchmove', this._onTouchMove);
-    off(document, 'pointermove', this._onTouchMove);
-    off(document, 'dragover', nearestEmptyInsertDetectEvent);
-    off(document, 'mousemove', nearestEmptyInsertDetectEvent);
-    off(document, 'touchmove', nearestEmptyInsertDetectEvent);
-  },
-  _offUpEvents: function _offUpEvents() {
-    var ownerDocument = this.el.ownerDocument;
-    off(ownerDocument, 'mouseup', this._onDrop);
-    off(ownerDocument, 'touchend', this._onDrop);
-    off(ownerDocument, 'pointerup', this._onDrop);
-    off(ownerDocument, 'touchcancel', this._onDrop);
-    off(document, 'selectstart', this);
-  },
-  _onDrop: function _onDrop(
-  /**Event*/
-  evt) {
-    var el = this.el,
-        options = this.options; // Get the index of the dragged element within its parent
-
-    newIndex = index(dragEl);
-    newDraggableIndex = index(dragEl, options.draggable);
-    pluginEvent('drop', this, {
-      evt: evt
-    });
-    parentEl = dragEl && dragEl.parentNode; // Get again after plugin event
-
-    newIndex = index(dragEl);
-    newDraggableIndex = index(dragEl, options.draggable);
-
-    if (Sortable.eventCanceled) {
-      this._nulling();
-
-      return;
-    }
-
-    awaitingDragStarted = false;
-    isCircumstantialInvert = false;
-    pastFirstInvertThresh = false;
-    clearInterval(this._loopId);
-    clearTimeout(this._dragStartTimer);
-
-    _cancelNextTick(this.cloneId);
-
-    _cancelNextTick(this._dragStartId); // Unbind events
-
-
-    if (this.nativeDraggable) {
-      off(document, 'drop', this);
-      off(el, 'dragstart', this._onDragStart);
-    }
-
-    this._offMoveEvents();
-
-    this._offUpEvents();
-
-    if (Safari) {
-      css(document.body, 'user-select', '');
-    }
-
-    css(dragEl, 'transform', '');
-
-    if (evt) {
-      if (moved) {
-        evt.cancelable && evt.preventDefault();
-        !options.dropBubble && evt.stopPropagation();
-      }
-
-      ghostEl && ghostEl.parentNode && ghostEl.parentNode.removeChild(ghostEl);
-
-      if (rootEl === parentEl || putSortable && putSortable.lastPutMode !== 'clone') {
-        // Remove clone(s)
-        cloneEl && cloneEl.parentNode && cloneEl.parentNode.removeChild(cloneEl);
-      }
-
-      if (dragEl) {
-        if (this.nativeDraggable) {
-          off(dragEl, 'dragend', this);
-        }
-
-        _disableDraggable(dragEl);
-
-        dragEl.style['will-change'] = ''; // Remove classes
-        // ghostClass is added in dragStarted
-
-        if (moved && !awaitingDragStarted) {
-          toggleClass(dragEl, putSortable ? putSortable.options.ghostClass : this.options.ghostClass, false);
-        }
-
-        toggleClass(dragEl, this.options.chosenClass, false); // Drag stop event
-
-        _dispatchEvent({
-          sortable: this,
-          name: 'unchoose',
-          toEl: parentEl,
-          newIndex: null,
-          newDraggableIndex: null,
-          originalEvent: evt
-        });
-
-        if (rootEl !== parentEl) {
-          if (newIndex >= 0) {
-            // Add event
-            _dispatchEvent({
-              rootEl: parentEl,
-              name: 'add',
-              toEl: parentEl,
-              fromEl: rootEl,
-              originalEvent: evt
-            }); // Remove event
-
-
-            _dispatchEvent({
-              sortable: this,
-              name: 'remove',
-              toEl: parentEl,
-              originalEvent: evt
-            }); // drag from one list and drop into another
-
-
-            _dispatchEvent({
-              rootEl: parentEl,
-              name: 'sort',
-              toEl: parentEl,
-              fromEl: rootEl,
-              originalEvent: evt
-            });
-
-            _dispatchEvent({
-              sortable: this,
-              name: 'sort',
-              toEl: parentEl,
-              originalEvent: evt
-            });
-          }
-
-          putSortable && putSortable.save();
-        } else {
-          if (newIndex !== oldIndex) {
-            if (newIndex >= 0) {
-              // drag & drop within the same list
-              _dispatchEvent({
-                sortable: this,
-                name: 'update',
-                toEl: parentEl,
-                originalEvent: evt
-              });
-
-              _dispatchEvent({
-                sortable: this,
-                name: 'sort',
-                toEl: parentEl,
-                originalEvent: evt
-              });
-            }
-          }
-        }
-
-        if (Sortable.active) {
-          /* jshint eqnull:true */
-          if (newIndex == null || newIndex === -1) {
-            newIndex = oldIndex;
-            newDraggableIndex = oldDraggableIndex;
-          }
-
-          _dispatchEvent({
-            sortable: this,
-            name: 'end',
-            toEl: parentEl,
-            originalEvent: evt
-          }); // Save sorting
-
-
-          this.save();
-        }
-      }
-    }
-
-    this._nulling();
-  },
-  _nulling: function _nulling() {
-    pluginEvent('nulling', this);
-    rootEl = dragEl = parentEl = ghostEl = nextEl = cloneEl = lastDownEl = cloneHidden = tapEvt = touchEvt = moved = newIndex = newDraggableIndex = oldIndex = oldDraggableIndex = lastTarget = lastDirection = putSortable = activeGroup = Sortable.dragged = Sortable.ghost = Sortable.clone = Sortable.active = null;
-    savedInputChecked.forEach(function (el) {
-      el.checked = true;
-    });
-    savedInputChecked.length = lastDx = lastDy = 0;
-  },
-  handleEvent: function handleEvent(
-  /**Event*/
-  evt) {
-    switch (evt.type) {
-      case 'drop':
-      case 'dragend':
-        this._onDrop(evt);
-
-        break;
-
-      case 'dragenter':
-      case 'dragover':
-        if (dragEl) {
-          this._onDragOver(evt);
-
-          _globalDragOver(evt);
-        }
-
-        break;
-
-      case 'selectstart':
-        evt.preventDefault();
-        break;
-    }
-  },
-
-  /**
-   * Serializes the item into an array of string.
-   * @returns {String[]}
-   */
-  toArray: function toArray() {
-    var order = [],
-        el,
-        children = this.el.children,
-        i = 0,
-        n = children.length,
-        options = this.options;
-
-    for (; i < n; i++) {
-      el = children[i];
-
-      if (closest(el, options.draggable, this.el, false)) {
-        order.push(el.getAttribute(options.dataIdAttr) || _generateId(el));
-      }
-    }
-
-    return order;
-  },
-
-  /**
-   * Sorts the elements according to the array.
-   * @param  {String[]}  order  order of the items
-   */
-  sort: function sort(order) {
-    var items = {},
-        rootEl = this.el;
-    this.toArray().forEach(function (id, i) {
-      var el = rootEl.children[i];
-
-      if (closest(el, this.options.draggable, rootEl, false)) {
-        items[id] = el;
-      }
-    }, this);
-    order.forEach(function (id) {
-      if (items[id]) {
-        rootEl.removeChild(items[id]);
-        rootEl.appendChild(items[id]);
-      }
-    });
-  },
-
-  /**
-   * Save the current sorting
-   */
-  save: function save() {
-    var store = this.options.store;
-    store && store.set && store.set(this);
-  },
-
-  /**
-   * For each element in the set, get the first element that matches the selector by testing the element itself and traversing up through its ancestors in the DOM tree.
-   * @param   {HTMLElement}  el
-   * @param   {String}       [selector]  default: `options.draggable`
-   * @returns {HTMLElement|null}
-   */
-  closest: function closest$1(el, selector) {
-    return closest(el, selector || this.options.draggable, this.el, false);
-  },
-
-  /**
-   * Set/get option
-   * @param   {string} name
-   * @param   {*}      [value]
-   * @returns {*}
-   */
-  option: function option(name, value) {
-    var options = this.options;
-
-    if (value === void 0) {
-      return options[name];
-    } else {
-      var modifiedValue = PluginManager.modifyOption(this, name, value);
-
-      if (typeof modifiedValue !== 'undefined') {
-        options[name] = modifiedValue;
-      } else {
-        options[name] = value;
-      }
-
-      if (name === 'group') {
-        _prepareGroup(options);
-      }
-    }
-  },
-
-  /**
-   * Destroy
-   */
-  destroy: function destroy() {
-    pluginEvent('destroy', this);
-    var el = this.el;
-    el[expando] = null;
-    off(el, 'mousedown', this._onTapStart);
-    off(el, 'touchstart', this._onTapStart);
-    off(el, 'pointerdown', this._onTapStart);
-
-    if (this.nativeDraggable) {
-      off(el, 'dragover', this);
-      off(el, 'dragenter', this);
-    } // Remove draggable attributes
-
-
-    Array.prototype.forEach.call(el.querySelectorAll('[draggable]'), function (el) {
-      el.removeAttribute('draggable');
-    });
-
-    this._onDrop();
-
-    this._disableDelayedDragEvents();
-
-    sortables.splice(sortables.indexOf(this.el), 1);
-    this.el = el = null;
-  },
-  _hideClone: function _hideClone() {
-    if (!cloneHidden) {
-      pluginEvent('hideClone', this);
-      if (Sortable.eventCanceled) return;
-      css(cloneEl, 'display', 'none');
-
-      if (this.options.removeCloneOnHide && cloneEl.parentNode) {
-        cloneEl.parentNode.removeChild(cloneEl);
-      }
-
-      cloneHidden = true;
-    }
-  },
-  _showClone: function _showClone(putSortable) {
-    if (putSortable.lastPutMode !== 'clone') {
-      this._hideClone();
-
-      return;
-    }
-
-    if (cloneHidden) {
-      pluginEvent('showClone', this);
-      if (Sortable.eventCanceled) return; // show clone at dragEl or original position
-
-      if (rootEl.contains(dragEl) && !this.options.group.revertClone) {
-        rootEl.insertBefore(cloneEl, dragEl);
-      } else if (nextEl) {
-        rootEl.insertBefore(cloneEl, nextEl);
-      } else {
-        rootEl.appendChild(cloneEl);
-      }
-
-      if (this.options.group.revertClone) {
-        this.animate(dragEl, cloneEl);
-      }
-
-      css(cloneEl, 'display', '');
-      cloneHidden = false;
-    }
-  }
-};
-
-function _globalDragOver(
-/**Event*/
-evt) {
-  if (evt.dataTransfer) {
-    evt.dataTransfer.dropEffect = 'move';
-  }
-
-  evt.cancelable && evt.preventDefault();
-}
-
-function _onMove(fromEl, toEl, dragEl, dragRect, targetEl, targetRect, originalEvent, willInsertAfter) {
-  var evt,
-      sortable = fromEl[expando],
-      onMoveFn = sortable.options.onMove,
-      retVal; // Support for new CustomEvent feature
-
-  if (window.CustomEvent && !IE11OrLess && !Edge) {
-    evt = new CustomEvent('move', {
-      bubbles: true,
-      cancelable: true
-    });
-  } else {
-    evt = document.createEvent('Event');
-    evt.initEvent('move', true, true);
-  }
-
-  evt.to = toEl;
-  evt.from = fromEl;
-  evt.dragged = dragEl;
-  evt.draggedRect = dragRect;
-  evt.related = targetEl || toEl;
-  evt.relatedRect = targetRect || getRect(toEl);
-  evt.willInsertAfter = willInsertAfter;
-  evt.originalEvent = originalEvent;
-  fromEl.dispatchEvent(evt);
-
-  if (onMoveFn) {
-    retVal = onMoveFn.call(sortable, evt, originalEvent);
-  }
-
-  return retVal;
-}
-
-function _disableDraggable(el) {
-  el.draggable = false;
-}
-
-function _unsilent() {
-  _silent = false;
-}
-
-function _ghostIsLast(evt, vertical, sortable) {
-  var rect = getRect(lastChild(sortable.el, sortable.options.draggable));
-  var spacer = 10;
-  return vertical ? evt.clientX > rect.right + spacer || evt.clientX <= rect.right && evt.clientY > rect.bottom && evt.clientX >= rect.left : evt.clientX > rect.right && evt.clientY > rect.top || evt.clientX <= rect.right && evt.clientY > rect.bottom + spacer;
-}
-
-function _getSwapDirection(evt, target, targetRect, vertical, swapThreshold, invertedSwapThreshold, invertSwap, isLastTarget) {
-  var mouseOnAxis = vertical ? evt.clientY : evt.clientX,
-      targetLength = vertical ? targetRect.height : targetRect.width,
-      targetS1 = vertical ? targetRect.top : targetRect.left,
-      targetS2 = vertical ? targetRect.bottom : targetRect.right,
-      invert = false;
-
-  if (!invertSwap) {
-    // Never invert or create dragEl shadow when target movemenet causes mouse to move past the end of regular swapThreshold
-    if (isLastTarget && targetMoveDistance < targetLength * swapThreshold) {
-      // multiplied only by swapThreshold because mouse will already be inside target by (1 - threshold) * targetLength / 2
-      // check if past first invert threshold on side opposite of lastDirection
-      if (!pastFirstInvertThresh && (lastDirection === 1 ? mouseOnAxis > targetS1 + targetLength * invertedSwapThreshold / 2 : mouseOnAxis < targetS2 - targetLength * invertedSwapThreshold / 2)) {
-        // past first invert threshold, do not restrict inverted threshold to dragEl shadow
-        pastFirstInvertThresh = true;
-      }
-
-      if (!pastFirstInvertThresh) {
-        // dragEl shadow (target move distance shadow)
-        if (lastDirection === 1 ? mouseOnAxis < targetS1 + targetMoveDistance // over dragEl shadow
-        : mouseOnAxis > targetS2 - targetMoveDistance) {
-          return -lastDirection;
-        }
-      } else {
-        invert = true;
-      }
-    } else {
-      // Regular
-      if (mouseOnAxis > targetS1 + targetLength * (1 - swapThreshold) / 2 && mouseOnAxis < targetS2 - targetLength * (1 - swapThreshold) / 2) {
-        return _getInsertDirection(target);
-      }
-    }
-  }
-
-  invert = invert || invertSwap;
-
-  if (invert) {
-    // Invert of regular
-    if (mouseOnAxis < targetS1 + targetLength * invertedSwapThreshold / 2 || mouseOnAxis > targetS2 - targetLength * invertedSwapThreshold / 2) {
-      return mouseOnAxis > targetS1 + targetLength / 2 ? 1 : -1;
-    }
-  }
-
-  return 0;
-}
-/**
- * Gets the direction dragEl must be swapped relative to target in order to make it
- * seem that dragEl has been "inserted" into that element's position
- * @param  {HTMLElement} target       The target whose position dragEl is being inserted at
- * @return {Number}                   Direction dragEl must be swapped
- */
-
-
-function _getInsertDirection(target) {
-  if (index(dragEl) < index(target)) {
-    return 1;
-  } else {
-    return -1;
-  }
-}
-/**
- * Generate id
- * @param   {HTMLElement} el
- * @returns {String}
- * @private
- */
-
-
-function _generateId(el) {
-  var str = el.tagName + el.className + el.src + el.href + el.textContent,
-      i = str.length,
-      sum = 0;
-
-  while (i--) {
-    sum += str.charCodeAt(i);
-  }
-
-  return sum.toString(36);
-}
-
-function _saveInputCheckedState(root) {
-  savedInputChecked.length = 0;
-  var inputs = root.getElementsByTagName('input');
-  var idx = inputs.length;
-
-  while (idx--) {
-    var el = inputs[idx];
-    el.checked && savedInputChecked.push(el);
-  }
-}
-
-function _nextTick(fn) {
-  return setTimeout(fn, 0);
-}
-
-function _cancelNextTick(id) {
-  return clearTimeout(id);
-} // Fixed #973:
-
-
-if (documentExists) {
-  on(document, 'touchmove', function (evt) {
-    if ((Sortable.active || awaitingDragStarted) && evt.cancelable) {
-      evt.preventDefault();
-    }
-  });
-} // Export utils
-
-
-Sortable.utils = {
-  on: on,
-  off: off,
-  css: css,
-  find: find,
-  is: function is(el, selector) {
-    return !!closest(el, selector, el, false);
-  },
-  extend: extend,
-  throttle: throttle,
-  closest: closest,
-  toggleClass: toggleClass,
-  clone: clone,
-  index: index,
-  nextTick: _nextTick,
-  cancelNextTick: _cancelNextTick,
-  detectDirection: _detectDirection,
-  getChild: getChild
-};
-/**
- * Get the Sortable instance of an element
- * @param  {HTMLElement} element The element
- * @return {Sortable|undefined}         The instance of Sortable
- */
-
-Sortable.get = function (element) {
-  return element[expando];
-};
-/**
- * Mount a plugin to Sortable
- * @param  {...SortablePlugin|SortablePlugin[]} plugins       Plugins being mounted
- */
-
-
-Sortable.mount = function () {
-  for (var _len = arguments.length, plugins = new Array(_len), _key = 0; _key < _len; _key++) {
-    plugins[_key] = arguments[_key];
-  }
-
-  if (plugins[0].constructor === Array) plugins = plugins[0];
-  plugins.forEach(function (plugin) {
-    if (!plugin.prototype || !plugin.prototype.constructor) {
-      throw "Sortable: Mounted plugin must be a constructor function, not ".concat({}.toString.call(plugin));
-    }
-
-    if (plugin.utils) Sortable.utils = _objectSpread({}, Sortable.utils, plugin.utils);
-    PluginManager.mount(plugin);
-  });
-};
-/**
- * Create sortable instance
- * @param {HTMLElement}  el
- * @param {Object}      [options]
- */
-
-
-Sortable.create = function (el, options) {
-  return new Sortable(el, options);
-}; // Export
-
-
-Sortable.version = version;
-var autoScrolls = [],
-    scrollEl,
-    scrollRootEl,
-    scrolling = false,
-    lastAutoScrollX,
-    lastAutoScrollY,
-    touchEvt$1,
-    pointerElemChangedInterval;
-
-function AutoScrollPlugin() {
-  function AutoScroll() {
-    this.defaults = {
-      scroll: true,
-      scrollSensitivity: 30,
-      scrollSpeed: 10,
-      bubbleScroll: true
-    }; // Bind all private methods
-
-    for (var fn in this) {
-      if (fn.charAt(0) === '_' && typeof this[fn] === 'function') {
-        this[fn] = this[fn].bind(this);
-      }
-    }
-  }
-
-  AutoScroll.prototype = {
-    dragStarted: function dragStarted(_ref) {
-      var originalEvent = _ref.originalEvent;
-
-      if (this.sortable.nativeDraggable) {
-        on(document, 'dragover', this._handleAutoScroll);
-      } else {
-        if (this.options.supportPointer) {
-          on(document, 'pointermove', this._handleFallbackAutoScroll);
-        } else if (originalEvent.touches) {
-          on(document, 'touchmove', this._handleFallbackAutoScroll);
-        } else {
-          on(document, 'mousemove', this._handleFallbackAutoScroll);
-        }
-      }
-    },
-    dragOverCompleted: function dragOverCompleted(_ref2) {
-      var originalEvent = _ref2.originalEvent; // For when bubbling is canceled and using fallback (fallback 'touchmove' always reached)
-
-      if (!this.options.dragOverBubble && !originalEvent.rootEl) {
-        this._handleAutoScroll(originalEvent);
-      }
-    },
-    drop: function drop() {
-      if (this.sortable.nativeDraggable) {
-        off(document, 'dragover', this._handleAutoScroll);
-      } else {
-        off(document, 'pointermove', this._handleFallbackAutoScroll);
-        off(document, 'touchmove', this._handleFallbackAutoScroll);
-        off(document, 'mousemove', this._handleFallbackAutoScroll);
-      }
-
-      clearPointerElemChangedInterval();
-      clearAutoScrolls();
-      cancelThrottle();
-    },
-    nulling: function nulling() {
-      touchEvt$1 = scrollRootEl = scrollEl = scrolling = pointerElemChangedInterval = lastAutoScrollX = lastAutoScrollY = null;
-      autoScrolls.length = 0;
-    },
-    _handleFallbackAutoScroll: function _handleFallbackAutoScroll(evt) {
-      this._handleAutoScroll(evt, true);
-    },
-    _handleAutoScroll: function _handleAutoScroll(evt, fallback) {
-      var _this = this;
-
-      var x = (evt.touches ? evt.touches[0] : evt).clientX,
-          y = (evt.touches ? evt.touches[0] : evt).clientY,
-          elem = document.elementFromPoint(x, y);
-      touchEvt$1 = evt; // IE does not seem to have native autoscroll,
-      // Edge's autoscroll seems too conditional,
-      // MACOS Safari does not have autoscroll,
-      // Firefox and Chrome are good
-
-      if (fallback || Edge || IE11OrLess || Safari) {
-        autoScroll(evt, this.options, elem, fallback); // Listener for pointer element change
-
-        var ogElemScroller = getParentAutoScrollElement(elem, true);
-
-        if (scrolling && (!pointerElemChangedInterval || x !== lastAutoScrollX || y !== lastAutoScrollY)) {
-          pointerElemChangedInterval && clearPointerElemChangedInterval(); // Detect for pointer elem change, emulating native DnD behaviour
-
-          pointerElemChangedInterval = setInterval(function () {
-            var newElem = getParentAutoScrollElement(document.elementFromPoint(x, y), true);
-
-            if (newElem !== ogElemScroller) {
-              ogElemScroller = newElem;
-              clearAutoScrolls();
-            }
-
-            autoScroll(evt, _this.options, newElem, fallback);
-          }, 10);
-          lastAutoScrollX = x;
-          lastAutoScrollY = y;
-        }
-      } else {
-        // if DnD is enabled (and browser has good autoscrolling), first autoscroll will already scroll, so get parent autoscroll of first autoscroll
-        if (!this.options.bubbleScroll || getParentAutoScrollElement(elem, true) === getWindowScrollingElement()) {
-          clearAutoScrolls();
-          return;
-        }
-
-        autoScroll(evt, this.options, getParentAutoScrollElement(elem, false), false);
-      }
-    }
-  };
-  return _extends(AutoScroll, {
-    pluginName: 'scroll',
-    initializeByDefault: true
-  });
-}
-
-function clearAutoScrolls() {
-  autoScrolls.forEach(function (autoScroll) {
-    clearInterval(autoScroll.pid);
-  });
-  autoScrolls = [];
-}
-
-function clearPointerElemChangedInterval() {
-  clearInterval(pointerElemChangedInterval);
-}
-
-var autoScroll = throttle(function (evt, options, rootEl, isFallback) {
-  // Bug: https://bugzilla.mozilla.org/show_bug.cgi?id=505521
-  if (!options.scroll) return;
-  var x = (evt.touches ? evt.touches[0] : evt).clientX,
-      y = (evt.touches ? evt.touches[0] : evt).clientY,
-      sens = options.scrollSensitivity,
-      speed = options.scrollSpeed,
-      winScroller = getWindowScrollingElement();
-  var scrollThisInstance = false,
-      scrollCustomFn; // New scroll root, set scrollEl
-
-  if (scrollRootEl !== rootEl) {
-    scrollRootEl = rootEl;
-    clearAutoScrolls();
-    scrollEl = options.scroll;
-    scrollCustomFn = options.scrollFn;
-
-    if (scrollEl === true) {
-      scrollEl = getParentAutoScrollElement(rootEl, true);
-    }
-  }
-
-  var layersOut = 0;
-  var currentParent = scrollEl;
-
-  do {
-    var el = currentParent,
-        rect = getRect(el),
-        top = rect.top,
-        bottom = rect.bottom,
-        left = rect.left,
-        right = rect.right,
-        width = rect.width,
-        height = rect.height,
-        canScrollX = void 0,
-        canScrollY = void 0,
-        scrollWidth = el.scrollWidth,
-        scrollHeight = el.scrollHeight,
-        elCSS = css(el),
-        scrollPosX = el.scrollLeft,
-        scrollPosY = el.scrollTop;
-
-    if (el === winScroller) {
-      canScrollX = width < scrollWidth && (elCSS.overflowX === 'auto' || elCSS.overflowX === 'scroll' || elCSS.overflowX === 'visible');
-      canScrollY = height < scrollHeight && (elCSS.overflowY === 'auto' || elCSS.overflowY === 'scroll' || elCSS.overflowY === 'visible');
-    } else {
-      canScrollX = width < scrollWidth && (elCSS.overflowX === 'auto' || elCSS.overflowX === 'scroll');
-      canScrollY = height < scrollHeight && (elCSS.overflowY === 'auto' || elCSS.overflowY === 'scroll');
-    }
-
-    var vx = canScrollX && (Math.abs(right - x) <= sens && scrollPosX + width < scrollWidth) - (Math.abs(left - x) <= sens && !!scrollPosX);
-    var vy = canScrollY && (Math.abs(bottom - y) <= sens && scrollPosY + height < scrollHeight) - (Math.abs(top - y) <= sens && !!scrollPosY);
-
-    if (!autoScrolls[layersOut]) {
-      for (var i = 0; i <= layersOut; i++) {
-        if (!autoScrolls[i]) {
-          autoScrolls[i] = {};
-        }
-      }
-    }
-
-    if (autoScrolls[layersOut].vx != vx || autoScrolls[layersOut].vy != vy || autoScrolls[layersOut].el !== el) {
-      autoScrolls[layersOut].el = el;
-      autoScrolls[layersOut].vx = vx;
-      autoScrolls[layersOut].vy = vy;
-      clearInterval(autoScrolls[layersOut].pid);
-
-      if (vx != 0 || vy != 0) {
-        scrollThisInstance = true;
-        /* jshint loopfunc:true */
-
-        autoScrolls[layersOut].pid = setInterval(function () {
-          // emulate drag over during autoscroll (fallback), emulating native DnD behaviour
-          if (isFallback && this.layer === 0) {
-            Sortable.active._onTouchMove(touchEvt$1); // To move ghost if it is positioned absolutely
-
-          }
-
-          var scrollOffsetY = autoScrolls[this.layer].vy ? autoScrolls[this.layer].vy * speed : 0;
-          var scrollOffsetX = autoScrolls[this.layer].vx ? autoScrolls[this.layer].vx * speed : 0;
-
-          if (typeof scrollCustomFn === 'function') {
-            if (scrollCustomFn.call(Sortable.dragged.parentNode[expando], scrollOffsetX, scrollOffsetY, evt, touchEvt$1, autoScrolls[this.layer].el) !== 'continue') {
-              return;
-            }
-          }
-
-          scrollBy(autoScrolls[this.layer].el, scrollOffsetX, scrollOffsetY);
-        }.bind({
-          layer: layersOut
-        }), 24);
-      }
-    }
-
-    layersOut++;
-  } while (options.bubbleScroll && currentParent !== winScroller && (currentParent = getParentAutoScrollElement(currentParent, false)));
-
-  scrolling = scrollThisInstance; // in case another function catches scrolling as false in between when it is not
-}, 30);
-
-var drop = function drop(_ref) {
-  var originalEvent = _ref.originalEvent,
-      putSortable = _ref.putSortable,
-      dragEl = _ref.dragEl,
-      activeSortable = _ref.activeSortable,
-      dispatchSortableEvent = _ref.dispatchSortableEvent,
-      hideGhostForTarget = _ref.hideGhostForTarget,
-      unhideGhostForTarget = _ref.unhideGhostForTarget;
-  if (!originalEvent) return;
-  var toSortable = putSortable || activeSortable;
-  hideGhostForTarget();
-  var touch = originalEvent.changedTouches && originalEvent.changedTouches.length ? originalEvent.changedTouches[0] : originalEvent;
-  var target = document.elementFromPoint(touch.clientX, touch.clientY);
-  unhideGhostForTarget();
-
-  if (toSortable && !toSortable.el.contains(target)) {
-    dispatchSortableEvent('spill');
-    this.onSpill({
-      dragEl: dragEl,
-      putSortable: putSortable
-    });
-  }
-};
-
-function Revert() {}
-
-Revert.prototype = {
-  startIndex: null,
-  dragStart: function dragStart(_ref2) {
-    var oldDraggableIndex = _ref2.oldDraggableIndex;
-    this.startIndex = oldDraggableIndex;
-  },
-  onSpill: function onSpill(_ref3) {
-    var dragEl = _ref3.dragEl,
-        putSortable = _ref3.putSortable;
-    this.sortable.captureAnimationState();
-
-    if (putSortable) {
-      putSortable.captureAnimationState();
-    }
-
-    var nextSibling = getChild(this.sortable.el, this.startIndex, this.options);
-
-    if (nextSibling) {
-      this.sortable.el.insertBefore(dragEl, nextSibling);
-    } else {
-      this.sortable.el.appendChild(dragEl);
-    }
-
-    this.sortable.animateAll();
-
-    if (putSortable) {
-      putSortable.animateAll();
-    }
-  },
-  drop: drop
-};
-
-_extends(Revert, {
-  pluginName: 'revertOnSpill'
-});
-
-function Remove() {}
-
-Remove.prototype = {
-  onSpill: function onSpill(_ref4) {
-    var dragEl = _ref4.dragEl,
-        putSortable = _ref4.putSortable;
-    var parentSortable = putSortable || this.sortable;
-    parentSortable.captureAnimationState();
-    dragEl.parentNode && dragEl.parentNode.removeChild(dragEl);
-    parentSortable.animateAll();
-  },
-  drop: drop
-};
-
-_extends(Remove, {
-  pluginName: 'removeOnSpill'
-});
-
-var lastSwapEl;
-
-function SwapPlugin() {
-  function Swap() {
-    this.defaults = {
-      swapClass: 'sortable-swap-highlight'
-    };
-  }
-
-  Swap.prototype = {
-    dragStart: function dragStart(_ref) {
-      var dragEl = _ref.dragEl;
-      lastSwapEl = dragEl;
-    },
-    dragOverValid: function dragOverValid(_ref2) {
-      var completed = _ref2.completed,
-          target = _ref2.target,
-          onMove = _ref2.onMove,
-          activeSortable = _ref2.activeSortable,
-          changed = _ref2.changed,
-          cancel = _ref2.cancel;
-      if (!activeSortable.options.swap) return;
-      var el = this.sortable.el,
-          options = this.options;
-
-      if (target && target !== el) {
-        var prevSwapEl = lastSwapEl;
-
-        if (onMove(target) !== false) {
-          toggleClass(target, options.swapClass, true);
-          lastSwapEl = target;
-        } else {
-          lastSwapEl = null;
-        }
-
-        if (prevSwapEl && prevSwapEl !== lastSwapEl) {
-          toggleClass(prevSwapEl, options.swapClass, false);
-        }
-      }
-
-      changed();
-      completed(true);
-      cancel();
-    },
-    drop: function drop(_ref3) {
-      var activeSortable = _ref3.activeSortable,
-          putSortable = _ref3.putSortable,
-          dragEl = _ref3.dragEl;
-      var toSortable = putSortable || this.sortable;
-      var options = this.options;
-      lastSwapEl && toggleClass(lastSwapEl, options.swapClass, false);
-
-      if (lastSwapEl && (options.swap || putSortable && putSortable.options.swap)) {
-        if (dragEl !== lastSwapEl) {
-          toSortable.captureAnimationState();
-          if (toSortable !== activeSortable) activeSortable.captureAnimationState();
-          swapNodes(dragEl, lastSwapEl);
-          toSortable.animateAll();
-          if (toSortable !== activeSortable) activeSortable.animateAll();
-        }
-      }
-    },
-    nulling: function nulling() {
-      lastSwapEl = null;
-    }
-  };
-  return _extends(Swap, {
-    pluginName: 'swap',
-    eventProperties: function eventProperties() {
-      return {
-        swapItem: lastSwapEl
-      };
-    }
-  });
-}
-
-function swapNodes(n1, n2) {
-  var p1 = n1.parentNode,
-      p2 = n2.parentNode,
-      i1,
-      i2;
-  if (!p1 || !p2 || p1.isEqualNode(n2) || p2.isEqualNode(n1)) return;
-  i1 = index(n1);
-  i2 = index(n2);
-
-  if (p1.isEqualNode(p2) && i1 < i2) {
-    i2++;
-  }
-
-  p1.insertBefore(n2, p1.children[i1]);
-  p2.insertBefore(n1, p2.children[i2]);
-}
-
-var multiDragElements = [],
-    multiDragClones = [],
-    lastMultiDragSelect,
-    // for selection with modifier key down (SHIFT)
-multiDragSortable,
-    initialFolding = false,
-    // Initial multi-drag fold when drag started
-folding = false,
-    // Folding any other time
-dragStarted = false,
-    dragEl$1,
-    clonesFromRect,
-    clonesHidden;
-
-function MultiDragPlugin() {
-  function MultiDrag(sortable) {
-    // Bind all private methods
-    for (var fn in this) {
-      if (fn.charAt(0) === '_' && typeof this[fn] === 'function') {
-        this[fn] = this[fn].bind(this);
-      }
-    }
-
-    if (sortable.options.supportPointer) {
-      on(document, 'pointerup', this._deselectMultiDrag);
-    } else {
-      on(document, 'mouseup', this._deselectMultiDrag);
-      on(document, 'touchend', this._deselectMultiDrag);
-    }
-
-    on(document, 'keydown', this._checkKeyDown);
-    on(document, 'keyup', this._checkKeyUp);
-    this.defaults = {
-      selectedClass: 'sortable-selected',
-      multiDragKey: null,
-      setData: function setData(dataTransfer, dragEl) {
-        var data = '';
-
-        if (multiDragElements.length && multiDragSortable === sortable) {
-          multiDragElements.forEach(function (multiDragElement, i) {
-            data += (!i ? '' : ', ') + multiDragElement.textContent;
-          });
-        } else {
-          data = dragEl.textContent;
-        }
-
-        dataTransfer.setData('Text', data);
-      }
-    };
-  }
-
-  MultiDrag.prototype = {
-    multiDragKeyDown: false,
-    isMultiDrag: false,
-    delayStartGlobal: function delayStartGlobal(_ref) {
-      var dragged = _ref.dragEl;
-      dragEl$1 = dragged;
-    },
-    delayEnded: function delayEnded() {
-      this.isMultiDrag = ~multiDragElements.indexOf(dragEl$1);
-    },
-    setupClone: function setupClone(_ref2) {
-      var sortable = _ref2.sortable,
-          cancel = _ref2.cancel;
-      if (!this.isMultiDrag) return;
-
-      for (var i = 0; i < multiDragElements.length; i++) {
-        multiDragClones.push(clone(multiDragElements[i]));
-        multiDragClones[i].sortableIndex = multiDragElements[i].sortableIndex;
-        multiDragClones[i].draggable = false;
-        multiDragClones[i].style['will-change'] = '';
-        toggleClass(multiDragClones[i], this.options.selectedClass, false);
-        multiDragElements[i] === dragEl$1 && toggleClass(multiDragClones[i], this.options.chosenClass, false);
-      }
-
-      sortable._hideClone();
-
-      cancel();
-    },
-    clone: function clone(_ref3) {
-      var sortable = _ref3.sortable,
-          rootEl = _ref3.rootEl,
-          dispatchSortableEvent = _ref3.dispatchSortableEvent,
-          cancel = _ref3.cancel;
-      if (!this.isMultiDrag) return;
-
-      if (!this.options.removeCloneOnHide) {
-        if (multiDragElements.length && multiDragSortable === sortable) {
-          insertMultiDragClones(true, rootEl);
-          dispatchSortableEvent('clone');
-          cancel();
-        }
-      }
-    },
-    showClone: function showClone(_ref4) {
-      var cloneNowShown = _ref4.cloneNowShown,
-          rootEl = _ref4.rootEl,
-          cancel = _ref4.cancel;
-      if (!this.isMultiDrag) return;
-      insertMultiDragClones(false, rootEl);
-      multiDragClones.forEach(function (clone) {
-        css(clone, 'display', '');
-      });
-      cloneNowShown();
-      clonesHidden = false;
-      cancel();
-    },
-    hideClone: function hideClone(_ref5) {
-      var _this = this;
-
-      var sortable = _ref5.sortable,
-          cloneNowHidden = _ref5.cloneNowHidden,
-          cancel = _ref5.cancel;
-      if (!this.isMultiDrag) return;
-      multiDragClones.forEach(function (clone) {
-        css(clone, 'display', 'none');
-
-        if (_this.options.removeCloneOnHide && clone.parentNode) {
-          clone.parentNode.removeChild(clone);
-        }
-      });
-      cloneNowHidden();
-      clonesHidden = true;
-      cancel();
-    },
-    dragStartGlobal: function dragStartGlobal(_ref6) {
-      var sortable = _ref6.sortable;
-
-      if (!this.isMultiDrag && multiDragSortable) {
-        multiDragSortable.multiDrag._deselectMultiDrag();
-      }
-
-      multiDragElements.forEach(function (multiDragElement) {
-        multiDragElement.sortableIndex = index(multiDragElement);
-      }); // Sort multi-drag elements
-
-      multiDragElements = multiDragElements.sort(function (a, b) {
-        return a.sortableIndex - b.sortableIndex;
-      });
-      dragStarted = true;
-    },
-    dragStarted: function dragStarted(_ref7) {
-      var _this2 = this;
-
-      var sortable = _ref7.sortable;
-      if (!this.isMultiDrag) return;
-
-      if (this.options.sort) {
-        // Capture rects,
-        // hide multi drag elements (by positioning them absolute),
-        // set multi drag elements rects to dragRect,
-        // show multi drag elements,
-        // animate to rects,
-        // unset rects & remove from DOM
-        sortable.captureAnimationState();
-
-        if (this.options.animation) {
-          multiDragElements.forEach(function (multiDragElement) {
-            if (multiDragElement === dragEl$1) return;
-            css(multiDragElement, 'position', 'absolute');
-          });
-          var dragRect = getRect(dragEl$1, false, true, true);
-          multiDragElements.forEach(function (multiDragElement) {
-            if (multiDragElement === dragEl$1) return;
-            setRect(multiDragElement, dragRect);
-          });
-          folding = true;
-          initialFolding = true;
-        }
-      }
-
-      sortable.animateAll(function () {
-        folding = false;
-        initialFolding = false;
-
-        if (_this2.options.animation) {
-          multiDragElements.forEach(function (multiDragElement) {
-            unsetRect(multiDragElement);
-          });
-        } // Remove all auxiliary multidrag items from el, if sorting enabled
-
-
-        if (_this2.options.sort) {
-          removeMultiDragElements();
-        }
-      });
-    },
-    dragOver: function dragOver(_ref8) {
-      var target = _ref8.target,
-          completed = _ref8.completed,
-          cancel = _ref8.cancel;
-
-      if (folding && ~multiDragElements.indexOf(target)) {
-        completed(false);
-        cancel();
-      }
-    },
-    revert: function revert(_ref9) {
-      var fromSortable = _ref9.fromSortable,
-          rootEl = _ref9.rootEl,
-          sortable = _ref9.sortable,
-          dragRect = _ref9.dragRect;
-
-      if (multiDragElements.length > 1) {
-        // Setup unfold animation
-        multiDragElements.forEach(function (multiDragElement) {
-          sortable.addAnimationState({
-            target: multiDragElement,
-            rect: folding ? getRect(multiDragElement) : dragRect
-          });
-          unsetRect(multiDragElement);
-          multiDragElement.fromRect = dragRect;
-          fromSortable.removeAnimationState(multiDragElement);
-        });
-        folding = false;
-        insertMultiDragElements(!this.options.removeCloneOnHide, rootEl);
-      }
-    },
-    dragOverCompleted: function dragOverCompleted(_ref10) {
-      var sortable = _ref10.sortable,
-          isOwner = _ref10.isOwner,
-          insertion = _ref10.insertion,
-          activeSortable = _ref10.activeSortable,
-          parentEl = _ref10.parentEl,
-          putSortable = _ref10.putSortable;
-      var options = this.options;
-
-      if (insertion) {
-        // Clones must be hidden before folding animation to capture dragRectAbsolute properly
-        if (isOwner) {
-          activeSortable._hideClone();
-        }
-
-        initialFolding = false; // If leaving sort:false root, or already folding - Fold to new location
-
-        if (options.animation && multiDragElements.length > 1 && (folding || !isOwner && !activeSortable.options.sort && !putSortable)) {
-          // Fold: Set all multi drag elements's rects to dragEl's rect when multi-drag elements are invisible
-          var dragRectAbsolute = getRect(dragEl$1, false, true, true);
-          multiDragElements.forEach(function (multiDragElement) {
-            if (multiDragElement === dragEl$1) return;
-            setRect(multiDragElement, dragRectAbsolute); // Move element(s) to end of parentEl so that it does not interfere with multi-drag clones insertion if they are inserted
-            // while folding, and so that we can capture them again because old sortable will no longer be fromSortable
-
-            parentEl.appendChild(multiDragElement);
-          });
-          folding = true;
-        } // Clones must be shown (and check to remove multi drags) after folding when interfering multiDragElements are moved out
-
-
-        if (!isOwner) {
-          // Only remove if not folding (folding will remove them anyways)
-          if (!folding) {
-            removeMultiDragElements();
-          }
-
-          if (multiDragElements.length > 1) {
-            var clonesHiddenBefore = clonesHidden;
-
-            activeSortable._showClone(sortable); // Unfold animation for clones if showing from hidden
-
-
-            if (activeSortable.options.animation && !clonesHidden && clonesHiddenBefore) {
-              multiDragClones.forEach(function (clone) {
-                activeSortable.addAnimationState({
-                  target: clone,
-                  rect: clonesFromRect
-                });
-                clone.fromRect = clonesFromRect;
-                clone.thisAnimationDuration = null;
-              });
-            }
-          } else {
-            activeSortable._showClone(sortable);
-          }
-        }
-      }
-    },
-    dragOverAnimationCapture: function dragOverAnimationCapture(_ref11) {
-      var dragRect = _ref11.dragRect,
-          isOwner = _ref11.isOwner,
-          activeSortable = _ref11.activeSortable;
-      multiDragElements.forEach(function (multiDragElement) {
-        multiDragElement.thisAnimationDuration = null;
-      });
-
-      if (activeSortable.options.animation && !isOwner && activeSortable.multiDrag.isMultiDrag) {
-        clonesFromRect = _extends({}, dragRect);
-        var dragMatrix = matrix(dragEl$1, true);
-        clonesFromRect.top -= dragMatrix.f;
-        clonesFromRect.left -= dragMatrix.e;
-      }
-    },
-    dragOverAnimationComplete: function dragOverAnimationComplete() {
-      if (folding) {
-        folding = false;
-        removeMultiDragElements();
-      }
-    },
-    drop: function drop(_ref12) {
-      var evt = _ref12.originalEvent,
-          rootEl = _ref12.rootEl,
-          parentEl = _ref12.parentEl,
-          sortable = _ref12.sortable,
-          dispatchSortableEvent = _ref12.dispatchSortableEvent,
-          oldIndex = _ref12.oldIndex,
-          putSortable = _ref12.putSortable;
-      var toSortable = putSortable || this.sortable;
-      if (!evt) return;
-      var options = this.options,
-          children = parentEl.children; // Multi-drag selection
-
-      if (!dragStarted) {
-        if (options.multiDragKey && !this.multiDragKeyDown) {
-          this._deselectMultiDrag();
-        }
-
-        toggleClass(dragEl$1, options.selectedClass, !~multiDragElements.indexOf(dragEl$1));
-
-        if (!~multiDragElements.indexOf(dragEl$1)) {
-          multiDragElements.push(dragEl$1);
-          dispatchEvent({
-            sortable: sortable,
-            rootEl: rootEl,
-            name: 'select',
-            targetEl: dragEl$1,
-            originalEvt: evt
-          }); // Modifier activated, select from last to dragEl
-
-          if (evt.shiftKey && lastMultiDragSelect && sortable.el.contains(lastMultiDragSelect)) {
-            var lastIndex = index(lastMultiDragSelect),
-                currentIndex = index(dragEl$1);
-
-            if (~lastIndex && ~currentIndex && lastIndex !== currentIndex) {
-              // Must include lastMultiDragSelect (select it), in case modified selection from no selection
-              // (but previous selection existed)
-              var n, i;
-
-              if (currentIndex > lastIndex) {
-                i = lastIndex;
-                n = currentIndex;
-              } else {
-                i = currentIndex;
-                n = lastIndex + 1;
-              }
-
-              for (; i < n; i++) {
-                if (~multiDragElements.indexOf(children[i])) continue;
-                toggleClass(children[i], options.selectedClass, true);
-                multiDragElements.push(children[i]);
-                dispatchEvent({
-                  sortable: sortable,
-                  rootEl: rootEl,
-                  name: 'select',
-                  targetEl: children[i],
-                  originalEvt: evt
-                });
-              }
-            }
-          } else {
-            lastMultiDragSelect = dragEl$1;
-          }
-
-          multiDragSortable = toSortable;
-        } else {
-          multiDragElements.splice(multiDragElements.indexOf(dragEl$1), 1);
-          lastMultiDragSelect = null;
-          dispatchEvent({
-            sortable: sortable,
-            rootEl: rootEl,
-            name: 'deselect',
-            targetEl: dragEl$1,
-            originalEvt: evt
-          });
-        }
-      } // Multi-drag drop
-
-
-      if (dragStarted && this.isMultiDrag) {
-        // Do not "unfold" after around dragEl if reverted
-        if ((parentEl[expando].options.sort || parentEl !== rootEl) && multiDragElements.length > 1) {
-          var dragRect = getRect(dragEl$1),
-              multiDragIndex = index(dragEl$1, ':not(.' + this.options.selectedClass + ')');
-          if (!initialFolding && options.animation) dragEl$1.thisAnimationDuration = null;
-          toSortable.captureAnimationState();
-
-          if (!initialFolding) {
-            if (options.animation) {
-              dragEl$1.fromRect = dragRect;
-              multiDragElements.forEach(function (multiDragElement) {
-                multiDragElement.thisAnimationDuration = null;
-
-                if (multiDragElement !== dragEl$1) {
-                  var rect = folding ? getRect(multiDragElement) : dragRect;
-                  multiDragElement.fromRect = rect; // Prepare unfold animation
-
-                  toSortable.addAnimationState({
-                    target: multiDragElement,
-                    rect: rect
-                  });
-                }
-              });
-            } // Multi drag elements are not necessarily removed from the DOM on drop, so to reinsert
-            // properly they must all be removed
-
-
-            removeMultiDragElements();
-            multiDragElements.forEach(function (multiDragElement) {
-              if (children[multiDragIndex]) {
-                parentEl.insertBefore(multiDragElement, children[multiDragIndex]);
-              } else {
-                parentEl.appendChild(multiDragElement);
-              }
-
-              multiDragIndex++;
-            }); // If initial folding is done, the elements may have changed position because they are now
-            // unfolding around dragEl, even though dragEl may not have his index changed, so update event
-            // must be fired here as Sortable will not.
-
-            if (oldIndex === index(dragEl$1)) {
-              var update = false;
-              multiDragElements.forEach(function (multiDragElement) {
-                if (multiDragElement.sortableIndex !== index(multiDragElement)) {
-                  update = true;
-                  return;
-                }
-              });
-
-              if (update) {
-                dispatchSortableEvent('update');
-              }
-            }
-          } // Must be done after capturing individual rects (scroll bar)
-
-
-          multiDragElements.forEach(function (multiDragElement) {
-            unsetRect(multiDragElement);
-          });
-          toSortable.animateAll();
-        }
-
-        multiDragSortable = toSortable;
-      } // Remove clones if necessary
-
-
-      if (rootEl === parentEl || putSortable && putSortable.lastPutMode !== 'clone') {
-        multiDragClones.forEach(function (clone) {
-          clone.parentNode && clone.parentNode.removeChild(clone);
-        });
-      }
-    },
-    nullingGlobal: function nullingGlobal() {
-      this.isMultiDrag = dragStarted = false;
-      multiDragClones.length = 0;
-    },
-    destroyGlobal: function destroyGlobal() {
-      this._deselectMultiDrag();
-
-      off(document, 'pointerup', this._deselectMultiDrag);
-      off(document, 'mouseup', this._deselectMultiDrag);
-      off(document, 'touchend', this._deselectMultiDrag);
-      off(document, 'keydown', this._checkKeyDown);
-      off(document, 'keyup', this._checkKeyUp);
-    },
-    _deselectMultiDrag: function _deselectMultiDrag(evt) {
-      if (typeof dragStarted !== "undefined" && dragStarted) return; // Only deselect if selection is in this sortable
-
-      if (multiDragSortable !== this.sortable) return; // Only deselect if target is not item in this sortable
-
-      if (evt && closest(evt.target, this.options.draggable, this.sortable.el, false)) return; // Only deselect if left click
-
-      if (evt && evt.button !== 0) return;
-
-      while (multiDragElements.length) {
-        var el = multiDragElements[0];
-        toggleClass(el, this.options.selectedClass, false);
-        multiDragElements.shift();
-        dispatchEvent({
-          sortable: this.sortable,
-          rootEl: this.sortable.el,
-          name: 'deselect',
-          targetEl: el,
-          originalEvt: evt
-        });
-      }
-    },
-    _checkKeyDown: function _checkKeyDown(evt) {
-      if (evt.key === this.options.multiDragKey) {
-        this.multiDragKeyDown = true;
-      }
-    },
-    _checkKeyUp: function _checkKeyUp(evt) {
-      if (evt.key === this.options.multiDragKey) {
-        this.multiDragKeyDown = false;
-      }
-    }
-  };
-  return _extends(MultiDrag, {
-    // Static methods & properties
-    pluginName: 'multiDrag',
-    utils: {
-      /**
-       * Selects the provided multi-drag item
-       * @param  {HTMLElement} el    The element to be selected
-       */
-      select: function select(el) {
-        var sortable = el.parentNode[expando];
-        if (!sortable || !sortable.options.multiDrag || ~multiDragElements.indexOf(el)) return;
-
-        if (multiDragSortable && multiDragSortable !== sortable) {
-          multiDragSortable.multiDrag._deselectMultiDrag();
-
-          multiDragSortable = sortable;
-        }
-
-        toggleClass(el, sortable.options.selectedClass, true);
-        multiDragElements.push(el);
-      },
-
-      /**
-       * Deselects the provided multi-drag item
-       * @param  {HTMLElement} el    The element to be deselected
-       */
-      deselect: function deselect(el) {
-        var sortable = el.parentNode[expando],
-            index = multiDragElements.indexOf(el);
-        if (!sortable || !sortable.options.multiDrag || !~index) return;
-        toggleClass(el, sortable.options.selectedClass, false);
-        multiDragElements.splice(index, 1);
-      }
-    },
-    eventProperties: function eventProperties() {
-      var _this3 = this;
-
-      var oldIndicies = [],
-          newIndicies = [];
-      multiDragElements.forEach(function (multiDragElement) {
-        oldIndicies.push({
-          multiDragElement: multiDragElement,
-          index: multiDragElement.sortableIndex
-        }); // multiDragElements will already be sorted if folding
-
-        var newIndex;
-
-        if (folding && multiDragElement !== dragEl$1) {
-          newIndex = -1;
-        } else if (folding) {
-          newIndex = index(multiDragElement, ':not(.' + _this3.options.selectedClass + ')');
-        } else {
-          newIndex = index(multiDragElement);
-        }
-
-        newIndicies.push({
-          multiDragElement: multiDragElement,
-          index: newIndex
-        });
-      });
-      return {
-        items: _toConsumableArray(multiDragElements),
-        clones: [].concat(multiDragClones),
-        oldIndicies: oldIndicies,
-        newIndicies: newIndicies
-      };
-    },
-    optionListeners: {
-      multiDragKey: function multiDragKey(key) {
-        key = key.toLowerCase();
-
-        if (key === 'ctrl') {
-          key = 'Control';
-        } else if (key.length > 1) {
-          key = key.charAt(0).toUpperCase() + key.substr(1);
-        }
-
-        return key;
-      }
-    }
-  });
-}
-
-function insertMultiDragElements(clonesInserted, rootEl) {
-  multiDragElements.forEach(function (multiDragElement, i) {
-    var target = rootEl.children[multiDragElement.sortableIndex + (clonesInserted ? Number(i) : 0)];
-
-    if (target) {
-      rootEl.insertBefore(multiDragElement, target);
-    } else {
-      rootEl.appendChild(multiDragElement);
-    }
-  });
-}
-/**
- * Insert multi-drag clones
- * @param  {[Boolean]} elementsInserted  Whether the multi-drag elements are inserted
- * @param  {HTMLElement} rootEl
- */
-
-
-function insertMultiDragClones(elementsInserted, rootEl) {
-  multiDragClones.forEach(function (clone, i) {
-    var target = rootEl.children[clone.sortableIndex + (elementsInserted ? Number(i) : 0)];
-
-    if (target) {
-      rootEl.insertBefore(clone, target);
-    } else {
-      rootEl.appendChild(clone);
-    }
-  });
-}
-
-function removeMultiDragElements() {
-  multiDragElements.forEach(function (multiDragElement) {
-    if (multiDragElement === dragEl$1) return;
-    multiDragElement.parentNode && multiDragElement.parentNode.removeChild(multiDragElement);
-  });
-}
-
-Sortable.mount(new AutoScrollPlugin());
-Sortable.mount(Remove, Revert);
-/* harmony default export */ __webpack_exports__["default"] = (Sortable);
-
-
-/***/ }),
-
 /***/ "./node_modules/webpack/buildin/module.js":
 /*!***********************************!*\
   !*** (webpack)/buildin/module.js ***!
@@ -14226,10 +10513,10 @@ module.exports = function (module) {
 
 /***/ }),
 
-/***/ "./resources/js/comps/form.js":
-/*!************************************!*\
-  !*** ./resources/js/comps/form.js ***!
-  \************************************/
+/***/ "./resources/js/comps/form-markdown.js":
+/*!*********************************************!*\
+  !*** ./resources/js/comps/form-markdown.js ***!
+  \*********************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -14240,15 +10527,50 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _utils_slugify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/slugify */ "./resources/js/utils/slugify.js");
-/* harmony import */ var _utils_validate_url__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/validate-url */ "./resources/js/utils/validate-url.js");
-/* harmony import */ var _utils_obj_extend__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/obj-extend */ "./resources/js/utils/obj-extend.js");
-/* harmony import */ var _toast__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./toast */ "./resources/js/comps/toast.js");
-/* harmony import */ var _utils_adds__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/adds */ "./resources/js/utils/adds.js");
-/* harmony import */ var _utils_removes__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../utils/removes */ "./resources/js/utils/removes.js");
-/* harmony import */ var sortablejs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! sortablejs */ "./node_modules/sortablejs/modular/sortable.esm.js");
-/* harmony import */ var _yaireo_tagify__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @yaireo/tagify */ "./node_modules/@yaireo/tagify/dist/tagify.min.js");
-/* harmony import */ var _yaireo_tagify__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_yaireo_tagify__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _yaireo_tagify__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @yaireo/tagify */ "./node_modules/@yaireo/tagify/dist/tagify.min.js");
+/* harmony import */ var _yaireo_tagify__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_yaireo_tagify__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _toast__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./toast */ "./resources/js/comps/toast.js");
+/* harmony import */ var _utils_adds__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/adds */ "./resources/js/utils/adds.js");
+/* harmony import */ var _utils_removes__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/removes */ "./resources/js/utils/removes.js");
 
+
+function _typeof(obj) {
+  "@babel/helpers - typeof";
+
+  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+    _typeof = function _typeof(obj) {
+      return typeof obj;
+    };
+  } else {
+    _typeof = function _typeof(obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    };
+  }
+
+  return _typeof(obj);
+}
+
+function _toConsumableArray(arr) {
+  return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();
+}
+
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance");
+}
+
+function _iterableToArray(iter) {
+  if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);
+}
+
+function _arrayWithoutHoles(arr) {
+  if (Array.isArray(arr)) {
+    for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {
+      arr2[i] = arr[i];
+    }
+
+    return arr2;
+  }
+}
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
   try {
@@ -14284,22 +10606,6 @@ function _asyncToGenerator(fn) {
       _next(undefined);
     });
   };
-}
-
-function _typeof(obj) {
-  "@babel/helpers - typeof";
-
-  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-    _typeof = function _typeof(obj) {
-      return typeof obj;
-    };
-  } else {
-    _typeof = function _typeof(obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-    };
-  }
-
-  return _typeof(obj);
 }
 
 function ownKeys(object, enumerableOnly) {
@@ -14349,28 +10655,6 @@ function _defineProperty(obj, key, value) {
   }
 
   return obj;
-}
-
-function _toConsumableArray(arr) {
-  return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();
-}
-
-function _nonIterableSpread() {
-  throw new TypeError("Invalid attempt to spread non-iterable instance");
-}
-
-function _iterableToArray(iter) {
-  if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);
-}
-
-function _arrayWithoutHoles(arr) {
-  if (Array.isArray(arr)) {
-    for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {
-      arr2[i] = arr[i];
-    }
-
-    return arr2;
-  }
 }
 
 function _classCallCheck(instance, Constructor) {
@@ -14449,223 +10733,97 @@ function _setPrototypeOf(o, p) {
 
 
 
- // import SimpleMDE from 'simplemde/dist/simplemde.min.js';
-// import 'simplemde/dist/simplemde.min.css';
-
-
-/**
- * INI HARUSNYA SEPARATION OF CONCERN AWKOAWKOWAK
- */
-
-var Form =
+var FormMarkdown =
 /*#__PURE__*/
 function (_Component) {
-  _inherits(Form, _Component);
+  _inherits(FormMarkdown, _Component);
 
-  function Form(props) {
+  function FormMarkdown(props) {
     var _this;
 
-    _classCallCheck(this, Form);
+    _classCallCheck(this, FormMarkdown);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Form).call(this, props));
-    _this.postData = {
-      title: 'Buat Slide Post',
-      titleEdit: 'Sunting Slide Post',
-      description: react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, "Bagikan pengetahuan kamu dengan developer lain; begitu pula dengan developer lain, mereka akan melakukan hal serupa. ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
-        className: "text-indigo-600 border-b border-indigo-600",
-        target: "_blank",
-        href: routes.docs + '/content'
-      }, "Pelajari selengkapnya"), " tentang membuat konten dan ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
-        className: "text-indigo-600 border-b border-indigo-600",
-        target: "_blank",
-        href: routes.docs + '/content'
-      }, "best practice"), "-nya.")
-    };
-
-    if (props.postType == 'markdown') {
-      _this.postData = {
-        title: 'Buat Markdown Post',
-        titleEdit: 'Sunting Markdown Post',
-        description: react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, "Menulis artikel dengan sintaksis Markdown. Cocok untuk menulis opini, tutorial, atau semacamnya.")
-      };
-    }
-
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(FormMarkdown).call(this, props));
     _this.state = {
       edit: false,
       id: false,
       title: '',
       slug: '',
       slugDirty: false,
-      keyword: '',
-      tags: [],
-      content: '',
-      images: _this.isMarkdownPost() ? '' : [],
-      pages: [],
-      tutorials: [],
-      helps: [],
-      examples: [],
-      publicFolder: false,
       status: 'DRAFT',
       publish: false,
-      statusSaving: '',
-      currentLinkKey: Object.keys(key2str)[0]
+      statusSaving: ''
     };
-    _this.allowedVideoTypes = ['video/mp4', 'video/webm', 'video/ogg'];
-    _this.allowedVideoTypesReadable = ['mp4', 'webm', 'ogg'];
-    _this.allowedImageTypes = ['image/png', 'image/jpeg', 'image/bmp', 'image/png', 'image/webp', 'image/svg+xml'];
-    _this.allowedImageTypesReadable = ['png', 'jpeg', 'bmp', 'png', 'webp', 'svg'];
-    _this.allowedMediaTypes = [].concat(_toConsumableArray(_this.allowedImageTypes), _toConsumableArray(_this.allowedVideoTypes));
-    _this.maxFileSize = 10000000; // 10 mb
-
     return _this;
   }
 
-  _createClass(Form, [{
-    key: "isMarkdownPost",
-    value: function isMarkdownPost() {
-      return this.props.postType == 'markdown';
-    }
-  }, {
-    key: "isSlidePost",
-    value: function isSlidePost() {
-      return this.props.postType == 'slide';
-    }
-    /**
-     * Get initial data
-     */
-
-  }, {
-    key: "loadData",
-    value: function loadData() {
-      var _this2 = this;
-
-      var url = new URL(window.location.href);
-      var path = url.pathname.split(/\/post-slide\//g);
-      if (this.isMarkdownPost()) path = url.pathname.split(/\/post-md\//g);
-
-      if (path[1]) {
-        var id = path[1];
-        this.setID(id);
-        this.setState({
-          stateStatus: 'LOADING'
-        });
-        this.getDataById(id).then(function (data) {
-          _this2.setState(_objectSpread({
-            stateStatus: 'LOADED'
-          }, data));
-
-          _this2.addDOMFunctionality({
-            defaultTags: data.tagify
-          });
-        });
-      }
-    }
-  }, {
-    key: "getDataById",
-    value: function getDataById(id) {
-      var _this3 = this;
-
-      return new Promise(function (resolve, reject) {
-        _this3.request({
-          route: routes.post_edit.replace(/id/g, id),
-          method: 'GET'
-        }).then(function (_ref) {
-          var _ref$data = _ref.data,
-              content = _ref$data.content,
-              title = _ref$data.title,
-              slug = _ref$data.slug,
-              keyword = _ref$data.keyword,
-              _ref$data$tag_ids = _ref$data.tag_ids,
-              tags = _ref$data$tag_ids === void 0 ? [] : _ref$data$tag_ids,
-              tagify = _ref$data.tagify,
-              pages = _ref$data.pages_object,
-              examples = _ref$data.examples_object,
-              helps = _ref$data.helps_object,
-              tutorials = _ref$data.tutorials_object,
-              publicFolder = _ref$data.public_folder,
-              status = _ref$data.status,
-              cover = _ref$data.cover;
-          return resolve({
-            content: content,
-            title: title,
-            slug: slug,
-            images: _this3.isMarkdownPost() ? [] : _this3.parseImagesJSON(content),
-            tags: _toConsumableArray(tags.map(function (tag) {
-              return _typeof(tag) == 'object' ? tag.id : tag;
-            })),
-            tagify: tagify,
-            keyword: keyword,
-            pages: pages,
-            examples: examples,
-            helps: helps,
-            tutorials: tutorials,
-            slugDirty: true,
-            publicFolder: publicFolder,
-            edit: true,
-            publish: true,
-            status: status,
-            statusSaving: status,
-            cover: cover
-          });
-        });
-      });
-    }
-  }, {
-    key: "parseImagesJSON",
-    value: function parseImagesJSON(json) {
-      if (!json) return []; // parse
-
-      json = JSON.parse(json); // restructure object
-
-      return function (newImages, images) {
-        images.forEach(function (image, key) {
-          newImages[key] = _objectSpread({}, image);
-          if (image.single_caption) newImages[key].singleCaption = image.single_caption;
-          newImages[key].videoThumbnailUrl = image.video_thumbnail_url;
-          newImages[key].videoThumbnailName = image.video_thumbnail_name;
-        });
-        return newImages;
-      }([], json);
-    }
-  }, {
-    key: "handleRemove",
-    value: function handleRemove(id, e) {
-      var images = this.state.images,
-          selectedImage = images.find(function (item) {
-        return item.id == id;
-      });
-
-      if (images.length > 1 && selectedImage.isDirty) {
-        this.removeImage(id);
-      }
-    }
-  }, {
+  _createClass(FormMarkdown, [{
     key: "setID",
     value: function setID(id) {
       if (this.state.id !== false) return false;
       this.setState({
         id: id
       });
-      window.history.pushState({}, null, (this.isMarkdownPost() ? '/post-md/' : '/post-slide/') + id);
+      window.history.pushState({}, null, '/post-md/' + id);
     }
   }, {
-    key: "setPublicFolder",
-    value: function setPublicFolder(publicFolder) {
-      if (this.state.publicFolder !== false) return false;
-      this.setState({
-        publicFolder: publicFolder
-      });
+    key: "saveFirstStep",
+    value: function saveFirstStep(e) {
+      var _this2 = this;
+
+      var _this$state = this.state,
+          title = _this$state.title,
+          slug = _this$state.slug;
+      var status = 'draft';
+
+      if (title.trim().length < 1) {
+        document.querySelector('[name=title]').focus();
+      } else if (slug.trim().length < 1) {
+        document.querySelector('[name=slug]').focus();
+      } else {
+        var button = e.target;
+        Object(_utils_adds__WEBPACK_IMPORTED_MODULE_5__["default"])(button.classList, 'pointer-events-none opacity-50');
+        button.disabled = true;
+        this.request({
+          route: routes.post_md_store,
+          method: 'POST',
+          body: JSON.stringify({
+            title: title,
+            slug: slug,
+            status: status
+          }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(function (_ref) {
+          var data = _ref.data;
+
+          _this2.setID(data.id);
+
+          _this2.setPublicFolder(data.public_folder);
+
+          _this2.setState({
+            status: status,
+            publish: true
+          });
+
+          _this2.addDOMFunctionality();
+        })["finally"](function () {
+          Object(_utils_removes__WEBPACK_IMPORTED_MODULE_6__["default"])(button.classList, 'pointer-events-none opacity-50');
+          button.disabled = false;
+        });
+      }
     }
   }, {
     key: "saveAll",
     value: function saveAll(data) {
-      var _this4 = this;
+      var _this3 = this;
 
-      var _this$state = this.state,
-          id = _this$state.id,
-          title = _this$state.title,
-          slug = _this$state.slug,
-          statusSaving = _this$state.statusSaving; // if(!title || !slug) return this.toast.add('❓&nbsp; Auto-save akan jalan ketika kamu sudah mengisi judul dan slug');
+      var _this$state2 = this.state,
+          id = _this$state2.id,
+          title = _this$state2.title,
+          slug = _this$state2.slug,
+          statusSaving = _this$state2.statusSaving; // if(!title || !slug) return this.toast.add('❓&nbsp; Auto-save akan jalan ketika kamu sudah mengisi judul dan slug');
 
       this.statusSaving();
       this.saveContentController && clearTimeout(this.saveContentController);
@@ -14676,7 +10834,7 @@ function (_Component) {
       });
       body = JSON.stringify(body);
       this.request({
-        route: routes.post_update.replace(/slug/g, id),
+        route: routes.post_md_update.replace(/slug/g, id),
         body: body,
         headers: {
           'Content-Type': 'application/json'
@@ -14686,30 +10844,30 @@ function (_Component) {
       }).then(function (_ref2) {
         var data = _ref2.data;
 
-        _this4.statusSaved();
+        _this3.statusSaved();
 
-        _this4.isContentDirty = false;
+        _this3.isContentDirty = false;
       });
     }
   }, {
     key: "autoSaveAll",
     value: function autoSaveAll(data, time) {
-      var _this5 = this;
+      var _this4 = this;
 
       this.autoSaveAllTimeout = setTimeout(function () {
-        _this5.saveAll(data);
+        _this4.saveAll(data);
       }, time);
     }
   }, {
     key: "startAutoSaveAll",
     value: function startAutoSaveAll(data) {
       var time = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 5000;
-      var _this$state2 = this.state,
-          id = _this$state2.id,
-          statusSaving = _this$state2.statusSaving; // reject
+      var _this$state3 = this.state,
+          id = _this$state3.id,
+          statusSaving = _this$state3.statusSaving; // reject
 
       if (!id || statusSaving.toUpperCase() == 'PROCESSING') return false;
-      if (this.isSlidePost() && this.isUploadingImage() || this.isMarkdownPost() && this.uploadingCover) return false;
+      if (this.isUploadingImage()) return false;
       this.isContentDirty = true;
       clearTimeout(this.autoSaveAllTimeout);
       if (time === true) time = 0;
@@ -14718,10 +10876,10 @@ function (_Component) {
   }, {
     key: "request",
     value: function request(options) {
-      var _this6 = this;
+      var _this5 = this;
 
       return new Promise(function (resolve, reject) {
-        _this6._request(options).then(function (data) {
+        _this5._request(options).then(function (data) {
           return resolve(data);
         })["catch"](function (_ref3) {
           var err = _ref3.err,
@@ -14735,27 +10893,27 @@ function (_Component) {
                 var firstError = errors[firstKey][0];
 
                 if (firstKey == 'slug') {
-                  _this6.setState({
+                  _this5.setState({
                     slugOk: false
                   });
                 }
 
-                _this6.toast.add("\uD83D\uDE20&nbsp; ".concat(firstError));
+                _this5.toast.add("\uD83D\uDE20&nbsp; ".concat(firstError));
 
                 break;
 
               case 500:
-                _this6.toast.add("\uD83D\uDE2D&nbsp; Error 500: ".concat(data.message));
+                _this5.toast.add("\uD83D\uDE2D&nbsp; Error 500: ".concat(data.message));
 
                 break;
 
               case 504:
-                _this6.toast.add("\uD83D\uDC0C&nbsp; Error 504: ".concat(data.message));
+                _this5.toast.add("\uD83D\uDC0C&nbsp; Error 504: ".concat(data.message));
 
                 break;
             }
 
-            _this6.statusFailed();
+            _this5.statusFailed();
           }
 
           return reject(err);
@@ -14824,41 +10982,15 @@ function (_Component) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      var _this7 = this;
+      var _this6 = this;
 
-      this.loadData();
-      this.addToast();
-      setTimeout(function () {
-        if (_this7.isMarkdownPost() && _this7.state.content) {
-          var target = $('.content-area');
-          target.style.height = target.scrollHeight + 'px';
-        }
-      }, 1000); // unsaved changes!
+      this.addToast(); // unsaved changes!
 
       window.onbeforeunload = function () {
-        if (_this7.state.id && _this7.isContentDirty) {
+        if (_this6.state.id && _this6.isContentDirty) {
           return true;
         }
       };
-    }
-  }, {
-    key: "addDOMFunctionality",
-    value: function addDOMFunctionality(options) {
-      var _this8 = this;
-
-      var defaultTags = [];
-      if (options) defaultTags = options.defaultTags;
-      setTimeout(function () {
-        _this8.addTagify({
-          defaultTags: defaultTags
-        });
-
-        _this8.addSortable();
-
-        _this8.addDropzone();
-
-        _this8.addKeyboardShortcut();
-      }, 0);
     }
   }, {
     key: "publishWholeContent",
@@ -14875,7 +11007,7 @@ function (_Component) {
       var _saveWholeContent = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
-        var _this9 = this;
+        var _this7 = this;
 
         var objectData,
             route,
@@ -14888,36 +11020,31 @@ function (_Component) {
                 route = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : false;
                 return _context2.abrupt("return", new Promise(function (resolve, reject) {
                   // basic data
-                  var _this9$state = _this9.state,
-                      title = _this9$state.title,
-                      slug = _this9$state.slug,
-                      tags = _this9$state.tags,
-                      keyword = _this9$state.keyword,
-                      id = _this9$state.id,
-                      content = _this9$state.content;
-                  if (!route) route = routes.post_publish.replace(/slug/g, id); // images
+                  var _this7$state = _this7.state,
+                      title = _this7$state.title,
+                      slug = _this7$state.slug,
+                      tags = _this7$state.tags,
+                      keyword = _this7$state.keyword,
+                      id = _this7$state.id;
+                  if (!route) route = routes.post_md_publish.replace(/slug/g, id); // images
 
-                  var images = _this9.flattenedImageFormat(); // validation
+                  var images = _this7.flattenedImageFormat(); // validation
 
 
-                  if (_this9.isSlidePost() && _this9.isUploadingImage()) {
-                    _this9.toast.add("\uD83D\uDDBC&nbsp; Sedang mengunggah media, post akan otomatis tersimpan bila proses telah selesai");
-
-                    return reject();
-                  } else if (_this9.isSlidePost() && _this9.isDeletingImage()) {
-                    _this9.toast.add("\uD83D\uDC0C&nbsp; Sedang menghapus media, post akan otomatis tersimpan bila proses telah selesai");
+                  if (_this7.isUploadingImage()) {
+                    _this7.toast.add("\uD83D\uDDBC&nbsp; Sedang mengunggah media, post akan otomatis tersimpan bila proses telah selesai");
 
                     return reject();
-                  } else if (_this9.isSlidePost() && objectData && objectData.status.toUpperCase() == 'PUBLISH' && images.length < 1) {
-                    _this9.toast.add("\uD83D\uDC21&nbsp; Tidak ada gambar satu pun");
+                  } else if (_this7.isDeletingImage()) {
+                    _this7.toast.add("\uD83D\uDC0C&nbsp; Sedang menghapus media, post akan otomatis tersimpan bila proses telah selesai");
 
                     return reject();
-                  } else if (_this9.isSlidePost() && objectData && objectData.status.toUpperCase() == 'PUBLISH' && images.length > 0 && (!images[0].caption || images[0].caption.trim().length < 1)) {
-                    _this9.toast.add("\uD83D\uDE0F&nbsp; Slide pertama gambar harus diisi caption");
+                  } else if (objectData && objectData.status.toUpperCase() == 'PUBLISH' && images.length < 1) {
+                    _this7.toast.add("\uD83D\uDC21&nbsp; Tidak ada gambar satu pun");
 
                     return reject();
-                  } else if (_this9.isMarkdownPost() && !content) {
-                    _this9.toast.add("\uD83D\uDE0F&nbsp; Harap isi konten post");
+                  } else if (objectData && objectData.status.toUpperCase() == 'PUBLISH' && images.length > 0 && (!images[0].caption || images[0].caption.trim().length < 1)) {
+                    _this7.toast.add("\uD83D\uDE0F&nbsp; Slide pertama gambar harus diisi caption");
 
                     return reject();
                   }
@@ -14927,21 +11054,20 @@ function (_Component) {
                     slug: slug,
                     tags: tags,
                     keyword: keyword,
-                    content: _this9.isSlidePost() ? JSON.stringify(images) : content,
-                    type: _this9.isMarkdownPost() ? 'markdown' : null
+                    content: JSON.stringify(images)
                   }, objectData);
                   Object.keys(key2str).forEach(function (key) {
-                    body[key] = _this9.doFlattenLinkFormat(key);
+                    body[key] = _this7.doFlattenLinkFormat(key);
                   });
 
-                  _this9.setState({
+                  _this7.setState({
                     statusSaving: 'Processing',
                     publish: false
                   });
 
-                  clearTimeout(_this9.autoSaveAllTimeout);
+                  clearTimeout(_this7.autoSaveAllTimeout);
 
-                  _this9.request({
+                  _this7.request({
                     method: 'PUT',
                     route: route,
                     headers: {
@@ -14949,13 +11075,13 @@ function (_Component) {
                     },
                     body: JSON.stringify(body)
                   }).then(function () {
-                    _this9.isContentDirty = false;
+                    _this7.isContentDirty = false;
 
-                    _this9.statusSaved();
+                    _this7.statusSaved();
 
                     return resolve(body);
                   })["finally"](function () {
-                    _this9.enablePublish();
+                    _this7.enablePublish();
                   })["catch"](function () {});
                 }));
 
@@ -15013,79 +11139,36 @@ function (_Component) {
   }, {
     key: "addToast",
     value: function addToast() {
-      this.toast = new _toast__WEBPACK_IMPORTED_MODULE_5__["default"]();
+      this.toast = new _toast__WEBPACK_IMPORTED_MODULE_4__["default"]();
     }
   }, {
     key: "addKeyboardShortcut",
     value: function addKeyboardShortcut() {
-      var _this10 = this;
+      var _this8 = this;
 
-      var _this$state3 = this.state,
-          status = _this$state3.status,
-          id = _this$state3.id;
+      var _this$state4 = this.state,
+          status = _this$state4.status,
+          id = _this$state4.id;
       window.addEventListener('keydown', function (e) {
-        var key = _this10.isMac() ? 'metaKey' : 'ctrlKey';
+        var key = _this8.isMac() ? 'metaKey' : 'ctrlKey';
 
         if (status == 'draft' && e[key] && e.key == 's') {
           e.preventDefault();
-          if (!_this10.isContentDirty) return _this10.toast.add('🤘&nbsp; Post sudah tersimpan sebagai draft');
+          if (!_this8.isContentDirty) return _this8.toast.add('🤘&nbsp; Post sudah tersimpan sebagai draft');
 
-          _this10.saveWholeContent({
+          _this8.saveWholeContent({
             status: 'draft'
-          }, routes.post_update.replace(/slug/g, id)).then(function () {
-            _this10.toast.add("\uD83D\uDD96&nbsp; Post sudah disimpan sebagai draft");
+          }, routes.post_md_update.replace(/slug/g, id)).then(function () {
+            _this8.toast.add("\uD83D\uDD96&nbsp; Post sudah disimpan sebagai draft");
           })["catch"](function () {});
         }
       });
     }
   }, {
-    key: "addSortable",
-    value: function addSortable() {
-      var _this11 = this;
-
-      var el = document.querySelector('.image-files');
-      if (el) this.sortable = sortablejs__WEBPACK_IMPORTED_MODULE_8__["default"].create(el, {
-        dataIdAttr: 'data-id',
-        handle: '.handle',
-        onUpdate: function onUpdate(e) {
-          function arrayMove(arr, oldIndex, newIndex) {
-            if (newIndex >= arr.length) {
-              var k = newIndex - arr.length + 1;
-
-              while (k--) {
-                arr.push(undefined);
-              }
-            }
-
-            arr.splice(newIndex, 0, arr.splice(oldIndex, 1)[0]);
-            return arr;
-          }
-
-          ;
-
-          _this11.setState({
-            images: arrayMove(_this11.state.images, e.oldIndex, e.newIndex)
-          });
-
-          _this11.flattenedImageFormat(true);
-        }
-      });
-    } // addSimplemde() {
-    // 	const el = document.querySelector('.simplemde');
-    // 	if(el) {
-    // 		this.simplemde = new SimpleMDE({
-    // 			element: el,
-    // 			hideIcons: ['image', 'fullscreen', 'side-by-side', 'guide', 'heading-1'],
-    // 			status: false
-    // 		});
-    // 	}
-    // }
-
-  }, {
     key: "addTagify",
     value: function addTagify(_ref5) {
       var defaultTags = _ref5.defaultTags;
-      this.tagify = new _yaireo_tagify__WEBPACK_IMPORTED_MODULE_9___default.a($('.tags'), {
+      this.tagify = new _yaireo_tagify__WEBPACK_IMPORTED_MODULE_3___default.a($('.tags'), {
         enforceWhitelist: true,
         whitelist: defaultTags ? _toConsumableArray(defaultTags) : [],
         maxTags: 5,
@@ -15178,410 +11261,6 @@ function (_Component) {
       });
     }
   }, {
-    key: "addDropzone",
-    value: function addDropzone() {
-      var _this12 = this;
-
-      var dropzone = $('.dropzone');
-      if (!dropzone) return;
-
-      function onDragover() {
-        Object(_utils_removes__WEBPACK_IMPORTED_MODULE_7__["default"])(dropzone.classList, 'border-gray-300');
-        Object(_utils_adds__WEBPACK_IMPORTED_MODULE_6__["default"])(dropzone.classList, 'border-indigo-600 bg-indigo-100');
-      }
-
-      function onDragdone() {
-        Object(_utils_adds__WEBPACK_IMPORTED_MODULE_6__["default"])(dropzone.classList, 'border-gray-300');
-        Object(_utils_removes__WEBPACK_IMPORTED_MODULE_7__["default"])(dropzone.classList, 'border-indigo-600 bg-indigo-100');
-      }
-
-      dropzone.addEventListener('dragover', function (e) {
-        e.stopPropagation();
-        e.preventDefault();
-        e.dataTransfer.dropEffect = 'move';
-        onDragover();
-      });
-      dropzone.addEventListener('dragleave', function (e) {
-        onDragdone();
-      });
-      dropzone.addEventListener('drop', function (e) {
-        e.stopPropagation();
-        e.preventDefault();
-        onDragdone();
-        var files = e.dataTransfer.files;
-
-        _this12.handleFiles(files);
-      });
-    }
-  }, {
-    key: "handleFiles",
-    value: function handleFiles(files) {
-      var _this13 = this;
-
-      if (!(files instanceof FileList)) files = files.target.files; // check uploader first
-
-      this.isUploadAllowed().then(function () {
-        // if dataTransfer contains files
-        if (files.length > 0) {
-          // collect all files into an array
-          files = [].slice.call(files); // iterate it
-
-          files.forEach(function (file) {
-            // validate each file
-            _this13.validateImage({
-              selectedFile: file
-            }).then(function () {
-              // if file is an valid image file
-              _this13.addImage({
-                file: file
-              }).then(function (_ref6) {
-                var id = _ref6.id,
-                    node = _ref6.node;
-
-                _this13.handleImage(id, node, file);
-              });
-            })["catch"](function (error) {
-              _this13.toast.add(error);
-            });
-          });
-        }
-      })["catch"](function (error) {
-        _this13.toast.add(error);
-      });
-    }
-  }, {
-    key: "isUploadAllowed",
-    value: function isUploadAllowed() {
-      var _this$state4 = this.state,
-          id = _this$state4.id,
-          title = _this$state4.title,
-          slug = _this$state4.slug,
-          slugOk = _this$state4.slugOk;
-      return new Promise(function (resolve, reject) {
-        // if(!id && title.trim().length < 1) {
-        // 	return reject('😢&nbsp; Harap isi judul terlebih dahulu');
-        // }else if(!id && slug.trim().length < 1) {
-        // 	return reject('😭&nbsp; Eh, slug-nya belum diisi');
-        // }else if(!id && !slugOk) {
-        // 	return reject('😹&nbsp; slug-nya benerin dulu, kak');
-        // }
-        return resolve(true);
-      });
-    }
-  }, {
-    key: "generateID",
-    value: function generateID() {
-      return new Date().valueOf();
-    }
-    /**
-     * Remove image from the state
-     * @param  {Integer} id Target image ID
-     */
-
-  }, {
-    key: "removeImage",
-    value: function removeImage(id) {
-      var _this15 = this;
-
-      var force = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-      var currentImage = this.findImageById(id);
-      var public_folder = this.state.publicFolder;
-
-      if (currentImage.status !== 'DELETING' && force !== true) {
-        var ask = confirm("Gambar akan dihapus dan tidak dapat dikembalikan. Lanjutkan?");
-        if (!ask) return false;
-      }
-
-      var deletingImages = this.state.images.filter(function (img) {
-        return img.status == 'DELETING';
-      });
-      if (currentImage.status == 'DELETING') return this.toast.add("\uD83D\uDE19&nbsp; Penghapusan gambar ".concat(currentImage.name ? currentImage.name : currentImage.file.name, " masih proses")); // uncomment this if you want sync instead of async deleting process
-      // else if(deletingImages.length > 0)
-      // 	return this.toast.add(`😙&nbsp; Sabar, masih menghapus gambar yang lain`)
-
-      function updateState(autoSave) {
-        var _this14 = this;
-
-        this.setState(function (_ref7) {
-          var images = _ref7.images;
-          images = images.filter(function (item) {
-            return item.id !== id;
-          });
-          return {
-            images: images
-          };
-        }, function () {
-          if (autoSave) {
-            _this14.flattenedImageFormat(true);
-
-            _this14.statusSaved();
-          }
-        });
-      }
-
-      if (currentImage.status !== 'UPLOADED') {
-        updateState.call(this);
-      } else {
-        this.isContentDirty = true;
-        this.request({
-          route: routes.post_delete_image,
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            name: currentImage.name,
-            public_folder: public_folder
-          })
-        }).then(function (_ref8) {
-          var status = _ref8.status;
-          if (status) updateState.call(_this15, true);
-        })["catch"](function (error) {});
-        this.updateImage(id, {
-          status: 'DELETING'
-        });
-      }
-    }
-    /**
-     * Add image to the state
-     * @return {Object}
-     */
-
-  }, {
-    key: "addImage",
-    value: function addImage(_ref9) {
-      var _this16 = this;
-
-      var _ref9$file = _ref9.file,
-          file = _ref9$file === void 0 ? undefined : _ref9$file;
-      return new Promise(function (resolve, reject) {
-        var id = _this16.generateID();
-
-        _this16.setState(function (prevState) {
-          // collect images from previous state
-          var images = [].concat(_toConsumableArray(prevState.images), [{
-            id: id,
-            file: file,
-            status: 'PREPARING'
-          }]);
-          return {
-            images: images
-          };
-        }, function () {
-          var node = $('.image-files').lastChild;
-          return resolve({
-            id: id,
-            node: node
-          });
-        });
-      });
-    }
-  }, {
-    key: "validateImage",
-    value: function validateImage(_ref10) {
-      var _this17 = this;
-
-      var selectedFile = _ref10.selectedFile;
-      return new Promise(function (resolve, reject) {
-        if (!_this17.allowedMediaTypes.includes(selectedFile.type)) {
-          return reject("\uD83D\uDEB7&nbsp; Jenis berkas ".concat(selectedFile.name, " tidak didukung"));
-        }
-
-        if (selectedFile.size > _this17.maxFileSize) {
-          return reject('🐠&nbsp; Ukuran berkas maks. 10MB');
-        }
-
-        return resolve();
-      });
-    }
-  }, {
-    key: "handleImage",
-    value: function handleImage(id, element, selectedFile) {
-      var _this18 = this;
-
-      var selectedFileType = selectedFile ? selectedFile.type : false;
-      this.validateImage({
-        selectedFile: selectedFile
-      }).then(function () {
-        var promisePreview = function promisePreview() {
-          return new Promise(function (resolve, reject) {
-            if (_this18.allowedImageTypes.includes(selectedFileType)) {
-              var img = element.querySelector('img'); // set selected image into the src attribute via createObjectURL API
-
-              var urlMedia = URL.createObjectURL(selectedFile);
-              img.src = urlMedia; // show the image
-
-              img.classList.remove('hidden');
-              return resolve(urlMedia);
-            } else if (_this18.allowedVideoTypes.includes(selectedFileType)) {
-              var video = element.querySelector('video'),
-                  videoSource = video.querySelector('source'),
-                  canvas = element.querySelector('canvas'),
-                  ctx = canvas.getContext('2d'),
-                  _img = element.querySelector('img'); // set selected video to the source
-
-
-              videoSource.src = URL.createObjectURL(selectedFile); // load the videeo
-
-              video.load(); // listen to meta data
-
-              video.addEventListener('canplay', function () {
-                // show the video player
-                video.classList.remove('hidden'); // set the canvas dimension as the video
-
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight; // make sure everthing is ok
-
-                setTimeout(function () {
-                  // draw the image into the canvas silently
-                  ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight); // convert canvas to the base64 image format and set into the src attribute
-
-                  var urlMedia = canvas.toDataURL();
-                  _img.src = urlMedia; // hide the video player
-
-                  video.classList.add('hidden'); // show the image!
-
-                  _img.classList.remove('hidden');
-
-                  return resolve(urlMedia);
-                }, 1000);
-              });
-            } else {
-              return reject({
-                error: 'Unsupported file type'
-              });
-            }
-          });
-        };
-
-        promisePreview().then(function (urlMedia) {
-          var currentImage = _this18.updateImage(id, {
-            isDirty: true,
-            status: 'UPLOADING',
-            file: selectedFile,
-            isAbort: false,
-            url: urlMedia
-          });
-
-          _this18.uploadImage(currentImage);
-        })["catch"](function (error) {
-          return console.log(error);
-        });
-      });
-    }
-  }, {
-    key: "findImageById",
-    value: function findImageById(id) {
-      var images = this.state.images;
-      var currentImage = images.find(function (item) {
-        return item.id == id;
-      });
-      return currentImage;
-    }
-    /**
-     * Update image state by id
-     * @param  {Integer|Object} idOrObj  Image ID or image object
-     * @param  {Object} obj  New object
-     * @return {Object}      Updated object
-     */
-
-  }, {
-    key: "updateImage",
-    value: function updateImage(idOrObj, obj) {
-      // get images data from state
-      var images = this.state.images; // find current image element in array by given id
-
-      var currentImage = _typeof(idOrObj) == 'object' ? idOrObj : this.findImageById(idOrObj);
-      Object(_utils_obj_extend__WEBPACK_IMPORTED_MODULE_4__["default"])(currentImage, obj);
-      this.setState({
-        images: images
-      });
-      return currentImage;
-    }
-  }, {
-    key: "abortImage",
-    value: function abortImage(image) {
-      this.statusSaved();
-      image.controller.abort();
-
-      this._removeImage(image.id);
-    }
-  }, {
-    key: "_removeImage",
-    value: function _removeImage(id) {
-      this.setState(function (_ref11) {
-        var images = _ref11.images;
-        return {
-          images: images.filter(function (item) {
-            return item.id !== id;
-          })
-        };
-      });
-    }
-  }, {
-    key: "uploadImage",
-    value: function uploadImage(image) {
-      var _this19 = this;
-
-      var _this$state5 = this.state,
-          id = _this$state5.id,
-          publicFolder = _this$state5.publicFolder;
-      var formData = new FormData();
-      if (id) formData.append('id', id);
-      if (publicFolder) formData.append('public_folder', publicFolder);
-      formData.append('image', image.file);
-      formData.append('name', image.file.name); // is video
-
-      if (image.file && this.allowedVideoTypes.includes(image.file.type)) {
-        formData.append('video_thumbnail', image.url);
-      }
-
-      image = this.updateImage(image.id, {
-        controller: new AbortController()
-      }); // change status saving
-
-      this.statusSaving();
-      this.isContentDirty = true;
-      this.request({
-        route: routes.post_upload_image,
-        method: 'POST',
-        body: formData,
-        signal: image.controller.signal
-      }).then(function (_ref12) {
-        var _ref12$data = _ref12.data,
-            name = _ref12$data.name,
-            url = _ref12$data.url,
-            path = _ref12$data.path,
-            videoThumbnailUrl = _ref12$data.video_thumbnail_url,
-            videoThumbnailName = _ref12$data.video_thumbnail_name;
-
-        var currentImage = _this19.updateImage(image.id, {
-          status: 'UPLOADED',
-          isAbort: undefined,
-          name: name,
-          url: url,
-          path: path,
-          videoThumbnailUrl: videoThumbnailUrl,
-          videoThumbnailName: videoThumbnailName
-        });
-
-        _this19.flattenedImageFormat(true); // run auto-save, temp solution
-
-
-        _this19.statusSaved();
-      })["catch"](function (error) {
-        _this19.isContentDirty = false; // force delete unsupported image
-
-        _this19._removeImage(image.id);
-      });
-    }
-  }, {
-    key: "componentDidUpdate",
-    value: function componentDidUpdate() {}
-  }, {
-    key: "componentWillUnmount",
-    value: function componentWillUnmount() {}
-  }, {
     key: "keywordOnInput",
     value: function keywordOnInput(e) {
       var keyword = e.target.value;
@@ -15618,11 +11297,11 @@ function (_Component) {
   }, {
     key: "slugOnInput",
     value: function slugOnInput(e) {
-      var _this20 = this;
+      var _this9 = this;
 
-      var _this$state6 = this.state,
-          title = _this$state6.title,
-          id = _this$state6.id;
+      var _this$state5 = this.state,
+          title = _this$state5.title,
+          id = _this$state5.id;
       var slug = Object(_utils_slugify__WEBPACK_IMPORTED_MODULE_2__["default"])(e.target.value);
       this.setState({
         slug: slug,
@@ -15637,25 +11316,25 @@ function (_Component) {
       });
       this.checkSlugTimeout && clearTimeout(this.checkSlugTimeout);
       this.checkSlugTimeout = setTimeout(function () {
-        _this20.request({
+        _this9.request({
           method: 'POST',
           route: routes.check_slug,
           headers: {
             'Content-Type': 'application/json'
           },
-          signal: _this20.slugController.signal,
+          signal: _this9.slugController.signal,
           body: body
         }).then(function (res) {
-          _this20.setState({
+          _this9.setState({
             slugOk: true
           });
 
-          _this20.startAutoSaveAll({
+          _this9.startAutoSaveAll({
             slug: slug,
             title: title
           });
         })["catch"](function (error) {
-          _this20.setState({
+          _this9.setState({
             slugOk: false
           });
         });
@@ -15665,57 +11344,6 @@ function (_Component) {
     key: "slugOnBlur",
     value: function slugOnBlur(e) {
       if (e.target.value !== this.state.slug) e.target.value = this.state.slug;
-    } // thanks, dude! 
-    // https://stackoverflow.com/a/14919494/3690607
-
-  }, {
-    key: "humanFileSize",
-    value: function humanFileSize(bytes, si) {
-      var thresh = si ? 1000 : 1024;
-
-      if (Math.abs(bytes) < thresh) {
-        return bytes + ' B';
-      }
-
-      var units = si ? ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'] : ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
-      var u = -1;
-
-      do {
-        bytes /= thresh;
-        ++u;
-      } while (Math.abs(bytes) >= thresh && u < units.length - 1);
-
-      return bytes.toFixed(1) + ' ' + units[u];
-    }
-  }, {
-    key: "uploadingImageStatus",
-    value: function uploadingImageStatus() {
-      var images = this.state.images;
-      var uploadingImage = images.filter(function (image) {
-        return image.status == 'UPLOADING';
-      });
-      var deletingImage = images.filter(function (image) {
-        return image.status == 'DELETING';
-      });
-      var uploadedImage = images.filter(function (image) {
-        return image.status == 'UPLOADED';
-      });
-      return {
-        deletingImage: deletingImage.length,
-        uploadingImage: uploadingImage.length,
-        totalImage: images.length,
-        uploadedImage: uploadedImage.length
-      };
-    }
-  }, {
-    key: "isUploadingImage",
-    value: function isUploadingImage() {
-      return this.uploadingImageStatus().uploadingImage > 0 ? true : false;
-    }
-  }, {
-    key: "isDeletingImage",
-    value: function isDeletingImage() {
-      return this.uploadingImageStatus().deletingImage > 0 ? true : false;
     }
   }, {
     key: "OS",
@@ -15734,543 +11362,16 @@ function (_Component) {
     value: function isMac() {
       return this.OS() == 'MAC' ? true : false;
     }
-    /**
-     * Fixing image format for database
-     * @param  {Boolean} autoSave 	Auto save the output?
-     * @param  {Boolean} now 		Run auto save immediately
-     * @return {Array}
-     */
-
   }, {
-    key: "flattenedImageFormat",
-    value: function flattenedImageFormat() {
-      var autoSave = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-      var now = arguments.length > 1 ? arguments[1] : undefined;
-      var images = this.state.images;
-      var newImages = [];
-      images.forEach(function (_ref13) {
-        var id = _ref13.id,
-            status = _ref13.status,
-            caption = _ref13.caption,
-            singleCaption = _ref13.singleCaption,
-            name = _ref13.name,
-            size = _ref13.size,
-            type = _ref13.type,
-            url = _ref13.url,
-            file = _ref13.file,
-            videoThumbnailName = _ref13.videoThumbnailName,
-            videoThumbnailUrl = _ref13.videoThumbnailUrl;
-        if (typeof size == 'number') size = size.toString();
-        name = name || file.name;
-        size = size || file.size;
-        type = type || file.type;
-
-        if (status == 'UPLOADED') {
-          var newImageData = {
-            caption: caption,
-            url: url,
-            name: name,
-            size: size,
-            type: type,
-            status: status,
-            id: id,
-            single_caption: singleCaption
-          };
-          if (videoThumbnailName) newImageData['video_thumbnail_name'] = videoThumbnailName;
-          if (videoThumbnailUrl) newImageData['video_thumbnail_url'] = videoThumbnailUrl;
-          newImages.push(newImageData);
-        }
-      });
-
-      if (autoSave) {
-        newImages = JSON.stringify(newImages);
-        this.startAutoSaveAll({
-          content: newImages
-        }, now);
-      }
-
-      return newImages;
-    }
-    /**
-     * Set caption to the image by id
-     */
-
-  }, {
-    key: "setCaptionToImage",
-    value: function setCaptionToImage() {
-      var images = this.updateImage(this.currentImageId, {
-        caption: this.captionArea.value
-      });
-      this.flattenedImageFormat(true);
-    }
-    /**
-     * Caption autosave
-     */
-
-  }, {
-    key: "autoSaveCaption",
-    value: function autoSaveCaption() {
-      var _this21 = this; // run auto-save after 2000s (when user has no activity on the textarea)
-
-
-      this.autoSaveTimeout = setTimeout(function () {
-        _this21.setCaptionToImage();
-      }, 2000);
-    }
-    /**
-     * Show caption modal
-     */
-
-  }, {
-    key: "showCaptionModal",
-    value: function showCaptionModal() {
-      var captionModal = $('.caption-modal');
-      captionModal.classList.remove('hidden');
-      this.captionSwitch('editor');
-      $('body').classList.add('overflow-hidden');
-    }
-    /**
-     * Start captioning
-     */
-
-  }, {
-    key: "setCaption",
-    value: function setCaption(id) {
-      var _this22 = this;
-
-      this.currentImageId = id; // set caption element
-
-      this.captionArea = document.querySelector('.caption-area'); // current image object
-
-      var currentImage = this.findImageById(id); // set value
-
-      setTimeout(function () {
-        if (currentImage.caption) _this22.captionArea.value = currentImage.caption;else _this22.captionArea.value = '';
-      }, 0); // show the modal first
-
-      this.showCaptionModal(); // when user typing
-
-      this.captionArea.addEventListener('change', function () {
-        // clear the autosave timeout
-        clearTimeout(_this22.autoSaveTimeout); // start auto-saving again
-
-        _this22.autoSaveCaption();
-      });
-    }
-    /**
-     * Close caption modal
-     */
-
-  }, {
-    key: "closeCaptionModal",
-    value: function closeCaptionModal() {
-      this.setCaptionToImage();
-      delete this.currentImageId;
-      clearTimeout(this.autoSaveTimeout);
-      var captionModal = $('.caption-modal');
-      captionModal.classList.add('hidden');
-      $('body').classList.remove('overflow-hidden');
-    }
-    /**
-     * Set key to the current link key
-     * @param {String} key String given
-     */
-
-  }, {
-    key: "setLinkKey",
-    value: function setLinkKey(key) {
-      this.setState({
-        currentLinkKey: key
-      }); // this.checkButtonLinkDisabled();
-    }
-    /**
-     * Validate link
-     * @return {String} Link 	Link to be tested
-     */
-
-  }, {
-    key: "validateLink",
-    value: function validateLink(link) {
-      if (link.trim().length < 1) {
-        return false;
-      } else if (!Object(_utils_validate_url__WEBPACK_IMPORTED_MODULE_3__["default"])(link)) {
-        return false;
-      }
-
-      return true;
-    }
-  }, {
-    key: "allLinkInput",
-    value: function allLinkInput() {
-      var currentLinkKey = this.state.currentLinkKey;
-      var allCurrentInput = document.querySelectorAll('[name=link-' + currentLinkKey + ']');
-      return allCurrentInput;
-    }
-  }, {
-    key: "lastLinkInput",
-    value: function lastLinkInput() {
-      var allCurrentInput = this.allLinkInput();
-      return allCurrentInput[allCurrentInput.length - 1];
-    }
-    /**
-     * Add link to the current key
-     */
-
-  }, {
-    key: "addLinkToKey",
-    value: function addLinkToKey() {
-      var _this23 = this;
-
-      var currentLinkKey = this.state.currentLinkKey;
-      var currentLinkData = this.state[currentLinkKey];
-      var lastValue = currentLinkData[currentLinkData.length - 1];
-
-      var addNewEmptyLink = function addNewEmptyLink() {
-        var newLink = {};
-        newLink[currentLinkKey] = currentLinkData;
-        newLink[currentLinkKey].push({
-          id: _this23.generateID(),
-          value: ''
-        });
-
-        _this23.setState(newLink);
-      }; // first time link
-
-
-      if (currentLinkData.length == 0) {
-        addNewEmptyLink();
-      }
-
-      var invalidInput = this.getAllInvalidInputLink();
-
-      if (invalidInput.length < 1) {
-        setTimeout(function () {
-          _this23.lastLinkInput().focus();
-        }, 0);
-      }
-
-      $$('.invalid-link').forEach(function (inv) {
-        return inv.remove();
-      });
-
-      if (invalidInput.length > 0) {
-        var input = invalidInput[0];
-        input.focus();
-        var message = 'URL tidak valid, periksa kembali';
-        if (input.value.trim() < 1) message = 'Masukkan URL yang ingin kamu gunakan.';else if (input.value.search(/^http:\/\/|https:\/\//g) < 0) message = 'Tambahkan <code>http://</code> atau <code>https://</code> di awal URL kamu.';
-        input.parentNode.insertAdjacentHTML('afterend', '<p class="invalid-link mb-4 text-red-600 text-sm -mt-2">' + message + '</p>');
-      }
-
-      if (lastValue && this.validateLink(lastValue.value) && invalidInput.length < 1) {
-        addNewEmptyLink();
-      } // this.checkButtonLinkDisabled();
-
-    }
-  }, {
-    key: "currentLinkData",
-    value: function currentLinkData() {
-      var currentLinkKey = this.state.currentLinkKey;
-      var currentLinkData = this.state[currentLinkKey];
-      return currentLinkData;
-    }
-  }, {
-    key: "doFlattenLinkFormat",
-    value: function doFlattenLinkFormat(key) {
-      var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-      var newData = "";
-      if (!data) data = this.state[key];
-      data.forEach(function (item) {
-        newData += item.value + "\n";
-      });
-      newData = newData.replace(/\n+$/g, '');
-      return newData;
-    }
-    /**
-     * Transform link object to flattened array
-     * @param 	{Object} 	data 		Data to be flattened
-     * @param 	{Boolean} 	autoSave 	Run autosave?
-     * @return 	{Array} 	 			Flattened array
-     */
-
-  }, {
-    key: "flattenLinkFormat",
-    value: function flattenLinkFormat(data) {
-      var autoSave = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-      var newData = "";
-      data[this.state.currentLinkKey].forEach(function (item) {
-        newData += item.value + "\n";
-      });
-      newData = newData.replace(/\n+$/g, '');
-      var newDataOutput = [];
-      newDataOutput[this.state.currentLinkKey] = newData; // auto save link if there's no invalid link
-
-      if (this.getAllInvalidInputLink().length < 1 && autoSave) {
-        this.startAutoSaveAll(newDataOutput);
-      }
-
-      return newDataOutput;
-    }
-    /**
-     * Set link value to the state by id 
-     * @param {Integer} id Link id
-     * @param {String} value  Value to be added
-     */
-
-  }, {
-    key: "setLinkValueById",
-    value: function setLinkValueById(id, value) {
-      var currentLinkData = this.currentLinkData();
-      var currentLinkKey = this.state.currentLinkKey;
-      var currentLinkObject = currentLinkData.find(function (item) {
-        return item.id == id;
-      });
-      currentLinkObject.value = value;
-      var updatedLinkData = {};
-      updatedLinkData[currentLinkKey] = _toConsumableArray(currentLinkData);
-      this.setState(updatedLinkData);
-      this.flattenLinkFormat(updatedLinkData, true);
-    }
-    /**
-     * On link input blur
-     * @param  {Integer} id State id
-     * @param  {Event} 	 e     Input event
-     */
-
-  }, {
-    key: "linkInputHandle",
-    value: function linkInputHandle(id, e) {
-      this.setLinkValueById(id, e.target.value);
-    }
-    /**
-     * Get all invalid input links
-     * @return 	{Array}
-     */
-
-  }, {
-    key: "getAllInvalidInputLink",
-    value: function getAllInvalidInputLink() {
-      var _this24 = this;
-
-      var invalid = [],
-          currentInputName = 'link-' + this.state.currentLinkKey;
-      document.querySelectorAll('[name=' + currentInputName + ']').forEach(function (input) {
-        if (!_this24.validateLink(input.value)) {
-          invalid.push(input);
-        }
-      });
-      return invalid;
-    }
-  }, {
-    key: "removeLinkFromKey",
-    value: function removeLinkFromKey(id) {
-      var currentLinkData = this.currentLinkData();
-      var currentLinkKey = this.state.currentLinkKey;
-      var invalidAlert = $('#link-' + id + ' + .invalid-link');
-      if (invalidAlert) invalidAlert.remove();
-      var updatedLinkData = {};
-      updatedLinkData[currentLinkKey] = _toConsumableArray(currentLinkData.filter(function (item) {
-        return item.id !== id;
-      }));
-      this.setState(updatedLinkData);
-      this.flattenLinkFormat(updatedLinkData, true); // this.checkButtonLinkDisabled();
-    }
-  }, {
-    key: "linkKeydownHandle",
-    value: function linkKeydownHandle(e) {
-      if (e.target) {
-        var allLinkInput = [].slice.call(this.allLinkInput()),
-            current = allLinkInput.indexOf(e.target);
-
-        if (current == allLinkInput.length - 1) {
-          if (e.keyCode == 9) {
-            e.preventDefault();
-            this.addLinkToKey();
-          }
-        }
-      }
-    }
-  }, {
-    key: "linkKeyupHandle",
-    value: function linkKeyupHandle(e) {// this.checkButtonLinkDisabled();
-    }
-  }, {
-    key: "checkButtonLinkDisabled",
-    value: function checkButtonLinkDisabled() {
-      var _this25 = this;
-
-      setTimeout(function () {
-        var invalid = _this25.getAllInvalidInputLink();
-
-        var currentLinkData = _this25.currentLinkData();
-
-        var submitBtn = document.querySelector('.add-link-btn');
-
-        function enableButton() {
-          submitBtn.classList.remove('pointer-events-none');
-          submitBtn.classList.remove('opacity-75');
-        }
-
-        function disableButton() {
-          submitBtn.classList.add('pointer-events-none');
-          submitBtn.classList.add('opacity-75');
-        } // first time
-
-
-        if (currentLinkData.length < 1) return enableButton();
-
-        if (invalid.length < 1 && currentLinkData.length > 0) {
-          enableButton();
-        } else {
-          disableButton();
-        }
-      }, 0);
-    }
-  }, {
-    key: "saveFirstStep",
-    value: function saveFirstStep(e) {
-      var _this26 = this;
-
-      var _this$state7 = this.state,
-          title = _this$state7.title,
-          slug = _this$state7.slug;
-      var status = 'draft';
-
-      if (title.trim().length < 1) {
-        document.querySelector('[name=title]').focus();
-      } else if (slug.trim().length < 1) {
-        document.querySelector('[name=slug]').focus();
-      } else {
-        var button = e.target;
-        Object(_utils_adds__WEBPACK_IMPORTED_MODULE_6__["default"])(button.classList, 'pointer-events-none opacity-50');
-        button.disabled = true;
-        this.request({
-          route: routes.post_store,
-          method: 'POST',
-          body: JSON.stringify({
-            title: title,
-            slug: slug,
-            status: status
-          }),
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }).then(function (_ref14) {
-          var data = _ref14.data;
-
-          _this26.setID(data.id);
-
-          _this26.setPublicFolder(data.public_folder);
-
-          _this26.setState({
-            status: status,
-            publish: true
-          });
-
-          _this26.addDOMFunctionality();
-        })["finally"](function () {
-          Object(_utils_removes__WEBPACK_IMPORTED_MODULE_7__["default"])(button.classList, 'pointer-events-none opacity-50');
-          button.disabled = false;
-        });
-      }
-    }
-  }, {
-    key: "toggleStatus",
-    value: function toggleStatus() {
-      this.setState(function (_ref15) {
-        var status = _ref15.status;
-        return {
-          newStatus: status == 'publish' ? 'draft' : 'publish'
-        };
-      });
-    }
-  }, {
-    key: "singleCaption",
-    value: function singleCaption() {
-      var images = this.state.images;
-
-      if (images.length > 0) {
-        var image = images[0];
-        this.updateImage(image, {
-          singleCaption: image.singleCaption ? false : true
-        });
-        this.flattenedImageFormat(true);
-      }
-    }
-  }, {
-    key: "captionSwitch",
-    value: function captionSwitch(mode) {
-      if (mode == 'editor') {
-        document.querySelector('.caption-editor').classList.remove('hidden');
-        document.querySelector('.caption-preview').classList.add('hidden');
-      } else if (mode == 'preview') {
-        document.querySelector('.caption-editor').classList.add('hidden');
-        document.querySelector('.caption-preview').classList.remove('hidden');
-        var caption = document.querySelector('.caption-area').value.trim();
-        this.request({
-          route: routes.post_markdown,
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          method: 'post',
-          body: JSON.stringify({
-            caption: caption
-          })
-        }).then(function (data) {
-          if ("parsed" in data) document.querySelector('.caption-preview').innerHTML = data.parsed;
-        })["catch"](function (error) {
-          document.querySelector('.caption-preview').innerHTML = "Gagal parsing markdown, coba kembali.";
-        });
-      }
-    }
-  }, {
-    key: "lightbox",
-    value: function lightbox(url, e) {
-      e.preventDefault();
-      var template = "<div class=\"fixed top-0 left-0 w-full h-full z-10 lightbox-modal\">\n\t\t\t<div class=\"w-full h-full bg-white absolute opacity-75\"></div>\n\t\t\t<div class=\"flex items-center justify-center p-4 md:p-10 w-full h-full relative z-10 lightbox-modal-dispose\">\n\t\t\t\t<img src=\"".concat(url, "\" alt=\"").concat(url, "\" style=\"max-height: ").concat(window.outerHeight - 200, "px\">\n\t\t\t</div>\n\t\t</div>");
-      document.body.insertAdjacentHTML('beforeend', template);
-      document.querySelector('.lightbox-modal-dispose').addEventListener('click', disposeLightbox);
-
-      function disposeLightbox(e) {
-        if (e && e.target && e.target.tagName == 'IMG') return false;
-        document.querySelector('.lightbox-modal-dispose').removeEventListener('click', disposeLightbox);
-        window.removeEventListener('scroll', closeListener);
-        document.querySelector('.lightbox-modal').remove();
-      }
-
-      var currentScroll = window.scrollY,
-          move;
-
-      function closeListener(e) {
-        move = window.scrollY - currentScroll;
-
-        if (move < -40 || move > 40) {
-          disposeLightbox();
-        }
-      }
-
-      window.addEventListener('scroll', closeListener);
-    }
-    /**
-     * Markdown functionality
-     */
-
-  }, {
-    key: "mdContentChange",
-    value: function mdContentChange(e) {
+    key: "contentChange",
+    value: function contentChange(e) {
       var target = e.target;
       target.style.height = '250px';
       target.style.height = target.scrollHeight + 'px';
-      var content = target.value.trim();
-      this.setState({
-        content: content
-      });
-      this.startAutoSaveAll({
-        content: content
-      });
     }
   }, {
-    key: "mdContentHandlePaste",
-    value: function mdContentHandlePaste(e) {
+    key: "contentHandlePaste",
+    value: function contentHandlePaste(e) {
       var data = e.clipboardData || window.clipboardData;
     }
   }, {
@@ -16286,177 +11387,34 @@ function (_Component) {
       document.body.appendChild(file);
       file.click();
       return file;
-    } // thanks my dude
-    // https://stackoverflow.com/a/512542
-
-  }, {
-    key: "setCaretPosition",
-    value: function setCaretPosition(elem, caretPos) {
-      if (elem != null) {
-        if (elem.createTextRange) {
-          var range = elem.createTextRange();
-          range.move('character', caretPos);
-          range.select();
-        } else {
-          if (elem.selectionStart) {
-            elem.focus();
-            elem.setSelectionRange(caretPos, caretPos);
-          } else elem.focus();
-        }
-      }
-    } // thanks my dude
-    // https://stackoverflow.com/a/11077016
-
-  }, {
-    key: "insertAtCursor",
-    value: function insertAtCursor(myField, myValue) {
-      //IE support
-      if (document.selection) {
-        myField.focus();
-        sel = document.selection.createRange();
-        sel.text = myValue;
-      } //MOZILLA and others
-      else if (myField.selectionStart || myField.selectionStart == '0') {
-          var startPos = myField.selectionStart;
-          var endPos = myField.selectionEnd;
-          myField.value = myField.value.substring(0, startPos) + myValue + myField.value.substring(endPos, myField.value.length);
-          this.setCaretPosition(myField, startPos + myValue.length);
-          myField.setSelectionRange(startPos, startPos + myValue.length);
-        } else {
-          myField.value += myValue;
-        }
     }
   }, {
-    key: "uploadContentImage",
-    value: function uploadContentImage(e) {
-      var _this27 = this;
-
-      var _this$state8 = this.state,
-          id = _this$state8.id,
-          publicFolder = _this$state8.publicFolder;
-      var btn = e.currentTarget;
-      var contentArea = $('.content-area');
-      var file = this.fileObject('upload-content-image');
+    key: "uploadImage",
+    value: function uploadImage(e) {
+      var btn = e.target;
+      var file = this.fileObject('upload-image');
       file.addEventListener('change', function (f) {
         var selectedFile = f.target.files[0];
-        var formData = new FormData();
-        if (id) formData.append('id', id);
-        if (publicFolder) formData.append('public_folder', publicFolder);
-        formData.append('image', selectedFile);
-        formData.append('name', selectedFile.name);
-        btn.classList.add('pointer-events-none');
-        btn.classList.add('opacity-75');
-        btn.querySelector('span').innerText = 'Mengunggah';
-
-        _this27.request({
-          route: routes.post_upload_image,
-          method: 'POST',
-          body: formData
-        })["finally"](function () {
-          btn.classList.remove('pointer-events-none');
-          btn.classList.remove('opacity-75');
-          btn.querySelector('span').innerText = 'Unggah Gambar';
-        }).then(function (_ref16) {
-          var url = _ref16.data.url;
-
-          _this27.insertAtCursor(contentArea, '\n![](' + url + ')\n');
-
-          var content = contentArea.value.trim();
-
-          _this27.setState({
-            content: content
-          });
-
-          _this27.startAutoSaveAll({
-            content: content
-          });
-        });
       });
     }
   }, {
     key: "coverImageHandler",
     value: function coverImageHandler(e) {
-      var _this28 = this;
-
-      var _this$state9 = this.state,
-          id = _this$state9.id,
-          publicFolder = _this$state9.publicFolder;
       var target = e.currentTarget;
       var file = this.fileObject('cover-image');
       file.addEventListener('change', function (f) {
         var selectedFile = f.target.files[0];
-
-        if (!_this28.allowedImageTypes.includes(selectedFile.type)) {
-          return _this28.toast.add("\uD83D\uDEB7&nbsp; Jenis berkas ".concat(selectedFile.name, " tidak didukung"));
-        } else if (selectedFile.size > _this28.maxFileSize) {
-          return _this28.toast.add('🐠&nbsp; Ukuran berkas maks. 10MB');
-        }
-
         var urlImage = URL.createObjectURL(selectedFile);
-
-        var imgFunc = function imgFunc(url) {
-          var img = new Image();
-          img.src = url;
-          img.className = 'w-full rounded';
-          return img;
-        };
-
-        var img = imgFunc(urlImage);
+        var img = new Image();
+        img.src = urlImage;
+        img.className = 'w-full rounded';
 
         img.onload = function () {
           var currentImg = target.querySelector('img');
           currentImg && currentImg.remove();
           target.appendChild(img);
           target.classList.remove('h-64');
-          Object(_utils_adds__WEBPACK_IMPORTED_MODULE_6__["default"])(target.classList, 'pointer-events-none');
-          img.classList.add('opacity-75');
-          document.querySelector('.cover-image-label').innerText = 'Mengunggah';
-          _this28.uploadingCover = true;
-          var formData = new FormData();
-          if (id) formData.append('id', id);
-          if (publicFolder) formData.append('public_folder', publicFolder);
-          var getExtension = selectedFile.name.split('.');
-          getExtension = getExtension[getExtension.length - 1];
-          formData.append('image', selectedFile);
-          formData.append('name', 'cover.' + getExtension);
-          formData.append('force', true);
-
-          _this28.request({
-            route: routes.post_upload_image,
-            method: 'POST',
-            body: formData
-          })["finally"](function () {
-            _this28.uploadingCover = false;
-            target.classList.remove('pointer-events-none');
-            img.classList.remove('opacity-75');
-          }).then(function (_ref17) {
-            var cover = _ref17.data.url;
-
-            _this28.statusSaved();
-
-            _this28.setState({
-              cover: cover
-            });
-
-            _this28.startAutoSaveAll({
-              cover: cover
-            });
-
-            document.querySelector('.cover-image-label').innerText = 'Ganti Gambar';
-          })["catch"](function (error) {
-            var currentCover = _this28.state.cover;
-            _this28.isContentDirty = false;
-            img.remove();
-
-            if (!currentCover) {
-              target.classList.add('h-64');
-              document.querySelector('.cover-image-label').innerText = 'Unggah Gambar';
-            } else {
-              document.querySelector('.cover-image-label').innerText = 'Ganti Gambar';
-              var prevImg = imgFunc(currentCover);
-              target.appendChild(prevImg);
-            }
-          });
+          document.querySelector('.cover-image-label').innerText = 'Ganti Gambar';
         };
       });
     }
@@ -16466,9 +11424,9 @@ function (_Component) {
       var btn = e.currentTarget;
       var modeBtns = document.querySelectorAll('.editor-modes button');
       modeBtns.forEach(function (btnI) {
-        return Object(_utils_removes__WEBPACK_IMPORTED_MODULE_7__["default"])(btnI.classList, 'bg-indigo-600 text-white');
+        return Object(_utils_removes__WEBPACK_IMPORTED_MODULE_6__["default"])(btnI.classList, 'bg-indigo-600 text-white');
       });
-      Object(_utils_adds__WEBPACK_IMPORTED_MODULE_6__["default"])(btn.classList, 'bg-indigo-600 text-white');
+      Object(_utils_adds__WEBPACK_IMPORTED_MODULE_5__["default"])(btn.classList, 'bg-indigo-600 text-white');
 
       if (mode == 'editor') {
         document.querySelector('.content-editor').classList.remove('hidden');
@@ -16476,7 +11434,7 @@ function (_Component) {
       } else if (mode == 'preview') {
         document.querySelector('.content-editor').classList.add('hidden');
         document.querySelector('.content-preview').classList.remove('hidden');
-        var content = document.querySelector('.content-area').value.trim();
+        var caption = document.querySelector('.content-area').value.trim();
         this.request({
           route: routes.post_markdown_ns,
           headers: {
@@ -16484,7 +11442,7 @@ function (_Component) {
           },
           method: 'post',
           body: JSON.stringify({
-            content: content
+            caption: caption
           })
         }).then(function (data) {
           if ("parsed" in data) document.querySelector('.content-preview').innerHTML = data.parsed;
@@ -16496,33 +11454,16 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this29 = this;
-
-      var postType = this.props.postType;
-      var postData = this.postData;
-      var _this$state10 = this.state,
-          cover = _this$state10.cover,
-          id = _this$state10.id,
-          title = _this$state10.title,
-          slug = _this$state10.slug,
-          images = _this$state10.images,
-          keyword = _this$state10.keyword,
-          currentLinkKey = _this$state10.currentLinkKey,
-          publish = _this$state10.publish,
-          statusSaving = _this$state10.statusSaving,
-          edit = _this$state10.edit,
-          stateStatus = _this$state10.stateStatus,
-          status = _this$state10.status,
-          content = _this$state10.content,
-          newStatus = _this$state10.newStatus;
-
-      if (this.isSlidePost()) {
-        var _this$uploadingImageS = this.uploadingImageStatus(),
-            uploadingImage = _this$uploadingImageS.uploadingImage,
-            _totalImage = _this$uploadingImageS.totalImage,
-            _uploadedImage = _this$uploadingImageS.uploadedImage;
-      }
-
+      var _this$state6 = this.state,
+          id = _this$state6.id,
+          title = _this$state6.title,
+          slug = _this$state6.slug,
+          publish = _this$state6.publish,
+          statusSaving = _this$state6.statusSaving,
+          edit = _this$state6.edit,
+          stateStatus = _this$state6.stateStatus,
+          status = _this$state6.status,
+          newStatus = _this$state6.newStatus;
       return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("nav", {
         className: "bg-white border-b border-gray-200 top-0 mb-4 py-3 fixed left-0 w-full z-10"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
@@ -16546,127 +11487,18 @@ function (_Component) {
         }),
         className: "items-center bg-indigo-600 text-white px-4 py-2 text-sm rounded mr-6 flex" + (!publish || this.isUploadingImage() ? ' pointer-events-none opacity-50' : '')
       }, edit && status.toUpperCase() == 'PUBLISH' ? 'Simpan Perubahan' : 'Publish Post'))))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "caption-modal overflow-y-auto fixed top-0 left-0 w-full h-full flex z-30 items-start justify-center hidden"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "fixed bg-black opacity-50 w-screen h-screen"
-      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "p-10 my-0 md:my-10 sm:w-6/12 lg:w-6/12 md:w-8/12 w-full h-full md:h-auto bg-white relative md:rounded shadow-lg"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", {
-        className: "text-xl font-bold"
-      }, "Tentukan Deskripsi"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
-        className: "text-sm text-gray-600 mt-2 leading-relaxed"
-      }, "Berikan deskripsi pada slide ini. Kamu dapat mengosongkan deskripsi bila tidak ada. ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
-        href: routes.docs + '/create-content#captioning',
-        className: "border-b border-indigo-600 text-indigo-600"
-      }, "Pelajari selengkapnya"), " tentang mengisi keterangan."), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "mt-6 mb-5"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "flex"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
-        onClick: this.captionSwitch.bind(this, 'editor'),
-        className: "border-t border-l rounded-tl-lg text-sm px-4 py-2 border-gray-200"
-      }, "Editor"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
-        onClick: this.captionSwitch.bind(this, 'preview'),
-        className: "border-t border-l rounded-tr-lg text-sm border-r px-4 py-2 border-gray-200"
-      }, "Preview")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "caption-editor"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("textarea", {
-        className: "caption-area text-sm w-full border border-gray-200 h-64 rounded-br-lg rounded-bl-lg p-4"
-      })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "caption-preview p-4 hidden border-gray-200 border mb-2 rounded-bl-lg rounded-br-lg text-sm overflow-auto markdowned"
-      }, "Parsing ..."), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "flex items-center"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("svg", {
-        width: "20px",
-        className: "mr-2 fill-current text-gray-600",
-        viewBox: "0 0 256 158",
-        version: "1.1",
-        xmlns: "http://www.w3.org/2000/svg",
-        xmlnsXlink: "http://www.w3.org/1999/xlink",
-        preserveAspectRatio: "xMidYMid"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("g", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("path", {
-        d: "M238.371257,157.892216 L18.3952096,157.892216 C8.43113772,157.892216 0,149.461078 0,139.497006 L0,18.3952096 C0,8.43113772 8.43113772,0 18.3952096,0 L237.60479,0 C247.568862,0 256,8.43113772 256,18.3952096 L256,139.497006 C256,149.461078 248.335329,157.892216 238.371257,157.892216 L238.371257,157.892216 Z M18.3952096,12.2634731 C15.3293413,12.2634731 12.2634731,15.3293413 12.2634731,18.3952096 L12.2634731,139.497006 C12.2634731,143.329341 15.3293413,145.628743 18.3952096,145.628743 L237.60479,145.628743 C241.437126,145.628743 243.736527,142.562874 243.736527,139.497006 L243.736527,18.3952096 C243.736527,14.5628743 240.670659,12.2634731 237.60479,12.2634731 C238.371257,12.2634731 18.3952096,12.2634731 18.3952096,12.2634731 L18.3952096,12.2634731 Z M36.7904192,121.101796 L36.7904192,36.7904192 L61.3173653,36.7904192 L85.8443114,67.4491018 L110.371257,36.7904192 L134.898204,36.7904192 L134.898204,121.101796 L110.371257,121.101796 L110.371257,72.8143713 L85.8443114,103.473054 L61.3173653,72.8143713 L61.3173653,121.101796 L36.7904192,121.101796 L36.7904192,121.101796 Z M190.850299,121.101796 L154.05988,80.4790419 L178.586826,80.4790419 L178.586826,36.7904192 L203.113772,36.7904192 L203.113772,79.7125749 L227.640719,79.7125749 L190.850299,121.101796 L190.850299,121.101796 Z"
-      }))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
-        className: "text-xs text-gray-600"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
-        className: "text-indigo-600",
-        target: "_blank",
-        href: routes.docs + '/markdown#supported-markdown',
-        tabIndex: "-1"
-      }, "Markdown")))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
-        onClick: this.closeCaptionModal.bind(this),
-        className: "bg-indigo-600 p-4 text-sm text-white font-semibold rounded shadow block w-full text-center",
-        type: "button"
-      }, "Simpan Perubahan"))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "container mx-auto px-4 sm:px-0"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "flex py-12 -mx-4 justify-center"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "w-full lg:w-6/12 px-4 md:w-8/12"
-      }, stateStatus == 'LOADING' && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "text-center"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("svg", {
-        version: "1.1",
-        className: "logo-loader border border-gray-200 rounded-lg",
-        id: "Layer_1",
-        xmlns: "http://www.w3.org/2000/svg",
-        xmlnsXlink: "http://www.w3.org/1999/xlink",
-        x: "0px",
-        y: "0px",
-        viewBox: "0 0 1000 1000",
-        enableBackground: "new 0 0 1000 1000",
-        xmlSpace: "preserve"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("path", {
-        fillRule: "evenodd",
-        clipRule: "evenodd",
-        fill: "#FFFFFF",
-        d: "M1000,900c0,55.229-44.771,100-100,100H100\r C44.771,1000,0,955.229,0,900V100C0,44.771,44.771,0,100,0h800c55.229,0,100,44.771,100,100V900z"
-      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("path", {
-        fillRule: "evenodd",
-        clipRule: "evenodd",
-        fill: "#6979BB",
-        d: "M845.011,504.683c-11.729-8.214-20.504-13.022-27.63-19.614\r c-18.121-16.767-26.005-38.331-25.948-62.748c0.092-39.378,0.668-78.757,0.774-118.137c0.145-54.508-18.146-75.122-71.923-76.043\r c-21.097-0.362-19.121-11.155-19.735-25.244c-0.699-15.985,6.727-19.816,20.519-18.663c27.164,2.271,54.6,2.571,80.78,11.594\r c30.365,10.464,49.07,31.357,54.434,63.097c8.521,50.399,3.39,101.269,3.813,151.912c0.271,32.254,7.085,58.239,42.411,67.664\r c14.718,3.927,12.789,15.968,13.412,27.417c0.648,11.893-3.614,19.263-14.883,22.574c-31.535,9.271-40.672,32.007-40.929,62.699\r c-0.422,50.634,3.305,101.312-2.48,151.938c-3.558,31.127-19.648,51.534-47.457,63.815c-31.398,13.866-64.805,14.396-98.198,13.683\r c-16.771-0.358-14.147-14.142-14.868-22.8c-0.753-9.06,1.769-20.31,16.476-19.697c10.881,0.454,21.172-2.208,31.619-4.213\r c31.281-6.001,43.749-18.748,45.057-51.562c1.777-44.66,2.454-89.425,1.67-134.112\r C791.249,549.987,801.566,519.676,845.011,504.683z"
-      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("path", {
-        fillRule: "evenodd",
-        clipRule: "evenodd",
-        fill: "#3F4F58",
-        d: "M719.775,607.116c-24.218-16.028-46.734-30.998-69.324-45.857\r c-19.446-12.791-38.885-25.598-58.508-38.114c-10.844-6.914-16.913-16.083-4.951-25.267c43.108-33.096,87.087-65.056,132.22-98.546\r c5.952,20.052,2.338,32.873-13.645,43.398c-22.788,15.008-44.349,31.88-66.458,47.922c-23.566,17.105-23.595,17.111,1.782,33.435\r c20.697,13.314,40.88,27.563,62.329,39.532C719.869,572.911,725.476,585.112,719.775,607.116z"
-      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("path", {
-        fillRule: "evenodd",
-        clipRule: "evenodd",
-        fill: "#43525C",
-        d: "M518.568,616.226c-0.869,12.495-5.34,22.586-17.917,22.945\r c-13.949,0.399-19.066-10.677-19.223-22.715c-0.161-12.176,5.256-23.341,18.875-23.146\r C514.043,593.508,517.855,604.885,518.568,616.226z"
-      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("path", {
-        fillRule: "evenodd",
-        clipRule: "evenodd",
-        fill: "#6979BB",
-        d: "M157.989,504.683c11.729-8.214,20.503-13.022,27.629-19.614\r c18.121-16.767,26.005-38.331,25.948-62.748c-0.092-39.378-0.667-78.757-0.773-118.137c-0.145-54.508,18.146-75.122,71.922-76.043\r c21.097-0.362,19.122-11.155,19.736-25.244c0.699-15.985-6.727-19.816-20.52-18.663c-27.164,2.271-54.6,2.571-80.781,11.594\r c-30.365,10.464-49.069,31.357-54.434,63.097c-8.52,50.399-3.389,101.269-3.812,151.912c-0.27,32.254-7.085,58.239-42.411,67.664\r c-14.718,3.927-12.79,15.968-13.413,27.417c-0.648,11.893,3.614,19.263,14.883,22.574c31.536,9.271,40.672,32.007,40.929,62.699\r c0.42,50.634-3.305,101.312,2.48,151.938c3.558,31.127,19.648,51.534,47.456,63.815c31.398,13.866,64.806,14.396,98.199,13.683\r c16.77-0.358,14.147-14.142,14.867-22.8c0.754-9.06-1.768-20.31-16.474-19.697c-10.881,0.454-21.171-2.208-31.62-4.213\r c-31.282-6.001-43.748-18.748-45.056-51.562c-1.778-44.66-2.455-89.425-1.67-134.112\r C211.751,549.987,201.434,519.676,157.989,504.683z"
-      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("path", {
-        fillRule: "evenodd",
-        clipRule: "evenodd",
-        fill: "#3F4F58",
-        d: "M283.225,607.116c24.217-16.028,46.733-30.998,69.324-45.857\r c19.447-12.791,38.885-25.598,58.508-38.114c10.844-6.914,16.913-16.083,4.951-25.267c-43.108-33.096-87.087-65.056-132.219-98.546\r c-5.954,20.052-2.337,32.873,13.644,43.398c22.789,15.008,44.35,31.88,66.458,47.922c23.567,17.105,23.595,17.111-1.782,33.435\r c-20.697,13.314-40.879,27.563-62.329,39.532C283.131,572.911,277.523,585.112,283.225,607.116z"
-      })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
-        className: "mt-2"
-      }, "Memuat data")), stateStatus !== 'LOADING' && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, id && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, status.toUpperCase() == 'PUBLISH' ? react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "py-4 px-6 mb-4 bg-teal-100 text-teal-600 border border-teal-200 rounded text-sm leading-loose"
-      }, "Post ini sudah dipublikasikan \u2013 semua orang dapat melihatnya. ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
-        href: routes.single + slug,
-        className: "border-b border-teal-600 pb-1 font-semibold"
-      }, "Lihat post"), " atau ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
-        href: routes.post_new,
-        className: "border-b border-teal-600 pb-1 font-semibold"
-      }, "Buat post baru")) : react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "py-4 px-6 mb-4 bg-blue-100 text-blue-600 border border-blue-200 rounded text-sm leading-loose"
-      }, "Post ini belum dipublikasikan. Tekan tombol \"Publish Post\" untuk mempublikasikan post ini, atau tekan tombol kombinasi ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("kbd", {
-        className: "border p-1 border-blue-600 rounded"
-      }, this.isMac() ? 'Command' : 'Ctrl', "+S"), " untuk menyimpannya sebagai draft.")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "border border-gray-200 p-6 md:p-8 rounded"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h1", {
         className: "text-indigo-600 text-xl font-semibold"
-      }, edit ? postData.titleEdit : postData.title), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
-        className: "mb-4 mt-2 text-sm text-gray-600"
-      }, postData.description), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      }, "Buat Post Markdown"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
+        className: "mb-4 mt-2 text-gray-600"
+      }, "Bagikan pengetahuan kamu dengan developer lain; begitu pula dengan developer lain, mereka akan melakukan hal serupa."), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "mb-6 mt-6"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
         className: "mb-1 text-sm inline-block text-gray-600"
@@ -16698,170 +11530,24 @@ function (_Component) {
         onClick: this.saveFirstStep.bind(this),
         type: "button",
         className: "bg-indigo-600 text-white p-4 w-full p-4 rounded shadow hover:bg-indigo-700"
-      }, "Simpan & Lanjutkan"), id && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+      }, "Simpan & Lanjutkan"), id && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "mb-6"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
         className: "mb-1 text-sm inline-block text-gray-600"
       }, "Topik"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
         type: "text",
         name: "tags[]",
         className: "tags text-gray-600 border border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600",
         tabIndex: "3"
-      })), this.isSlidePost() && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "mt-6"
+      })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "mb-6"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
         className: "mb-1 text-sm inline-block text-gray-600"
-      }, "Design Keyword ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
-        className: "text-xs"
-      }, "(Optional)")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
-        onChange: this.keywordOnInput.bind(this),
-        type: "text",
-        name: "keyword",
-        className: "text-gray-600 border border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600",
-        tabIndex: "4",
-        defaultValue: keyword
-      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
-        className: "mt-2 text-xs text-indigo-600"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
-        className: "tooltip cursor-help border-b border-dotted border-indigo-600",
-        "data-title": "Keyword ini bukan untuk SEO, melainkan digunakan untuk mencari inspirasi desain ke situs di luar Kodinger, seperti Dribbble, Behance, atau Uplabs. Jadi, bila kamu sedang membahas library carousel, maka kamu dapat mengisi keyword dengan 'carousel'. Lalu, sistem akan menggunakan kata 'carousel' tadi untuk digunakan sebagai keyword pencarian ke 3 situs tadi."
-      }, "Saya harus mengisi ini dengan apa?"))))), id && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, this.isSlidePost() && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "border border-gray-200 p-6 md:p-8 rounded mt-10"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", {
-        className: "text-indigo-600 mb-4 text-xl font-semibold"
-      }, "Media"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
-        className: "leading-relaxed mb-6 mt-2 text-sm text-gray-600"
-      }, "Kamu dapat mengunggah gambar atau video dalam satu konten yang sama. ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
-        href: routes.docs + '/content#form-media',
-        className: "text-indigo-600 border-b border-indigo-600",
-        target: "_blank"
-      }, "Pelajari selengkapnya"), " tentang media."), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "mb-6"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "dropzone rounded-lg border border-dashed border-gray-300 w-full flex items-center justify-center"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "p-10 md:p-20 text-center"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h4", {
-        className: "text-xl"
-      }, "Tarik gambar atau video kamu ke sini"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
-        className: "text-sm mt-2 text-gray-600"
-      }, "Maksimal: 10MB. Format yang didukung: ", [].concat(_toConsumableArray(this.allowedImageTypesReadable), _toConsumableArray(this.allowedVideoTypesReadable)).join(', ')), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
-        className: "mt-6 text-indigo-600 font-semibold inline-block cursor-pointer",
-        htmlFor: "images-input",
-        tabIndex: "5"
-      }, "Browse"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
-        type: "file",
-        multiple: true,
-        id: "images-input",
-        className: "hidden",
-        onChange: this.handleFiles.bind(this)
-      }))), images.length > 0 && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "mt-6 text-xs uppercase font-semibold tracking-wider mb-2 text-gray-600 flex"
-      }, "Media yang dipilih ", this.isUploadingImage() ? '(' + uploadedImage + '/' + totalImage + ')' : '', react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "ml-auto text-blue-600"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "custom-checkbox custom-checkbox-sm"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
-        type: "checkbox",
-        id: "single-caption",
-        onChange: this.singleCaption.bind(this),
-        checked: images[0].singleCaption
-      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
-        className: "tooltip",
-        htmlFor: "single-caption",
-        "data-title": "Ceklis opsi ini untuk menggunakan keterangan pada slide pertama untuk semua slide."
-      }, "Single caption"))))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "image-files"
-      }, images.map(function (image) {
-        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-          "data-id": image.id,
-          key: image.id,
-          className: "bg-white flex justify-center flex-col md:flex-row w-full mb-4 rounded border border-gray-200 hover:border-gray-400"
-        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-          className: "handle flex-shrink-0 p-2 items-center flex md:border-r md:border-gray-200 bg-gray-100 md:mr-4 cursor-move" + (_this29.isUploadingImage() ? ' pointer-events-none' : '')
-        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("svg", {
-          xmlns: "http://www.w3.org/2000/svg",
-          className: "w-4 fill-current text-gray-600",
-          viewBox: "0 0 24 24"
-        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("g", {
-          "data-name": "Layer 2"
-        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("g", {
-          "data-name": "menu"
-        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("rect", {
-          width: "24",
-          height: "24",
-          transform: "rotate(180 12 12)",
-          opacity: "0"
-        }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("rect", {
-          x: "3",
-          y: "11",
-          width: "18",
-          height: "2",
-          rx: ".95",
-          ry: ".95"
-        }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("rect", {
-          x: "3",
-          y: "16",
-          width: "18",
-          height: "2",
-          rx: ".95",
-          ry: ".95"
-        }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("rect", {
-          x: "3",
-          y: "6",
-          width: "18",
-          height: "2",
-          rx: ".95",
-          ry: ".95"
-        }))))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-          className: "md:w-16 md:h-16 w-full h-auto md:p-0 p-4 md:mr-2 pb-0 flex-shrink-0 md:py-4"
-        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
-          href: image.videoThumbnailUrl || image.url,
-          target: "_blank",
-          onClick: _this29.lightbox.bind(_this29, image.videoThumbnailUrl || image.url)
-        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("img", {
-          className: 'rounded' + (image.name && image.url ? '' : ' hidden'),
-          src: image.videoThumbnailUrl || image.url
-        })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("video", {
-          className: "hidden rounded"
-        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("source", null)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("canvas", {
-          className: "hidden"
-        })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-          className: "w-full md:py-4 md:pr-4 p-4 overflow-hidden"
-        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-          className: 'text-xs mb-2 font-semibold tracking-wider inline-block' + (image.status == 'UPLOADED' ? ' text-teal-600' : ' text-orange-600')
-        }, image.status), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-          className: "text-indigo-600 mb-1 truncate",
-          title: image.name || image.file.name
-        }, image.name || image.file.name), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-          className: "text-xs text-gray-600"
-        }, _this29.humanFileSize(image.size || image.size == 0 ? image.size : image.file.size)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-          className: "flex mt-2 text-sm"
-        }, !image.isAbort && image.isAbort !== undefined && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-          className: "cursor-pointer text-red-600",
-          onClick: _this29.abortImage.bind(_this29, image)
-        }, "Batalkan"), (image.isDirty && image.isAbort == undefined && !image.isAbort || !image.isDirty && edit) && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-          onClick: _this29.removeImage.bind(_this29, image.id),
-          className: "text-red-600 cursor-pointer"
-        }, "Hapus"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-          onClick: _this29.setCaption.bind(_this29, image.id),
-          className: "text-teal-600 cursor-pointer ml-4"
-        }, "Tentukan Deskripsi ", image.caption ? '👍' : '')))));
-      })))), this.isMarkdownPost() && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "border border-gray-200 p-6 md:p-8 rounded mt-10"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", {
-        className: "text-indigo-600 mb-4 text-xl font-semibold"
-      }, "Konten"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
-        className: "leading-relaxed mb-6 mt-2 text-sm text-gray-600"
-      }, "Tulis isi post yang ingin kamu sampaikan. Kamu dapat menggunakan format Markdown, ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
-        href: "",
-        target: "_blank"
-      }, "pelajari selengkapnya"), "."), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "flex items-center mb-2 sticky",
-        style: {
-          top: '90px'
-        }
+      }, "Konten"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "flex items-center"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
-        onClick: this.uploadContentImage.bind(this),
-        className: "flex items-center bg-white border border-gray-300 hover:border-indigo-500 hover:text-indigo-500 px-4 py-2 rounded text-sm"
+        onClick: this.uploadImage.bind(this),
+        className: "flex items-center border border-gray-300 hover:border-indigo-500 hover:text-indigo-500 mb-2 px-4 py-2 rounded text-sm"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("svg", {
         className: "mr-2",
         xmlns: "http://www.w3.org/2000/svg",
@@ -16886,8 +11572,8 @@ function (_Component) {
         r: "1.5"
       }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("polyline", {
         points: "21 15 16 10 5 21"
-      })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", null, "Unggah Gambar")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "ml-auto flex editor-modes bg-white rounded"
+      })), "Unggah Gambar"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "ml-auto flex editor-modes"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
         onClick: this.contentSwitch.bind(this, 'editor'),
         className: "border-t border-b border-l rounded-tl rounded-bl text-sm px-4 py-2 border-gray-200 bg-indigo-600 text-white"
@@ -16898,17 +11584,16 @@ function (_Component) {
         className: "content-editor"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("textarea", {
         name: "content",
-        onChange: this.mdContentChange.bind(this),
-        onPaste: this.mdContentHandlePaste.bind(this),
+        onInput: this.contentChange.bind(this),
+        onPaste: this.contentHandlePaste.bind(this),
         style: {
           minHeight: 250
         },
         className: "content-area mb-2 overflow-hidden resize-none text-gray-600 border border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600",
         tabIndex: "4",
-        placeholder: "Tulis apapun di sini ...",
-        defaultValue: content
+        placeholder: "Tulis apapun di sini ..."
       })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "content-preview p-5 hidden border-gray-200 border mb-2 rounded text-sm overflow-auto markdowned markdowned-mdpost"
+        className: "content-preview p-4 hidden border-gray-200 border mb-2 rounded text-sm overflow-auto markdowned"
       }, "Parsing ..."), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
         className: "text-xs text-gray-600"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
@@ -16916,107 +11601,23 @@ function (_Component) {
         target: "_blank",
         href: routes.docs + '/markdown#supported-markdown',
         tabIndex: "-1"
-      }, "Markdown"))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "border border-gray-200 p-6 md:p-8 rounded mt-10"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", {
-        className: "text-indigo-600 mb-4 text-xl font-semibold"
-      }, "Cover"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
-        className: "leading-relaxed mb-6 mt-2 text-sm text-gray-600"
-      }, "Bila dikosongkan, sistem akan otomatis menggenerasi thumbnail untuk post ini. Bila diisi, gambar akan otomatis dipotong oleh sistem bila dimensinya tidak 500 x 300 (Maksimal: 10MB. Format yang didukung: ", _toConsumableArray(this.allowedImageTypesReadable).join(', '), ")."), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      }, "Markdown"))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+        className: "mb-1 text-sm inline-block text-gray-600"
+      }, "Thumbnail"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "text-sm mb-2 italic"
+      }, "Bila dikosongkan, sistem akan otomatis menggenerasi thumbnail untuk post ini. Bila diisi, gambar akan otomatis dipotong oleh sistem bila dimensinya tidak 500 x 300."), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         onClick: this.coverImageHandler.bind(this),
-        className: "group w-full border border-gray-300 rounded flex items-center justify-center cursor-pointer ".concat(cover ? '' : 'h-64')
-      }, cover && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("img", {
-        src: cover,
-        className: "w-full rounded"
-      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "group w-full border border-gray-300 rounded flex items-center justify-center cursor-pointer h-64"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "cover-image-label absolute bg-white border border-gray-300 group-hover:border-indigo-500 group-hover:text-indigo-500 px-3 py-2 rounded text-sm"
-      }, cover ? 'Ganti Gambar' : 'Unggah Gambar')))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "border border-gray-200 p-6 md:p-8 rounded mt-10"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", {
-        className: "text-indigo-600 mb-4 text-xl font-semibold"
-      }, "Tautan ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
-        className: "text-xs text-gray-600 font-normal"
-      }, "(Optional)")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
-        className: "leading-relaxed mb-6 mt-2 text-sm text-gray-600"
-      }, "Sertakan tautan referensi yang relevan dengan konten, bisa tautan ke halaman resmi situs web, tutorial, ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("code", null, "code playground"), ", atau yang lainnya. ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
-        href: routes.docs + '/content#form-links',
-        className: "border-b border-indigo-600 text-indigo-600",
-        target: "_blank"
-      }, "Pelajari selengkapnya"), " tentang tautan."), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "flex mb-4 overflow-x-auto flex-no-wrap"
-      }, Object.keys(key2str).map(function (name, index) {
-        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-          onClick: _this29.setLinkKey.bind(_this29, name),
-          key: name,
-          className: 'px-4 py-2 border-t border-r border-b ' + (currentLinkKey == name ? 'bg-indigo-600 text-white' : 'text-gray-600 hover:bg-gray-100') + ' cursor-pointer border-gray-200 text-sm flex-1 justify-center flex items-center text-center' + (index == 0 ? ' border-l rounded-tl rounded-bl' : index == Object.keys(key2str).length - 1 ? ' rounded-tr rounded-br' : '')
-        }, key2str[name]);
-      })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "bg-gray-100 border border-gray-200 rounded p-4"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
-        className: "text-sm mb-3 text-gray-600"
-      }, "Masukkan URL valid dengan ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("code", null, "http://"), " atau ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("code", null, "https://"), "."), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "list"
-      }, this.state[currentLinkKey].map(function (link, id) {
-        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-          key: link.id,
-          className: "bg-white shadow rounded mb-4 text-sm text-blue-500 flex",
-          id: 'link-' + link.id
-        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
-          onKeyDown: _this29.linkKeydownHandle.bind(_this29),
-          onKeyUp: _this29.linkKeyupHandle.bind(_this29),
-          onChange: _this29.linkInputHandle.bind(_this29, link.id),
-          tabIndex: "6",
-          type: "text",
-          name: 'link-' + currentLinkKey,
-          placeholder: "Contoh: https://kodinger.com/tutorial-javascript",
-          className: "url w-full py-3 px-4 rounded outline-none",
-          defaultValue: link.value
-        }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
-          type: "button",
-          onClick: _this29.removeLinkFromKey.bind(_this29, link.id),
-          className: "uppercase font-semibold bg-red-500 text-white px-4 flex items-center cursor-pointer hover:bg-red-600 rounded-tr rounded-br"
-        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("svg", {
-          xmlns: "http://www.w3.org/2000/svg",
-          viewBox: "0 0 24 24",
-          className: "w-5 fill-current text-white"
-        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("g", {
-          "data-name": "Layer 2"
-        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("g", {
-          "data-name": "trash"
-        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("rect", {
-          width: "24",
-          height: "24",
-          opacity: "0"
-        }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("path", {
-          d: "M21 6h-5V4.33A2.42 2.42 0 0 0 13.5 2h-3A2.42 2.42 0 0 0 8 4.33V6H3a1 1 0 0 0 0 2h1v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V8h1a1 1 0 0 0 0-2zM10 4.33c0-.16.21-.33.5-.33h3c.29 0 .5.17.5.33V6h-4zM18 19a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V8h12z"
-        }))))));
-      })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
-        type: "button",
-        onClick: this.addLinkToKey.bind(this),
-        tabIndex: "7",
-        className: "add-link-btn bg-white w-full shadow rounded py-3 px-4 text-sm text-blue-500 text-center cursor-pointer hover:bg-indigo-600 hover:text-white"
-      }, "Tambah URL"))), status.toUpperCase() == 'PUBLISH' && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "border border-gray-200 p-6 md:p-8 rounded mt-10"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", {
-        className: "text-orange-600 mb-4 text-xl font-semibold"
-      }, "Visibilitas"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
-        className: "leading-relaxed mb-6 mt-2 text-sm text-gray-600"
-      }, "Post ini sudah dipublikasikan dan semua orang dapat mengakses post ini melalui tautan, beranda, mesin pencari, atau cara lainnya. Kamu dapat mengubah status post ini menjadi \"draft\" untuk menyembunyikannya dari semua orang."), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "custom-checkbox"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
-        onChange: this.toggleStatus.bind(this),
-        type: "checkbox",
-        id: "checkbox-draft"
-      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
-        htmlFor: "checkbox-draft"
-      }, "Sembunyikan Post (Ubah status menjadi draft)")))))))));
+      }, "Unggah Gambar")))))))));
     }
   }]);
 
-  return Form;
+  return FormMarkdown;
 }(react__WEBPACK_IMPORTED_MODULE_1__["Component"]);
 
-/* harmony default export */ __webpack_exports__["default"] = (Form);
+/* harmony default export */ __webpack_exports__["default"] = (FormMarkdown);
 
 /***/ }),
 
@@ -17143,16 +11744,16 @@ function () {
 
 /***/ }),
 
-/***/ "./resources/js/post-form.js":
-/*!***********************************!*\
-  !*** ./resources/js/post-form.js ***!
-  \***********************************/
+/***/ "./resources/js/post-markdown.js":
+/*!***************************************!*\
+  !*** ./resources/js/post-markdown.js ***!
+  \***************************************/
 /*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _comps_form__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./comps/form */ "./resources/js/comps/form.js");
+/* harmony import */ var _comps_form_markdown__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./comps/form-markdown */ "./resources/js/comps/form-markdown.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
@@ -17160,12 +11761,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var postType = typeof type !== 'undefined' ? type : 'slide';
 
-if (document.getElementById('post-form')) {
-  react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.render(react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_comps_form__WEBPACK_IMPORTED_MODULE_0__["default"], {
-    postType: postType
-  }), document.getElementById('post-form'));
+if (document.getElementById('post-markdown')) {
+  react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.render(react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_comps_form_markdown__WEBPACK_IMPORTED_MODULE_0__["default"], null), document.getElementById('post-markdown'));
 }
 
 /***/ }),
@@ -17403,36 +12001,14 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/utils/validate-url.js":
-/*!********************************************!*\
-  !*** ./resources/js/utils/validate-url.js ***!
-  \********************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/**
- * URL string validation
- * @param  {String} value The string to be tested
- * @return {Boolean}
- */
-function validateUrl(value) {
-  return /^(?:(?:(?:https?):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(value);
-}
-
-/* harmony default export */ __webpack_exports__["default"] = (validateUrl);
-
-/***/ }),
-
-/***/ 13:
-/*!*****************************************!*\
-  !*** multi ./resources/js/post-form.js ***!
-  \*****************************************/
+/***/ 5:
+/*!*********************************************!*\
+  !*** multi ./resources/js/post-markdown.js ***!
+  \*********************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! D:\server\www\kdgr\resources\js\post-form.js */"./resources/js/post-form.js");
+module.exports = __webpack_require__(/*! D:\server\www\kdgr\resources\js\post-markdown.js */"./resources/js/post-markdown.js");
 
 
 /***/ })

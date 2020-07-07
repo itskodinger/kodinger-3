@@ -182,7 +182,20 @@ class PostAjaxController extends Controller
     public function markdown(Request $request)
     {
     	return response()->json([
-    		'parsed' => (new Kdgrdown(['safe' => true]))->text($request->caption)
+    		'parsed' => (new Kdgrdown(['safe' => true]))->text($request->caption ?? $request->content)
+    	]);
+    }
+
+    /**
+     * Parse markdown from client (Not safe)
+     *
+     * @param Request $request Request
+     * @return JSON
+     */
+    public function markdownNotSafe(Request $request)
+    {
+    	return response()->json([
+    		'parsed' => (new Kdgrdown())->text($request->caption ?? $request->content)
     	]);
     }
 

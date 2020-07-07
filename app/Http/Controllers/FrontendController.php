@@ -285,21 +285,51 @@ class FrontendController extends Controller
 	 * Create a new post
 	 * @return view
 	 */
-	public function post($id=false)
+	public function postSlide($id=false)
 	{
 		if(!auth()->check()) return abort(403);
 
 		if($id) 
 		{
-			$post = $this->postService->find($id);
-
-			if($post->type == 'link') return abort(404);
-
-			if($post->user_id !== auth()->user()->id && !auth()->user()->can('post-update')) 
-				return abort(403);
+			$this->isAllowedEdit($id);
 		}
 
-		return view('post_form');
+		return view('post_slide');
+	}
+
+	/**
+	 * New post
+	 * @return view
+	 */
+	public function newPost($type=false) 
+	{
+		return view('post_new', compact('type'));
+	}
+
+	private function isAllowedEdit($id)
+	{
+		$post = $this->postService->find($id);
+
+		if($post->type == 'link') return abort(404);
+
+		if($post->user_id !== auth()->user()->id && !auth()->user()->can('post-update')) 
+			return abort(403);
+	}
+
+	/**
+	 * Markdown post
+	 * @return view
+	 */
+	public function postMD($id=false) 
+	{
+		if(!auth()->check()) return abort(403);
+
+		if($id) 
+		{
+			$this->isAllowedEdit($id);
+		}
+
+		return view('post_md', compact('id'));
 	}
 
 	/**

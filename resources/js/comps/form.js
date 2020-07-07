@@ -19,6 +19,20 @@ class Form extends Component {
 	constructor(props) {
 		super(props);
 
+		this.postData = {
+			title: 'Buat Slide Post',
+			titleEdit: 'Sunting Slide Post',
+			description: <>Bagikan pengetahuan kamu dengan developer lain; begitu pula dengan developer lain, mereka akan melakukan hal serupa. <a className="text-indigo-600 border-b border-indigo-600" target="_blank" href={routes.docs + '/content'}>Pelajari selengkapnya</a> tentang membuat konten dan <a className="text-indigo-600 border-b border-indigo-600" target="_blank" href={routes.docs + '/content'}>best practice</a>-nya.</>
+		}
+
+		if(props.postType == 'markdown') {
+			this.postData = {
+				title: 'Buat Markdown Post',
+				titleEdit: 'Sunting Markdown Post',
+				description: <>Menulis artikel dengan sintaksis Markdown. Cocok untuk menulis opini, tutorial, atau semacamnya.</>
+			}
+		}
+
 		this.state = {
 			edit: false,
 			id: false,
@@ -27,7 +41,8 @@ class Form extends Component {
 			slugDirty: false,
 			keyword: '',
 			tags: [],
-			images: [],
+			content: '',
+			images: this.isMarkdownPost() ? '' : [],
 			pages: [],
 			tutorials: [],
 			helps: [],
@@ -78,12 +93,23 @@ class Form extends Component {
 		this.maxFileSize = 10000000; // 10 mb
 	}
 
+	isMarkdownPost() {
+		return this.props.postType == 'markdown';
+	}
+
+	isSlidePost() {
+		return this.props.postType == 'slide';
+	}
+
 	/**
 	 * Get initial data
 	 */
 	loadData() {
 		const url = new URL(window.location.href);
-		const path = url.pathname.split(/\/post\//g);
+		let path = url.pathname.split(/\/post-slide\//g);
+
+		if(this.isMarkdownPost())
+			path = url.pathname.split(/\/post-md\//g);
 
 		if(path[1]) {
 			const id = path[1];
@@ -126,13 +152,15 @@ class Form extends Component {
 					helps_object: helps,
 					tutorials_object: tutorials,
 					public_folder: publicFolder,
-					status
+					status,
+					cover
 				}
 			}) => {
 				return resolve({
+					content,
 					title,
 					slug,
-					images: this.parseImagesJSON(content),
+					images: this.isMarkdownPost() ? [] : this.parseImagesJSON(content),
 					tags: [...tags.map(tag => typeof tag == 'object' ? tag.id : tag)],
 					tagify,
 					keyword,
@@ -145,7 +173,8 @@ class Form extends Component {
 					edit: true,
 					publish: true,
 					status,
-					statusSaving: status
+					statusSaving: status,
+					cover
 				});
 			});
 		});
@@ -185,7 +214,7 @@ class Form extends Component {
 
 		this.setState({id});
 
-		window.history.pushState({}, null, '/post/' + id);
+		window.history.pushState({}, null, (this.isMarkdownPost() ? '/post-md/' : '/post-slide/') + id);
 	}
 
 	setPublicFolder(publicFolder) {
@@ -236,7 +265,7 @@ class Form extends Component {
 
 		// reject
 		if(!id || statusSaving.toUpperCase() == 'PROCESSING') return false;
-		if(this.isUploadingImage()) return false;
+		if((this.isSlidePost() && this.isUploadingImage()) || (this.isMarkdownPost() && this.uploadingCover)) return false;
 
 		this.isContentDirty = true;
 
@@ -310,6 +339,13 @@ class Form extends Component {
 		this.loadData();
 		this.addToast();
 
+		setTimeout(() => {
+			if(this.isMarkdownPost() && this.state.content) {
+				const target = $('.content-area');
+				target.style.height = (target.scrollHeight) + 'px';
+			}
+		}, 1000);
+
 		// unsaved changes!
 		window.onbeforeunload = () => {
 			if(this.state.id && this.isContentDirty) {
@@ -344,7 +380,7 @@ class Form extends Component {
 	async saveWholeContent(objectData={}, route=false) {
 		return new Promise((resolve, reject) => {
 			// basic data
-			const { title, slug, tags, keyword, id } = this.state;
+			const { title, slug, tags, keyword, id, content } = this.state;
 
 			if(!route) route = routes.post_publish.replace(/slug/g, id);
 
@@ -352,20 +388,24 @@ class Form extends Component {
 			const images = this.flattenedImageFormat();
 
 			// validation
-			if(this.isUploadingImage()) {
+			if(this.isSlidePost() && this.isUploadingImage()) {
 				this.toast.add(`🖼&nbsp; Sedang mengunggah media, post akan otomatis tersimpan bila proses telah selesai`);
 
 				return reject();
-			}else if(this.isDeletingImage()) {
+			}else if(this.isSlidePost() && this.isDeletingImage()) {
 				this.toast.add(`🐌&nbsp; Sedang menghapus media, post akan otomatis tersimpan bila proses telah selesai`);
 
 				return reject();
-			}else if(objectData && objectData.status.toUpperCase() == 'PUBLISH' && images.length < 1) {
+			}else if(this.isSlidePost() && objectData && objectData.status.toUpperCase() == 'PUBLISH' && images.length < 1) {
 				this.toast.add(`🐡&nbsp; Tidak ada gambar satu pun`);
 
 				return reject();
-			}else if(objectData && objectData.status.toUpperCase() == 'PUBLISH' && images.length > 0 && (!images[0].caption || images[0].caption.trim().length < 1)) {
+			}else if(this.isSlidePost() && objectData && objectData.status.toUpperCase() == 'PUBLISH' && images.length > 0 && (!images[0].caption || images[0].caption.trim().length < 1)) {
 				this.toast.add(`😏&nbsp; Slide pertama gambar harus diisi caption`);
+
+				return reject();
+			}else if(this.isMarkdownPost() && !content) {
+				this.toast.add(`😏&nbsp; Harap isi konten post`);
 
 				return reject();
 			}
@@ -375,7 +415,8 @@ class Form extends Component {
 				slug,
 				tags,
 				keyword,
-				content: JSON.stringify(images),
+				content: this.isSlidePost() ? JSON.stringify(images) : content,
+				type: this.isMarkdownPost() ? 'markdown': null
 			}, objectData);
 
 			Object.keys(key2str).forEach((key) => {
@@ -632,6 +673,8 @@ class Form extends Component {
 
 	addDropzone() {
 		const dropzone = $('.dropzone');
+
+		if(!dropzone) return;
 
 		function onDragover() {
 			removes(dropzone.classList, 'border-gray-300');
@@ -1107,7 +1150,7 @@ class Form extends Component {
 	        bytes /= thresh;
 	        ++u;
 	    } while(Math.abs(bytes) >= thresh && u < units.length - 1);
-	    return bytes.toFixed(1)+' '+units[u];
+	    return bytes.toFixed(1) + ' ' + units[u];
 	}
 
 	uploadingImageStatus() {
@@ -1653,9 +1696,269 @@ class Form extends Component {
 		window.addEventListener('scroll', closeListener);
 	}
 
+	/**
+	 * Markdown functionality
+	 */
+	
+	mdContentChange(e) {
+		const target = e.target;
+
+		target.style.height = '250px';
+		target.style.height = (target.scrollHeight) + 'px';
+
+		const content = target.value.trim();
+
+		this.setState({
+			content
+		});
+
+		this.startAutoSaveAll({ content });
+	}
+
+	mdContentHandlePaste(e) {
+		const data = (e.clipboardData || window.clipboardData);
+	}
+
+
+	fileObject(id) {
+		const fileObjectElement = document.getElementById(id);
+		if(fileObjectElement) fileObjectElement.remove();
+
+		const file = document.createElement('input');
+		file.type = 'file';
+		file.style = 'display: hidden';
+		file.id = id;
+		file.accept = 'image/*';
+		document.body.appendChild(file);
+		file.click();
+
+		return file;
+	}
+
+	// thanks my dude
+	// https://stackoverflow.com/a/512542
+	setCaretPosition(elem, caretPos) {
+	    if(elem != null) {
+	        if(elem.createTextRange) {
+	            var range = elem.createTextRange();
+	            range.move('character', caretPos);
+	            range.select();
+	        }
+	        else {
+	            if(elem.selectionStart) {
+	                elem.focus();
+	                elem.setSelectionRange(caretPos, caretPos);
+	            }
+	            else
+	                elem.focus();
+	        }
+	    }
+	}
+
+	// thanks my dude
+	// https://stackoverflow.com/a/11077016
+	insertAtCursor(myField, myValue) {
+	    //IE support
+	    if (document.selection) {
+	        myField.focus();
+	        sel = document.selection.createRange();
+	        sel.text = myValue;
+	    }
+	    //MOZILLA and others
+	    else if (myField.selectionStart || myField.selectionStart == '0') {
+	        var startPos = myField.selectionStart;
+	        var endPos = myField.selectionEnd;
+	        myField.value = myField.value.substring(0, startPos)
+	            + myValue
+	            + myField.value.substring(endPos, myField.value.length);
+
+	        this.setCaretPosition(myField, startPos + myValue.length);
+            myField.setSelectionRange(startPos, startPos + myValue.length)
+	    } else {
+	        myField.value += myValue;
+	    }
+	}
+
+	uploadContentImage(e) {
+		const { id, publicFolder } = this.state;
+		const btn = e.currentTarget;
+		const contentArea = $('.content-area');
+
+		const file = this.fileObject('upload-content-image');
+
+		file.addEventListener('change', (f) => {
+			const selectedFile = f.target.files[0];
+
+			let formData = new FormData();
+
+			if(id)
+				formData.append('id', id);
+
+			if(publicFolder)
+				formData.append('public_folder', publicFolder);
+
+			formData.append('image', selectedFile);
+			formData.append('name', selectedFile.name);
+
+			btn.classList.add('pointer-events-none');
+			btn.classList.add('opacity-75');
+			btn.querySelector('span').innerText = 'Mengunggah';
+
+			this.request({
+				route: routes.post_upload_image,
+				method: 'POST',
+				body: formData,
+			})
+			.finally(() => {
+				btn.classList.remove('pointer-events-none');
+				btn.classList.remove('opacity-75');
+				btn.querySelector('span').innerText = 'Unggah Gambar';
+			})
+			.then(({data: {url} }) => {
+				this.insertAtCursor(contentArea, '\n![]('+ url +')\n');
+
+				const content = contentArea.value.trim();
+
+				this.setState({ content });
+				this.startAutoSaveAll({ content });
+			});
+		});
+	}
+
+	coverImageHandler(e) {
+		const { id, publicFolder } = this.state;
+
+		const target = e.currentTarget;
+
+		const file = this.fileObject('cover-image');
+
+		file.addEventListener('change', (f) => {
+			const selectedFile = f.target.files[0];
+
+			if(!this.allowedImageTypes.includes(selectedFile.type)) {
+				return this.toast.add(`🚷&nbsp; Jenis berkas ${selectedFile.name} tidak didukung`);
+			}else if(selectedFile.size > this.maxFileSize) {
+				return this.toast.add('🐠&nbsp; Ukuran berkas maks. 10MB');
+			}
+
+			const urlImage = URL.createObjectURL(selectedFile);
+
+			const imgFunc = (url) => {			
+				const img = new Image;
+				img.src = url;
+				img.className = 'w-full rounded';
+
+				return img;
+			}
+
+			const img = imgFunc(urlImage);
+
+			img.onload = () => {
+				const currentImg = target.querySelector('img');
+				currentImg && currentImg.remove();
+
+				target.appendChild(img);
+				target.classList.remove('h-64');
+				adds(target.classList, 'pointer-events-none');
+				img.classList.add('opacity-75')
+
+				document.querySelector('.cover-image-label').innerText = 'Mengunggah';
+				this.uploadingCover = true;
+			
+				let formData = new FormData();
+
+				if(id)
+					formData.append('id', id);
+
+				if(publicFolder)
+					formData.append('public_folder', publicFolder);
+
+				let getExtension = selectedFile.name.split('.');
+				getExtension = getExtension[getExtension.length - 1];
+				formData.append('image', selectedFile);
+				formData.append('name', 'cover.' + getExtension);
+				formData.append('force', true);
+
+				this.request({
+					route: routes.post_upload_image,
+					method: 'POST',
+					body: formData,
+				})
+				.finally(() => {
+					this.uploadingCover = false;
+					target.classList.remove('pointer-events-none');
+					img.classList.remove('opacity-75');
+				})
+				.then(({data: {url: cover} }) => {
+					this.statusSaved();
+
+					this.setState({
+						cover
+					});
+
+					this.startAutoSaveAll({ cover });
+
+					document.querySelector('.cover-image-label').innerText = 'Ganti Gambar';
+				})
+				.catch((error) => {
+					const { cover: currentCover } = this.state;
+
+					this.isContentDirty = false;
+					img.remove();
+
+					if(!currentCover) {
+						target.classList.add('h-64');
+						document.querySelector('.cover-image-label').innerText = 'Unggah Gambar';
+					}else{
+						document.querySelector('.cover-image-label').innerText = 'Ganti Gambar';
+						const prevImg = imgFunc(currentCover);
+						target.appendChild(prevImg);
+					}
+				});
+			}
+		});
+	}
+
+	contentSwitch(mode, e) {
+		const btn = e.currentTarget;
+
+		const modeBtns = document.querySelectorAll('.editor-modes button');
+		modeBtns.forEach(btnI => removes(btnI.classList, 'bg-indigo-600 text-white'));
+
+		adds(btn.classList, 'bg-indigo-600 text-white');
+
+		if(mode == 'editor') {
+			document.querySelector('.content-editor').classList.remove('hidden');
+			document.querySelector('.content-preview').classList.add('hidden');
+		}else if(mode == 'preview') {
+			document.querySelector('.content-editor').classList.add('hidden');
+			document.querySelector('.content-preview').classList.remove('hidden');
+
+			const content = document.querySelector('.content-area').value.trim();
+
+			this.request({
+				route: routes.post_markdown_ns,
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: 'post',
+				body: JSON.stringify({content})
+			})
+			.then((data) => {
+				if("parsed" in data)
+					document.querySelector('.content-preview').innerHTML = data.parsed;
+			})
+			.catch(error => {
+				document.querySelector('.content-preview').innerHTML = "Gagal parsing markdown, coba kembali.";	
+			});
+		}
+	}
+
 	render() {
-		const { message } = this.props;
+		const { postType } = this.props;
+		const postData = this.postData;
 		const { 
+			cover,
 			id, 
 			title, 
 			slug, 
@@ -1667,14 +1970,17 @@ class Form extends Component {
 			edit,
 			stateStatus,
 			status,
+			content,
 			newStatus
 		} = this.state;
 
-		const { 
-			uploadingImage, 
-			totalImage,
-			uploadedImage
-		} = this.uploadingImageStatus();
+		if(this.isSlidePost()) {
+			const { 
+				uploadingImage, 
+				totalImage,
+				uploadedImage
+			} = this.uploadingImageStatus();
+		}
 
 		return (
 			<>
@@ -1773,7 +2079,7 @@ class Form extends Component {
 				            			<>
 					            		{ status.toUpperCase() == 'PUBLISH' ?
 						            		<div className="py-4 px-6 mb-4 bg-teal-100 text-teal-600 border border-teal-200 rounded text-sm leading-loose">
-						            			Post ini sudah dipublikasikan – semua orang dapat melihatnya. <a href={routes.single + slug} className="border-b border-teal-600 pb-1 font-semibold">Lihat post</a> atau <a href={routes.post_form} className="border-b border-teal-600 pb-1 font-semibold">Buat post baru</a>
+						            			Post ini sudah dipublikasikan – semua orang dapat melihatnya. <a href={routes.single + slug} className="border-b border-teal-600 pb-1 font-semibold">Lihat post</a> atau <a href={routes.post_new} className="border-b border-teal-600 pb-1 font-semibold">Buat post baru</a>
 						            		</div>
 						            		:
 						            		<div className="py-4 px-6 mb-4 bg-blue-100 text-blue-600 border border-blue-200 rounded text-sm leading-loose">
@@ -1783,8 +2089,8 @@ class Form extends Component {
 						            	</>
 						            }
 									<div className="border border-gray-200 p-6 md:p-8 rounded">
-								        <h1 className="text-indigo-600 text-xl font-semibold">{edit ? 'Perbarui Post' : 'Buat Post'}</h1>
-								        <p className="mb-4 mt-2 text-sm text-gray-600">Bagikan pengetahuan kamu dengan developer lain; begitu pula dengan developer lain, mereka akan melakukan hal serupa. <a className="text-indigo-600 border-b border-indigo-600" target="_blank" href={routes.docs + '/content'}>Pelajari selengkapnya</a> tentang membuat konten dan <a className="text-indigo-600 border-b border-indigo-600" target="_blank" href={routes.docs + '/content'}>best practice</a>-nya.</p>
+								        <h1 className="text-indigo-600 text-xl font-semibold">{edit ? postData.titleEdit : postData.title}</h1>
+								        <p className="mb-4 mt-2 text-sm text-gray-600">{postData.description}</p>
 
 										<div className="mb-6 mt-6">
 											<label className="mb-1 text-sm inline-block text-gray-600">Judul</label>
@@ -1803,92 +2109,135 @@ class Form extends Component {
 
 										{ id && (
 											<>
-												<div className="mb-6">
+												<div>
 													<label className="mb-1 text-sm inline-block text-gray-600">Topik</label>
 													<input type="text" name="tags[]" className="tags text-gray-600 border border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600" tabIndex="3" />
 												</div>
-												<div>
-													<label className="mb-1 text-sm inline-block text-gray-600">Design Keyword <span className="text-xs">(Optional)</span></label>
-													<input onChange={this.keywordOnInput.bind(this)} type="text" name="keyword" className="text-gray-600 border border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600" tabIndex="4" defaultValue={keyword} />
-													<p className="mt-2 text-xs text-indigo-600">
-														<span className="tooltip cursor-help border-b border-dotted border-indigo-600" data-title="Keyword ini bukan untuk SEO, melainkan digunakan untuk mencari inspirasi desain ke situs di luar Kodinger, seperti Dribbble, Behance, atau Uplabs. Jadi, bila kamu sedang membahas library carousel, maka kamu dapat mengisi keyword dengan 'carousel'. Lalu, sistem akan menggunakan kata 'carousel' tadi untuk digunakan sebagai keyword pencarian ke 3 situs tadi.">
-															Saya harus mengisi ini dengan apa?
-														</span>
-													</p>
-												</div>
+												{ this.isSlidePost() &&
+													<div className="mt-6">
+														<label className="mb-1 text-sm inline-block text-gray-600">Design Keyword <span className="text-xs">(Optional)</span></label>
+														<input onChange={this.keywordOnInput.bind(this)} type="text" name="keyword" className="text-gray-600 border border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600" tabIndex="4" defaultValue={keyword} />
+														<p className="mt-2 text-xs text-indigo-600">
+															<span className="tooltip cursor-help border-b border-dotted border-indigo-600" data-title="Keyword ini bukan untuk SEO, melainkan digunakan untuk mencari inspirasi desain ke situs di luar Kodinger, seperti Dribbble, Behance, atau Uplabs. Jadi, bila kamu sedang membahas library carousel, maka kamu dapat mengisi keyword dengan 'carousel'. Lalu, sistem akan menggunakan kata 'carousel' tadi untuk digunakan sebagai keyword pencarian ke 3 situs tadi.">
+																Saya harus mengisi ini dengan apa?
+															</span>
+														</p>
+													</div>
+												}
 											</>
 										)}
 									</div>
 
 									{ id && (
 									<>
-										<div className="border border-gray-200 p-6 md:p-8 rounded mt-10">
-									        <h2 className="text-indigo-600 mb-4 text-xl font-semibold">Media</h2>
-									        <p className="leading-relaxed mb-6 mt-2 text-sm text-gray-600">Kamu dapat mengunggah gambar atau video dalam satu konten yang sama. <a href={routes.docs + '/content#form-media'} className="text-indigo-600 border-b border-indigo-600" target="_blank">Pelajari selengkapnya</a> tentang media.</p>
+										{ this.isSlidePost() &&
+											<div className="border border-gray-200 p-6 md:p-8 rounded mt-10">
+										        <h2 className="text-indigo-600 mb-4 text-xl font-semibold">Media</h2>
+										        <p className="leading-relaxed mb-6 mt-2 text-sm text-gray-600">Kamu dapat mengunggah gambar atau video dalam satu konten yang sama. <a href={routes.docs + '/content#form-media'} className="text-indigo-600 border-b border-indigo-600" target="_blank">Pelajari selengkapnya</a> tentang media.</p>
 
-											<div className="mb-6">
-												<div className="dropzone rounded-lg border border-dashed border-gray-300 w-full flex items-center justify-center">
-													<div className="p-10 md:p-20 text-center">
-														<h4 className="text-xl">Tarik gambar atau video kamu ke sini</h4>
-														<p className="text-sm mt-2 text-gray-600">
-															Maksimal: 10MB. Format yang didukung: {[...this.allowedImageTypesReadable, ...this.allowedVideoTypesReadable].join(', ')}
-														</p>
-														<label className="mt-6 text-indigo-600 font-semibold inline-block cursor-pointer" htmlFor="images-input" tabIndex="5">Browse</label>
-														<input type="file" multiple id="images-input" className="hidden" onChange={this.handleFiles.bind(this)} />
-													</div>
-												</div>
-
-												{images.length > 0 && (
-													<>
-														<div className="mt-6 text-xs uppercase font-semibold tracking-wider mb-2 text-gray-600 flex">
-															Media yang dipilih { this.isUploadingImage() ? '(' + uploadedImage + '/' + totalImage + ')' : '' }
-															<div className="ml-auto text-blue-600">
-																<div className="custom-checkbox custom-checkbox-sm">
-																	<input type="checkbox" id="single-caption" onChange={this.singleCaption.bind(this)} checked={images[0].singleCaption} />
-																	<label className="tooltip" htmlFor="single-caption" data-title="Ceklis opsi ini untuk menggunakan keterangan pada slide pertama untuk semua slide.">Single caption</label>
-																</div>
-															</div>
+												<div className="mb-6">
+													<div className="dropzone rounded-lg border border-dashed border-gray-300 w-full flex items-center justify-center">
+														<div className="p-10 md:p-20 text-center">
+															<h4 className="text-xl">Tarik gambar atau video kamu ke sini</h4>
+															<p className="text-sm mt-2 text-gray-600">
+																Maksimal: 10MB. Format yang didukung: {[...this.allowedImageTypesReadable, ...this.allowedVideoTypesReadable].join(', ')}
+															</p>
+															<label className="mt-6 text-indigo-600 font-semibold inline-block cursor-pointer" htmlFor="images-input" tabIndex="5">Browse</label>
+															<input type="file" multiple id="images-input" className="hidden" onChange={this.handleFiles.bind(this)} />
 														</div>
-													</>
-												)}
-												<div className="image-files">
-													{ images.map((image) => {
-														return (
-															<div data-id={image.id} key={image.id} className="bg-white flex justify-center flex-col md:flex-row w-full mb-4 rounded border border-gray-200 hover:border-gray-400">
-																<div className={`handle flex-shrink-0 p-2 items-center flex md:border-r md:border-gray-200 bg-gray-100 md:mr-4 cursor-move` + (this.isUploadingImage() ? ' pointer-events-none' : '')}>
-																	<svg xmlns="http://www.w3.org/2000/svg" className="w-4 fill-current text-gray-600" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="menu"><rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"/><rect x="3" y="11" width="18" height="2" rx=".95" ry=".95"/><rect x="3" y="16" width="18" height="2" rx=".95" ry=".95"/><rect x="3" y="6" width="18" height="2" rx=".95" ry=".95"/></g></g></svg>
-																</div>
-																<div className="md:w-16 md:h-16 w-full h-auto md:p-0 p-4 md:mr-2 pb-0 flex-shrink-0 md:py-4">
-																	<a href={image.videoThumbnailUrl || image.url} target="_blank" onClick={this.lightbox.bind(this, image.videoThumbnailUrl || image.url)}>
-																		<img className={'rounded' + (image.name && image.url ? '' : ' hidden')} src={image.videoThumbnailUrl || image.url} />
-																	</a>
-																	<video className="hidden rounded"><source /></video>
-																	<canvas className="hidden"></canvas>
-																</div>
-																<div className="w-full md:py-4 md:pr-4 p-4 overflow-hidden">
-																	<div className={'text-xs mb-2 font-semibold tracking-wider inline-block' + (image.status == 'UPLOADED' ? ' text-teal-600' : ' text-orange-600')}>{image.status}</div>
-																	<div className="text-indigo-600 mb-1 truncate" title={image.name || image.file.name}>{image.name || image.file.name}</div>
-																	<div className="text-xs text-gray-600">{this.humanFileSize(image.size || image.size == 0 ?  image.size : image.file.size)}</div>
-																	<div className="flex mt-2 text-sm">
-																	{(!image.isAbort && image.isAbort !== undefined) &&
-																		<div className="cursor-pointer text-red-600" onClick={this.abortImage.bind(this, image)}>Batalkan</div>
-																	}
-																	{((image.isDirty && (image.isAbort == undefined && !image.isAbort)) || (!image.isDirty && edit)) &&
-																		<>
-																			<div onClick={this.removeImage.bind(this, image.id)} className="text-red-600 cursor-pointer">Hapus</div>
-																			<div onClick={this.setCaption.bind(this, image.id)} className="text-teal-600 cursor-pointer ml-4">
-																				Tentukan Deskripsi {image.caption ? '👍' : ''}
-																			</div>
-																		</>
-																	}
+													</div>
+
+													{images.length > 0 && (
+														<>
+															<div className="mt-6 text-xs uppercase font-semibold tracking-wider mb-2 text-gray-600 flex">
+																Media yang dipilih { this.isUploadingImage() ? '(' + uploadedImage + '/' + totalImage + ')' : '' }
+																<div className="ml-auto text-blue-600">
+																	<div className="custom-checkbox custom-checkbox-sm">
+																		<input type="checkbox" id="single-caption" onChange={this.singleCaption.bind(this)} checked={images[0].singleCaption} />
+																		<label className="tooltip" htmlFor="single-caption" data-title="Ceklis opsi ini untuk menggunakan keterangan pada slide pertama untuk semua slide.">Single caption</label>
 																	</div>
 																</div>
 															</div>
-														);
-													}) }
+														</>
+													)}
+													<div className="image-files">
+														{ images.map((image) => {
+															return (
+																<div data-id={image.id} key={image.id} className="bg-white flex justify-center flex-col md:flex-row w-full mb-4 rounded border border-gray-200 hover:border-gray-400">
+																	<div className={`handle flex-shrink-0 p-2 items-center flex md:border-r md:border-gray-200 bg-gray-100 md:mr-4 cursor-move` + (this.isUploadingImage() ? ' pointer-events-none' : '')}>
+																		<svg xmlns="http://www.w3.org/2000/svg" className="w-4 fill-current text-gray-600" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="menu"><rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"/><rect x="3" y="11" width="18" height="2" rx=".95" ry=".95"/><rect x="3" y="16" width="18" height="2" rx=".95" ry=".95"/><rect x="3" y="6" width="18" height="2" rx=".95" ry=".95"/></g></g></svg>
+																	</div>
+																	<div className="md:w-16 md:h-16 w-full h-auto md:p-0 p-4 md:mr-2 pb-0 flex-shrink-0 md:py-4">
+																		<a href={image.videoThumbnailUrl || image.url} target="_blank" onClick={this.lightbox.bind(this, image.videoThumbnailUrl || image.url)}>
+																			<img className={'rounded' + (image.name && image.url ? '' : ' hidden')} src={image.videoThumbnailUrl || image.url} />
+																		</a>
+																		<video className="hidden rounded"><source /></video>
+																		<canvas className="hidden"></canvas>
+																	</div>
+																	<div className="w-full md:py-4 md:pr-4 p-4 overflow-hidden">
+																		<div className={'text-xs mb-2 font-semibold tracking-wider inline-block' + (image.status == 'UPLOADED' ? ' text-teal-600' : ' text-orange-600')}>{image.status}</div>
+																		<div className="text-indigo-600 mb-1 truncate" title={image.name || image.file.name}>{image.name || image.file.name}</div>
+																		<div className="text-xs text-gray-600">{this.humanFileSize(image.size || image.size == 0 ?  image.size : image.file.size)}</div>
+																		<div className="flex mt-2 text-sm">
+																		{(!image.isAbort && image.isAbort !== undefined) &&
+																			<div className="cursor-pointer text-red-600" onClick={this.abortImage.bind(this, image)}>Batalkan</div>
+																		}
+																		{((image.isDirty && (image.isAbort == undefined && !image.isAbort)) || (!image.isDirty && edit)) &&
+																			<>
+																				<div onClick={this.removeImage.bind(this, image.id)} className="text-red-600 cursor-pointer">Hapus</div>
+																				<div onClick={this.setCaption.bind(this, image.id)} className="text-teal-600 cursor-pointer ml-4">
+																					Tentukan Deskripsi {image.caption ? '👍' : ''}
+																				</div>
+																			</>
+																		}
+																		</div>
+																	</div>
+																</div>
+															);
+														}) }
+													</div>
 												</div>
 											</div>
-										</div>
+										}
+
+										{ this.isMarkdownPost() &&
+											<>
+												<div className="border border-gray-200 p-6 md:p-8 rounded mt-10">
+											        <h2 className="text-indigo-600 mb-4 text-xl font-semibold">Konten</h2>
+											        <p className="leading-relaxed mb-6 mt-2 text-sm text-gray-600">Tulis isi post yang ingin kamu sampaikan. Kamu dapat menggunakan format Markdown, <a href=""  target="_blank">pelajari selengkapnya</a>.</p>
+
+					        			        	<div className="flex items-center mb-2 sticky" style={{top: '90px'}}>
+					        			        		<button onClick={this.uploadContentImage.bind(this)} className="flex items-center bg-white border border-gray-300 hover:border-indigo-500 hover:text-indigo-500 px-4 py-2 rounded text-sm">
+					        				        		<svg className="mr-2" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+					        			        			<span>Unggah Gambar</span>
+					        			        		</button>
+
+					        			        		<div className="ml-auto flex editor-modes bg-white rounded">
+					        				        		<button onClick={this.contentSwitch.bind(this, 'editor')} className="border-t border-b border-l rounded-tl rounded-bl text-sm px-4 py-2 border-gray-200 bg-indigo-600 text-white">Editor</button>
+					        				        		<button onClick={this.contentSwitch.bind(this, 'preview')} className="border-t border-b border-r rounded-tr rounded-br text-sm px-4 py-2 border-gray-200">Preview</button>
+					        			        		</div>
+					        			        	</div>
+					                	        	<div className="content-editor">
+					        				        	<textarea name="content" onChange={this.mdContentChange.bind(this)} onPaste={this.mdContentHandlePaste.bind(this)} style={{minHeight: 250}} className="content-area mb-2 overflow-hidden resize-none text-gray-600 border border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600" tabIndex="4" placeholder="Tulis apapun di sini ..." defaultValue={content}></textarea>
+					                	        	</div>
+					                	        	<div className="content-preview p-5 hidden border-gray-200 border mb-2 rounded text-sm overflow-auto markdowned markdowned-mdpost">
+					                	        		Parsing ...
+					                	        	</div>
+					        			        	<p className="text-xs text-gray-600"><a className="text-indigo-600" target="_blank" href={routes.docs + '/markdown#supported-markdown'} tabIndex="-1">Markdown</a></p>
+					        			        </div>
+
+				        			        	<div className="border border-gray-200 p-6 md:p-8 rounded mt-10">
+				        			                <h2 className="text-indigo-600 mb-4 text-xl font-semibold">Cover</h2>
+				        			                <p className="leading-relaxed mb-6 mt-2 text-sm text-gray-600">Bila dikosongkan, sistem akan otomatis menggenerasi thumbnail untuk post ini. Bila diisi, gambar akan otomatis dipotong oleh sistem bila dimensinya tidak 500 x 300 (Maksimal: 10MB. Format yang didukung: {[...this.allowedImageTypesReadable].join(', ')}).</p>
+
+					        			        	<div onClick={this.coverImageHandler.bind(this)} className={`group w-full border border-gray-300 rounded flex items-center justify-center cursor-pointer ${cover ? '' : 'h-64'}`}>
+					        			        		{cover && <img src={cover} className="w-full rounded" />}
+					        			        		<div className="cover-image-label absolute bg-white border border-gray-300 group-hover:border-indigo-500 group-hover:text-indigo-500 px-3 py-2 rounded text-sm">{ cover ? 'Ganti Gambar' : 'Unggah Gambar'}</div>
+					        			        	</div>
+										        </div>
+									        </>
+									    }
+
 										<div className="border border-gray-200 p-6 md:p-8 rounded mt-10">
 									        <h2 className="text-indigo-600 mb-4 text-xl font-semibold">Tautan <span className="text-xs text-gray-600 font-normal">(Optional)</span></h2>
 									        <p className="leading-relaxed mb-6 mt-2 text-sm text-gray-600">Sertakan tautan referensi yang relevan dengan konten, bisa tautan ke halaman resmi situs web, tutorial, <code>code playground</code>, atau yang lainnya. <a href={routes.docs + '/content#form-links'} className="border-b border-indigo-600 text-indigo-600" target="_blank">Pelajari selengkapnya</a> tentang tautan.</p>

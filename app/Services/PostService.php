@@ -230,7 +230,7 @@ class PostService
 		$post = $this->find($id);
 
 		$base = 'posts/';
-		$name = safe_file_name(pathinfo($request->name, PATHINFO_FILENAME)) . '.' . $request->image->getClientOriginalExtension();
+		$name = safe_file_name(pathinfo($request->name, PATHINFO_FILENAME)) . '-' . uniqid() . '.' . $request->image->getClientOriginalExtension();
 		$path = $base . $public_folder . '/' . $name;
 		$url = space_url($path);
 

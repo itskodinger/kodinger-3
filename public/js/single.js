@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 11);
+/******/ 	return __webpack_require__(__webpack_require__.s = 12);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -9433,14 +9433,14 @@ function wrapNode(wrap, element) {
 
 /***/ }),
 
-/***/ 11:
+/***/ 12:
 /*!**************************************!*\
   !*** multi ./resources/js/single.js ***!
   \**************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Library/WebServer/Documents/kd/resources/js/single.js */"./resources/js/single.js");
+module.exports = __webpack_require__(/*! D:\server\www\kdgr\resources\js\single.js */"./resources/js/single.js");
 
 
 /***/ })
