@@ -19,7 +19,7 @@
 		            			<div class="bg-cover w-16 h-16 rounded" style="background-image: url({{ isset($redirectData['preview']) ? $redirectData['preview']->image : '' }});"></div>	
 		            			<div class="ml-4">
 		            				<h4 class="font-semibold text-indigo-600">{{ isset($redirectData['preview']) ? $redirectData['preview']->title : truncate($redirectData['url'], 50) }}</h4>
-		            				<p class="text-sm text-gray-600 mt-1">{{ isset($redirectData['preview']) ? truncate($redirectData['preview']->description, 60) : '' }}</p>
+		            				<p class="text-gray-600 mt-1">{{ isset($redirectData['preview']) ? truncate($redirectData['preview']->description, 60) : '' }}</p>
 
 		            			</div>
 		            		</a>

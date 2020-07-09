@@ -92,7 +92,7 @@ class Postcard implements Arrayable, Jsonable {
      * @return string
      */
     public function getPostUrl() {
-        return route('single', $this->post->slug);
+        return route('post.show', [$this->post->user->username, $this->post->slug]);
     }
 
     /**
@@ -126,7 +126,7 @@ class Postcard implements Arrayable, Jsonable {
     public function getUrl() {
         $url = $this->attributes->where('key', 'url')->first();
 
-        if($url instanceof PostAttribute) return $url->value; 
+        if($url instanceof PostAttribute) return $url->value . '?ref=kodinger'; 
 
         if(is_null($this->post->pages)) return $this->post->pages;
 

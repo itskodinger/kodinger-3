@@ -2260,6 +2260,10 @@ var types = {
     template: 'post',
     shimmer: 'post'
   },
+  MARKDOWN: {
+    template: 'markdown',
+    shimmer: 'post'
+  },
   DISCOVER: {
     template: 'post',
     shimmer: 'discover'
@@ -2310,6 +2314,14 @@ var api = {
    * @type {Object}
    */
   interactions: {
+    syntax: function syntax(element) {
+      if (window.hljs) {
+        element.querySelectorAll('pre code').forEach(function (block) {
+          hljs.highlightBlock(block);
+        });
+      }
+    },
+
     /**
      * Lazy-load Image Using Intersection Observer
      * @param  {Node} element Target element
@@ -2582,7 +2594,7 @@ var api = {
 
       if ($$('.share-buttons a').length < 1) {
         // this is share button template
-        var share_btn = '<a href="" target="_blank" class="text-white shadow-md mb-3 py-3 px-4 flex justify-center items-center rounded text-sm"></a>'; // show all the buttons from the `uris` key (see the uris var form destructuring object above)
+        var share_btn = '<a href="" target="_blank" class="text-white shadow-md mb-3 py-3 px-4 flex justify-center items-center rounded"></a>'; // show all the buttons from the `uris` key (see the uris var form destructuring object above)
 
         for (var i = 0; i < uris.length; i++) {
           var key = uris[i],
@@ -2713,7 +2725,7 @@ var api = {
      * @return {String}				Interpolated template string
      */
     empty: function empty() {
-      var tpl = "\n\t\t\t\t<div class=\"text-center\">\n\t\t\t\t\t<svg width=\"300\" class=\"inline-block\" id=\"Layer_2\" data-name=\"Layer 2\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1200 1200\"><defs><style>.cls-1{fill:#e2e2e2;}.cls-2{fill:#f3f3f3;}.cls-3{fill:#d37c59;}.cls-4{fill:#de8e68;}.cls-5{fill:#56cad8;}.cls-6{fill:#74d5de;}.cls-7{fill:#fed385;}.cls-8{fill:#dc8e6c;}.cls-9{fill:#fb836d;}.cls-10{fill:#d3d3d3;}.cls-11,.cls-13,.cls-14,.cls-15,.cls-16{fill:none;}.cls-11{stroke:#d3d3d3;stroke-miterlimit:10;}.cls-11,.cls-14,.cls-15{stroke-width:3.69px;}.cls-12{fill:#fed892;}.cls-13,.cls-14,.cls-16{stroke:#fed385;}.cls-13,.cls-14,.cls-15,.cls-16{stroke-linecap:round;stroke-linejoin:round;}.cls-13{stroke-width:3.84px;}.cls-15{stroke:#74d5de;}.cls-16{stroke-width:2.39px;}</style></defs><path class=\"cls-1\" d=\"M711.1,528.1c0-21.86-47-74.85-84.67-74.85-28.93,0-29.4,15.3-57.59,15.3-43.46,0-75.71-72.66-159.29-72.66-89.05,0-205.41,83.58-205.41,149.14C204.14,638.91,711.1,661.41,711.1,528.1Z\"/><path class=\"cls-2\" d=\"M935.51,849.68c1-102,2.6-265.85,2.6-290.1,0-35.58-52.84-142.15-145.27-142.15-101.26,0-151.3,116.21-217.58,116.21-60.75,0-65.54-30.76-140.74-30.76-49,0-149.82,62.8-149.82,127l67.11,219.75Z\"/><ellipse class=\"cls-3\" cx=\"602.59\" cy=\"679.96\" rx=\"11.73\" ry=\"5.25\" transform=\"translate(-105.6 1249.11) rotate(-87.24)\"/><path class=\"cls-3\" d=\"M590.19,739.68c-.2-1.94,4.32-42.23,7.92-55a16,16,0,0,1,6.71-.94l-.34,39.7-5,18.67Z\"/><polygon points=\"620.7 683.58 589.26 686.18 588.26 679.96 618.52 670.39 620.7 683.58\"/><rect class=\"cls-4\" x=\"544.3\" y=\"999.24\" width=\"13.77\" height=\"11.65\"/><rect class=\"cls-4\" x=\"586.9\" y=\"1001.06\" width=\"13.77\" height=\"11.65\"/><path class=\"cls-5\" d=\"M542.87,805V999.88H559l18.54-104.26S580.09,839.22,542.87,805Z\"/><path class=\"cls-6\" d=\"M596,801.16c.45,5.62,6.06,107.88,6.06,107.88v93.11l-16.55,1.77-10.64-99-32-99.92C547.71,802.34,583.16,797.33,596,801.16Z\"/><path class=\"cls-7\" d=\"M566.51,715.47c31.79,0,33.3,80.83,29.52,85.69s-49,8.17-53.16,3.83S526.9,715.47,566.51,715.47Z\"/><ellipse class=\"cls-4\" cx=\"607.86\" cy=\"679.96\" rx=\"11.73\" ry=\"5.25\" transform=\"translate(-100.59 1254.37) rotate(-87.24)\"/><polygon points=\"585.61 1010.89 585.61 1022.54 618.35 1022.54 618.35 1018.3 601.32 1010.89 585.61 1010.89\"/><polygon points=\"543.87 1009.05 543.87 1020.7 576.61 1020.7 576.61 1016.46 559.58 1009.05 543.87 1009.05\"/><rect x=\"585.55\" y=\"681.34\" width=\"3.86\" height=\"3.86\" transform=\"translate(-98.87 99.39) rotate(-8.92)\"/><path class=\"cls-3\" d=\"M568.84,722.5c0,2.67-12.41,3-12.41,0V696h12.41Z\"/><ellipse class=\"cls-8\" cx=\"568.46\" cy=\"688.32\" rx=\"13.03\" ry=\"19.89\"/><path class=\"cls-9\" d=\"M545.77,680.12c0-6.13,2.67-10,4.84-11.23,4.19-2.4,5.94-1.33,10.16-3.2,4.57-2,8.49-7.84,13.84-7.84,5,0,4.55,2.84,7.94,3.68,2,.49,13.36-2.12,13.36,5.23,0,11.32-12.57,12.24-15.48,13.69a37.43,37.43,0,0,0-1.52-3.83c-2.29,2.36-10.58,4-11.92,4.53-3.1,1.28-4.58,6.13-4.58,9.3s-2.87,3.18-3.59,3.18C552.19,693.63,545.77,689.38,545.77,680.12Z\"/><circle class=\"cls-8\" cx=\"556.67\" cy=\"691.67\" r=\"4.33\"/><rect class=\"cls-10\" x=\"512.81\" y=\"718.34\" width=\"25.14\" height=\"84.61\" rx=\"12.57\" ry=\"12.57\"/><ellipse class=\"cls-11\" cx=\"544.89\" cy=\"751.24\" rx=\"30.38\" ry=\"32.89\"/><path class=\"cls-4\" d=\"M576.84,736.83c2.53,0,15.29.53,20.48,2.4.4-2.53,2.66-38.77,6.51-50.91,1.47-1.62,7.45-1.43,7.45,0s8.51,60.88,0,67.93-37.37-2.4-38.56-3.33S576.84,736.83,576.84,736.83Z\"/><path class=\"cls-12\" d=\"M549.66,734.69c2.82-11.48,28.36-1.93,30.67.69,2.77,3.14-2.18,20.84-6,21.66C568.1,758.39,546,749.58,549.66,734.69Z\"/><polygon class=\"cls-12\" points=\"266.38 341.65 142.64 849.68 390.13 849.68 266.38 341.65\"/><polygon class=\"cls-5\" points=\"169.62 341.65 45.87 893.9 293.36 893.9 169.62 341.65\"/><line class=\"cls-13\" x1=\"170.29\" y1=\"891.44\" x2=\"170.29\" y2=\"395.36\"/><line class=\"cls-13\" x1=\"170.29\" y1=\"558.95\" x2=\"197.18\" y2=\"529.72\"/><line class=\"cls-13\" x1=\"170.29\" y1=\"698.94\" x2=\"210.7\" y2=\"655.02\"/><line class=\"cls-13\" x1=\"170.29\" y1=\"844.98\" x2=\"233.14\" y2=\"776.66\"/><line class=\"cls-13\" x1=\"170.29\" y1=\"558.95\" x2=\"143.4\" y2=\"529.72\"/><line class=\"cls-13\" x1=\"170.29\" y1=\"698.94\" x2=\"129.89\" y2=\"655.02\"/><line class=\"cls-13\" x1=\"170.29\" y1=\"844.98\" x2=\"107.44\" y2=\"776.66\"/><rect class=\"cls-6\" x=\"190.5\" y=\"734.34\" width=\"135.39\" height=\"197.16\" rx=\"67.69\" ry=\"67.69\"/><line class=\"cls-14\" x1=\"258.19\" y1=\"982.94\" x2=\"258.19\" y2=\"795.85\"/><path class=\"cls-14\" d=\"M258.19,875.41c37,0,37-22.28,37-56\"/><path class=\"cls-14\" d=\"M258.19,841.33c-25.65,0-25.65-15.47-25.65-38.84\"/><path class=\"cls-7\" d=\"M1152.37,849.68V667.57a81.52,81.52,0,0,0-81.28-81.28h0a81.65,81.65,0,0,0-13.07,1.06V377.78a55.64,55.64,0,0,0-55.63-55.64h0a55.64,55.64,0,0,0-55.64,55.64v44.86a80.64,80.64,0,0,0-26-4.31h0a81.52,81.52,0,0,0-81.28,81.29V649H804.08a55.7,55.7,0,0,0-55.53,55.53V833.86a55.18,55.18,0,0,0,2.32,15.82Z\"/><path class=\"cls-15\" d=\"M1000.16,740.85c91.61,0,91.61-41,91.61-103\"/><path class=\"cls-15\" d=\"M1000.25,795.48c-50.4,0-50.4-22.56-50.4-56.67\"/><line class=\"cls-15\" x1=\"1000.16\" y1=\"849.68\" x2=\"1000.16\" y2=\"364.17\"/><line class=\"cls-15\" x1=\"1000.16\" y1=\"637.85\" x2=\"949.94\" y2=\"587.62\"/><line class=\"cls-15\" x1=\"1000.16\" y1=\"534.21\" x2=\"1030.55\" y2=\"503.83\"/><path class=\"cls-2\" d=\"M750.49,341.65a47.18,47.18,0,0,0-86.25-35.55,37.43,37.43,0,0,0-52.84,34.1c0,.49,0,1,0,1.45Z\"/><path class=\"cls-2\" d=\"M291.91,268.28a47.18,47.18,0,0,1,86.25-35.55A37.4,37.4,0,0,1,431,266.83c0,.48,0,1,0,1.45Z\"/><path class=\"cls-6\" d=\"M924.33,936.06c-50.28,0-91,21.47-91,48h182.05C1015.35,957.53,974.6,936.06,924.33,936.06Z\"/><path class=\"cls-9\" d=\"M502.76,1006.93c-12.55,0-22.73,8.76-22.73,19.57H525.5C525.5,1015.69,515.32,1006.93,502.76,1006.93Z\"/><path class=\"cls-9\" d=\"M833.3,902.44c-12.56,0-22.73,13-22.73,29.06H856C856,915.45,845.85,902.44,833.3,902.44Z\"/><path class=\"cls-9\" d=\"M120.87,974.57c-20,0-36.16,6.51-36.16,14.53H157C157,981.08,140.84,974.57,120.87,974.57Z\"/><path class=\"cls-9\" d=\"M1030.55,974.57c-20,0-36.16,6.51-36.16,14.53h72.31C1066.7,981.08,1050.52,974.57,1030.55,974.57Z\"/><rect class=\"cls-6\" x=\"838.22\" y=\"746.55\" width=\"87.67\" height=\"127.66\" rx=\"43.83\" ry=\"43.83\"/><line class=\"cls-16\" x1=\"882.06\" y1=\"907.53\" x2=\"882.06\" y2=\"786.38\"/><path class=\"cls-16\" d=\"M882.06,837.9C906,837.9,906,823.47,906,801.64\"/><path class=\"cls-16\" d=\"M882.06,815.83c-16.61,0-16.61-10-16.61-25.16\"/><line class=\"cls-14\" x1=\"331.71\" y1=\"947.65\" x2=\"412.75\" y2=\"947.65\"/><line class=\"cls-14\" x1=\"668.4\" y1=\"893.9\" x2=\"722.14\" y2=\"893.9\"/><line class=\"cls-14\" x1=\"627.87\" y1=\"907.53\" x2=\"681.62\" y2=\"907.53\"/><line class=\"cls-14\" x1=\"116.88\" y1=\"918.64\" x2=\"170.63\" y2=\"918.64\"/><line class=\"cls-14\" x1=\"748.55\" y1=\"999.24\" x2=\"824.1\" y2=\"999.24\"/></svg>\n\t\t\t\t\t<h2 class=\"text-xl font-semibold\">Ya ampun! Data tidak ditemukan</h2>\n\t\t\t\t\t<p class=\"mt-2 leading-loose text-gray-600 text-sm\">Apa yang kamu cari sehingga data tidak ditemukan? Tapi, sepertinya ini salah kami memiliki konten yang terlalu sedikit \uD83D\uDE3F.</p>\n\t\t\t\t</div>\n\t\t\t";
+      var tpl = "\n\t\t\t\t<div class=\"text-center\">\n\t\t\t\t\t<svg width=\"300\" class=\"inline-block\" id=\"Layer_2\" data-name=\"Layer 2\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1200 1200\"><defs><style>.cls-1{fill:#e2e2e2;}.cls-2{fill:#f3f3f3;}.cls-3{fill:#d37c59;}.cls-4{fill:#de8e68;}.cls-5{fill:#56cad8;}.cls-6{fill:#74d5de;}.cls-7{fill:#fed385;}.cls-8{fill:#dc8e6c;}.cls-9{fill:#fb836d;}.cls-10{fill:#d3d3d3;}.cls-11,.cls-13,.cls-14,.cls-15,.cls-16{fill:none;}.cls-11{stroke:#d3d3d3;stroke-miterlimit:10;}.cls-11,.cls-14,.cls-15{stroke-width:3.69px;}.cls-12{fill:#fed892;}.cls-13,.cls-14,.cls-16{stroke:#fed385;}.cls-13,.cls-14,.cls-15,.cls-16{stroke-linecap:round;stroke-linejoin:round;}.cls-13{stroke-width:3.84px;}.cls-15{stroke:#74d5de;}.cls-16{stroke-width:2.39px;}</style></defs><path class=\"cls-1\" d=\"M711.1,528.1c0-21.86-47-74.85-84.67-74.85-28.93,0-29.4,15.3-57.59,15.3-43.46,0-75.71-72.66-159.29-72.66-89.05,0-205.41,83.58-205.41,149.14C204.14,638.91,711.1,661.41,711.1,528.1Z\"/><path class=\"cls-2\" d=\"M935.51,849.68c1-102,2.6-265.85,2.6-290.1,0-35.58-52.84-142.15-145.27-142.15-101.26,0-151.3,116.21-217.58,116.21-60.75,0-65.54-30.76-140.74-30.76-49,0-149.82,62.8-149.82,127l67.11,219.75Z\"/><ellipse class=\"cls-3\" cx=\"602.59\" cy=\"679.96\" rx=\"11.73\" ry=\"5.25\" transform=\"translate(-105.6 1249.11) rotate(-87.24)\"/><path class=\"cls-3\" d=\"M590.19,739.68c-.2-1.94,4.32-42.23,7.92-55a16,16,0,0,1,6.71-.94l-.34,39.7-5,18.67Z\"/><polygon points=\"620.7 683.58 589.26 686.18 588.26 679.96 618.52 670.39 620.7 683.58\"/><rect class=\"cls-4\" x=\"544.3\" y=\"999.24\" width=\"13.77\" height=\"11.65\"/><rect class=\"cls-4\" x=\"586.9\" y=\"1001.06\" width=\"13.77\" height=\"11.65\"/><path class=\"cls-5\" d=\"M542.87,805V999.88H559l18.54-104.26S580.09,839.22,542.87,805Z\"/><path class=\"cls-6\" d=\"M596,801.16c.45,5.62,6.06,107.88,6.06,107.88v93.11l-16.55,1.77-10.64-99-32-99.92C547.71,802.34,583.16,797.33,596,801.16Z\"/><path class=\"cls-7\" d=\"M566.51,715.47c31.79,0,33.3,80.83,29.52,85.69s-49,8.17-53.16,3.83S526.9,715.47,566.51,715.47Z\"/><ellipse class=\"cls-4\" cx=\"607.86\" cy=\"679.96\" rx=\"11.73\" ry=\"5.25\" transform=\"translate(-100.59 1254.37) rotate(-87.24)\"/><polygon points=\"585.61 1010.89 585.61 1022.54 618.35 1022.54 618.35 1018.3 601.32 1010.89 585.61 1010.89\"/><polygon points=\"543.87 1009.05 543.87 1020.7 576.61 1020.7 576.61 1016.46 559.58 1009.05 543.87 1009.05\"/><rect x=\"585.55\" y=\"681.34\" width=\"3.86\" height=\"3.86\" transform=\"translate(-98.87 99.39) rotate(-8.92)\"/><path class=\"cls-3\" d=\"M568.84,722.5c0,2.67-12.41,3-12.41,0V696h12.41Z\"/><ellipse class=\"cls-8\" cx=\"568.46\" cy=\"688.32\" rx=\"13.03\" ry=\"19.89\"/><path class=\"cls-9\" d=\"M545.77,680.12c0-6.13,2.67-10,4.84-11.23,4.19-2.4,5.94-1.33,10.16-3.2,4.57-2,8.49-7.84,13.84-7.84,5,0,4.55,2.84,7.94,3.68,2,.49,13.36-2.12,13.36,5.23,0,11.32-12.57,12.24-15.48,13.69a37.43,37.43,0,0,0-1.52-3.83c-2.29,2.36-10.58,4-11.92,4.53-3.1,1.28-4.58,6.13-4.58,9.3s-2.87,3.18-3.59,3.18C552.19,693.63,545.77,689.38,545.77,680.12Z\"/><circle class=\"cls-8\" cx=\"556.67\" cy=\"691.67\" r=\"4.33\"/><rect class=\"cls-10\" x=\"512.81\" y=\"718.34\" width=\"25.14\" height=\"84.61\" rx=\"12.57\" ry=\"12.57\"/><ellipse class=\"cls-11\" cx=\"544.89\" cy=\"751.24\" rx=\"30.38\" ry=\"32.89\"/><path class=\"cls-4\" d=\"M576.84,736.83c2.53,0,15.29.53,20.48,2.4.4-2.53,2.66-38.77,6.51-50.91,1.47-1.62,7.45-1.43,7.45,0s8.51,60.88,0,67.93-37.37-2.4-38.56-3.33S576.84,736.83,576.84,736.83Z\"/><path class=\"cls-12\" d=\"M549.66,734.69c2.82-11.48,28.36-1.93,30.67.69,2.77,3.14-2.18,20.84-6,21.66C568.1,758.39,546,749.58,549.66,734.69Z\"/><polygon class=\"cls-12\" points=\"266.38 341.65 142.64 849.68 390.13 849.68 266.38 341.65\"/><polygon class=\"cls-5\" points=\"169.62 341.65 45.87 893.9 293.36 893.9 169.62 341.65\"/><line class=\"cls-13\" x1=\"170.29\" y1=\"891.44\" x2=\"170.29\" y2=\"395.36\"/><line class=\"cls-13\" x1=\"170.29\" y1=\"558.95\" x2=\"197.18\" y2=\"529.72\"/><line class=\"cls-13\" x1=\"170.29\" y1=\"698.94\" x2=\"210.7\" y2=\"655.02\"/><line class=\"cls-13\" x1=\"170.29\" y1=\"844.98\" x2=\"233.14\" y2=\"776.66\"/><line class=\"cls-13\" x1=\"170.29\" y1=\"558.95\" x2=\"143.4\" y2=\"529.72\"/><line class=\"cls-13\" x1=\"170.29\" y1=\"698.94\" x2=\"129.89\" y2=\"655.02\"/><line class=\"cls-13\" x1=\"170.29\" y1=\"844.98\" x2=\"107.44\" y2=\"776.66\"/><rect class=\"cls-6\" x=\"190.5\" y=\"734.34\" width=\"135.39\" height=\"197.16\" rx=\"67.69\" ry=\"67.69\"/><line class=\"cls-14\" x1=\"258.19\" y1=\"982.94\" x2=\"258.19\" y2=\"795.85\"/><path class=\"cls-14\" d=\"M258.19,875.41c37,0,37-22.28,37-56\"/><path class=\"cls-14\" d=\"M258.19,841.33c-25.65,0-25.65-15.47-25.65-38.84\"/><path class=\"cls-7\" d=\"M1152.37,849.68V667.57a81.52,81.52,0,0,0-81.28-81.28h0a81.65,81.65,0,0,0-13.07,1.06V377.78a55.64,55.64,0,0,0-55.63-55.64h0a55.64,55.64,0,0,0-55.64,55.64v44.86a80.64,80.64,0,0,0-26-4.31h0a81.52,81.52,0,0,0-81.28,81.29V649H804.08a55.7,55.7,0,0,0-55.53,55.53V833.86a55.18,55.18,0,0,0,2.32,15.82Z\"/><path class=\"cls-15\" d=\"M1000.16,740.85c91.61,0,91.61-41,91.61-103\"/><path class=\"cls-15\" d=\"M1000.25,795.48c-50.4,0-50.4-22.56-50.4-56.67\"/><line class=\"cls-15\" x1=\"1000.16\" y1=\"849.68\" x2=\"1000.16\" y2=\"364.17\"/><line class=\"cls-15\" x1=\"1000.16\" y1=\"637.85\" x2=\"949.94\" y2=\"587.62\"/><line class=\"cls-15\" x1=\"1000.16\" y1=\"534.21\" x2=\"1030.55\" y2=\"503.83\"/><path class=\"cls-2\" d=\"M750.49,341.65a47.18,47.18,0,0,0-86.25-35.55,37.43,37.43,0,0,0-52.84,34.1c0,.49,0,1,0,1.45Z\"/><path class=\"cls-2\" d=\"M291.91,268.28a47.18,47.18,0,0,1,86.25-35.55A37.4,37.4,0,0,1,431,266.83c0,.48,0,1,0,1.45Z\"/><path class=\"cls-6\" d=\"M924.33,936.06c-50.28,0-91,21.47-91,48h182.05C1015.35,957.53,974.6,936.06,924.33,936.06Z\"/><path class=\"cls-9\" d=\"M502.76,1006.93c-12.55,0-22.73,8.76-22.73,19.57H525.5C525.5,1015.69,515.32,1006.93,502.76,1006.93Z\"/><path class=\"cls-9\" d=\"M833.3,902.44c-12.56,0-22.73,13-22.73,29.06H856C856,915.45,845.85,902.44,833.3,902.44Z\"/><path class=\"cls-9\" d=\"M120.87,974.57c-20,0-36.16,6.51-36.16,14.53H157C157,981.08,140.84,974.57,120.87,974.57Z\"/><path class=\"cls-9\" d=\"M1030.55,974.57c-20,0-36.16,6.51-36.16,14.53h72.31C1066.7,981.08,1050.52,974.57,1030.55,974.57Z\"/><rect class=\"cls-6\" x=\"838.22\" y=\"746.55\" width=\"87.67\" height=\"127.66\" rx=\"43.83\" ry=\"43.83\"/><line class=\"cls-16\" x1=\"882.06\" y1=\"907.53\" x2=\"882.06\" y2=\"786.38\"/><path class=\"cls-16\" d=\"M882.06,837.9C906,837.9,906,823.47,906,801.64\"/><path class=\"cls-16\" d=\"M882.06,815.83c-16.61,0-16.61-10-16.61-25.16\"/><line class=\"cls-14\" x1=\"331.71\" y1=\"947.65\" x2=\"412.75\" y2=\"947.65\"/><line class=\"cls-14\" x1=\"668.4\" y1=\"893.9\" x2=\"722.14\" y2=\"893.9\"/><line class=\"cls-14\" x1=\"627.87\" y1=\"907.53\" x2=\"681.62\" y2=\"907.53\"/><line class=\"cls-14\" x1=\"116.88\" y1=\"918.64\" x2=\"170.63\" y2=\"918.64\"/><line class=\"cls-14\" x1=\"748.55\" y1=\"999.24\" x2=\"824.1\" y2=\"999.24\"/></svg>\n\t\t\t\t\t<h2 class=\"text-xl font-semibold\">Ya ampun! Data tidak ditemukan</h2>\n\t\t\t\t\t<p class=\"mt-2 leading-loose text-gray-600\">Apa yang kamu cari sehingga data tidak ditemukan? Tapi, sepertinya ini salah kami memiliki konten yang terlalu sedikit \uD83D\uDE3F.</p>\n\t\t\t\t</div>\n\t\t\t";
       return tpl;
     },
 
@@ -2726,7 +2738,7 @@ var api = {
     community: function community(_ref5) {
       var _community = _ref5.post,
           options = _ref5.options;
-      var tpl = "\n\t    \t\t<div class=\"bg-white rounded border border-gray-200 w-full\">\n\t    \t\t\t<div class=\"pb-8 pt-6 px-6\">\n\t    \t\t\t\t<div class=\"float-right\">\n\t    \t\t\t\t\t<a target=\"_blank\" ".concat(_community.website ? "href=\"".concat(_community.website, "\" ") : '', "class=\"").concat(!_community.website ? 'pointer-events-none opacity-50 ' : '', "flex leading-relaxed items-center hover:bg-indigo-600 hover:text-white hover:border-indigo-600 border border-gray-200 uppercase text-xs font-semibold tracking-wider py-1 px-3 rounded-full\">\n\t    \t\t\t\t\t\tWebsite\n\t    \t\t\t\t\t\t<svg class=\"ml-1 w-3 fill-current\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g data-name=\"Layer 2\"><g data-name=\"arrow-forward\"><rect width=\"24\" height=\"24\" transform=\"rotate(-90 12 12)\" opacity=\"0\"/><path d=\"M5 13h11.86l-3.63 4.36a1 1 0 0 0 1.54 1.28l5-6a1.19 1.19 0 0 0 .09-.15c0-.05.05-.08.07-.13A1 1 0 0 0 20 12a1 1 0 0 0-.07-.36c0-.05-.05-.08-.07-.13a1.19 1.19 0 0 0-.09-.15l-5-6A1 1 0 0 0 14 5a1 1 0 0 0-.64.23 1 1 0 0 0-.13 1.41L16.86 11H5a1 1 0 0 0 0 2z\"/></g></g></svg>\n\t    \t\t\t\t\t</a>\n\t    \t\t\t\t</div>\n\t    \t\t\t\t<div class=\"rounded p-2 w-16 h-16 flex-shrink-0 flex items-center justify-center border\" ").concat(_community.logo_bg ? 'style="background-color: ' + _community.logo_bg + ';"' : '', ">\n\t    \t\t\t\t\t<img src=\"").concat(_community.logo, "\" alt=\"").concat(_community.name, "\" class=\"w-full\">\n\t    \t\t\t\t</div>\n\t        \t\t\t<h2 class=\"font-bold text-lg mt-4 truncate\">").concat(_community.name, "</h2>\n\t        \t\t\t<p class=\"mt-1 text-sm text-gray-600 font-light leading-relaxed h-12\">").concat(_community.short_description, "</p>\n\t    \t\t\t</div>\n\t    \t\t\t<div class=\"flex px-6 pb-6\">\n\t    \t\t\t\t<div class=\"flex text-sm items-center\">\n\t    \t\t\t\t\t<svg class=\"w-5 mr-1 fill-current text-gray-600\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g data-name=\"Layer 2\"><g data-name=\"person\"><rect width=\"24\" height=\"24\" opacity=\"0\"/><path d=\"M12 11a4 4 0 1 0-4-4 4 4 0 0 0 4 4z\"/><path d=\"M18 21a1 1 0 0 0 1-1 7 7 0 0 0-14 0 1 1 0 0 0 1 1z\"/></g></g></svg>\n\t    \t\t\t\t\t").concat(_community.formatted_member, "+\n\t    \t\t\t\t</div>\n\t        \t\t\t<div class=\"inline-flex ml-auto\">\n\t        \t\t\t\t").concat(_community.facebook ? "\n\t        \t\t\t\t<a target=\"_blank\" href=\"".concat(_community.facebook, "\">\n\t        \t\t\t\t\t<svg class=\"fill-current text-gray-600 hover:text-indigo-600 w-5 mr-2\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g data-name=\"Layer 2\"><g data-name=\"facebook\"><rect width=\"24\" height=\"24\" transform=\"rotate(180 12 12)\" opacity=\"0\"/><path d=\"M17 3.5a.5.5 0 0 0-.5-.5H14a4.77 4.77 0 0 0-5 4.5v2.7H6.5a.5.5 0 0 0-.5.5v2.6a.5.5 0 0 0 .5.5H9v6.7a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-6.7h2.62a.5.5 0 0 0 .49-.37l.72-2.6a.5.5 0 0 0-.48-.63H13V7.5a1 1 0 0 1 1-.9h2.5a.5.5 0 0 0 .5-.5z\"/></g></g></svg>\n\t        \t\t\t\t</a>") : '', "\n\n\t        \t\t\t\t").concat(_community.twitter ? "\n\t        \t\t\t\t<a target=\"_blank\" href=\"".concat(_community.twitter, "\">\n\t\t\t\t\t\t\t\t<svg class=\"fill-current text-gray-600 hover:text-indigo-600 w-5 mr-2\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g data-name=\"Layer 2\"><g data-name=\"twitter\"><polyline points=\"0 0 24 0 24 24 0 24\" opacity=\"0\"/><path d=\"M8.08 20A11.07 11.07 0 0 0 19.52 9 8.09 8.09 0 0 0 21 6.16a.44.44 0 0 0-.62-.51 1.88 1.88 0 0 1-2.16-.38 3.89 3.89 0 0 0-5.58-.17A4.13 4.13 0 0 0 11.49 9C8.14 9.2 5.84 7.61 4 5.43a.43.43 0 0 0-.75.24 9.68 9.68 0 0 0 4.6 10.05A6.73 6.73 0 0 1 3.38 18a.45.45 0 0 0-.14.84A11 11 0 0 0 8.08 20\"/></g></g></svg>\n\t\t\t\t\t\t\t</a>") : '', "\n\n\t\t\t\t\t\t\t").concat(_community.github ? "\n\t        \t\t\t\t<a target=\"_blank\" href=\"".concat(_community.github, "\">\n\t        \t\t\t\t\t<svg class=\"fill-current text-gray-600 hover:text-indigo-600 w-5 mr-2\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g data-name=\"Layer 2\"><rect width=\"24\" height=\"24\" transform=\"rotate(180 12 12)\" opacity=\"0\"/><path d=\"M12 1A10.89 10.89 0 0 0 1 11.77 10.79 10.79 0 0 0 8.52 22c.55.1.75-.23.75-.52v-1.83c-3.06.65-3.71-1.44-3.71-1.44a2.86 2.86 0 0 0-1.22-1.58c-1-.66.08-.65.08-.65a2.31 2.31 0 0 1 1.68 1.11 2.37 2.37 0 0 0 3.2.89 2.33 2.33 0 0 1 .7-1.44c-2.44-.27-5-1.19-5-5.32a4.15 4.15 0 0 1 1.11-2.91 3.78 3.78 0 0 1 .11-2.84s.93-.29 3 1.1a10.68 10.68 0 0 1 5.5 0c2.1-1.39 3-1.1 3-1.1a3.78 3.78 0 0 1 .11 2.84A4.15 4.15 0 0 1 19 11.2c0 4.14-2.58 5.05-5 5.32a2.5 2.5 0 0 1 .75 2v2.95c0 .35.2.63.75.52A10.8 10.8 0 0 0 23 11.77 10.89 10.89 0 0 0 12 1\" data-name=\"github\"/></g></svg>\n\t\t\t\t\t\t\t</a>") : '', "\n\n\t\t\t\t\t\t\t").concat(_community.telegram ? "\n\t        \t\t\t\t<a target=\"_blank\" href=\"".concat(_community.telegram, "\">\n\t        \t\t\t\t\t<svg class=\"fill-current text-gray-600 hover:text-indigo-600 w-5\" role=\"img\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><path d=\"M23.91 3.79L20.3 20.84c-.25 1.21-.98 1.5-2 .94l-5.5-4.07-2.66 2.57c-.3.3-.55.56-1.1.56-.72 0-.6-.27-.84-.95L6.3 13.7l-5.45-1.7c-1.18-.35-1.19-1.16.26-1.75l21.26-8.2c.97-.43 1.9.24 1.53 1.73z\"/></svg>\n\t\t\t\t\t\t\t</a>") : '', "\n\t        \t\t\t</div>\n\t        \t\t</div>\n\t    \t\t</div>\n\t    \t");
+      var tpl = "\n\t    \t\t<div class=\"bg-white rounded border border-gray-200 w-full\">\n\t    \t\t\t<div class=\"pb-8 pt-6 px-6\">\n\t    \t\t\t\t<div class=\"float-right\">\n\t    \t\t\t\t\t<a target=\"_blank\" ".concat(_community.website ? "href=\"".concat(_community.website, "\" ") : '', "class=\"").concat(!_community.website ? 'pointer-events-none opacity-50 ' : '', "flex leading-relaxed items-center hover:bg-indigo-600 hover:text-white hover:border-indigo-600 border border-gray-200 uppercase text-sm font-semibold tracking-wider py-1 px-3 rounded-full\">\n\t    \t\t\t\t\t\tWebsite\n\t    \t\t\t\t\t\t<svg class=\"ml-1 w-3 fill-current\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g data-name=\"Layer 2\"><g data-name=\"arrow-forward\"><rect width=\"24\" height=\"24\" transform=\"rotate(-90 12 12)\" opacity=\"0\"/><path d=\"M5 13h11.86l-3.63 4.36a1 1 0 0 0 1.54 1.28l5-6a1.19 1.19 0 0 0 .09-.15c0-.05.05-.08.07-.13A1 1 0 0 0 20 12a1 1 0 0 0-.07-.36c0-.05-.05-.08-.07-.13a1.19 1.19 0 0 0-.09-.15l-5-6A1 1 0 0 0 14 5a1 1 0 0 0-.64.23 1 1 0 0 0-.13 1.41L16.86 11H5a1 1 0 0 0 0 2z\"/></g></g></svg>\n\t    \t\t\t\t\t</a>\n\t    \t\t\t\t</div>\n\t    \t\t\t\t<div class=\"rounded p-2 w-16 h-16 flex-shrink-0 flex items-center justify-center border\" ").concat(_community.logo_bg ? 'style="background-color: ' + _community.logo_bg + ';"' : '', ">\n\t    \t\t\t\t\t<img src=\"").concat(_community.logo, "\" alt=\"").concat(_community.name, "\" class=\"w-full\">\n\t    \t\t\t\t</div>\n\t        \t\t\t<h2 class=\"font-bold text-lg mt-4 truncate\">").concat(_community.name, "</h2>\n\t        \t\t\t<p class=\"mt-1 text-gray-600 font-light leading-relaxed h-12\">").concat(_community.short_description, "</p>\n\t    \t\t\t</div>\n\t    \t\t\t<div class=\"flex px-6 pb-6\">\n\t    \t\t\t\t<div class=\"flex items-center\">\n\t    \t\t\t\t\t<svg class=\"w-5 mr-1 fill-current text-gray-600\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g data-name=\"Layer 2\"><g data-name=\"person\"><rect width=\"24\" height=\"24\" opacity=\"0\"/><path d=\"M12 11a4 4 0 1 0-4-4 4 4 0 0 0 4 4z\"/><path d=\"M18 21a1 1 0 0 0 1-1 7 7 0 0 0-14 0 1 1 0 0 0 1 1z\"/></g></g></svg>\n\t    \t\t\t\t\t").concat(_community.formatted_member, "+\n\t    \t\t\t\t</div>\n\t        \t\t\t<div class=\"inline-flex ml-auto\">\n\t        \t\t\t\t").concat(_community.facebook ? "\n\t        \t\t\t\t<a target=\"_blank\" href=\"".concat(_community.facebook, "\">\n\t        \t\t\t\t\t<svg class=\"fill-current text-gray-600 hover:text-indigo-600 w-5 mr-2\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g data-name=\"Layer 2\"><g data-name=\"facebook\"><rect width=\"24\" height=\"24\" transform=\"rotate(180 12 12)\" opacity=\"0\"/><path d=\"M17 3.5a.5.5 0 0 0-.5-.5H14a4.77 4.77 0 0 0-5 4.5v2.7H6.5a.5.5 0 0 0-.5.5v2.6a.5.5 0 0 0 .5.5H9v6.7a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-6.7h2.62a.5.5 0 0 0 .49-.37l.72-2.6a.5.5 0 0 0-.48-.63H13V7.5a1 1 0 0 1 1-.9h2.5a.5.5 0 0 0 .5-.5z\"/></g></g></svg>\n\t        \t\t\t\t</a>") : '', "\n\n\t        \t\t\t\t").concat(_community.twitter ? "\n\t        \t\t\t\t<a target=\"_blank\" href=\"".concat(_community.twitter, "\">\n\t\t\t\t\t\t\t\t<svg class=\"fill-current text-gray-600 hover:text-indigo-600 w-5 mr-2\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g data-name=\"Layer 2\"><g data-name=\"twitter\"><polyline points=\"0 0 24 0 24 24 0 24\" opacity=\"0\"/><path d=\"M8.08 20A11.07 11.07 0 0 0 19.52 9 8.09 8.09 0 0 0 21 6.16a.44.44 0 0 0-.62-.51 1.88 1.88 0 0 1-2.16-.38 3.89 3.89 0 0 0-5.58-.17A4.13 4.13 0 0 0 11.49 9C8.14 9.2 5.84 7.61 4 5.43a.43.43 0 0 0-.75.24 9.68 9.68 0 0 0 4.6 10.05A6.73 6.73 0 0 1 3.38 18a.45.45 0 0 0-.14.84A11 11 0 0 0 8.08 20\"/></g></g></svg>\n\t\t\t\t\t\t\t</a>") : '', "\n\n\t\t\t\t\t\t\t").concat(_community.github ? "\n\t        \t\t\t\t<a target=\"_blank\" href=\"".concat(_community.github, "\">\n\t        \t\t\t\t\t<svg class=\"fill-current text-gray-600 hover:text-indigo-600 w-5 mr-2\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g data-name=\"Layer 2\"><rect width=\"24\" height=\"24\" transform=\"rotate(180 12 12)\" opacity=\"0\"/><path d=\"M12 1A10.89 10.89 0 0 0 1 11.77 10.79 10.79 0 0 0 8.52 22c.55.1.75-.23.75-.52v-1.83c-3.06.65-3.71-1.44-3.71-1.44a2.86 2.86 0 0 0-1.22-1.58c-1-.66.08-.65.08-.65a2.31 2.31 0 0 1 1.68 1.11 2.37 2.37 0 0 0 3.2.89 2.33 2.33 0 0 1 .7-1.44c-2.44-.27-5-1.19-5-5.32a4.15 4.15 0 0 1 1.11-2.91 3.78 3.78 0 0 1 .11-2.84s.93-.29 3 1.1a10.68 10.68 0 0 1 5.5 0c2.1-1.39 3-1.1 3-1.1a3.78 3.78 0 0 1 .11 2.84A4.15 4.15 0 0 1 19 11.2c0 4.14-2.58 5.05-5 5.32a2.5 2.5 0 0 1 .75 2v2.95c0 .35.2.63.75.52A10.8 10.8 0 0 0 23 11.77 10.89 10.89 0 0 0 12 1\" data-name=\"github\"/></g></svg>\n\t\t\t\t\t\t\t</a>") : '', "\n\n\t\t\t\t\t\t\t").concat(_community.telegram ? "\n\t        \t\t\t\t<a target=\"_blank\" href=\"".concat(_community.telegram, "\">\n\t        \t\t\t\t\t<svg class=\"fill-current text-gray-600 hover:text-indigo-600 w-5\" role=\"img\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><path d=\"M23.91 3.79L20.3 20.84c-.25 1.21-.98 1.5-2 .94l-5.5-4.07-2.66 2.57c-.3.3-.55.56-1.1.56-.72 0-.6-.27-.84-.95L6.3 13.7l-5.45-1.7c-1.18-.35-1.19-1.16.26-1.75l21.26-8.2c.97-.43 1.9.24 1.53 1.73z\"/></svg>\n\t\t\t\t\t\t\t</a>") : '', "\n\t        \t\t\t</div>\n\t        \t\t</div>\n\t    \t\t</div>\n\t    \t");
       return tpl;
     },
 
@@ -2735,22 +2747,40 @@ var api = {
      * @return {String}           Interpolated template string
      */
     communityShimmer: function communityShimmer() {
-      var tpl = "\n\t\t    \t<div class=\"w-full\">\n\t\t    \t\t<div class=\"bg-white rounded border border-gray-200\">\n\t\t    \t\t\t<div class=\"pb-8 pt-6 px-6\">\n\t\t    \t\t\t\t<div class=\"float-right\">\n\t\t    \t\t\t\t\t<div class=\"flex py-1 px-3 rounded-full bg-gray-200 w-16 h-6\">\n\t\t    \t\t\t\t\t</div>\n\t\t    \t\t\t\t</div>\n\t\t    \t\t\t\t<div class=\"rounded p-2 w-16 h-16 flex-shrink-0 bg-gray-100\"></div>\n\t\t        \t\t\t<h2 class=\"mt-4 w-32 h-6 bg-gray-200 rounded\"></h2>\n\t\t        \t\t\t<div class=\"mt-3 bg-gray-100 h-3 rounded w-full\"></div>\n\t\t        \t\t\t<div class=\"mt-2 bg-gray-100 h-3 rounded w-20\"></div>\n\t\t    \t\t\t</div>\n\t\t    \t\t\t<div class=\"flex px-6 pb-6\">\n\t\t    \t\t\t\t<div class=\"flex text-sm items-center\">\n\t\t\t    \t\t\t\t<div class=\"rounded w-16 h-4 bg-gray-200\"></div>\n\t\t    \t\t\t\t</div>\n\t\t        \t\t\t<div class=\"inline-flex ml-auto\">\n\t\t\t    \t\t\t\t<div class=\"rounded h-4 w-4 bg-gray-100 mr-2\"></div>\n\t\t\t    \t\t\t\t<div class=\"rounded h-4 w-4 bg-gray-100 mr-2\"></div>\n\t\t\t    \t\t\t\t<div class=\"rounded h-4 w-4 bg-gray-100 mr-2\"></div>\n\t\t\t    \t\t\t\t<div class=\"rounded h-4 w-4 bg-gray-100\"></div>\n\t\t        \t\t\t</div>\n\t\t        \t\t</div>\n\t\t    \t\t</div>\n\t\t    \t</div>\n\t\t\t";
+      var tpl = "\n\t\t    \t<div class=\"w-full\">\n\t\t    \t\t<div class=\"bg-white rounded border border-gray-200\">\n\t\t    \t\t\t<div class=\"pb-8 pt-6 px-6\">\n\t\t    \t\t\t\t<div class=\"float-right\">\n\t\t    \t\t\t\t\t<div class=\"flex py-1 px-3 rounded-full bg-gray-200 w-16 h-6\">\n\t\t    \t\t\t\t\t</div>\n\t\t    \t\t\t\t</div>\n\t\t    \t\t\t\t<div class=\"rounded p-2 w-16 h-16 flex-shrink-0 bg-gray-100\"></div>\n\t\t        \t\t\t<h2 class=\"mt-4 w-32 h-6 bg-gray-200 rounded\"></h2>\n\t\t        \t\t\t<div class=\"mt-3 bg-gray-100 h-3 rounded w-full\"></div>\n\t\t        \t\t\t<div class=\"mt-2 bg-gray-100 h-3 rounded w-20\"></div>\n\t\t    \t\t\t</div>\n\t\t    \t\t\t<div class=\"flex px-6 pb-6\">\n\t\t    \t\t\t\t<div class=\"flex items-center\">\n\t\t\t    \t\t\t\t<div class=\"rounded w-16 h-4 bg-gray-200\"></div>\n\t\t    \t\t\t\t</div>\n\t\t        \t\t\t<div class=\"inline-flex ml-auto\">\n\t\t\t    \t\t\t\t<div class=\"rounded h-4 w-4 bg-gray-100 mr-2\"></div>\n\t\t\t    \t\t\t\t<div class=\"rounded h-4 w-4 bg-gray-100 mr-2\"></div>\n\t\t\t    \t\t\t\t<div class=\"rounded h-4 w-4 bg-gray-100 mr-2\"></div>\n\t\t\t    \t\t\t\t<div class=\"rounded h-4 w-4 bg-gray-100\"></div>\n\t\t        \t\t\t</div>\n\t\t        \t\t</div>\n\t\t    \t\t</div>\n\t\t    \t</div>\n\t\t\t";
+      return tpl;
+    },
+    compTags: function compTags(_ref6) {
+      var post = _ref6.post;
+      var tpl = "\n\t\t        <div class=\"flex flex-wrap\">\n\t\t        ".concat(post.tags.map(function (tag) {
+        if (tag.tag !== null) {
+          return "<a class=\"mt-2 border border-gray-300 bg-gray-100 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded py-1 px-3\" href=\"".concat(routes.search + Object(_utils_full_url_with_query__WEBPACK_IMPORTED_MODULE_7__["default"])({
+            tag: tag.tag.name
+          }), "\">\n\t                        #").concat(tag.tag.name, "\n\t                    </a>");
+        } else {
+          return '';
+        }
+      }).join(''), "\n\t\t        </div>\n\t\t\t");
+      return tpl;
+    },
+    compCtas: function compCtas(_ref7) {
+      var post = _ref7.post;
+      var tpl = "\n\t\t\t\t<div class=\"border-t border-gray-200\">\n\t\t\t\t    <div class=\"flex w-full items-center\">\n\t\t\t\t        <a data-love ".concat(post.is_post_loved ? 'data-loved' : '', " class=\"py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200\" href=\"#\">\n\t\t\t\t            <span></span> \n\t\t\t\t            <div class=\"ml-2 inline-block post-love-count\">").concat(post.total_loves, "</div>\n\t\t\t\t        </a>\n\t\t\t\t        ").concat(post.type !== 'link' ? "<a class=\"py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200\" href=\"".concat(routes.post_single.replace(/username/g, post.user.username).replace(/slug/g, post.slug) + '#comments', "\">\n\t\t\t\t            <svg class=\"stroke-current\" xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#000000\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z\"></path></svg> \n\t\t\t\t            <div class=\"ml-2 inline-block post-comment-count\">").concat(post.total_comments, "</div>\n\t\t\t\t        </a>") : '', "\n\t\t\t\t        <a class=\"py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200\" data-save ").concat(post.is_post_saved ? 'data-saved' : '', " href=\"#\">\n\t\t\t\t        \t<span></span>\n\t\t\t\t            <div class=\"ml-2 inline-block post-save-count\">").concat(post.total_saves, "</div>\n\t\t\t\t        </a>\n\t\t\t\t        <a data-url=\"").concat(routes.post_single.replace(/username/g, post.user.username).replace(/slug/g, post.slug), "\" class=\"share-button py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200\" href=\"#\">\n\t\t\t\t            <svg class=\"stroke-current\" xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#000000\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"18\" cy=\"5\" r=\"3\"></circle><circle cx=\"6\" cy=\"12\" r=\"3\"></circle><circle cx=\"18\" cy=\"19\" r=\"3\"></circle><line x1=\"8.59\" y1=\"13.51\" x2=\"15.42\" y2=\"17.49\"></line><line x1=\"15.41\" y1=\"6.51\" x2=\"8.59\" y2=\"10.49\"></line></svg>\n\t\t\t\t        </a>\n\t\t\t\t    </div>\n\t\t\t\t</div>\n\t\t\t");
       return tpl;
     },
 
     /**
-     * Post template
+     * General post template
      * @param  {Object} options.post    Post data
      * @param  {Object} options.options Instance options
      * @return {String}                 Interpolated template string
      */
-    post: function post(_ref6) {
-      var _post = _ref6.post,
-          options = _ref6.options;
-      var tpl = "\n\t\t\t<div class=\"bg-white rounded border border-gray-200 mb-10\">\n\t\t\t    <div class=\"flex p-6 items-center\">\n\t\t\t        <a href=\"".concat(routes.single + _post.user.the_username, "\">\n\t\t\t            <img class=\"rounded w-12 rounded border\" src=\"").concat(_post.user.the_avatar_sm, "\">\n\t\t\t        </a>\n\t\t\t        <div class=\"ml-3\">\n\t\t\t            <h4 class=\"mb-1 font-bold\">\n\t\t\t                <a class=\"text-indigo-600\" href=\"").concat(routes.single + _post.user.the_username, "\">\n\t\t\t                    ").concat(_post.user.name, "\n\t\t\t                </a>\n\t\t\t            </h4>\n\t\t\t            <div class=\"-mx-1 flex items-center text-xs text-gray-500\">\n\t\t\t                <p class=\"mx-1\">").concat(_post.user.the_username, "</p>\n\t\t\t                <p class=\"mx-1\">&bull;</p>\n\t\t\t                <p class=\"mx-1 text-blue-500 font-semibold\">").concat(_post.time, "</p>\n\t\t\t            </div>\n\t\t\t        </div>\n\t\t\t    </div>\n\n\t\t\t    ").concat(_post.type == 'link' ? "\n\t\t\t\t    <div class=\"md:border border-b border-t md:rounded md:mx-6\">\n\n\t\t\t\t        ".concat(_post.post_card.has_embeddable_code ? "\n\n\t\t\t\t            <div class=\"embeddable-frame\">\n\t\t\t\t                ".concat(_post.post_card.embeddable_code, "\n\t\t\t\t            </div>") : // else
+    post: function post(_ref8) {
+      var _post = _ref8.post,
+          options = _ref8.options;
+      var tpl = "\n\t\t\t<div class=\"bg-white rounded border border-gray-200 mb-10\">\n\t\t\t    <div class=\"flex p-6 items-center\">\n\t\t\t        <a href=\"".concat(routes.single + _post.user.username, "\">\n\t\t\t            <img class=\"rounded w-12 rounded border\" src=\"").concat(_post.user.the_avatar_sm, "\">\n\t\t\t        </a>\n\t\t\t        <div class=\"ml-3\">\n\t\t\t            <h4 class=\"font-semibold\">\n\t\t\t                <a class=\"text-lg\" href=\"").concat(routes.single + _post.user.username, "\">\n\t\t\t                    ").concat(_post.user.name, "\n\t\t\t                </a>\n\t\t\t            </h4>\n\t\t\t            <div class=\"-mx-1 flex items-center text-sm text-gray-500\">\n\t\t\t                <p class=\"mx-1\">@").concat(_post.user.username, "</p>\n\t\t\t                <p class=\"mx-1\">&bull;</p>\n\t\t\t                <p class=\"mx-1 font-semibold\">").concat(_post.time, "</p>\n\t\t\t            </div>\n\t\t\t        </div>\n\t\t\t    </div>\n\n\t\t\t    ").concat(_post.type == 'link' ? "\n\t\t\t\t    <div class=\"md:border border-b border-t md:rounded md:mx-6\">\n\n\t\t\t\t        ".concat(_post.post_card.has_embeddable_code ? "\n\n\t\t\t\t            <div class=\"embeddable-frame\">\n\t\t\t\t                ".concat(_post.post_card.embeddable_code, "\n\t\t\t\t            </div>") : // else
       "\n\t\t\t\t        \t<a href=\"".concat(_post.post_card.url, "\" target=\"_blank\">\n\t\t\t\t        \t").concat(_post.post_card.thumbnail !== null ? "<img src=\"".concat(_post.post_card.thumbnail, "\" class=\"w-full h-64 object-cover\">") : // else
-      "<img src=\"".concat(_post.post_card.default_thumbnail, "\" class=\"w-full h-64 object-scale-down\">"), "\n\t\t\t\t\t        </a>\n\t\t\t\t        "), "\n\n\t\t\t\t        <div class=\"p-4 border-t bg-gray-100\">\n\t\t\t\t        \n\t\t\t\t            <h2 class=\"md:text-lg mb-2 text-base font-semibold hover:text-indigo-600\"><a target=\"_blank\" href=\"").concat(_post.post_card.url, "\">").concat(_post.post_card.title, "</a></h2>\n\n\t\t\t\t            ").concat(_post.post_card.description ? "\n\t\t\t\t                <p class=\"text-gray-600 text-sm break-all\"><a target=\"_blank\" href=\"".concat(_post.post_card.url, "\">").concat(_post.post_card.description.substr(0, 200), "</a></p>\n\t\t\t\t            ") : '', "\n\t\t\t\t            <div class=\"uppercase tracking-wider text-xs mt-3 text-teal-500 font-semibold\"><a target=\"_blank\" href=\"//").concat(Object(_utils_get_hostname__WEBPACK_IMPORTED_MODULE_10__["default"])(_post.post_card.url), "\">").concat(Object(_utils_get_hostname__WEBPACK_IMPORTED_MODULE_10__["default"])(_post.post_card.url), "</a></div>\n\t\t\t\t        </div>\n\t\t\t\t    </div>\n\t\t\t    ") : "", "\n\n\t\t\t    ").concat(_post.type !== 'link' ? "\n\t\t\t    \n\t\t\t    <div class=\"relative".concat(_post.content_object.length > 1 && options.carousel ? ' carousel-outer w-full' : '', "\"> \n\t\t\t        <div class=\"").concat(_post.content_object.length > 1 && options.carousel ? 'carousel w-full' : '', "\">\n\t\t\t            \n\t\t\t            ").concat('carousel' in options && options.carousel == false ? "<a href=\"".concat(routes.single + _post.slug, "\">\n\t\t\t                    <div data-blurry=\"").concat(_post.blurry_image, "\" data-src=\"").concat(_post.first_slide_media, "\" class=\"lazy-image w-full bg-gray-200 bg-cover h-40 sm:h-64\"></div>\n\t\t\t                </a>") : // else
+      "<img src=\"".concat(_post.post_card.default_thumbnail, "\" class=\"w-full h-64 object-scale-down\">"), "\n\t\t\t\t\t        </a>\n\t\t\t\t        "), "\n\n\t\t\t\t        <div class=\"p-4 border-t bg-gray-100\">\n\t\t\t\t        \n\t\t\t\t            <h2 class=\"md:text-lg mb-2 text-base font-semibold hover:text-indigo-600\"><a target=\"_blank\" href=\"").concat(_post.post_card.url, "\">").concat(_post.post_card.title, "</a></h2>\n\n\t\t\t\t            ").concat(_post.post_card.description ? "\n\t\t\t\t                <p class=\"text-gray-600 break-all\"><a target=\"_blank\" href=\"".concat(_post.post_card.url, "\">").concat(_post.post_card.description.substr(0, 200), "</a></p>\n\t\t\t\t            ") : '', "\n\t\t\t\t            <div class=\"uppercase tracking-wider text-sm mt-3 text-teal-500 font-semibold\"><a target=\"_blank\" href=\"//").concat(Object(_utils_get_hostname__WEBPACK_IMPORTED_MODULE_10__["default"])(_post.post_card.url), "\">").concat(Object(_utils_get_hostname__WEBPACK_IMPORTED_MODULE_10__["default"])(_post.post_card.url), "</a></div>\n\t\t\t\t        </div>\n\t\t\t\t    </div>\n\t\t\t    ") : "", "\n\n\t\t\t    ").concat(_post.type !== 'link' ? "\n\t\t\t    \n\t\t\t    <div class=\"relative".concat(_post.content_object.length > 1 && options.carousel ? ' carousel-outer w-full' : '', "\"> \n\t\t\t        <div class=\"").concat(_post.content_object.length > 1 && options.carousel ? 'carousel w-full' : '', "\">\n\t\t\t            \n\t\t\t            ").concat('carousel' in options && options.carousel == false ? "<a href=\"".concat(routes.post_single.replace(/username/g, _post.user.username).replace(/slug/g, _post.slug), "\">\n\t\t\t                    <div data-blurry=\"").concat(_post.blurry_image, "\" data-src=\"").concat(!_post.is_markdown ? _post.first_slide_media : _post.cover, "\" class=\"lazy-image w-full bg-gray-200 bg-cover h-40 sm:h-64\"></div>\n\t\t\t                </a>") : // else
       _post.content_object.map(function (slide) {
         var img = slide.url;
 
@@ -2759,17 +2789,23 @@ var api = {
         } else {
           return "<img src=\"".concat(img, "\" alt=\"image\">");
         }
-      }).join(""), "\n\t\t\t        </div>\n\n\t\t\t        ").concat(_post.content_object.length > 1 && options.carousel !== false ? "\n\t\t\t\t        <button class=\"prev\">&lsaquo;</button>\n\t\t\t\t        <button class=\"next\">&rsaquo;</button>" : '', "\n\t\t\t    </div>\n\t\t\t    ") : '', "\n\n\t\t\t    <div class=\"p-6 text-gray-700 text-sm leading-relaxed\">\n\t\t\t        ").concat(_post.title ? "<h2 class=\"text-xl mb-2 text-black font-bold\"><a class=\"text-indigo-600\" href=\"".concat(routes.single + _post.slug, "\">\n\t\t\t\t            ").concat(_post.title, "\n\t\t\t\t        </a></h2>") : '', "\n\n\t\t\t        ").concat(!options.discover && _post.type !== 'link' && (options.truncate_content || !options.truncate_content && _post.is_single_caption) ? "<div class=\"mb-3\">".concat(options.truncate_content ? _post.first_slide_caption_truncated : _post.first_slide_caption, "</div>") : '', "\n\n\t\t\t        ").concat(!options.discover && !options.truncate_content && !_post.is_single_caption ? _post.content_object.map(function (slide, index) {
+      }).join(""), "\n\t\t\t        </div>\n\n\t\t\t        ").concat(_post.content_object.length > 1 && options.carousel !== false ? "\n\t\t\t\t        <button class=\"prev\">&lsaquo;</button>\n\t\t\t\t        <button class=\"next\">&rsaquo;</button>" : '', "\n\t\t\t    </div>\n\t\t\t    ") : '', "\n\n\t\t\t    <div class=\"p-6 text-gray-700 leading-relaxed\">\n\t\t\t        ").concat(_post.title ? "<h2 class=\"text-xl mb-2 text-black font-bold\"><a class=\"text-indigo-600\" href=\"".concat(routes.post_single.replace(/username/g, _post.user.username).replace(/slug/g, _post.slug), "\">\n\t\t\t\t            ").concat(_post.title, "\n\t\t\t\t        </a></h2>") : '', "\n\n\t\t\t        ").concat(!options.discover && _post.type !== 'link' && (options.truncate_content || !options.truncate_content && _post.is_single_caption) ? "<div class=\"mb-3\">".concat(options.truncate_content ? _post.is_markdown ? _post.content_markdown_truncated : _post.first_slide_caption_truncated : _post.first_slide_caption, "</div>") : '', "\n\n\t\t\t        ").concat(!options.discover && !options.truncate_content && !_post.is_single_caption ? _post.content_object.map(function (slide, index) {
         return "<div data-index=\"".concat(index, "\" class=\"mb-3 markdowned ").concat(index != 0 ? 'hidden' : '', "\">").concat(slide.caption || '<i>Tidak ada keterangan</i>', "</div>");
-      }).join('') : '', "\n\n\t\t\t        <div class=\"flex flex-wrap\">\n\t\t\t        ").concat(_post.tags.map(function (tag) {
-        if (tag.tag !== null) {
-          return "<a class=\"mt-2 border border-gray-300 bg-gray-100 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded py-1 px-3 text-xs\" href=\"".concat(routes.search + Object(_utils_full_url_with_query__WEBPACK_IMPORTED_MODULE_7__["default"])({
-            tag: tag.tag.name
-          }), "\">\n\t\t                        #").concat(tag.tag.name, "\n\t\t                    </a>");
-        } else {
-          return '';
-        }
-      }).join(''), "\n\t\t\t        </div>\n\n\t\t\t    </div>\n\t\t        <div class=\"border-t border-gray-200\">\n\t\t            <div class=\"flex w-full items-center\">\n\t\t                <a data-love ").concat(_post.is_post_loved ? 'data-loved' : '', " class=\"py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200\" href=\"#\">\n\t\t                    <span></span> \n\t\t                    <div class=\"ml-2 inline-block post-love-count\">").concat(_post.total_loves, "</div>\n\t\t                </a>\n\t\t                <a class=\"py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200\" href=\"").concat(routes.single + _post.slug + '#comments', "\">\n\t\t                    <svg class=\"stroke-current\" xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#000000\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z\"></path></svg> \n\t\t                    <div class=\"ml-2 inline-block post-comment-count\">").concat(_post.total_comments, "</div>\n\t\t                </a>\n\t\t                <a class=\"py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200\" data-save ").concat(_post.is_post_saved ? 'data-saved' : '', " href=\"#\">\n\t\t                \t<span></span>\n\t\t                    <div class=\"ml-2 inline-block post-save-count\">").concat(_post.total_saves, "</div>\n\t\t                </a>\n\t\t                <a data-url=\"").concat(routes.single + _post.slug, "\" class=\"share-button py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200\" href=\"#\">\n\t\t                    <svg class=\"stroke-current\" xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#000000\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"18\" cy=\"5\" r=\"3\"></circle><circle cx=\"6\" cy=\"12\" r=\"3\"></circle><circle cx=\"18\" cy=\"19\" r=\"3\"></circle><line x1=\"8.59\" y1=\"13.51\" x2=\"15.42\" y2=\"17.49\"></line><line x1=\"15.41\" y1=\"6.51\" x2=\"8.59\" y2=\"10.49\"></line></svg>\n\t\t                </a>\n\t\t            </div>\n\t\t        </div>\n\t\t\t</div>");
+      }).join('') : '', "\n\n\t\t        \t").concat(this.compTags({
+        post: _post
+      }), "\n\t\t\t    </div>\n\n\t\t\t    ").concat(this.compCtas({
+        post: _post
+      }), "\n\t\t\t</div>");
+      return tpl;
+    },
+    markdown: function markdown(_ref9) {
+      var post = _ref9.post,
+          options = _ref9.options;
+      var tpl = "\n\t\t\t\t<div class=\"mb-10\">\n\t\t\t\t\t<img src=\"".concat(post.cover, "\" class=\"rounded-tl rounded-tr\" />\n\n\t\t\t\t\t<div class=\"border border-gray-200 rounded-bl rounded-br\">\n\t\t\t\t\t\t<div class=\"p-8\">\n\t\t\t\t\t\t\t<h1 class=\"text-4xl font-bold\">").concat(post.title, "</h1>\n\t\t\t\t\t\t\t<div class=\"flex items-center text-gray-600 -mx-2 mt-4 mb-8 border-t border-b border-gray-200 py-4\">\n\t\t\t\t\t\t\t\t<div class=\"px-2 flex items-center\">\n\t\t\t\t\t\t\t\t\t<img class=\"w-8 h-8 rounded-full\" src=\"").concat(user.the_avatar, "\">\n\t\t\t\t\t\t\t\t\t<div class=\"ml-2\">\n\t\t\t\t\t\t\t\t\t\t<a class=\"text-indigo-600 hover:text-indigo-800 font-semibold\" href=\"").concat(routes.single + user.username, "\">").concat(user.name, "</a>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"px-2\">&bull;</div>\n\t\t\t\t\t\t\t\t<div class=\"px-2\">").concat(post.time, "</div>\n\t\t\t\t\t\t\t\t<div class=\"px-2\">&bull;</div>\n\t\t\t\t\t\t\t\t<div class=\"px-2\">").concat(post.ert, " baca</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t<div class=\"markdowned markdowned-mdpost mb-4\">\n\t\t\t\t\t\t\t\t").concat(post.content_markdown, "\n\t\t\t\t\t\t\t</div>\n\n\t\t\t\t        \t").concat(this.compTags({
+        post: post
+      }), "\n\t\t\t        \t</div>\n\t\t\t\t\t    ").concat(this.compCtas({
+        post: post
+      }), "\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t");
       return tpl;
     },
 
@@ -2873,13 +2909,13 @@ var api = {
   query: function () {
     var _query = _asyncToGenerator(
     /*#__PURE__*/
-    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(_ref7, init) {
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(_ref10, init) {
       var page, queryPending, url, buildParams, objParams, params, http;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
-              page = _ref7.page, queryPending = _ref7.queryPending, url = _ref7.url, buildParams = _ref7.buildParams;
+              page = _ref10.page, queryPending = _ref10.queryPending, url = _ref10.url, buildParams = _ref10.buildParams;
 
               if (!(queryPending.status == true)) {
                 _context3.next = 3;
@@ -2966,6 +3002,7 @@ var api = {
   defOptions: {
     first: false,
     carousel: false,
+    syntax: false,
     truncate_content: false,
     discover: false,
     page: 1,
@@ -3044,19 +3081,20 @@ var api = {
      * @param  {Object} options.interactions 	List of interactions we have
      * @param  {Object} options.options      	Instance Options
      */
-    attach: function attach(_ref8) {
-      var data = _ref8.post,
-          element = _ref8.element,
-          interactions = _ref8.interactions,
-          options = _ref8.options;
+    attach: function attach(_ref11) {
+      var data = _ref11.post,
+          element = _ref11.element,
+          interactions = _ref11.interactions,
+          options = _ref11.options;
       var types = post.types; // if post type is discover or post
 
-      if (options.type == types.POST || options.type == types.DISCOVER) {
+      if (options.type == types.POST || options.type == types.DISCOVER || options.type == types.MARKDOWN) {
         interactions.love(element, data.id);
         interactions.save(element, data.id);
         interactions.share(element);
         if (options.carousel && Object(_utils_find__WEBPACK_IMPORTED_MODULE_9__["default"])(element, '.carousel')) interactions.carousel(element);
         if (options.lazyimage !== false) interactions.lazyimage(element);
+        if (options.syntax !== false) interactions.syntax(element);
       }
     }
   },
@@ -3072,16 +3110,16 @@ var api = {
    * @param  {Object}    options.args         Spread operator
    * @return {Promise}                        Resolve or Reject
    */
-  templating: function templating(_ref9) {
-    var res = _ref9.data,
-        direct = _ref9.direct,
-        prepend = _ref9.prepend,
-        render = _ref9.render,
-        options = _ref9.options,
-        templates = _ref9.templates,
-        interactions = _ref9.interactions,
-        events = _ref9.events,
-        args = _objectWithoutProperties(_ref9, ["data", "direct", "prepend", "render", "options", "templates", "interactions", "events"]);
+  templating: function templating(_ref12) {
+    var res = _ref12.data,
+        direct = _ref12.direct,
+        prepend = _ref12.prepend,
+        render = _ref12.render,
+        options = _ref12.options,
+        templates = _ref12.templates,
+        interactions = _ref12.interactions,
+        events = _ref12.events,
+        args = _objectWithoutProperties(_ref12, ["data", "direct", "prepend", "render", "options", "templates", "interactions", "events"]);
 
     var posts = res.data;
     var wrapper = document.createDocumentFragment(); // append post element to the wrapper
@@ -3193,11 +3231,11 @@ var api = {
    * @param  {Object}  options.args 	More args
    * @return {Promise}                Resolve or reject
    */
-  render: function render(_ref10) {
-    var elem = _ref10.elem,
-        dom = _ref10.dom,
-        prepend = _ref10.prepend,
-        args = _objectWithoutProperties(_ref10, ["elem", "dom", "prepend"]);
+  render: function render(_ref13) {
+    var elem = _ref13.elem,
+        dom = _ref13.dom,
+        prepend = _ref13.prepend,
+        args = _objectWithoutProperties(_ref13, ["elem", "dom", "prepend"]);
 
     return new Promise(function (resolve, reject) {
       if (prepend) {
@@ -3218,10 +3256,10 @@ var api = {
    * @param  {Object}    	 options.endOfPage 	EndOfPage method
    * @param  {Object} 	 options.args      	More args
    */
-  loadMore: function loadMore(_ref11) {
-    var run = _ref11.run,
-        endOfPage = _ref11.endOfPage,
-        args = _objectWithoutProperties(_ref11, ["run", "endOfPage"]); // do more stuff here
+  loadMore: function loadMore(_ref14) {
+    var run = _ref14.run,
+        endOfPage = _ref14.endOfPage,
+        args = _objectWithoutProperties(_ref14, ["run", "endOfPage"]); // do more stuff here
 
 
     if (endOfPage.status == false) run(_objectSpread({}, args));
@@ -3325,9 +3363,9 @@ var api = {
      * When data is empty
      * @param  {Node} options.elem Target element
      */
-    empty: function empty(_ref12) {
-      var elem = _ref12.elem,
-          templates = _ref12.templates;
+    empty: function empty(_ref15) {
+      var elem = _ref15.elem,
+          templates = _ref15.templates;
       var tpl = templates.empty();
       elem.insertAdjacentHTML('beforeEnd', tpl);
     }
@@ -3346,16 +3384,16 @@ var api = {
    * @param  {Object} 	options.args         More args
    * @return {Promise}                         Resolve or reject
    */
-  run: function run(_ref13) {
-    var elem = _ref13.elem,
-        end = _ref13.end,
-        options = _ref13.options,
-        lastData = _ref13.lastData,
-        buildParams = _ref13.buildParams,
-        shimmer = _ref13.shimmer,
-        queryPending = _ref13.queryPending,
-        query = _ref13.query,
-        args = _objectWithoutProperties(_ref13, ["elem", "end", "options", "lastData", "buildParams", "shimmer", "queryPending", "query"]); // get new page (don't retrieve from the argument)
+  run: function run(_ref16) {
+    var elem = _ref16.elem,
+        end = _ref16.end,
+        options = _ref16.options,
+        lastData = _ref16.lastData,
+        buildParams = _ref16.buildParams,
+        shimmer = _ref16.shimmer,
+        queryPending = _ref16.queryPending,
+        query = _ref16.query,
+        args = _objectWithoutProperties(_ref16, ["elem", "end", "options", "lastData", "buildParams", "shimmer", "queryPending", "query"]); // get new page (don't retrieve from the argument)
 
 
     var page = api.page,
@@ -3391,9 +3429,9 @@ var api = {
 
         if (options.first || !options.first && page <= last_page) {
           // 2. templating & listen (event listener)
-          (function (_ref14) {
-            var templating = _ref14.templating,
-                args = _objectWithoutProperties(_ref14, ["templating"]); // i promise you <3
+          (function (_ref17) {
+            var templating = _ref17.templating,
+                args = _objectWithoutProperties(_ref17, ["templating"]); // i promise you <3
 
 
             return new Promise(function (resolve) {
@@ -3421,16 +3459,16 @@ var api = {
             elem: elem,
             options: options
           }, args)) // 3. appending element
-          .then(function (_ref15) {
-            var render = _ref15.render,
-                args = _objectWithoutProperties(_ref15, ["render"]);
+          .then(function (_ref18) {
+            var render = _ref18.render,
+                args = _objectWithoutProperties(_ref18, ["render"]);
 
             return render(_objectSpread({}, args));
           }) // 4. rendered
-          .then(function (_ref16) {
-            var lifecycle = _ref16.lifecycle,
-                elem = _ref16.elem,
-                args = _objectWithoutProperties(_ref16, ["lifecycle", "elem"]);
+          .then(function (_ref19) {
+            var lifecycle = _ref19.lifecycle,
+                elem = _ref19.elem,
+                args = _objectWithoutProperties(_ref19, ["lifecycle", "elem"]);
 
             lifecycle.onContentLoaded();
             return resolve({

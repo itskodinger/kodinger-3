@@ -14827,13 +14827,7 @@ function (_Component) {
       var _this7 = this;
 
       this.loadData();
-      this.addToast();
-      setTimeout(function () {
-        if (_this7.isMarkdownPost() && _this7.state.content) {
-          var target = $('.content-area');
-          target.style.height = target.scrollHeight + 'px';
-        }
-      }, 1000); // unsaved changes!
+      this.addToast(); // unsaved changes!
 
       window.onbeforeunload = function () {
         if (_this7.state.id && _this7.isContentDirty) {
@@ -15107,7 +15101,7 @@ function (_Component) {
             var mapValueTo = this.settings.dropdown.mapValueTo,
                 value = (mapValueTo ? typeof mapValueTo == 'function' ? mapValueTo(item) : item[mapValueTo] : item.value) || item.value,
                 sanitizedValue = (value || item).replace(/`|'/g, "&#39;");
-            return "<div ".concat(this.getAttributes(item), "\n\t                            class='tagify__dropdown__item text-sm px-4 ").concat(item['class'] ? item['class'] : "", "'\n\t                            tabindex=\"0\"\n\t                            role=\"option\"\n\t                            aria-labelledby=\"dropdown-label\">").concat(sanitizedValue, "</div>");
+            return "<div ".concat(this.getAttributes(item), "\n\t                            class='tagify__dropdown__item px-4 ").concat(item['class'] ? item['class'] : "", "'\n\t                            tabindex=\"0\"\n\t                            role=\"option\"\n\t                            aria-labelledby=\"dropdown-label\">").concat(sanitizedValue, "</div>");
           }
         }
       });
@@ -15958,7 +15952,7 @@ function (_Component) {
         input.focus();
         var message = 'URL tidak valid, periksa kembali';
         if (input.value.trim() < 1) message = 'Masukkan URL yang ingin kamu gunakan.';else if (input.value.search(/^http:\/\/|https:\/\//g) < 0) message = 'Tambahkan <code>http://</code> atau <code>https://</code> di awal URL kamu.';
-        input.parentNode.insertAdjacentHTML('afterend', '<p class="invalid-link mb-4 text-red-600 text-sm -mt-2">' + message + '</p>');
+        input.parentNode.insertAdjacentHTML('afterend', '<p class="invalid-link mb-4 text-red-600 -mt-2">' + message + '</p>');
       }
 
       if (lastValue && this.validateLink(lastValue.value) && invalidInput.length < 1) {
@@ -16258,8 +16252,6 @@ function (_Component) {
     key: "mdContentChange",
     value: function mdContentChange(e) {
       var target = e.target;
-      target.style.height = '250px';
-      target.style.height = target.scrollHeight + 'px';
       var content = target.value.trim();
       this.setState({
         content: content
@@ -16539,12 +16531,12 @@ function (_Component) {
       })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "ml-auto flex items-center"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "text-gray-600 text-sm mr-6 save-status capitalize"
+        className: "text-gray-600 mr-6 save-status capitalize"
       }, statusSaving), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
         onClick: this.publishWholeContent.bind(this, {
           status: newStatus ? newStatus : 'publish'
         }),
-        className: "items-center bg-indigo-600 text-white px-4 py-2 text-sm rounded mr-6 flex" + (!publish || this.isUploadingImage() ? ' pointer-events-none opacity-50' : '')
+        className: "items-center bg-indigo-600 text-white px-4 py-2 rounded mr-6 flex" + (!publish || this.isUploadingImage() ? ' pointer-events-none opacity-50' : '')
       }, edit && status.toUpperCase() == 'PUBLISH' ? 'Simpan Perubahan' : 'Publish Post'))))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "caption-modal overflow-y-auto fixed top-0 left-0 w-full h-full flex z-30 items-start justify-center hidden"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
@@ -16554,7 +16546,7 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", {
         className: "text-xl font-bold"
       }, "Tentukan Deskripsi"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
-        className: "text-sm text-gray-600 mt-2 leading-relaxed"
+        className: "text-gray-600 mt-2 leading-relaxed"
       }, "Berikan deskripsi pada slide ini. Kamu dapat mengosongkan deskripsi bila tidak ada. ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
         href: routes.docs + '/create-content#captioning',
         className: "border-b border-indigo-600 text-indigo-600"
@@ -16564,16 +16556,16 @@ function (_Component) {
         className: "flex"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
         onClick: this.captionSwitch.bind(this, 'editor'),
-        className: "border-t border-l rounded-tl-lg text-sm px-4 py-2 border-gray-200"
+        className: "border-t border-l rounded-tl-lg px-4 py-2 border-gray-200"
       }, "Editor"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
         onClick: this.captionSwitch.bind(this, 'preview'),
-        className: "border-t border-l rounded-tr-lg text-sm border-r px-4 py-2 border-gray-200"
+        className: "border-t border-l rounded-tr-lg border-r px-4 py-2 border-gray-200"
       }, "Preview")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "caption-editor"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("textarea", {
-        className: "caption-area text-sm w-full border border-gray-200 h-64 rounded-br-lg rounded-bl-lg p-4"
+        className: "caption-area w-full border border-gray-200 h-64 rounded-br-lg rounded-bl-lg p-4"
       })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "caption-preview p-4 hidden border-gray-200 border mb-2 rounded-bl-lg rounded-br-lg text-sm overflow-auto markdowned"
+        className: "caption-preview p-4 hidden border-gray-200 border mb-2 rounded-bl-lg rounded-br-lg overflow-auto markdowned"
       }, "Parsing ..."), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "flex items-center"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("svg", {
@@ -16587,7 +16579,7 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("g", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("path", {
         d: "M238.371257,157.892216 L18.3952096,157.892216 C8.43113772,157.892216 0,149.461078 0,139.497006 L0,18.3952096 C0,8.43113772 8.43113772,0 18.3952096,0 L237.60479,0 C247.568862,0 256,8.43113772 256,18.3952096 L256,139.497006 C256,149.461078 248.335329,157.892216 238.371257,157.892216 L238.371257,157.892216 Z M18.3952096,12.2634731 C15.3293413,12.2634731 12.2634731,15.3293413 12.2634731,18.3952096 L12.2634731,139.497006 C12.2634731,143.329341 15.3293413,145.628743 18.3952096,145.628743 L237.60479,145.628743 C241.437126,145.628743 243.736527,142.562874 243.736527,139.497006 L243.736527,18.3952096 C243.736527,14.5628743 240.670659,12.2634731 237.60479,12.2634731 C238.371257,12.2634731 18.3952096,12.2634731 18.3952096,12.2634731 L18.3952096,12.2634731 Z M36.7904192,121.101796 L36.7904192,36.7904192 L61.3173653,36.7904192 L85.8443114,67.4491018 L110.371257,36.7904192 L134.898204,36.7904192 L134.898204,121.101796 L110.371257,121.101796 L110.371257,72.8143713 L85.8443114,103.473054 L61.3173653,72.8143713 L61.3173653,121.101796 L36.7904192,121.101796 L36.7904192,121.101796 Z M190.850299,121.101796 L154.05988,80.4790419 L178.586826,80.4790419 L178.586826,36.7904192 L203.113772,36.7904192 L203.113772,79.7125749 L227.640719,79.7125749 L190.850299,121.101796 L190.850299,121.101796 Z"
       }))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
-        className: "text-xs text-gray-600"
+        className: "text-sm text-gray-600"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
         className: "text-indigo-600",
         target: "_blank",
@@ -16595,7 +16587,7 @@ function (_Component) {
         tabIndex: "-1"
       }, "Markdown")))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
         onClick: this.closeCaptionModal.bind(this),
-        className: "bg-indigo-600 p-4 text-sm text-white font-semibold rounded shadow block w-full text-center",
+        className: "bg-indigo-600 p-4 text-white font-semibold rounded shadow block w-full text-center",
         type: "button"
       }, "Simpan Perubahan"))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "container mx-auto px-4 sm:px-0"
@@ -16649,7 +16641,7 @@ function (_Component) {
       })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
         className: "mt-2"
       }, "Memuat data")), stateStatus !== 'LOADING' && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, id && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, status.toUpperCase() == 'PUBLISH' ? react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "py-4 px-6 mb-4 bg-teal-100 text-teal-600 border border-teal-200 rounded text-sm leading-loose"
+        className: "py-4 px-6 mb-4 bg-teal-100 text-teal-600 border border-teal-200 rounded leading-loose"
       }, "Post ini sudah dipublikasikan \u2013 semua orang dapat melihatnya. ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
         href: routes.single + slug,
         className: "border-b border-teal-600 pb-1 font-semibold"
@@ -16657,7 +16649,7 @@ function (_Component) {
         href: routes.post_new,
         className: "border-b border-teal-600 pb-1 font-semibold"
       }, "Buat post baru")) : react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "py-4 px-6 mb-4 bg-blue-100 text-blue-600 border border-blue-200 rounded text-sm leading-loose"
+        className: "py-4 px-6 mb-4 bg-blue-100 text-blue-600 border border-blue-200 rounded leading-loose"
       }, "Post ini belum dipublikasikan. Tekan tombol \"Publish Post\" untuk mempublikasikan post ini, atau tekan tombol kombinasi ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("kbd", {
         className: "border p-1 border-blue-600 rounded"
       }, this.isMac() ? 'Command' : 'Ctrl', "+S"), " untuk menyimpannya sebagai draft.")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
@@ -16665,11 +16657,11 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h1", {
         className: "text-indigo-600 text-xl font-semibold"
       }, edit ? postData.titleEdit : postData.title), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
-        className: "mb-4 mt-2 text-sm text-gray-600"
+        className: "mb-4 mt-2 text-gray-600"
       }, postData.description), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "mb-6 mt-6"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
-        className: "mb-1 text-sm inline-block text-gray-600"
+        className: "mb-1 inline-block text-gray-600"
       }, "Judul"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
         onChange: this.titleOnInput.bind(this),
         type: "text",
@@ -16681,7 +16673,7 @@ function (_Component) {
       })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "mb-6 mt-6"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
-        className: "mb-1 text-sm inline-block text-gray-600"
+        className: "mb-1 inline-block text-gray-600"
       }, "Slug"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
         onChange: this.slugOnInput.bind(this),
         onBlur: this.slugOnBlur.bind(this),
@@ -16692,14 +16684,14 @@ function (_Component) {
         defaultValue: slug,
         tabIndex: "2"
       }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
-        className: "mt-2 text-sm text-indigo-600"
+        className: "mt-2 text-indigo-600"
       }, routes.single.replace(/slug/g, '') + slug)), !id && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
         tabIndex: "3",
         onClick: this.saveFirstStep.bind(this),
         type: "button",
         className: "bg-indigo-600 text-white p-4 w-full p-4 rounded shadow hover:bg-indigo-700"
       }, "Simpan & Lanjutkan"), id && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
-        className: "mb-1 text-sm inline-block text-gray-600"
+        className: "mb-1 inline-block text-gray-600"
       }, "Topik"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
         type: "text",
         name: "tags[]",
@@ -16708,9 +16700,9 @@ function (_Component) {
       })), this.isSlidePost() && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "mt-6"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
-        className: "mb-1 text-sm inline-block text-gray-600"
+        className: "mb-1 inline-block text-gray-600"
       }, "Design Keyword ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
-        className: "text-xs"
+        className: "text-sm"
       }, "(Optional)")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
         onChange: this.keywordOnInput.bind(this),
         type: "text",
@@ -16719,7 +16711,7 @@ function (_Component) {
         tabIndex: "4",
         defaultValue: keyword
       }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
-        className: "mt-2 text-xs text-indigo-600"
+        className: "mt-2 text-sm text-indigo-600"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
         className: "tooltip cursor-help border-b border-dotted border-indigo-600",
         "data-title": "Keyword ini bukan untuk SEO, melainkan digunakan untuk mencari inspirasi desain ke situs di luar Kodinger, seperti Dribbble, Behance, atau Uplabs. Jadi, bila kamu sedang membahas library carousel, maka kamu dapat mengisi keyword dengan 'carousel'. Lalu, sistem akan menggunakan kata 'carousel' tadi untuk digunakan sebagai keyword pencarian ke 3 situs tadi."
@@ -16728,7 +16720,7 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", {
         className: "text-indigo-600 mb-4 text-xl font-semibold"
       }, "Media"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
-        className: "leading-relaxed mb-6 mt-2 text-sm text-gray-600"
+        className: "leading-relaxed mb-6 mt-2 text-gray-600"
       }, "Kamu dapat mengunggah gambar atau video dalam satu konten yang sama. ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
         href: routes.docs + '/content#form-media',
         className: "text-indigo-600 border-b border-indigo-600",
@@ -16742,7 +16734,7 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h4", {
         className: "text-xl"
       }, "Tarik gambar atau video kamu ke sini"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
-        className: "text-sm mt-2 text-gray-600"
+        className: "mt-2 text-gray-600"
       }, "Maksimal: 10MB. Format yang didukung: ", [].concat(_toConsumableArray(this.allowedImageTypesReadable), _toConsumableArray(this.allowedVideoTypesReadable)).join(', ')), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
         className: "mt-6 text-indigo-600 font-semibold inline-block cursor-pointer",
         htmlFor: "images-input",
@@ -16754,7 +16746,7 @@ function (_Component) {
         className: "hidden",
         onChange: this.handleFiles.bind(this)
       }))), images.length > 0 && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "mt-6 text-xs uppercase font-semibold tracking-wider mb-2 text-gray-600 flex"
+        className: "mt-6 text-sm uppercase font-semibold tracking-wider mb-2 text-gray-600 flex"
       }, "Media yang dipilih ", this.isUploadingImage() ? '(' + uploadedImage + '/' + totalImage + ')' : '', react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "ml-auto text-blue-600"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
@@ -16827,14 +16819,14 @@ function (_Component) {
         })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
           className: "w-full md:py-4 md:pr-4 p-4 overflow-hidden"
         }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-          className: 'text-xs mb-2 font-semibold tracking-wider inline-block' + (image.status == 'UPLOADED' ? ' text-teal-600' : ' text-orange-600')
+          className: 'text-sm mb-2 font-semibold tracking-wider inline-block' + (image.status == 'UPLOADED' ? ' text-teal-600' : ' text-orange-600')
         }, image.status), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
           className: "text-indigo-600 mb-1 truncate",
           title: image.name || image.file.name
         }, image.name || image.file.name), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-          className: "text-xs text-gray-600"
+          className: "text-sm text-gray-600"
         }, _this29.humanFileSize(image.size || image.size == 0 ? image.size : image.file.size)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-          className: "flex mt-2 text-sm"
+          className: "flex mt-2"
         }, !image.isAbort && image.isAbort !== undefined && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
           className: "cursor-pointer text-red-600",
           onClick: _this29.abortImage.bind(_this29, image)
@@ -16850,7 +16842,7 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", {
         className: "text-indigo-600 mb-4 text-xl font-semibold"
       }, "Konten"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
-        className: "leading-relaxed mb-6 mt-2 text-sm text-gray-600"
+        className: "leading-relaxed mb-6 mt-2 text-gray-600"
       }, "Tulis isi post yang ingin kamu sampaikan. Kamu dapat menggunakan format Markdown, ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
         href: "",
         target: "_blank"
@@ -16861,7 +16853,7 @@ function (_Component) {
         }
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
         onClick: this.uploadContentImage.bind(this),
-        className: "flex items-center bg-white border border-gray-300 hover:border-indigo-500 hover:text-indigo-500 px-4 py-2 rounded text-sm"
+        className: "flex items-center bg-white border border-gray-300 hover:border-indigo-500 hover:text-indigo-500 px-4 py-2 rounded"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("svg", {
         className: "mr-2",
         xmlns: "http://www.w3.org/2000/svg",
@@ -16890,10 +16882,10 @@ function (_Component) {
         className: "ml-auto flex editor-modes bg-white rounded"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
         onClick: this.contentSwitch.bind(this, 'editor'),
-        className: "border-t border-b border-l rounded-tl rounded-bl text-sm px-4 py-2 border-gray-200 bg-indigo-600 text-white"
+        className: "border-t border-b border-l rounded-tl rounded-bl px-4 py-2 border-gray-200 bg-indigo-600 text-white"
       }, "Editor"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
         onClick: this.contentSwitch.bind(this, 'preview'),
-        className: "border-t border-b border-r rounded-tr rounded-br text-sm px-4 py-2 border-gray-200"
+        className: "border-t border-b border-r rounded-tr rounded-br px-4 py-2 border-gray-200"
       }, "Preview"))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "content-editor"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("textarea", {
@@ -16901,16 +16893,16 @@ function (_Component) {
         onChange: this.mdContentChange.bind(this),
         onPaste: this.mdContentHandlePaste.bind(this),
         style: {
-          minHeight: 250
+          minHeight: '50vh'
         },
-        className: "content-area mb-2 overflow-hidden resize-none text-gray-600 border border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600",
+        className: "content-area mb-2 overflow-hidden resize-y text-gray-600 border border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600",
         tabIndex: "4",
         placeholder: "Tulis apapun di sini ...",
         defaultValue: content
       })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "content-preview p-5 hidden border-gray-200 border mb-2 rounded text-sm overflow-auto markdowned markdowned-mdpost"
+        className: "content-preview p-5 hidden border-gray-200 border mb-2 rounded overflow-auto markdowned markdowned-mdpost"
       }, "Parsing ..."), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
-        className: "text-xs text-gray-600"
+        className: "text-sm text-gray-600"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
         className: "text-indigo-600",
         target: "_blank",
@@ -16921,7 +16913,7 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", {
         className: "text-indigo-600 mb-4 text-xl font-semibold"
       }, "Cover"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
-        className: "leading-relaxed mb-6 mt-2 text-sm text-gray-600"
+        className: "leading-relaxed mb-6 mt-2 text-gray-600"
       }, "Bila dikosongkan, sistem akan otomatis menggenerasi thumbnail untuk post ini. Bila diisi, gambar akan otomatis dipotong oleh sistem bila dimensinya tidak 500 x 300 (Maksimal: 10MB. Format yang didukung: ", _toConsumableArray(this.allowedImageTypesReadable).join(', '), ")."), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         onClick: this.coverImageHandler.bind(this),
         className: "group w-full border border-gray-300 rounded flex items-center justify-center cursor-pointer ".concat(cover ? '' : 'h-64')
@@ -16929,15 +16921,15 @@ function (_Component) {
         src: cover,
         className: "w-full rounded"
       }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "cover-image-label absolute bg-white border border-gray-300 group-hover:border-indigo-500 group-hover:text-indigo-500 px-3 py-2 rounded text-sm"
-      }, cover ? 'Ganti Gambar' : 'Unggah Gambar')))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "cover-image-label absolute bg-white border border-gray-300 group-hover:border-indigo-500 group-hover:text-indigo-500 px-3 py-2 rounded"
+      }, cover ? 'Ganti Gambar' : 'Unggah Gambar')))), this.isSlidePost() && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "border border-gray-200 p-6 md:p-8 rounded mt-10"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", {
         className: "text-indigo-600 mb-4 text-xl font-semibold"
       }, "Tautan ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
-        className: "text-xs text-gray-600 font-normal"
+        className: "text-sm text-gray-600 font-normal"
       }, "(Optional)")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
-        className: "leading-relaxed mb-6 mt-2 text-sm text-gray-600"
+        className: "leading-relaxed mb-6 mt-2 text-gray-600"
       }, "Sertakan tautan referensi yang relevan dengan konten, bisa tautan ke halaman resmi situs web, tutorial, ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("code", null, "code playground"), ", atau yang lainnya. ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
         href: routes.docs + '/content#form-links',
         className: "border-b border-indigo-600 text-indigo-600",
@@ -16948,18 +16940,18 @@ function (_Component) {
         return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
           onClick: _this29.setLinkKey.bind(_this29, name),
           key: name,
-          className: 'px-4 py-2 border-t border-r border-b ' + (currentLinkKey == name ? 'bg-indigo-600 text-white' : 'text-gray-600 hover:bg-gray-100') + ' cursor-pointer border-gray-200 text-sm flex-1 justify-center flex items-center text-center' + (index == 0 ? ' border-l rounded-tl rounded-bl' : index == Object.keys(key2str).length - 1 ? ' rounded-tr rounded-br' : '')
+          className: 'px-4 py-2 border-t border-r border-b ' + (currentLinkKey == name ? 'bg-indigo-600 text-white' : 'text-gray-600 hover:bg-gray-100') + ' cursor-pointer border-gray-200 flex-1 justify-center flex items-center text-center' + (index == 0 ? ' border-l rounded-tl rounded-bl' : index == Object.keys(key2str).length - 1 ? ' rounded-tr rounded-br' : '')
         }, key2str[name]);
       })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "bg-gray-100 border border-gray-200 rounded p-4"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
-        className: "text-sm mb-3 text-gray-600"
+        className: "mb-3 text-gray-600"
       }, "Masukkan URL valid dengan ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("code", null, "http://"), " atau ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("code", null, "https://"), "."), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "list"
       }, this.state[currentLinkKey].map(function (link, id) {
         return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
           key: link.id,
-          className: "bg-white shadow rounded mb-4 text-sm text-blue-500 flex",
+          className: "bg-white shadow rounded mb-4 text-blue-500 flex",
           id: 'link-' + link.id
         }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
           onKeyDown: _this29.linkKeydownHandle.bind(_this29),
@@ -16994,13 +16986,13 @@ function (_Component) {
         type: "button",
         onClick: this.addLinkToKey.bind(this),
         tabIndex: "7",
-        className: "add-link-btn bg-white w-full shadow rounded py-3 px-4 text-sm text-blue-500 text-center cursor-pointer hover:bg-indigo-600 hover:text-white"
+        className: "add-link-btn bg-white w-full shadow rounded py-3 px-4 text-blue-500 text-center cursor-pointer hover:bg-indigo-600 hover:text-white"
       }, "Tambah URL"))), status.toUpperCase() == 'PUBLISH' && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "border border-gray-200 p-6 md:p-8 rounded mt-10"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", {
         className: "text-orange-600 mb-4 text-xl font-semibold"
       }, "Visibilitas"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
-        className: "leading-relaxed mb-6 mt-2 text-sm text-gray-600"
+        className: "leading-relaxed mb-6 mt-2 text-gray-600"
       }, "Post ini sudah dipublikasikan dan semua orang dapat mengakses post ini melalui tautan, beranda, mesin pencari, atau cara lainnya. Kamu dapat mengubah status post ini menjadi \"draft\" untuk menyembunyikannya dari semua orang."), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "custom-checkbox"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
@@ -17063,7 +17055,7 @@ function () {
     this.id = 'toast-' + this.generateID();
     this.classes = {
       wrapper: 'fixed absolutely-center bottom-0 p-4',
-      toast: 'anim-fade-up transition bg-black text-white px-4 py-3 rounded text-sm mt-2 shadow'
+      toast: 'anim-fade-up transition bg-black text-white px-4 py-3 rounded mt-2 shadow'
     };
     this.options = Object(_utils_obj_extend__WEBPACK_IMPORTED_MODULE_0__["default"])({
       timeout: 3000

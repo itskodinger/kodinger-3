@@ -25,6 +25,7 @@ Route::group(['prefix' => 'posts', 'as' => 'post.'], function()
 
 	Route::get('/posts', 'PostAjaxController@posts')->name('posts');
 	Route::get('/both', 'PostAjaxController@both')->name('both');
+	Route::get('/timeline', 'PostAjaxController@timeline')->name('timeline');
 	Route::get('/discover', 'PostAjaxController@discover')->name('discover');
 	Route::get('/{slug}', 'PostAjaxController@show')->name('show');
 
@@ -43,7 +44,7 @@ Route::group(['prefix' => 'comments', 'as' => 'comment.'], function()
 
 Route::group(['prefix' => 'communities', 'as' => 'community.'], function() 
 {
-	Route::get('/', 'CommunityAjaxController@index')->name('index');
+	Route::get('/get', 'CommunityAjaxController@index')->name('index');
 });
 
 // needs auth

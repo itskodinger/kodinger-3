@@ -7,7 +7,7 @@
             <a class="text-indigo-600" href="@current(['type' => 'content'])">Content</a> | 
             <a class="text-indigo-600" href="@current(['status' => 'draft'])">Hanya Draft</a>
         </span>
-		{{-- @button(['tag' => 'a', 'href' => route('post.create'), 'class' => 'text-sm ml-auto'])
+		{{-- @button(['tag' => 'a', 'href' => route('post.create'), 'class' => 'ml-auto'])
 			Tambah Konten
 		@endbutton --}}
 	</h2>
@@ -15,12 +15,12 @@
     	@foreach($posts as $post)
     	<div class="p-4 border-b border-gray-200">
     		<div class="items-center">
-        		<div class="py-1 px-2 mr-1 rounded text-xs inline-block text-white capitalize {{ $post->status == 'publish' ? 'bg-green-500' : 'bg-orange-500' }}">
+        		<div class="py-1 px-2 mr-1 rounded text-sm inline-block text-white capitalize {{ $post->status == 'publish' ? 'bg-green-500' : 'bg-orange-500' }}">
         			{{ $post->status }}
         		</div>
         		{{ $post->title ?? $post->raw_pages }}
     		</div>
-    		<div class="mt-2 -mx-3 text-gray-600 text-sm flex">
+    		<div class="mt-2 -mx-3 text-gray-600 flex">
         		<div class="mx-3">{{ $post->created_at->diffForHumans() }}</div>
         		@if($post->status == 'draft')
         		<a class="mx-3 text-green-500" href="@route('post.publish', $post->id)">Publish</a>
@@ -31,7 +31,7 @@
         			{!! method_field('delete') !!}
         			@csrf
         		</form>
-                <a class="mx-3 text-indigo-600" href="@route('single', $post->user->the_username)">{!! $post->user->name !!}</a>
+                <a class="mx-3 text-indigo-600" href="@route('single', $post->user->username)">{!! $post->user->name !!}</a>
         	</div>
     	</div>
     	@endforeach

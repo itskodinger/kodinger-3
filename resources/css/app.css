@@ -53,7 +53,8 @@ html {
 
 .markdowned {
 	@apply
-		text-sm;
+		text-lg
+		leading-relaxed;
 }
 
 .markdowned p:not(:last-child) {
@@ -125,30 +126,48 @@ html {
 .markdowned pre,
 .markdowned code {
 	@apply
-		bg-gray-100
-		border
-		border-gray-200
 		rounded
 		p-1;
 }
 
 .markdowned pre {
 	@apply
-		p-3
 		mb-4
-		overflow-auto
+		overflow-auto;
 }
 .markdowned pre code {
 	@apply
-		bg-transparent
 		border-none
-		rounded-none
-		p-0;
+		rounded
+		p-6;
 }
 
 .markdowned hr {
 	@apply
 		my-4;
+}
+
+.markdowned-mdpost h2,
+.markdowned-mdpost h3,
+.markdowned-mdpost h4,
+.markdowned-mdpost h5,
+.markdowned-mdpost h6 {
+	@apply font-semibold;
+}
+.markdowned-mdpost h2 {
+	@apply text-3xl font-semibold;
+}
+.markdowned-mdpost h3 {
+	@apply text-2xl;
+}
+.markdowned-mdpost h4 {
+	@apply text-xl;
+}
+.markdowned-mdpost h5 {
+	@apply text-lg;
+}
+.markdowned-mdpost h6 {
+	@apply text-base;
 }
 
 .prev, .next {

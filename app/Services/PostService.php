@@ -170,6 +170,19 @@ class PostService
 		return $this->paginate(...$args);
 	}
 
+	public function timeline(...$args)
+	{
+		$status = request()->status ?? 'publish';
+
+		$this->init = $this->model()->whereStatus($status)->where(function($query) {
+			$query->orWhereNull('type');
+			$query->orWhere('type', 'link');
+			$query->orWhere('type', 'markdown');
+		});
+
+		return $this->paginate(...$args);
+	}
+
 	public function paginate($num=10, $request=false)
 	{
 		$posts = $this->init ?? $this->emptyModel();
@@ -369,16 +382,35 @@ class PostService
 		return $post;
 	}
 
-	public function popular()
+	public function findBySlugAll($slug)
 	{
-		$posts = $this->model()->orderBy('views', 'desc')->whereStatus('publish')->whereNull('type')->first();
+		$post = $this->model()->whereSlug($slug)->first();
+
+		return $post;
+	}
+
+	public function popular($first=true)
+	{
+		$posts = $this->model()->orderBy('views', 'desc')->whereStatus('publish')->whereNull('type');
+
+		if($first)
+			$posts = $posts->first();
+		else
+			$posts = $posts->get();
+
+		return $posts;
+	}
+
+	public function getByAuthor($id, $limit=5)
+	{
+		$posts = $this->model()->orderBy('views', 'desc')->whereStatus('publish')->whereUserId($id)->whereNull('type')->orWhere('type','markdown')->take($limit)->get();
 
 		return $posts;
 	}
 
 	public function random()
 	{
-		$posts = $this->model()->inRandomOrder()->whereStatus('publish')->whereNull('type')->first();
+		$posts = $this->model()->inRandomOrder()->whereStatus('publish')->whereNull('type')->orWhere('type', 'markdown')->first();
 
 		return $posts;
 	}
@@ -392,7 +424,8 @@ class PostService
 						->orderBy('total', 'desc')
 						->with('post')
 						->whereHas('post', function($query) {
-							return $query->whereNull('type');
+							$query->whereNull('type');
+							$query->orWhere('type', 'markdown');
 						})
 						->take($take)
 						->get();

@@ -1,16 +1,16 @@
                 <div class="bg-white rounded border-2 border-gray-200 mb-10">
                     <div class="flex p-6 items-center">
-                        <a href="@route('single', $props->user->the_username)">
+                        <a href="@route('single', $props->user->username)">
                             <img class="rounded w-12 rounded" src="{{ $props->user->the_avatar_sm }}">
                         </a>
                         <div class="ml-3">
                             <h4 class="mb-1 font-bold">
-                                <a class="text-indigo-600" href="@route('single', $props->user->the_username)">
+                                <a class="text-indigo-600" href="@route('single', $props->user->username)">
                                     {{ $props->user->name }}
                                 </a>
                             </h4>
                             <div class="-mx-1 flex items-center text-xs text-gray-500">
-                                <p class="mx-1">{{ $props->user->the_username }}</p>
+                                <p class="mx-1">{{ $props->user->username }}</p>
                                 <p class="mx-1">&bull;</p>
                                 <p class="mx-1 text-blue-500 font-semibold">{{ $props->created_at->diffForHumans() }}</p>
                             </div>

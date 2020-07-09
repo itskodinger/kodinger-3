@@ -31,7 +31,7 @@ class User extends Authenticatable
 
     ];
 
-    protected $appends = ['is_me', 'the_username', 'the_avatar', 'the_avatar_sm'];
+    protected $appends = ['is_me', 'the_avatar', 'the_avatar_sm'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -84,11 +84,6 @@ class User extends Authenticatable
     public function lovePosts()
     {
         return $this->hasMany('App\Save', 'user_id')->whereMethod('love')->whereModel('Post');
-    }
-
-    public function getTheUsernameAttribute()
-    {
-        return '@' . $this->username;
     }
 
     public function getFirstNameAttribute()

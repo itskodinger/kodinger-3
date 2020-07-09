@@ -8,6 +8,10 @@
     <meta name="twitter:card" content="summary_large_image">
 @endpush
 
+@push('css')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify@3.1.0/dist/tagify.css">
+@endpush
 
 @section('content')
     <div class="container mx-auto px-4 sm:px-0">
@@ -16,6 +20,8 @@
                 @sidebar
             </div>
             <div class="lg:w-6/12 px-4 md:w-8/12 w-full">
+                @include('layouts.card_discover_form')
+
                 <div class="posts"></div>
             </div>
             <div class="lg:w-3/12 lg:px-4 md:w-4/12">

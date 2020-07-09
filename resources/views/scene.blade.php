@@ -15,7 +15,7 @@
 							Deskripsi
 						</h2>
 
-						<button class="ml-auto flex items-center hover:bg-indigo-500 hover:text-white border-indigo-600 border px-4 py-2 text-sm rounded text-indigo-600">
+						<button class="ml-auto flex items-center hover:bg-indigo-500 hover:text-white border-indigo-600 border px-4 py-2 rounded text-indigo-600">
 							<svg class="mr-2 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
 							Tandai Sudah Selesai
 						</button>
@@ -54,7 +54,7 @@
 			<div class="w-4/12 px-4">
 				<div class="border border-gray-200 rounded p-6">
 					<h1 class="text-xl font-bold">Figma Untuk Pemula</h1>
-					<div class="text-sm mt-2 flex -mx-2">
+					<div class="mt-2 flex -mx-2">
 						<div class="text-gray-600 mx-2 flex items-center">
 							<svg class="mr-1" width="13" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
 							03:13
@@ -68,19 +68,19 @@
 					<div class="flex mt-6 bg-gray-100 rounded p-4 border border-gray-200">
 						<img class="w-10 h-10 rounded-full flex-shrink-0" src="{{ auth()->user()->the_avatar }}">
 						<div class="ml-4 flex-shrink-0">
-							<div class="font-bold text-sm">{{ auth()->user()->name }}</div>
-							<div class="font-light text-gray-600 text-xs">{{ auth()->user()->the_username }}</div>
+							<div class="font-bold">{{ auth()->user()->name }}</div>
+							<div class="font-light text-gray-600 text-sm">{{ auth()->user()->username }}</div>
 						</div>
 					</div>
 
 					<div class="flex flex-wrap mt-4">
-						<a class="mt-2 border border-gray-300 bg-gray-100 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded py-1 px-3 text-xs" href="${routes.search + fullUrlWithQuery({tag: tag.tag.name})}">
+						<a class="mt-2 border border-gray-300 bg-gray-100 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded py-1 px-3 text-sm" href="${routes.search + fullUrlWithQuery({tag: tag.tag.name})}">
 							#javascript
 						</a>
-						<a class="mt-2 border border-gray-300 bg-gray-100 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded py-1 px-3 text-xs" href="${routes.search + fullUrlWithQuery({tag: tag.tag.name})}">
+						<a class="mt-2 border border-gray-300 bg-gray-100 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded py-1 px-3 text-sm" href="${routes.search + fullUrlWithQuery({tag: tag.tag.name})}">
 							#html
 						</a>
-						<a class="mt-2 border border-gray-300 bg-gray-100 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded py-1 px-3 text-xs" href="${routes.search + fullUrlWithQuery({tag: tag.tag.name})}">
+						<a class="mt-2 border border-gray-300 bg-gray-100 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded py-1 px-3 text-sm" href="${routes.search + fullUrlWithQuery({tag: tag.tag.name})}">
 							#css
 						</a>
 					</div>
@@ -94,7 +94,7 @@
 							<div class="text-lg flex-shrink-0 text-white w-8 h-8 rounded flex justify-center items-center bg-indigo-600 mr-4">1</div>
 							<div class="overflow-hidden">
 								<h4 class="truncate font-semibold">Memulai Berkenalan Dengan Figma asdjalksdjlkasjd aslkjdlask </h4>
-								<div class="text-xs mt-1 text-gray-600 flex items-center">
+								<div class="text-sm mt-1 text-gray-600 flex items-center">
 									<svg class="mr-1" width="13" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
 									02:29
 								</div>
@@ -104,7 +104,7 @@
 							<div class="text-lg flex-shrink-0 border border-gray-200 w-8 h-8 rounded flex justify-center items-center bg-gray-100 mr-4">2</div>
 							<div class="overflow-hidden">
 								<h4 class="truncate font-semibold">Memulai Berkenalan Dengan Figma asdjalksdjlkasjd aslkjdlask </h4>
-								<div class="text-xs mt-1 text-gray-600 flex items-center">
+								<div class="text-sm mt-1 text-gray-600 flex items-center">
 									<svg class="mr-1" width="13" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
 									02:29
 								</div>
@@ -114,7 +114,7 @@
 							<div class="text-lg flex-shrink-0 border border-gray-200 w-8 h-8 rounded flex justify-center items-center bg-gray-100 mr-4">3</div>
 							<div class="overflow-hidden">
 								<h4 class="truncate font-semibold">Memulai Berkenalan Dengan Figma asdjalksdjlkasjd aslkjdlask </h4>
-								<div class="text-xs mt-1 text-gray-600 flex items-center">
+								<div class="text-sm mt-1 text-gray-600 flex items-center">
 									<svg class="mr-1" width="13" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
 									02:29
 								</div>
@@ -132,7 +132,7 @@
 							<img class="w-20 rounded mr-4" src="https://i.ytimg.com/vi/LKFHsATT8mA/hqdefault.jpg?sqp=-oaymwEZCNACELwBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLD9AM3ezFPnL4HQ4x_8KuOXgyppmA">
 							<div class="overflow-hidden">
 								<h4 class="truncate font-semibold">Memulai Berkenalan Dengan Figma asdjalksdjlkasjd aslkjdlask </h4>
-								<div class="text-xs mt-1 text-gray-600 flex items-center">
+								<div class="text-sm mt-1 text-gray-600 flex items-center">
 									<svg class="mr-1" width="13" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
 									02:29
 								</div>

@@ -223,6 +223,13 @@ class PostAjaxController extends Controller
 		return response()->json($posts);
 	}
 
+	public function timeline(Request $request)
+	{
+		$posts = $this->postService->timeline(10, $request);
+
+		return response()->json($posts);
+	}
+
 	/**
 	 * Discover data
 	 * @param  Request $request Request
@@ -255,7 +262,7 @@ class PostAjaxController extends Controller
 	 */
 	public function show($slug, Request $request)
 	{
-		$post = $this->postService->findBySlug($slug, true);
+		$post = $this->postService->findBySlugAll($slug, true);
 
 		return response()->json(['data' => $post]);
 	}

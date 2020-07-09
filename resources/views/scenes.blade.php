@@ -21,13 +21,13 @@
 	    				<a href="" class="flex p-6">
 	    					<img class="w-10 h-10 rounded-full flex-shrink-0" src="{{ auth()->user()->the_avatar }}">
 	    					<div class="ml-4 flex-shrink-0">
-	    						<div class="font-bold text-sm">{{ auth()->user()->name }}</div>
-	    						<div class="font-light text-gray-600 text-xs">{{ auth()->user()->the_username }}</div>
+	    						<div class="font-bold">{{ auth()->user()->name }}</div>
+	    						<div class="font-light text-gray-600 text-sm">{{ auth()->user()->username }}</div>
 	    					</div>
 	    				</a>
 
 	    				<a href="#" class="relative flex justify-center items-center">
-	    					<div class="absolute py-1 px-2 text-xs text-white rounded top-0 left-0 m-3" style="background-color: rgba(0,0,0,.3)">
+	    					<div class="absolute py-1 px-2 text-sm text-white rounded top-0 left-0 m-3" style="background-color: rgba(0,0,0,.3)">
 	    						3 Video
 	    					</div>
 	    					<div class="w-16 h-16 absolute text-white rounded-full flex justify-center items-center" style="background-color: rgba(0,0,0,.3);">
@@ -39,19 +39,19 @@
 	    				<div class="p-6">
 			    			<h4 class="text-lg font-bold hover:text-indigo-500"><a href="#">Figma Untuk Pemula</a></h4>
 
-			    			<div class="text-xs mt-2 flex -mx-2">
+			    			<div class="text-sm mt-2 flex -mx-2">
 			    				<div class="text-gray-600 mx-2">23,229x Ditonton</div>
 			    				<div class="text-gray-600 mx-2">2 Menit Yang Lalu</div>
 			    			</div>
 
 			    			<div class="flex flex-wrap mt-4">
-			    				<a class="mt-2 border border-gray-300 bg-gray-100 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded py-1 px-3 text-xs" href="${routes.search + fullUrlWithQuery({tag: tag.tag.name})}">
+			    				<a class="mt-2 border border-gray-300 bg-gray-100 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded py-1 px-3 text-sm" href="${routes.search + fullUrlWithQuery({tag: tag.tag.name})}">
 			    					#javascript
 			    				</a>
-			    				<a class="mt-2 border border-gray-300 bg-gray-100 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded py-1 px-3 text-xs" href="${routes.search + fullUrlWithQuery({tag: tag.tag.name})}">
+			    				<a class="mt-2 border border-gray-300 bg-gray-100 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded py-1 px-3 text-sm" href="${routes.search + fullUrlWithQuery({tag: tag.tag.name})}">
 			    					#html
 			    				</a>
-			    				<a class="mt-2 border border-gray-300 bg-gray-100 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded py-1 px-3 text-xs" href="${routes.search + fullUrlWithQuery({tag: tag.tag.name})}">
+			    				<a class="mt-2 border border-gray-300 bg-gray-100 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded py-1 px-3 text-sm" href="${routes.search + fullUrlWithQuery({tag: tag.tag.name})}">
 			    					#css
 			    				</a>
 			    			</div>

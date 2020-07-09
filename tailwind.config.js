@@ -1,6 +1,12 @@
 module.exports = {
   theme: {
     extend: {
+      screens: {
+        xxl: '1920px'
+      },
+      fontFamily: {
+        sans: 'Source Sans Pro, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
+      },
 		colors: {
 			indigo: {
 				100: '#EAEFFF',

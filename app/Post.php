@@ -39,6 +39,8 @@ class Post extends Model
         'blurry_image',
     	'markdown', 
     	'markdown_truncate', 
+        'content_markdown',
+        'content_markdown_truncated',
     	'is_mine', 
     	'is_post_saved', 
     	'is_post_loved',
@@ -58,14 +60,39 @@ class Post extends Model
         'is_single_caption',
         'total_comments',
         'total_loves',
-        'total_saves'
+        'total_saves',
+        'is_markdown',
+        'ert'
     ];
 
-    protected function markdownParse()
+    public function getErtAttribute()
     {
-        return new Kdgrdown([
-            'safe' => true,
-        ]);
+        return ert($this->getContentMarkdownAttribute());
+    }
+
+    public function getContentMarkdownAttribute()
+    {
+        return ($this->isMarkdownPost() ? $this->markdownParse(['safe' => false])->text($this->content) : '');
+    }
+
+    public function getContentMarkdownTruncatedAttribute()
+    {
+        return truncate(strip_tags($this->getContentMarkdownAttribute()), 100);
+    }
+
+    protected function isMarkdownPost()
+    {
+        return $this->type == 'markdown';
+    }
+
+    public function getIsMarkdownAttribute()
+    {
+        return $this->isMarkdownPost();
+    }
+
+    protected function markdownParse($opts=['safe' => true])
+    {
+        return new Kdgrdown($opts);
     }
 
     public function getTitleAttribute($value)
@@ -95,7 +122,7 @@ class Post extends Model
     {
         if($this->type == 'link') return false;
 
-        return $this->first_slide->video_thumbnail_url ?? $this->first_slide->url ?? '';
+        return $this->first_slide->video_thumbnail_url ?? $this->first_slide->url ?? $this->cover ?? '';
     }
 
     public function getThumbnailTypeAttribute()
@@ -309,7 +336,8 @@ class Post extends Model
 			'id', 
 			'name',
 			'username',
-			'avatar'
+			'avatar',
+            'bio'
 		]);
 	}
 

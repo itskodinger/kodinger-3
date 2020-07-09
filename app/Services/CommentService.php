@@ -43,7 +43,7 @@ class CommentService
 	// 	$comment->content = $comment->markdown;
 	// 	$comment->time = $comment->time;
 	// 	$comment->avatar = $comment->user->the_avatar;
-	// 	$comment->username = $comment->user->the_username;
+	// 	$comment->username = $comment->user->username;
 	// 	$comment->is_mine = $comment->is_mine;
 
 	// 	return $comment;

@@ -13,9 +13,9 @@ let commentTemplate = function(data) {
             <div class="flex">
                 <img class="rounded w-10 h-10 flex-shrink-0" src="${data.avatar}">
                 <div class="ml-5 w-full">
-                    <p class="mx-1 text-blue-500 text-xs font-semibold float-right cmt-time">${data.time}</p>
+                    <p class="mx-1 text-blue-500 text-sm font-semibold float-right cmt-time">${data.time}</p>
                     <h4 class="mb-1 font-bold"><a class="text-indigo-600 cmt-name" href="${routes.base_url +'/'+ data.username}">${data.name}</a> <span class="text-gray-600 font-normal">(${data.username})</span></h4>
-                    <div class="text-sm text-gray-700">
+                    <div class= text-gray-700">
                         <div class="quoted-cmt-wrapper my-2"></div>
                         <div class="cmt-content mb-2 text-base break-all markdowned">${data.content}</div>
                     </div>
@@ -38,7 +38,7 @@ let commentActions = {
     delete: {
         markup: function() {
             return `
-                <a class="mt-5 text-red-600 cursor-pointer text-xs mr-3">Delete</a>
+                <a class="mt-5 text-red-600 cursor-pointer text-sm mr-3">Delete</a>
             `;
         },
         isMine: true,
@@ -58,7 +58,7 @@ let commentActions = {
      */
     permalink: function() {
         return `
-            <a class="text-xs mr-3" href="${window.location.href}#discuss-${this.id}">Permalink</a>
+            <a class="text-sm mr-3" href="${window.location.href}#discuss-${this.id}">Permalink</a>
         `;
     },
     /**
@@ -68,7 +68,7 @@ let commentActions = {
     quote: {
         markup: function() {
             return `
-                <a class="mt-5 hover:text-indigo-600 cursor-pointer text-xs mr-3">Quote</a>
+                <a class="mt-5 hover:text-indigo-600 cursor-pointer text-sm mr-3">Quote</a>
             `;
         },
         auth: true,
@@ -88,8 +88,8 @@ let commentActions = {
  */
 let quoteTemplate = function(data) {
     return `
-        <div class="quoted-cmt cursor-pointer hover:bg-teal-200 bg-teal-100 border border-teal-200 mb-2 py-2 px-4 text-sm rounded">
-            <div class="text-xs text-teal-600">Oleh <span class="font-bold">${data.name}</span></div>
+        <div class="quoted-cmt cursor-pointer hover:bg-teal-200 bg-teal-100 border border-teal-200 mb-2 py-2 px-4 rounded">
+            <div class="text-sm text-teal-600">Oleh <span class="font-bold">${data.name}</span></div>
             <div class="overflow-hidden h-22 break-all markdowned" style="max-height: 40px;">${data.content}</div>
         </div>
     `;
@@ -107,7 +107,7 @@ let quoteTemplateActions = {
     cancel: {
         markup: function() {
             return `
-                <a class="quote-remove cursor-pointer text-red-600 text-xs mt-2 inline-block">Batalkan</a>
+                <a class="quote-remove cursor-pointer text-red-600 text-sm mt-2 inline-block">Batalkan</a>
             `;
         },
         listener: {
@@ -144,7 +144,6 @@ function commentAdd(obj, classes, method, target)
     Object.keys(commentActions).forEach(function(actionKey) {
         let action = commentActions[actionKey];
 
-
         if(((('auth' in action && action.auth) == auth) && !('isMine' in action)) || (('isMine' in action && action.isMine) == obj.is_mine) || (!('auth' in action) && !('isMine' in action))) {
             let act = str2dom(
                 typeof action == 'object' ? action.markup.call(obj) : action.call(obj)
@@ -174,7 +173,6 @@ function commentAdd(obj, classes, method, target)
         find(item, '.quoted-cmt-wrapper').remove();
     }
 
-
     if(typeof classes == 'function')
         classes.call(this, item);
 
@@ -188,6 +186,12 @@ function commentAdd(obj, classes, method, target)
     if($('.no-comment'))
         $('.no-comment').remove();
 
+    if(window.hljs) {           
+        item.querySelectorAll('pre code').forEach((block) => {
+          hljs.highlightBlock(block);
+        });
+    }
+
     if(method == 'after')
         target.parentNode.insertBefore(item, target);
     else
@@ -197,7 +201,7 @@ function commentAdd(obj, classes, method, target)
 
     if(content.clientHeight > 200) {
         content.classList.add('comment-truncate');
-        content.parentNode.insertAdjacentHTML('afterend', '<p class="text-center text-sm text-indigo-600 read-more-wrapper"><a class="read-more cursor-pointer">Tampilkan Semuanya</a></p>');
+        content.parentNode.insertAdjacentHTML('afterend', '<p class="text-center text-indigo-600 read-more-wrapper"><a class="read-more cursor-pointer">Tampilkan Semuanya</a></p>');
 
         const readMoreWrapper = content.parentNode.parentNode.querySelector('.read-more-wrapper');
         readMoreWrapper.addEventListener('click', function() {
@@ -309,7 +313,7 @@ function commentRemove(id, event)
 function addLoadMore()
 {
     let tpl = str2dom('\
-    <div class="comment-load px-6 py-2 text-sm text-center cursor-pointer bg-gray-200 hover:bg-gray-300">\
+    <div class="comment-load px-6 py-2 text-center cursor-pointer bg-gray-200 hover:bg-gray-300">\
         Load More\
     </div>');
 
@@ -385,7 +389,7 @@ function comment(content)
 
     let item = commentAdd({
         name: user.name,
-        username: user.the_username,
+        username: user.username,
         avatar: user.the_avatar_sm,
         id: temp_id,
         is_mine: false,
@@ -410,7 +414,7 @@ function comment(content)
     .then(function(res) {
         commentAdd({
             name: res.data.user.name,
-            username: res.data.user.the_username,
+            username: res.data.user.username,
             avatar: res.data.user.the_avatar_sm,
             id: res.data.id,
             is_mine: res.data.is_mine,
@@ -449,7 +453,7 @@ function commentLoad(done)
             commentAdd({
                 id: item.id,
                 name: item.user.name,
-                username: item.user.the_username,
+                username: item.user.username,
                 avatar: item.user.the_avatar_sm,
                 content: item.markdown,
                 time: item.time,
@@ -473,7 +477,7 @@ function commentLoad(done)
 
 commentLoad(function(res) {
     if(res.count == 0)
-        comments.innerHTML = '<div class="text-center p-2 text-sm no-comment"><i>Belum ada diskusi, jadilah yang pertama.</i></div>';
+        comments.innerHTML = '<div class="text-center p-2 no-comment"><i>Belum ada diskusi, jadilah yang pertama.</i></div>';
 
     let hash = window.location.hash;
     setTimeout(function() {
@@ -495,7 +499,7 @@ if(message) {
 
     message.addEventListener('keyup', function(event) {
         if(event.shiftKey && event.keyCode == 13 || event.keyCode == 8) {
-            this.style.height='5px';
+            this.style.height=80 + 'px';
             this.style.height=(this.scrollHeight) + 'px';
         } 
     });

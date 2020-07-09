@@ -81,6 +81,9 @@ Route::group(['prefix' => 'comments', 'as' => 'comment.'], function()
 	});
 });
 
+Route::get('auth/{provider}', 'Auth\AuthController@redirectToProvider')->name('auth');
+Route::get('auth/{provider}/callback', 'Auth\AuthController@handleProviderCallback');
+
 Route::get('/', 'FrontendController@index')->name('index');
 Route::get('/post-slide/{id?}', 'FrontendController@postSlide')->name('post.slide');
 Route::get('/post-md/{id?}', 'FrontendController@postMD')->name('post.md');
@@ -101,8 +104,6 @@ Route::get('/{slug}/discuss', 'FrontendController@discuss')->name('discuss');
 Route::get('/setting', 'FrontendController@setting')->name('setting');
 Route::post('/setting', 'FrontendController@settingUpdate')->name('setting_update');
 Route::get('/{slug?}', 'FrontendController@single')->name('single');
+Route::get('/{username?}/{slug?}', 'FrontendController@singlePost')->name('post.show');
 Route::get('/tag/{slug}', 'FrontendController@index')->name('tag');
 // Route::get('/home', 'HomeController@index')->name('home');
-
-Route::get('auth/{provider}', 'Auth\AuthController@redirectToProvider')->name('auth');
-Route::get('auth/{provider}/callback', 'Auth\AuthController@handleProviderCallback');

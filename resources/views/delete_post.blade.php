@@ -18,7 +18,7 @@
 	            			<div class="bg-cover w-24 rounded flex-shrink-0" style="background-image: url({{$post->first_slide_media ?? $post_card['thumbnail'] ?? ''}});"></div>	
 	            			<div class="ml-4 w-full">
 	            				<h4 class="font-semibold text-indigo-600">{{ $post->title ?? $post_card['title'] ?? '' }}</h4>
-	            				<p class="text-sm text-gray-600 mt-1">{{ html_entity_decode($post->first_slide_caption_truncated) ?? $post_card['description'] ?? '' }}</p>
+	            				<p class="text-gray-600 mt-1">{{ html_entity_decode($post->first_slide_caption_truncated) ?? $post_card['description'] ?? '' }}</p>
 	            			</div>
 	            		</a>
 
@@ -31,7 +31,7 @@
 	            		</form>
 
 						<div class="text-center">
-							<a href="@route('single', $post->slug)" class="text-gray-600 mt-5 hover:text-indigo-600 inline-block">Batalkan</a>
+							<a href="@route('post.show', [$post->user->username, $post->slug])" class="text-gray-600 mt-5 hover:text-indigo-600 inline-block">Batalkan</a>
 						</div>
 					</div>
             	</div>

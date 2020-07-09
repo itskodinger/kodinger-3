@@ -41,7 +41,7 @@ class AuthController extends Controller
         
         Auth::login($authUser, true);
 
-        return redirect()->route('single', $authUser->the_username);
+        return redirect()->route('single', $authUser->username);
     }
 
     /**

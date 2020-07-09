@@ -97,6 +97,1095 @@ module.exports = __webpack_require__(/*! regenerator-runtime */ "./node_modules/
 
 /***/ }),
 
+/***/ "./node_modules/@yaireo/tagify/dist/tagify.min.js":
+/*!********************************************************!*\
+  !*** ./node_modules/@yaireo/tagify/dist/tagify.min.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+/**
+ * Tagify (v 3.4.0)- tags input component
+ * By Yair Even-Or
+ * Don't sell this code. (c)
+ * https://github.com/yairEO/tagify
+ */
+!function (t, e) {
+   true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (e),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : undefined;
+}(this, function () {
+  "use strict";
+
+  function u(t) {
+    return function (t) {
+      if (Array.isArray(t)) {
+        for (var e = 0, i = new Array(t.length); e < t.length; e++) {
+          i[e] = t[e];
+        }
+
+        return i;
+      }
+    }(t) || function (t) {
+      if (Symbol.iterator in Object(t) || "[object Arguments]" === Object.prototype.toString.call(t)) return Array.from(t);
+    }(t) || function () {
+      throw new TypeError("Invalid attempt to spread non-iterable instance");
+    }();
+  }
+
+  function s(e, t) {
+    var i = Object.keys(e);
+
+    if (Object.getOwnPropertySymbols) {
+      var s = Object.getOwnPropertySymbols(e);
+      t && (s = s.filter(function (t) {
+        return Object.getOwnPropertyDescriptor(e, t).enumerable;
+      })), i.push.apply(i, s);
+    }
+
+    return i;
+  }
+
+  function g(e) {
+    for (var t = 1; t < arguments.length; t++) {
+      var i = null != arguments[t] ? arguments[t] : {};
+      t % 2 ? s(i, !0).forEach(function (t) {
+        n(e, t, i[t]);
+      }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(i)) : s(i).forEach(function (t) {
+        Object.defineProperty(e, t, Object.getOwnPropertyDescriptor(i, t));
+      });
+    }
+
+    return e;
+  }
+
+  function n(t, e, i) {
+    return e in t ? Object.defineProperty(t, e, {
+      value: i,
+      enumerable: !0,
+      configurable: !0,
+      writable: !0
+    }) : t[e] = i, t;
+  }
+
+  function h() {
+    return (new Date().getTime() + Math.floor(1e4 * Math.random() + 1)).toString(16);
+  }
+
+  var o = "undefined" != typeof InstallTrigger;
+
+  function r(t) {
+    var e = document.createElement("div");
+    return t.replace(/\&#?[0-9a-z]+;/gi, function (t) {
+      return e.innerHTML = t, e.innerText;
+    });
+  }
+
+  function t(t, e) {
+    if (!t) return console.warn("Tagify: ", "invalid input element ", t), this;
+    this.applySettings(t, e || {}), this.state = {
+      editing: {},
+      actions: {},
+      dropdown: {}
+    }, this.value = [], this.tagsDataById = {}, this.listeners = {}, this.DOM = {}, this.extend(this, new this.EventDispatcher(this)), this.build(t), this.getCSSVars(), this.loadOriginalValues(), this.events.customBinding.call(this), this.events.binding.call(this), t.autofocus && this.DOM.input.focus();
+  }
+
+  return t.prototype = {
+    isIE: window.document.documentMode,
+    TEXTS: {
+      empty: "empty",
+      exceed: "number of tags exceeded",
+      pattern: "pattern mismatch",
+      duplicate: "already exists",
+      notAllowed: "not allowed"
+    },
+    DEFAULTS: {
+      delimiters: ",",
+      pattern: null,
+      maxTags: 1 / 0,
+      callbacks: {},
+      addTagOnBlur: !0,
+      duplicates: !1,
+      whitelist: [],
+      blacklist: [],
+      enforceWhitelist: !1,
+      keepInvalidTags: !1,
+      mixTagsAllowedAfter: /,|\.|\:|\s/,
+      mixTagsInterpolator: ["[[", "]]"],
+      backspace: !0,
+      skipInvalid: !1,
+      editTags: 2,
+      transformTag: function transformTag() {},
+      autoComplete: {
+        enabled: !0,
+        rightKey: !1
+      },
+      dropdown: {
+        classname: "",
+        enabled: 2,
+        maxItems: 10,
+        searchKeys: [],
+        fuzzySearch: !0,
+        highlightFirst: !1,
+        closeOnSelect: !0,
+        position: "all"
+      }
+    },
+    templates: {
+      wrapper: function wrapper(t, e) {
+        return '<tags class="tagify '.concat(e.mode ? "tagify--" + e.mode : "", " ").concat(t.className, '"\n                        ').concat(e.readonly ? 'readonly aria-readonly="true"' : 'aria-haspopup="listbox" aria-expanded="false"', '\n                        role="tagslist"\n                        tabIndex="-1">\n                <span contenteditable data-placeholder="').concat(e.placeholder || "&#8203;", '" aria-placeholder="').concat(e.placeholder || "", '"\n                    class="tagify__input"\n                    role="textbox"\n                    aria-autocomplete="both"\n                    aria-multiline="').concat("mix" == e.mode, '"></span>\n            </tags>');
+      },
+      tag: function tag(t, e) {
+        return '<tag title="'.concat(e.title || t, "\"\n                        contenteditable='false'\n                        spellcheck='false'\n                        tabIndex=\"-1\"\n                        class=\"tagify__tag ").concat(e["class"] ? e["class"] : "", '"\n                        ').concat(this.getAttributes(e), ">\n                <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>\n                <div>\n                    <span class='tagify__tag-text'>").concat(t, "</span>\n                </div>\n            </tag>");
+      },
+      dropdownItem: function dropdownItem(t) {
+        var e = this.settings.dropdown.mapValueTo,
+            i = ((e ? "function" == typeof e ? e(t) : t[e] : t.value) || t.value || t).replace(/`|'/g, "&#39;");
+        return "<div ".concat(this.getAttributes(t), "\n                        class='tagify__dropdown__item ").concat(t["class"] ? t["class"] : "", '\'\n                        tabindex="0"\n                        role="option">').concat(i, "</div>");
+      }
+    },
+    customEventsList: ["add", "remove", "invalid", "input", "click", "keydown", "focus", "blur", "edit:input", "edit:updated", "edit:start", "edit:keydown", "dropdown:show", "dropdown:hide", "dropdown:select"],
+    applySettings: function applySettings(i, t) {
+      var s = this;
+      if (this.DEFAULTS.templates = this.templates, this.settings = this.extend({}, this.DEFAULTS, t), this.settings.readonly = i.hasAttribute("readonly"), this.settings.placeholder = i.getAttribute("placeholder") || this.settings.placeholder || "", this.isIE && (this.settings.autoComplete = !1), ["whitelist", "blacklist"].forEach(function (t) {
+        var e = i.getAttribute("data-" + t);
+        e && (e = e.split(s.settings.delimiters)) instanceof Array && (s.settings[t] = e);
+      }), "autoComplete" in t && !this.isObject(t.autoComplete) && (this.settings.autoComplete = this.DEFAULTS.autoComplete, this.settings.autoComplete.enabled = t.autoComplete), i.pattern) try {
+        this.settings.pattern = new RegExp(i.pattern);
+      } catch (t) {}
+      if (this.settings.delimiters) try {
+        this.settings.delimiters = new RegExp(this.settings.delimiters, "g");
+      } catch (t) {}
+      "select" == this.settings.mode && (this.settings.dropdown.enabled = 0), "mix" == this.settings.mode && (this.settings.autoComplete.rightKey = !0);
+    },
+    getAttributes: function getAttributes(t) {
+      if ("[object Object]" != Object.prototype.toString.call(t)) return "";
+      var e,
+          i,
+          s = Object.keys(t),
+          n = "";
+
+      for (i = s.length; i--;) {
+        "class" != (e = s[i]) && t.hasOwnProperty(e) && t[e] && (n += " " + e + (t[e] ? '="'.concat(t[e], '"') : ""));
+      }
+
+      return n;
+    },
+    parseHTML: function parseHTML(t) {
+      return new DOMParser().parseFromString(t.trim(), "text/html").body.firstElementChild;
+    },
+    getCaretGlobalPosition: function getCaretGlobalPosition() {
+      var t = document.getSelection();
+
+      if (t.rangeCount) {
+        var e,
+            i,
+            s = t.getRangeAt(0),
+            n = s.startContainer,
+            a = s.startOffset;
+        if (0 < a) return (i = document.createRange()).setStart(n, a - 1), i.setEnd(n, a), {
+          left: (e = i.getBoundingClientRect()).right,
+          top: e.top,
+          bottom: e.bottom
+        };
+      }
+
+      return {
+        left: -9999,
+        top: -9999
+      };
+    },
+    getCSSVars: function getCSSVars() {
+      var t,
+          e,
+          i,
+          s = getComputedStyle(this.DOM.scope, null);
+      this.CSSVars = {
+        tagHideTransition: (t = function (t) {
+          if (!t) return {};
+          var e = (t = t.trim().split(" ")[0]).split(/\d+/g).filter(function (t) {
+            return t;
+          }).pop().trim();
+          return {
+            value: +t.split(e).filter(function (t) {
+              return t;
+            })[0].trim(),
+            unit: e
+          };
+        }((i = "tag-hide-transition", s.getPropertyValue("--" + i))), e = t.value, "s" == t.unit ? 1e3 * e : e)
+      };
+    },
+    build: function build(t) {
+      var e = this.DOM,
+          i = this.settings.templates.wrapper(t, this.settings);
+      e.originalInput = t, e.scope = this.parseHTML(i), e.input = e.scope.querySelector("[contenteditable]"), t.parentNode.insertBefore(e.scope, t), 0 <= this.settings.dropdown.enabled && this.dropdown.init.call(this);
+    },
+    destroy: function destroy() {
+      this.DOM.scope.parentNode.removeChild(this.DOM.scope), this.dropdown.hide.call(this, !0);
+    },
+    loadOriginalValues: function loadOriginalValues(t) {
+      if (t = t || this.DOM.originalInput.value) if (this.removeAllTags(), "mix" == this.settings.mode) this.parseMixTags(t.trim());else {
+        try {
+          "string" != typeof JSON.parse(t) && (t = JSON.parse(t));
+        } catch (t) {}
+
+        this.addTags(t).forEach(function (t) {
+          return t && t.classList.add("tagify--noAnim");
+        });
+      }
+    },
+    isObject: function isObject(t) {
+      var e = Object.prototype.toString.call(t).split(" ")[1].slice(0, -1);
+      return t === Object(t) && "Array" != e && "Function" != e && "RegExp" != e && "HTMLUnknownElement" != e;
+    },
+    extend: function extend(t, e, i) {
+      var s = this;
+
+      function n(t, e) {
+        for (var i in e) {
+          e.hasOwnProperty(i) && (s.isObject(e[i]) ? s.isObject(t[i]) ? n(t[i], e[i]) : t[i] = Object.assign({}, e[i]) : t[i] = e[i]);
+        }
+      }
+
+      return t instanceof Object || (t = {}), n(t, e), i && n(t, i), t;
+    },
+    cloneEvent: function cloneEvent(t) {
+      var e = {};
+
+      for (var i in t) {
+        e[i] = t[i];
+      }
+
+      return e;
+    },
+    EventDispatcher: function EventDispatcher(s) {
+      var n = document.createTextNode("");
+
+      function i(e, t, i) {
+        i && t.split(/\s+/g).forEach(function (t) {
+          return n[e + "EventListener"].call(n, t, i);
+        });
+      }
+
+      this.off = function (t, e) {
+        return i("remove", t, e), this;
+      }, this.on = function (t, e) {
+        return e && "function" == typeof e && i("add", t, e), this;
+      }, this.trigger = function (t, e) {
+        var i;
+        if (t) if (s.settings.isJQueryPlugin) "remove" == t && (t = "removeTag"), jQuery(s.DOM.originalInput).triggerHandler(t, [e]);else {
+          try {
+            i = new CustomEvent(t, {
+              detail: this.extend({}, e, {
+                tagify: this
+              })
+            });
+          } catch (t) {
+            console.warn(t);
+          }
+
+          n.dispatchEvent(i);
+        }
+      };
+    },
+    loading: function loading(t) {
+      return this.DOM.scope.classList[t ? "add" : "remove"]("tagify--loading"), this;
+    },
+    toggleFocusClass: function toggleFocusClass(t) {
+      this.DOM.scope.classList.toggle("tagify--focus", !!t);
+    },
+    events: {
+      customBinding: function customBinding() {
+        var e = this;
+        this.customEventsList.forEach(function (t) {
+          e.on(t, e.settings.callbacks[t]);
+        });
+      },
+      binding: function binding(t) {
+        var e,
+            i = !(0 < arguments.length && void 0 !== t) || t,
+            s = this.events.callbacks,
+            n = i ? "addEventListener" : "removeEventListener";
+        if (!this.state.mainEvents || !i) for (var a in (this.state.mainEvents = i) && !this.listeners.main && (this.DOM.input.addEventListener(this.isIE ? "keydown" : "input", s[this.isIE ? "onInputIE" : "onInput"].bind(this)), this.settings.isJQueryPlugin && jQuery(this.DOM.originalInput).on("tagify.removeAllTags", this.removeAllTags.bind(this))), e = this.listeners.main = this.listeners.main || {
+          focus: ["input", s.onFocusBlur.bind(this)],
+          blur: ["input", s.onFocusBlur.bind(this)],
+          keydown: ["input", s.onKeydown.bind(this)],
+          click: ["scope", s.onClickScope.bind(this)],
+          dblclick: ["scope", s.onDoubleClickScope.bind(this)]
+        }) {
+          if ("blur" == a && !i) return;
+          this.DOM[e[a][0]][n](a, e[a][1]);
+        }
+      },
+      callbacks: {
+        onFocusBlur: function onFocusBlur(t) {
+          var e = t.target ? t.target.textContent.trim() : "",
+              i = this.settings,
+              s = t.type;
+
+          if (!(t.relatedTarget && t.relatedTarget.classList.contains("tagify__tag") && this.DOM.scope.contains(t.relatedTarget))) {
+            if ("blur" == s && t.relatedTarget === this.DOM.scope) return this.dropdown.hide.call(this), void this.DOM.input.focus();
+            if (!this.state.actions.selectOption || !i.dropdown.enabled && i.dropdown.closeOnSelect) if (this.state.hasFocus = "focus" == s && +new Date(), this.toggleFocusClass(this.state.hasFocus), this.setRangeAtStartEnd(!1), "mix" != i.mode) {
+              if ("focus" == s) return this.trigger("focus", {
+                relatedTarget: t.relatedTarget
+              }), void (0 === i.dropdown.enabled && "select" != i.mode && this.dropdown.show.call(this));
+              "blur" == s && (this.trigger("blur", {
+                relatedTarget: t.relatedTarget
+              }), this.loading(!1), ("select" == this.settings.mode ? !this.value.length || this.value[0].value != e : e && !this.state.actions.selectOption && i.addTagOnBlur) && this.addTags(e, !0)), this.DOM.input.removeAttribute("style"), this.dropdown.hide.call(this);
+            } else "blur" == t.type && this.dropdown.hide.call(this);
+          }
+        },
+        onKeydown: function onKeydown(t) {
+          var e = this,
+              i = t.target.textContent.trim();
+
+          if (this.trigger("keydown", {
+            originalEvent: this.cloneEvent(t)
+          }), "mix" == this.settings.mode) {
+            switch (t.key) {
+              case "Left":
+              case "ArrowLeft":
+                this.state.actions.ArrowLeft = !0;
+                break;
+
+              case "Delete":
+              case "Backspace":
+                var s = document.getSelection(),
+                    n = [],
+                    a = r(this.DOM.input.innerHTML);
+                setTimeout(function () {
+                  if (r(e.DOM.input.innerHTML).length >= a.length && (e.removeTag(s.anchorNode.previousElementSibling), 2 == e.DOM.input.children.length && "BR" == e.DOM.input.children[1].tagName)) return e.DOM.input.innerHTML = "", !(e.value.length = 0);
+                  var t = e.DOM.input.querySelectorAll(".tagify__tag");
+                  [].forEach.call(t, function (t) {
+                    return n.push(t.getAttribute("value"));
+                  }), e.value = e.value.filter(function (t) {
+                    return -1 != n.indexOf(t.value);
+                  });
+                }, 50);
+            }
+
+            return !0;
+          }
+
+          switch (t.key) {
+            case "Backspace":
+              this.state.dropdown.visible || "" != i && 8203 != i.charCodeAt(0) || (!0 === this.settings.backspace ? this.removeTag() : "edit" == this.settings.backspace && setTimeout(this.editTag.bind(this), 0));
+              break;
+
+            case "Esc":
+            case "Escape":
+              if (this.state.dropdown.visible) return;
+              t.target.blur();
+              break;
+
+            case "Down":
+            case "ArrowDown":
+              this.state.dropdown.visible || this.dropdown.show.call(this);
+              break;
+
+            case "ArrowRight":
+              var o = this.state.inputSuggestion || this.state.ddItemData;
+              if (o && this.settings.autoComplete.rightKey) return void this.addTags([o], !0);
+              break;
+
+            case "Tab":
+              if (!i || "select" == this.settings.mode) return !0;
+
+            case "Enter":
+              t.preventDefault(), setTimeout(function () {
+                e.state.actions.selectOption || e.addTags(i, !0);
+              });
+          }
+        },
+        onInput: function onInput(t) {
+          var e = "mix" == this.settings.mode ? this.DOM.input.textContent : this.input.normalize.call(this),
+              i = e.length >= this.settings.dropdown.enabled,
+              s = {
+            value: e,
+            inputElm: this.DOM.input
+          };
+          if ("mix" == this.settings.mode) return this.events.callbacks.onMixTagsInput.call(this, t);
+          e ? this.input.value != e && (s.isValid = this.validateTag(e), this.trigger("input", s), this.input.set.call(this, e, !1), -1 != e.search(this.settings.delimiters) ? this.addTags(e) && this.input.set.call(this) : 0 <= this.settings.dropdown.enabled && this.dropdown[i ? "show" : "hide"].call(this, e)) : this.input.set.call(this, "");
+        },
+        onMixTagsInput: function onMixTagsInput() {
+          var t,
+              e,
+              i,
+              s,
+              n,
+              a = this,
+              o = this.settings;
+          if (this.hasMaxTags()) return !0;
+          window.getSelection && 0 < (t = window.getSelection()).rangeCount && ((e = t.getRangeAt(0).cloneRange()).collapse(!0), e.setStart(window.getSelection().focusNode, 0), (s = (i = e.toString().split(o.mixTagsAllowedAfter))[i.length - 1].match(o.pattern)) && (this.state.actions.ArrowLeft = !1, this.state.tag = {
+            prefix: s[0],
+            value: s.input.split(s[0])[1]
+          }, n = this.state.tag.value.length >= o.dropdown.enabled)), setTimeout(function () {
+            a.update(), a.trigger("input", a.extend({}, a.state.tag, {
+              textContent: a.DOM.input.textContent
+            })), a.state.tag && a.dropdown[n ? "show" : "hide"].call(a, a.state.tag.value);
+          }, 10);
+        },
+        onInputIE: function onInputIE(t) {
+          var e = this;
+          setTimeout(function () {
+            e.events.callbacks.onInput.call(e, t);
+          });
+        },
+        onClickScope: function onClickScope(t) {
+          var e,
+              i = t.target.closest(".tagify__tag"),
+              s = this.settings,
+              n = new Date() - this.state.hasFocus;
+
+          if (t.target != this.DOM.scope) {
+            if (!t.target.classList.contains("tagify__tag__removeBtn")) return i ? (e = this.getNodeIndex(i), this.trigger("click", {
+              tag: i,
+              index: e,
+              data: this.value[e],
+              originalEvent: this.cloneEvent(t)
+            }), void (1 == this.settings.editTags && this.events.callbacks.onDoubleClickScope.call(this, t))) : void (t.target == this.DOM.input && 500 < n ? this.state.dropdown.visible ? this.dropdown.hide.call(this) : 0 === s.dropdown.enabled && "mix" != s.mode && this.dropdown.show.call(this) : "select" == s.mode && (this.state.dropdown.visible || this.dropdown.show.call(this)));
+            this.removeTag(t.target.parentNode);
+          } else this.DOM.input.focus();
+        },
+        onEditTagInput: function onEditTagInput(t, e) {
+          var i = t.closest("tag"),
+              s = this.getNodeIndex(i),
+              n = this.input.normalize.call(this, t),
+              a = n.toLowerCase() == t.originalValue.toLowerCase() || this.validateTag(n);
+          i.classList.toggle("tagify--invalid", !0 !== a), i.isValid = !0 === a, n.length >= this.settings.dropdown.enabled && (this.state.editing.value = n, this.dropdown.show.call(this, n)), this.trigger("edit:input", {
+            tag: i,
+            index: s,
+            data: this.extend({}, this.value[s], {
+              newValue: n
+            }),
+            originalEvent: this.cloneEvent(e)
+          });
+        },
+        onEditTagBlur: function onEditTagBlur(t) {
+          if (this.state.hasFocus || this.toggleFocusClass(), this.DOM.scope.contains(t)) {
+            var e = t.closest(".tagify__tag"),
+                i = this.input.normalize.call(this, t),
+                s = i || t.originalValue,
+                n = s != t.originalValue,
+                a = (e.isValid, g({}, this.tagsDataById[e.__tagifyId], {
+              value: s
+            }));
+            if (!i) return this.removeTag(e), void this.onEditTagDone();
+            n ? (this.settings.transformTag.call(this, a), !0 === (!0 === this.validateTag(a.value)) && this.onEditTagDone(e, a)) : this.onEditTagDone(e);
+          }
+        },
+        onEditTagkeydown: function onEditTagkeydown(t) {
+          switch (this.trigger("edit:keydown", {
+            originalEvent: this.cloneEvent(t)
+          }), t.key) {
+            case "Esc":
+            case "Escape":
+              t.target.textContent = t.target.originalValue;
+
+            case "Enter":
+            case "Tab":
+              t.preventDefault(), t.target.blur();
+          }
+        },
+        onDoubleClickScope: function onDoubleClickScope(t) {
+          var e,
+              i,
+              s = t.target.closest("tag"),
+              n = this.settings;
+          s && (e = s.classList.contains("tagify__tag--editable"), i = s.hasAttribute("readonly"), "select" == n.mode || n.readonly || e || i || !this.settings.editTags || this.editTag(s), this.toggleFocusClass(!0));
+        }
+      }
+    },
+    editTag: function editTag(t, e) {
+      var i = this;
+      e = e || {};
+      var s = (t = t || this.getLastTag()).querySelector(".tagify__tag-text"),
+          n = this.getNodeIndex(t),
+          a = this.tagsDataById[t.__tagifyId],
+          o = this.events.callbacks,
+          r = this,
+          l = !0;
+
+      if (s) {
+        if (!(a instanceof Object && "editable" in a) || a.editable) return t.classList.add("tagify__tag--editable"), s.originalValue = s.textContent, s.setAttribute("contenteditable", !0), s.addEventListener("blur", function () {
+          setTimeout(o.onEditTagBlur.bind(r), 0, s);
+        }), s.addEventListener("input", o.onEditTagInput.bind(this, s)), s.addEventListener("keydown", function (t) {
+          return o.onEditTagkeydown.call(i, t);
+        }), s.focus(), this.setRangeAtStartEnd(!1, s), e.skipValidation || (l = this.editTagToggleValidity(t, a.value)), this.state.editing = {
+          scope: t,
+          input: t.querySelector("[contenteditable]")
+        }, this.trigger("edit:start", {
+          tag: t,
+          index: n,
+          data: a,
+          isValid: l
+        }), this;
+      } else console.warn("Cannot find element in Tag template: ", ".tagify__tag-text");
+    },
+    editTagToggleValidity: function editTagToggleValidity(t, e) {
+      var i = this.validateTag(e, t.__tagifyId);
+      return t.classList.toggle("tagify--invalid", !0 !== i), t.isValid = i;
+    },
+    onEditTagDone: function onEditTagDone(t, e) {
+      var i = {
+        tag: t,
+        index: this.getNodeIndex(t),
+        data: e
+      };
+      this.trigger("edit:beforeUpdate", i), t && this.replaceTag(t, e), this.trigger("edit:updated", i), this.dropdown.hide.call(this);
+    },
+    replaceTag: function replaceTag(t, e) {
+      var i = this;
+      e && e.value || (e = this.tagsDataById[t.__tagifyId]), e = !0 === t.isValid ? e : this.extend(e, this.getInvaildTagParams(e, e));
+      var s = this.createTagElem(e);
+      this.state.editing.locked || (this.state.editing = {
+        locked: !0
+      }, setTimeout(function () {
+        return delete i.state.editing.locked;
+      }, 500), s.__tagifyId = t.__tagifyId, t.parentNode.replaceChild(s, t), this.tagsDataById[t.__tagifyId] = e, this.updateValueByDOMTags());
+    },
+    updateValueByDOMTags: function updateValueByDOMTags() {
+      var e = this;
+      this.value = [], [].forEach.call(this.getTagElms(), function (t) {
+        t.classList.contains("tagify--notAllowed") || e.value.push(e.tagsDataById[t.__tagifyId]);
+      }), this.update();
+    },
+    setRangeAtStartEnd: function setRangeAtStartEnd(e, i) {
+      i = (i = i || this.DOM.input).lastChild || i;
+      var s = document.getSelection();
+      s.rangeCount && ["Start", "End"].forEach(function (t) {
+        return s.getRangeAt(0)["set" + t](i, e ? 0 : i.length);
+      });
+    },
+    input: {
+      value: "",
+      set: function set(t, e) {
+        var i = 0 < arguments.length && void 0 !== t ? t : "",
+            s = !(1 < arguments.length && void 0 !== e) || e,
+            n = this.settings.dropdown.closeOnSelect;
+        this.input.value = i, s && (this.DOM.input.innerHTML = i), !i && n && setTimeout(this.dropdown.hide.bind(this), 20), this.input.autocomplete.suggest.call(this), this.input.validate.call(this);
+      },
+      validate: function validate() {
+        var t = !this.input.value || this.validateTag(this.input.value);
+        "select" == this.settings.mode ? this.DOM.scope.classList.toggle("tagify--invalid", !0 !== t) : this.DOM.input.classList.toggle("tagify__input--invalid", !0 !== t);
+      },
+      normalize: function normalize(t) {
+        var e = t || this.DOM.input,
+            i = [];
+        e.childNodes.forEach(function (t) {
+          return 3 == t.nodeType && i.push(t.nodeValue);
+        }), i = i.join("\n");
+
+        try {
+          i = i.replace(/(?:\r\n|\r|\n)/g, this.settings.delimiters.source.charAt(0));
+        } catch (t) {}
+
+        return i = i.replace(/\s/g, " ").replace(/^\s+/, "");
+      },
+      autocomplete: {
+        suggest: function suggest(t) {
+          if (this.settings.autoComplete.enabled) {
+            "string" == typeof (t = t || {}) && (t = {
+              value: t
+            });
+            var e = t.value || "",
+                i = e.substr(0, this.input.value.length).toLowerCase(),
+                s = e.substring(this.input.value.length);
+            e && this.input.value && i == this.input.value.toLowerCase() ? (this.DOM.input.setAttribute("data-suggest", s), this.state.inputSuggestion = t) : (this.DOM.input.removeAttribute("data-suggest"), delete this.state.inputSuggestion);
+          }
+        },
+        set: function set(t) {
+          var e = this.DOM.input.getAttribute("data-suggest"),
+              i = t || (e ? this.input.value + e : null);
+          return !!i && ("mix" == this.settings.mode ? this.replaceTextWithNode(document.createTextNode(this.state.tag.prefix + i)) : (this.input.set.call(this, i), this.setRangeAtStartEnd()), this.input.autocomplete.suggest.call(this), this.dropdown.hide.call(this), !0);
+        }
+      }
+    },
+    getNodeIndex: function getNodeIndex(t) {
+      var e = 0;
+      if (t) for (; t = t.previousElementSibling;) {
+        e++;
+      }
+      return e;
+    },
+    getTagElms: function getTagElms() {
+      return this.DOM.scope.querySelectorAll(".tagify__tag");
+    },
+    getLastTag: function getLastTag() {
+      var t = this.DOM.scope.querySelectorAll("tag:not(.tagify--hide):not([readonly])");
+      return t[t.length - 1];
+    },
+    isTagDuplicate: function isTagDuplicate(e, i) {
+      var s = this;
+      return "select" != this.settings.mode && this.value.some(function (t) {
+        return t.__tagifyId != i && (s.isObject(e) ? JSON.stringify(t).toLowerCase() === JSON.stringify(e).toLowerCase() : e.trim().toLowerCase() === t.value.toLowerCase());
+      });
+    },
+    getTagIndexByValue: function getTagIndexByValue(i) {
+      var s = [];
+      return this.getTagElms().forEach(function (t, e) {
+        t.textContent.trim().toLowerCase() == i.toLowerCase() && s.push(e);
+      }), s;
+    },
+    getTagElmByValue: function getTagElmByValue(t) {
+      var e = this.getTagIndexByValue(t)[0];
+      return this.getTagElms()[e];
+    },
+    markTagByValue: function markTagByValue(t, e) {
+      return !!(e = e || this.getTagElmByValue(t)) && (e.classList.add("tagify--mark"), setTimeout(function () {
+        e.classList.remove("tagify--mark");
+      }, 100), e);
+    },
+    isTagBlacklisted: function isTagBlacklisted(e) {
+      return e = e.toLowerCase().trim(), this.settings.blacklist.filter(function (t) {
+        return e == t.toLowerCase();
+      }).length;
+    },
+    isTagWhitelisted: function isTagWhitelisted(e) {
+      return this.settings.whitelist.some(function (t) {
+        return "string" == typeof e ? e.trim().toLowerCase() === (t.value || t).toLowerCase() : JSON.stringify(t).toLowerCase() === JSON.stringify(e).toLowerCase();
+      });
+    },
+    validateTag: function validateTag(t, e) {
+      var i = t.trim(),
+          s = this.settings,
+          n = !0;
+      return i ? s.pattern && !s.pattern.test(i) ? n = this.TEXTS.pattern : !s.duplicates && this.isTagDuplicate(i, e) ? n = this.TEXTS.duplicate : (this.isTagBlacklisted(i) || s.enforceWhitelist && !this.isTagWhitelisted(i)) && (n = this.TEXTS.notAllowed) : n = this.TEXTS.empty, n;
+    },
+    getInvaildTagParams: function getInvaildTagParams(t, e) {
+      return {
+        "aria-invalid": !0,
+        "class": (t["class"] || "") + " tagify--notAllowed",
+        title: e
+      };
+    },
+    hasMaxTags: function hasMaxTags() {
+      return this.value.length >= this.settings.maxTags && this.TEXTS.exceed;
+    },
+    normalizeTags: function normalizeTags(t) {
+      function i(t) {
+        return (t + "").split(a).filter(function (t) {
+          return t;
+        }).map(function (t) {
+          return {
+            value: t.trim()
+          };
+        });
+      }
+
+      var e,
+          s = this.settings,
+          n = s.whitelist,
+          a = s.delimiters,
+          o = s.mode,
+          r = !!n && n[0] instanceof Object,
+          l = t instanceof Array,
+          d = l && t[0] instanceof Object && "value" in t[0],
+          c = [];
+      if (d) return t = (e = []).concat.apply(e, u(t.map(function (e) {
+        return i(e.value).map(function (t) {
+          return g({}, e, {}, t);
+        });
+      })));
+
+      if ("number" == typeof t && (t = t.toString()), "string" == typeof t) {
+        if (!t.trim()) return [];
+        t = i(t);
+      } else if (l) {
+        var h;
+        t = (h = []).concat.apply(h, u(t.map(function (t) {
+          return i(t);
+        })));
+      }
+
+      return r && (t.forEach(function (e) {
+        var t = n.filter(function (t) {
+          return t.value.toLowerCase() == e.value.toLowerCase();
+        });
+        t[0] ? c.push(t[0]) : "mix" != o && c.push(e);
+      }), t = c), t;
+    },
+    parseMixTags: function parseMixTags(t) {
+      var o = this,
+          e = this.settings,
+          r = e.mixTagsInterpolator,
+          l = e.duplicates,
+          d = e.transformTag,
+          c = e.enforceWhitelist;
+      return t = t.split(r[0]).map(function (t, e) {
+        var i,
+            s,
+            n = t.split(r[1]),
+            a = n[0];
+
+        try {
+          i = JSON.parse(a);
+        } catch (t) {
+          i = o.normalizeTags(a)[0];
+        }
+
+        if (!(1 < n.length) || c && !o.isTagWhitelisted(i.value) || !l && o.isTagDuplicate(i)) {
+          if (t) return e ? r[0] + t : t;
+        } else d.call(o, i), i.__tagifyId = h(), (s = o.createTagElem(i)).classList.add("tagify--noAnim"), s.__tagifyId = i.__tagifyId, o.tagsDataById[s.__tagifyId] = i, n[0] = s.outerHTML, o.value.push(i);
+
+        return n.join("");
+      }).join(""), this.DOM.input.innerHTML = t, this.DOM.input.appendChild(document.createTextNode("")), this.update(), t;
+    },
+    replaceTextWithNode: function replaceTextWithNode(t, e) {
+      if (this.state.tag || e) {
+        e = e || this.state.tag.prefix + this.state.tag.value;
+        var i,
+            s,
+            n = this.state.selection || window.getSelection(),
+            a = n.anchorNode;
+        return a.splitText(n.anchorOffset), i = a.nodeValue.lastIndexOf(e), (s = a.splitText(i)).nodeValue = s.nodeValue.replace(e, ""), a.parentNode.insertBefore(t, s), this.DOM.input.normalize(), s;
+      }
+    },
+    selectTag: function selectTag(t, e) {
+      return this.input.set.call(this, e.value, !0), this.state.actions.selectOption && setTimeout(this.setRangeAtStartEnd.bind(this)), this.getLastTag() ? this.replaceTag(this.getLastTag(), e) : this.appendTag(t), this.value[0] = e, this.trigger("add", {
+        tag: t,
+        data: e
+      }), this.update(), [t];
+    },
+    addEmptyTag: function addEmptyTag() {
+      var t = {
+        value: "",
+        __tagifyId: h()
+      },
+          e = this.createTagElem(t);
+      this.tagsDataById[t.__tagifyId] = t, e.__tagifyId = t.__tagifyId, this.appendTag(e), this.editTag(e, {
+        skipValidation: !0
+      });
+    },
+    addTags: function addTags(t, e, i) {
+      var s,
+          n = this,
+          a = 2 < arguments.length && void 0 !== i ? i : this.settings.skipInvalid,
+          o = [],
+          r = this.settings;
+      return t && 0 != t.length ? (t = this.normalizeTags(t), this.state.editing.scope ? this.onEditTagDone(this.state.editing.scope, t[0]) : "mix" == r.mode ? (r.transformTag.call(this, t[0]), s = this.createTagElem(t[0]), this.replaceTextWithNode(s) || this.DOM.input.appendChild(s), this.DOM.input.appendChild(document.createTextNode("")), setTimeout(function () {
+        return s.classList.add("tagify--noAnim");
+      }, 300), t[0].prefix = t[0].prefix || this.state.tag ? this.state.tag.prefix : (r.pattern.source || r.pattern)[0], this.value.push(t[0]), this.update(), this.state.tag = null, this.trigger("add", this.extend({}, {
+        tag: s
+      }, {
+        data: t[0]
+      })), this.DOM.input.appendChild(document.createTextNode("")), s) : ("select" == r.mode && (e = !1), this.DOM.input.removeAttribute("style"), t.forEach(function (t) {
+        var e,
+            i,
+            s = {};
+
+        if ((t = Object.assign({}, t)).__tagifyId = h(), n.tagsDataById[t.__tagifyId] = t, r.transformTag.call(n, t), !0 !== (e = n.hasMaxTags() || n.validateTag(t.value))) {
+          if (a) return;
+          n.extend(s, n.getInvaildTagParams(t, e)), e == n.TEXTS.duplicate && n.markTagByValue(t.value);
+        }
+
+        if (s.role = "tag", t.readonly && (s["aria-readonly"] = !0), (i = n.createTagElem(n.extend({}, t, s))).__tagifyId = t.__tagifyId, o.push(i), "select" == r.mode) return n.selectTag(i, t);
+        n.appendTag(i), !0 === e ? (n.value.push(t), n.update(), n.trigger("add", {
+          tag: i,
+          index: n.value.length - 1,
+          data: t
+        })) : (n.trigger("invalid", {
+          data: t,
+          index: n.value.length,
+          tag: i,
+          message: e
+        }), r.keepInvalidTags || setTimeout(function () {
+          return n.removeTag(i, !0);
+        }, 1e3)), n.dropdown.position.call(n);
+      }), t.length && e && this.input.set.call(this), this.dropdown.refilter.call(this), o)) : ("select" == r.mode && this.removeAllTags(), o);
+    },
+    appendTag: function appendTag(t) {
+      var e = this.DOM.scope.lastElementChild;
+      e === this.DOM.input ? this.DOM.scope.insertBefore(t, e) : this.DOM.scope.appendChild(t);
+    },
+    minify: function minify(t) {
+      return t ? t.replace(/\>[\r\n ]+\</g, "><").replace(/(<.*?>)|\s+/g, function (t, e) {
+        return e || " ";
+      }) : "";
+    },
+    createTagElem: function createTagElem(t) {
+      var e = function (t) {
+        return t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+      }(t.value),
+          i = this.settings.templates.tag.call(this, e, t);
+
+      return this.settings.readonly && (t.readonly = !0), i = this.minify(i), this.parseHTML(i);
+    },
+    reCheckInvalidTags: function reCheckInvalidTags() {
+      var n = this,
+          t = this.DOM.scope.querySelectorAll(".tagify__tag.tagify--notAllowed");
+      [].forEach.call(t, function (t) {
+        var e = n.tagsDataById[t.__tagifyId],
+            i = t.getAttribute("title") == n.TEXTS.duplicate,
+            s = !0 === n.validateTag(e.value, e.__tagifyId);
+        i && s && (t.isValid = !0, n.replaceTag(t, e));
+      });
+    },
+    removeTag: function removeTag(t, e, i) {
+      if (t = t || this.getLastTag(), i = i || this.CSSVars.tagHideTransition, "string" == typeof t && (t = this.getTagElmByValue(t)), t instanceof HTMLElement) {
+        var s = this,
+            n = t.__tagifyId,
+            a = this.getNodeIndex(t);
+        "select" == this.settings.mode && (i = 0, this.input.set.call(this)), t.classList.contains("tagify--notAllowed") && (e = !0), i && 10 < i ? (t.style.width = parseFloat(window.getComputedStyle(t).width) + "px", document.body.clientTop, t.classList.add("tagify--hide"), setTimeout(o, i)) : o();
+      }
+
+      function o() {
+        t.parentNode && (t.parentNode.removeChild(t), e ? s.settings.keepInvalidTags && s.trigger("remove", {
+          tag: t,
+          index: a
+        }) : (s.removeValueById(n), delete s.tagsDataById[n], s.update(), s.trigger("remove", {
+          tag: t,
+          index: a,
+          data: s.tagsDataById[n]
+        }), s.dropdown.refilter.call(s), s.dropdown.position.call(s), s.settings.keepInvalidTags && s.reCheckInvalidTags()));
+      }
+    },
+    removeAllTags: function removeAllTags() {
+      this.value = [], this.update(), Array.prototype.slice.call(this.getTagElms()).forEach(function (t) {
+        return t.parentNode.removeChild(t);
+      }), this.dropdown.position.call(this), "select" == this.settings.mode && this.input.set.call(this);
+    },
+    removeValueById: function removeValueById(e) {
+      this.value = this.value.filter(function (t) {
+        return t.__tagifyId != e;
+      });
+    },
+    preUpdate: function preUpdate() {
+      this.DOM.scope.classList.toggle("tagify--hasMaxTags", this.value.length >= this.settings.maxTags), this.DOM.scope.classList.toggle("tagify--noTags", !this.value.length);
+    },
+    update: function update() {
+      this.preUpdate();
+
+      var t = function (t, s) {
+        return t.map(function (t) {
+          var e = {};
+
+          for (var i in t) {
+            i != s && (e[i] = t[i]);
+          }
+
+          return e;
+        });
+      }(this.value, "__tagifyId");
+
+      this.DOM.originalInput.value = "mix" == this.settings.mode ? this.getMixedTagsAsString(t) : this.value.length ? JSON.stringify(t) : "";
+    },
+    getMixedTagsAsString: function getMixedTagsAsString(t) {
+      var i = "",
+          s = 0,
+          n = t,
+          a = this.settings.mixTagsInterpolator;
+      return function e(t) {
+        t.childNodes.forEach(function (t) {
+          if (1 == t.nodeType) {
+            if (t.classList.contains("tagify__tag")) return void (i += a[0] + JSON.stringify(n[s++]) + a[1]);
+            o && "BR" == t.tagName ? i += "\r\n" : "DIV" == t.tagName && (i += "\r\n", e(t));
+          } else i += t.textContent;
+        });
+      }(this.DOM.input), i;
+    },
+    getNodeHeight: function getNodeHeight(t) {
+      var e,
+          i = t.cloneNode(!0);
+      return i.style.cssText = "position:fixed; top:-9999px; opacity:0", document.body.appendChild(i), e = i.clientHeight, i.parentNode.removeChild(i), e;
+    },
+    dropdown: {
+      init: function init() {
+        this.DOM.dropdown = this.dropdown.build.call(this), this.DOM.dropdown.content = this.DOM.dropdown.querySelector(".tagify__dropdown__wrapper");
+      },
+      build: function build() {
+        var t = this.settings.dropdown,
+            e = t.position,
+            i = t.classname,
+            s = "".concat("manual" == e ? "" : "tagify__dropdown tagify__dropdown--".concat(e), " ").concat(i).trim();
+        return this.parseHTML('<div class="'.concat(s, '" role="listbox" aria-labelledby="dropdown">\n                        <div class="tagify__dropdown__wrapper"></div>\n                    </div>'));
+      },
+      show: function show(t) {
+        var e,
+            i,
+            s,
+            n,
+            a = this,
+            o = this.settings,
+            r = window.getSelection(),
+            l = "manual" == o.dropdown.position;
+
+        if (o.whitelist && o.whitelist.length && !1 !== o.dropdown.enable) {
+          if (this.suggestedListItems = this.dropdown.filterListItems.call(this, t), !this.suggestedListItems.length) {
+            if ("mix" != o.mode || o.enforceWhitelist) return this.input.autocomplete.suggest.call(this), void this.dropdown.hide.call(this);
+            this.suggestedListItems = [{
+              value: t
+            }];
+          }
+
+          s = (i = this.suggestedListItems[0]).value || i, o.autoComplete && 0 == s.indexOf(t) && this.input.autocomplete.suggest.call(this, i), e = this.dropdown.createListHTML.call(this, this.suggestedListItems), this.DOM.dropdown.content.innerHTML = this.minify(e), (o.enforceWhitelist && !l || o.dropdown.highlightFirst) && this.dropdown.highlightOption.call(this, this.DOM.dropdown.content.children[0]), this.DOM.scope.setAttribute("aria-expanded", !0), this.trigger("dropdown:show", this.DOM.dropdown), this.state.dropdown.visible = t || !0, this.state.selection = {
+            anchorOffset: r.anchorOffset,
+            anchorNode: r.anchorNode
+          }, this.dropdown.position.call(this), document.body.contains(this.DOM.dropdown) || (l || (this.events.binding.call(this, !1), n = this.getNodeHeight(this.DOM.dropdown), this.DOM.dropdown.classList.add("tagify__dropdown--initial"), this.dropdown.position.call(this, n), document.body.appendChild(this.DOM.dropdown), setTimeout(function () {
+            return a.DOM.dropdown.classList.remove("tagify__dropdown--initial");
+          })), setTimeout(this.dropdown.events.binding.bind(this)));
+        }
+      },
+      hide: function hide(t) {
+        var e = this.DOM,
+            i = e.scope,
+            s = e.dropdown,
+            n = "manual" == this.settings.dropdown.position && !t;
+        s && document.body.contains(s) && !n && (window.removeEventListener("resize", this.dropdown.position), this.dropdown.events.binding.call(this, !1), setTimeout(this.events.binding.bind(this), 250), i.setAttribute("aria-expanded", !1), s.parentNode.removeChild(s), this.state.dropdown.visible = !1, this.state.ddItemData = this.state.ddItemElm = this.state.selection = null, this.trigger("dropdown:hide", s));
+      },
+      refilter: function refilter() {
+        this.suggestedListItems = this.dropdown.filterListItems.call(this, "");
+        var t = this.dropdown.createListHTML.call(this, this.suggestedListItems);
+        this.DOM.dropdown.content.innerHTML = this.minify(t), this.trigger("dropdown:updated", this.DOM.dropdown);
+      },
+      position: function position(t) {
+        var e,
+            i,
+            s,
+            n,
+            a,
+            o,
+            r = this.DOM.dropdown;
+        this.state.dropdown.visible && (o = "text" == this.settings.dropdown.position ? (n = (i = this.getCaretGlobalPosition()).bottom, s = i.top, a = i.left, "auto") : (s = (i = this.DOM.scope.getBoundingClientRect()).top, n = i.bottom - 1, a = i.left, i.width + "px"), s = Math.floor(s), n = Math.ceil(n), e = document.documentElement.clientHeight - n < (t || r.clientHeight), r.style.cssText = "left:" + (a + window.pageXOffset) + "px; width:" + o + ";" + (e ? "bottom:" + (document.documentElement.clientHeight - s - window.pageYOffset - 2) + "px;" : "top: " + (n + window.pageYOffset) + "px"), r.setAttribute("placement", e ? "top" : "bottom"));
+      },
+      events: {
+        binding: function binding(t) {
+          var e = !(0 < arguments.length && void 0 !== t) || t,
+              i = this.dropdown.events.callbacks,
+              s = this.listeners.dropdown = this.listeners.dropdown || {
+            position: this.dropdown.position.bind(this),
+            onKeyDown: i.onKeyDown.bind(this),
+            onMouseOver: i.onMouseOver.bind(this),
+            onMouseLeave: i.onMouseLeave.bind(this),
+            onClick: i.onClick.bind(this),
+            onScroll: i.onScroll.bind(this)
+          },
+              n = e ? "addEventListener" : "removeEventListener";
+          "manual" != this.settings.dropdown.position && (window[n]("resize", s.position), window[n]("keydown", s.onKeyDown)), this.DOM.dropdown[n]("mouseover", s.onMouseOver), this.DOM.dropdown[n]("mouseleave", s.onMouseLeave), this.DOM.dropdown[n]("mousedown", s.onClick), this.DOM.dropdown.content[n]("scroll", s.onScroll), this.DOM[this.listeners.main.click[0]][n]("click", this.listeners.main.click[1]);
+        },
+        callbacks: {
+          onKeyDown: function onKeyDown(t) {
+            var e = this.DOM.dropdown.querySelector("[class$='--active']"),
+                i = e;
+
+            switch (t.key) {
+              case "ArrowDown":
+              case "ArrowUp":
+              case "Down":
+              case "Up":
+                var s;
+                t.preventDefault(), i = (i = i && i[("ArrowUp" == t.key || "Up" == t.key ? "previous" : "next") + "ElementSibling"]) || (s = this.DOM.dropdown.content.children)["ArrowUp" == t.key || "Up" == t.key ? s.length - 1 : 0], this.dropdown.highlightOption.call(this, i, !0);
+                break;
+
+              case "Escape":
+              case "Esc":
+                this.dropdown.hide.call(this);
+                break;
+
+              case "ArrowRight":
+                if (this.state.actions.ArrowLeft) return;
+
+              case "Tab":
+                if ("mix" != this.settings.mode && !this.settings.autoComplete.rightKey) {
+                  try {
+                    var n = i ? i.textContent : this.suggestedListItems[0].value;
+                    this.input.autocomplete.set.call(this, n);
+                  } catch (t) {}
+
+                  return !1;
+                }
+
+              case "Enter":
+                t.preventDefault(), this.dropdown.selectOption.call(this, e);
+                break;
+
+              case "Backspace":
+                if ("mix" == this.settings.mode || this.state.editing.scope) return;
+                var a = this.input.value.trim();
+                "" != a && 8203 != a.charCodeAt(0) || (!0 === this.settings.backspace ? this.removeTag() : "edit" == this.settings.backspace && setTimeout(this.editTag.bind(this), 0));
+            }
+          },
+          onMouseOver: function onMouseOver(t) {
+            var e = t.target.closest(".tagify__dropdown__item");
+            e && this.dropdown.highlightOption.call(this, e);
+          },
+          onMouseLeave: function onMouseLeave() {
+            this.dropdown.highlightOption.call(this);
+          },
+          onClick: function onClick(t) {
+            if (0 == t.button && t.target != this.DOM.dropdown) {
+              var e = t.target.closest(".tagify__dropdown__item");
+              this.dropdown.selectOption.call(this, e);
+            }
+          },
+          onScroll: function onScroll(t) {
+            var e = t.target,
+                i = e.scrollTop / (e.scrollHeight - e.parentNode.clientHeight) * 100;
+            this.trigger("dropdown:scroll", {
+              percentage: Math.round(i)
+            });
+          }
+        }
+      },
+      highlightOption: function highlightOption(t, e) {
+        var i,
+            s = "tagify__dropdown__item--active";
+        if (this.state.ddItemElm && (this.state.ddItemElm.classList.remove(s), this.state.ddItemElm.removeAttribute("aria-selected")), !t) return this.state.ddItemData = null, this.state.ddItemElm = null, void this.input.autocomplete.suggest.call(this);
+        i = this.suggestedListItems[this.getNodeIndex(t)], this.state.ddItemData = i, (this.state.ddItemElm = t).classList.add(s), t.setAttribute("aria-selected", !0), e && (t.parentNode.scrollTop = t.clientHeight + t.offsetTop - t.parentNode.clientHeight), this.settings.autoComplete && (this.input.autocomplete.suggest.call(this, i), "manual" != this.settings.dropdown.position && this.dropdown.position.call(this));
+      },
+      selectOption: function selectOption(t) {
+        var e = this;
+
+        if (t) {
+          this.state.actions.selectOption = !0, setTimeout(function () {
+            return e.state.actions.selectOption = !1;
+          }, 50);
+          var i = this.settings.dropdown.closeOnSelect,
+              s = this.suggestedListItems[this.getNodeIndex(t)] || this.input.value;
+          this.trigger("dropdown:select", s), this.addTags([s], !0), setTimeout(function () {
+            e.DOM.input.focus(), e.toggleFocusClass(!0);
+          }), i && this.dropdown.hide.call(this);
+        }
+      },
+      filterListItems: function filterListItems(t) {
+        var i,
+            e,
+            s,
+            n,
+            a = this,
+            o = this.settings,
+            r = [],
+            l = o.whitelist,
+            d = o.dropdown.maxItems || 1 / 0,
+            c = o.dropdown.searchKeys.concat(["searchBy", "value"]),
+            h = 0;
+        if (!t) return (o.duplicates ? l : l.filter(function (t) {
+          return !a.isTagDuplicate(t.value || t);
+        })).slice(0, d);
+
+        for (; h < l.length && (i = l[h] instanceof Object ? l[h] : {
+          value: l[h]
+        }, s = c.reduce(function (t, e) {
+          return t + " " + (i[e] || "");
+        }, "").toLowerCase().indexOf(t.toLowerCase()), e = o.dropdown.fuzzySearch ? 0 <= s : 0 == s, n = !o.duplicates && this.isTagDuplicate(i.value), e && !n && d-- && r.push(i), 0 != d); h++) {
+          ;
+        }
+
+        return r;
+      },
+      createListHTML: function createListHTML(t) {
+        var e = this.settings.templates.dropdownItem.bind(this);
+        return this.minify(t.map(e).join(""));
+      }
+    }
+  }, t;
+});
+
+/***/ }),
+
 /***/ "./node_modules/clipboard/dist/clipboard.js":
 /*!**************************************************!*\
   !*** ./node_modules/clipboard/dist/clipboard.js ***!
@@ -2063,6 +3152,234 @@ function showLoginAlert() {
 
 /***/ }),
 
+/***/ "./resources/js/discover.js":
+/*!**********************************!*\
+  !*** ./resources/js/discover.js ***!
+  \**********************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _yaireo_tagify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @yaireo/tagify */ "./node_modules/@yaireo/tagify/dist/tagify.min.js");
+/* harmony import */ var _yaireo_tagify__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_yaireo_tagify__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _utils_validate_url__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils/validate-url */ "./resources/js/utils/validate-url.js");
+/* harmony import */ var _utils_adds__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils/adds */ "./resources/js/utils/adds.js");
+/* harmony import */ var _utils_removes__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils/removes */ "./resources/js/utils/removes.js");
+/* harmony import */ var _comps_show_login_alert__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./comps/show-login-alert */ "./resources/js/comps/show-login-alert.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+  try {
+    var info = gen[key](arg);
+    var value = info.value;
+  } catch (error) {
+    reject(error);
+    return;
+  }
+
+  if (info.done) {
+    resolve(value);
+  } else {
+    Promise.resolve(value).then(_next, _throw);
+  }
+}
+
+function _asyncToGenerator(fn) {
+  return function () {
+    var self = this,
+        args = arguments;
+    return new Promise(function (resolve, reject) {
+      var gen = fn.apply(self, args);
+
+      function _next(value) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+      }
+
+      function _throw(err) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+      }
+
+      _next(undefined);
+    });
+  };
+}
+
+function _toConsumableArray(arr) {
+  return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();
+}
+
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance");
+}
+
+function _iterableToArray(iter) {
+  if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);
+}
+
+function _arrayWithoutHoles(arr) {
+  if (Array.isArray(arr)) {
+    for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {
+      arr2[i] = arr[i];
+    }
+
+    return arr2;
+  }
+}
+
+
+
+
+
+
+/**
+ * Init Tagify library
+ */
+
+var tagify = new _yaireo_tagify__WEBPACK_IMPORTED_MODULE_1___default.a($('.tags'), {
+  enforceWhitelist: true,
+  whitelist: [],
+  maxTags: 5,
+  skipInvalid: true,
+  dropdown: {
+    highlightFirst: true,
+    maxItems: 7
+  },
+  placeholder: 'Pilih maksimal 5 tag',
+  templates: {
+    wrapper: function wrapper(input, settings) {
+      return "<tags class=\"tagify focus-within:border-indigo-600 ".concat(settings.mode ? "tagify--" + settings.mode : "", " ").concat(input.className, "\"\n                                                    ").concat(settings.readonly ? 'readonly aria-readonly="true"' : 'aria-haspopup="listbox" aria-expanded="false"', "\n                                                    role=\"tagslist\">\n                                    <span contenteditable data-placeholder=\"").concat(settings.placeholder || '&#8203;', "\" aria-placeholder=\"").concat(settings.placeholder || '', "\"\n                                            class=\"tagify__input p-0 m-0 py-1\"\n                                            role=\"textbox\"\n                                            aria-controls=\"dropdown\"\n                                            aria-autocomplete=\"both\"\n                                            aria-multiline=\"").concat(settings.mode == 'mix' ? true : false, "\"></span>\n                            </tags>");
+    },
+    tag: function tag(value, tagData) {
+      return "<tag title='".concat(tagData.title || value, "'\n                                    contenteditable='false'\n                                    spellcheck='false'\n                                    class='tagify__tag m-0 mr-2 rounded ").concat(tagData["class"] ? tagData["class"] : "", "'\n                                    ").concat(this.getAttributes(tagData), ">\n                        <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>\n                        <div>\n                                <span class='tagify__tag-text'>").concat(value, "</span>\n                        </div>\n                </tag>");
+    },
+    dropdownItem: function dropdownItem(item) {
+      var mapValueTo = this.settings.dropdown.mapValueTo,
+          value = (mapValueTo ? typeof mapValueTo == 'function' ? mapValueTo(item) : item[mapValueTo] : item.value) || item.value,
+          sanitizedValue = (value || item).replace(/`|'/g, "&#39;");
+      return "<div ".concat(this.getAttributes(item), "\n                                    class='tagify__dropdown__item px-4 ").concat(item["class"] ? item["class"] : "", "'\n                                    tabindex=\"0\"\n                                    role=\"option\"\n                                    aria-labelledby=\"dropdown-label\">").concat(sanitizedValue, "</div>");
+    }
+  }
+}),
+    controller;
+/**
+ * Tagify on input
+ */
+
+tagify.on('input', onInput);
+/**
+ * Tagify on input handler
+ * @param  {Object} e Event
+ */
+
+function onInput(e) {
+  var value = e.detail.value;
+  tagify.settings.whitelist.length = 0;
+  controller && controller.abort();
+  controller = new AbortController();
+  tagify.loading(true).dropdown.hide.call(tagify);
+  fetch(routes.post_tags + '?value=' + value, {
+    signal: controller.signal
+  }).then(function (RES) {
+    return RES.json();
+  }).then(function (whitelist) {
+    var _tagify$settings$whit;
+
+    (_tagify$settings$whit = tagify.settings.whitelist).splice.apply(_tagify$settings$whit, [0, whitelist.length].concat(_toConsumableArray(whitelist)));
+
+    tagify.loading(false).dropdown.show.call(tagify, value);
+  });
+}
+/**
+ * When discover form submitted
+ */
+
+
+$('#discover-form').addEventListener('submit', function (e) {
+  var link = $('.input-link'),
+      form = this,
+      tags = tagify.value,
+      btn = $('.publish-button');
+  var tag_ids = '';
+  tags.forEach(function (item) {
+    tag_ids += item.id + ',';
+  });
+  tag_ids = tag_ids.replace(/,+$/g, "");
+
+  if (link.value.trim().length < 1 || !Object(_utils_validate_url__WEBPACK_IMPORTED_MODULE_2__["default"])(link.value)) {
+    link.focus();
+  } else if (tags.length < 1) {
+    tagify.DOM.input.focus();
+  } else {
+    var shimmer = window.posts.shimmer.add('prepend');
+    Object(_utils_adds__WEBPACK_IMPORTED_MODULE_3__["default"])(btn.classList, 'pointer-events-none opacity-50');
+    btn.disabled = true;
+    window.scrollTo({
+      top: $('.posts').offsetTop - 50
+    });
+
+    var posting = _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+      var res;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return fetch(routes.post_store_discover, {
+                method: 'POST',
+                headers: {
+                  'X-CSRF-TOKEN': token,
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                  pages: link.value,
+                  tags: tag_ids
+                })
+              });
+
+            case 2:
+              res = _context.sent;
+              return _context.abrupt("return", Promise.resolve(res));
+
+            case 4:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))() // on complete
+    .then(function (res) {
+      Object(_utils_removes__WEBPACK_IMPORTED_MODULE_4__["default"])(btn.classList, 'pointer-events-none opacity-50');
+      btn.disabled = false;
+
+      if (res.ok) {
+        return Promise.resolve(res.json());
+      }
+
+      return Promise.reject(res);
+    }).then(function (res) {
+      form.reset();
+      tagify.removeAllTags();
+      window.posts.append({
+        data: res
+      }, true);
+      shimmer.dispose();
+    })["catch"](function (error) {
+      shimmer.dispose();
+      if (error.status == 401) Object(_comps_show_login_alert__WEBPACK_IMPORTED_MODULE_5__["default"])();else if (error.status == 422) link.focus();
+    });
+  }
+
+  e.preventDefault();
+});
+
+/***/ }),
+
 /***/ "./resources/js/home.js":
 /*!******************************!*\
   !*** ./resources/js/home.js ***!
@@ -2074,11 +3391,13 @@ function showLoginAlert() {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _libs_post__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./libs/post */ "./resources/js/libs/post.js");
 
-var posts = _libs_post__WEBPACK_IMPORTED_MODULE_0__["post"].init('.posts', {
-  url: routes.post,
+window.posts = _libs_post__WEBPACK_IMPORTED_MODULE_0__["post"].init('.posts', {
+  url: routes.post_timeline,
   carousel: false,
   truncate_content: true
 });
+
+__webpack_require__(/*! ./discover */ "./resources/js/discover.js");
 
 /***/ }),
 
@@ -2279,6 +3598,10 @@ var types = {
     template: 'post',
     shimmer: 'post'
   },
+  MARKDOWN: {
+    template: 'markdown',
+    shimmer: 'post'
+  },
   DISCOVER: {
     template: 'post',
     shimmer: 'discover'
@@ -2329,6 +3652,14 @@ var api = {
    * @type {Object}
    */
   interactions: {
+    syntax: function syntax(element) {
+      if (window.hljs) {
+        element.querySelectorAll('pre code').forEach(function (block) {
+          hljs.highlightBlock(block);
+        });
+      }
+    },
+
     /**
      * Lazy-load Image Using Intersection Observer
      * @param  {Node} element Target element
@@ -2601,7 +3932,7 @@ var api = {
 
       if ($$('.share-buttons a').length < 1) {
         // this is share button template
-        var share_btn = '<a href="" target="_blank" class="text-white shadow-md mb-3 py-3 px-4 flex justify-center items-center rounded text-sm"></a>'; // show all the buttons from the `uris` key (see the uris var form destructuring object above)
+        var share_btn = '<a href="" target="_blank" class="text-white shadow-md mb-3 py-3 px-4 flex justify-center items-center rounded"></a>'; // show all the buttons from the `uris` key (see the uris var form destructuring object above)
 
         for (var i = 0; i < uris.length; i++) {
           var key = uris[i],
@@ -2732,7 +4063,7 @@ var api = {
      * @return {String}				Interpolated template string
      */
     empty: function empty() {
-      var tpl = "\n\t\t\t\t<div class=\"text-center\">\n\t\t\t\t\t<svg width=\"300\" class=\"inline-block\" id=\"Layer_2\" data-name=\"Layer 2\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1200 1200\"><defs><style>.cls-1{fill:#e2e2e2;}.cls-2{fill:#f3f3f3;}.cls-3{fill:#d37c59;}.cls-4{fill:#de8e68;}.cls-5{fill:#56cad8;}.cls-6{fill:#74d5de;}.cls-7{fill:#fed385;}.cls-8{fill:#dc8e6c;}.cls-9{fill:#fb836d;}.cls-10{fill:#d3d3d3;}.cls-11,.cls-13,.cls-14,.cls-15,.cls-16{fill:none;}.cls-11{stroke:#d3d3d3;stroke-miterlimit:10;}.cls-11,.cls-14,.cls-15{stroke-width:3.69px;}.cls-12{fill:#fed892;}.cls-13,.cls-14,.cls-16{stroke:#fed385;}.cls-13,.cls-14,.cls-15,.cls-16{stroke-linecap:round;stroke-linejoin:round;}.cls-13{stroke-width:3.84px;}.cls-15{stroke:#74d5de;}.cls-16{stroke-width:2.39px;}</style></defs><path class=\"cls-1\" d=\"M711.1,528.1c0-21.86-47-74.85-84.67-74.85-28.93,0-29.4,15.3-57.59,15.3-43.46,0-75.71-72.66-159.29-72.66-89.05,0-205.41,83.58-205.41,149.14C204.14,638.91,711.1,661.41,711.1,528.1Z\"/><path class=\"cls-2\" d=\"M935.51,849.68c1-102,2.6-265.85,2.6-290.1,0-35.58-52.84-142.15-145.27-142.15-101.26,0-151.3,116.21-217.58,116.21-60.75,0-65.54-30.76-140.74-30.76-49,0-149.82,62.8-149.82,127l67.11,219.75Z\"/><ellipse class=\"cls-3\" cx=\"602.59\" cy=\"679.96\" rx=\"11.73\" ry=\"5.25\" transform=\"translate(-105.6 1249.11) rotate(-87.24)\"/><path class=\"cls-3\" d=\"M590.19,739.68c-.2-1.94,4.32-42.23,7.92-55a16,16,0,0,1,6.71-.94l-.34,39.7-5,18.67Z\"/><polygon points=\"620.7 683.58 589.26 686.18 588.26 679.96 618.52 670.39 620.7 683.58\"/><rect class=\"cls-4\" x=\"544.3\" y=\"999.24\" width=\"13.77\" height=\"11.65\"/><rect class=\"cls-4\" x=\"586.9\" y=\"1001.06\" width=\"13.77\" height=\"11.65\"/><path class=\"cls-5\" d=\"M542.87,805V999.88H559l18.54-104.26S580.09,839.22,542.87,805Z\"/><path class=\"cls-6\" d=\"M596,801.16c.45,5.62,6.06,107.88,6.06,107.88v93.11l-16.55,1.77-10.64-99-32-99.92C547.71,802.34,583.16,797.33,596,801.16Z\"/><path class=\"cls-7\" d=\"M566.51,715.47c31.79,0,33.3,80.83,29.52,85.69s-49,8.17-53.16,3.83S526.9,715.47,566.51,715.47Z\"/><ellipse class=\"cls-4\" cx=\"607.86\" cy=\"679.96\" rx=\"11.73\" ry=\"5.25\" transform=\"translate(-100.59 1254.37) rotate(-87.24)\"/><polygon points=\"585.61 1010.89 585.61 1022.54 618.35 1022.54 618.35 1018.3 601.32 1010.89 585.61 1010.89\"/><polygon points=\"543.87 1009.05 543.87 1020.7 576.61 1020.7 576.61 1016.46 559.58 1009.05 543.87 1009.05\"/><rect x=\"585.55\" y=\"681.34\" width=\"3.86\" height=\"3.86\" transform=\"translate(-98.87 99.39) rotate(-8.92)\"/><path class=\"cls-3\" d=\"M568.84,722.5c0,2.67-12.41,3-12.41,0V696h12.41Z\"/><ellipse class=\"cls-8\" cx=\"568.46\" cy=\"688.32\" rx=\"13.03\" ry=\"19.89\"/><path class=\"cls-9\" d=\"M545.77,680.12c0-6.13,2.67-10,4.84-11.23,4.19-2.4,5.94-1.33,10.16-3.2,4.57-2,8.49-7.84,13.84-7.84,5,0,4.55,2.84,7.94,3.68,2,.49,13.36-2.12,13.36,5.23,0,11.32-12.57,12.24-15.48,13.69a37.43,37.43,0,0,0-1.52-3.83c-2.29,2.36-10.58,4-11.92,4.53-3.1,1.28-4.58,6.13-4.58,9.3s-2.87,3.18-3.59,3.18C552.19,693.63,545.77,689.38,545.77,680.12Z\"/><circle class=\"cls-8\" cx=\"556.67\" cy=\"691.67\" r=\"4.33\"/><rect class=\"cls-10\" x=\"512.81\" y=\"718.34\" width=\"25.14\" height=\"84.61\" rx=\"12.57\" ry=\"12.57\"/><ellipse class=\"cls-11\" cx=\"544.89\" cy=\"751.24\" rx=\"30.38\" ry=\"32.89\"/><path class=\"cls-4\" d=\"M576.84,736.83c2.53,0,15.29.53,20.48,2.4.4-2.53,2.66-38.77,6.51-50.91,1.47-1.62,7.45-1.43,7.45,0s8.51,60.88,0,67.93-37.37-2.4-38.56-3.33S576.84,736.83,576.84,736.83Z\"/><path class=\"cls-12\" d=\"M549.66,734.69c2.82-11.48,28.36-1.93,30.67.69,2.77,3.14-2.18,20.84-6,21.66C568.1,758.39,546,749.58,549.66,734.69Z\"/><polygon class=\"cls-12\" points=\"266.38 341.65 142.64 849.68 390.13 849.68 266.38 341.65\"/><polygon class=\"cls-5\" points=\"169.62 341.65 45.87 893.9 293.36 893.9 169.62 341.65\"/><line class=\"cls-13\" x1=\"170.29\" y1=\"891.44\" x2=\"170.29\" y2=\"395.36\"/><line class=\"cls-13\" x1=\"170.29\" y1=\"558.95\" x2=\"197.18\" y2=\"529.72\"/><line class=\"cls-13\" x1=\"170.29\" y1=\"698.94\" x2=\"210.7\" y2=\"655.02\"/><line class=\"cls-13\" x1=\"170.29\" y1=\"844.98\" x2=\"233.14\" y2=\"776.66\"/><line class=\"cls-13\" x1=\"170.29\" y1=\"558.95\" x2=\"143.4\" y2=\"529.72\"/><line class=\"cls-13\" x1=\"170.29\" y1=\"698.94\" x2=\"129.89\" y2=\"655.02\"/><line class=\"cls-13\" x1=\"170.29\" y1=\"844.98\" x2=\"107.44\" y2=\"776.66\"/><rect class=\"cls-6\" x=\"190.5\" y=\"734.34\" width=\"135.39\" height=\"197.16\" rx=\"67.69\" ry=\"67.69\"/><line class=\"cls-14\" x1=\"258.19\" y1=\"982.94\" x2=\"258.19\" y2=\"795.85\"/><path class=\"cls-14\" d=\"M258.19,875.41c37,0,37-22.28,37-56\"/><path class=\"cls-14\" d=\"M258.19,841.33c-25.65,0-25.65-15.47-25.65-38.84\"/><path class=\"cls-7\" d=\"M1152.37,849.68V667.57a81.52,81.52,0,0,0-81.28-81.28h0a81.65,81.65,0,0,0-13.07,1.06V377.78a55.64,55.64,0,0,0-55.63-55.64h0a55.64,55.64,0,0,0-55.64,55.64v44.86a80.64,80.64,0,0,0-26-4.31h0a81.52,81.52,0,0,0-81.28,81.29V649H804.08a55.7,55.7,0,0,0-55.53,55.53V833.86a55.18,55.18,0,0,0,2.32,15.82Z\"/><path class=\"cls-15\" d=\"M1000.16,740.85c91.61,0,91.61-41,91.61-103\"/><path class=\"cls-15\" d=\"M1000.25,795.48c-50.4,0-50.4-22.56-50.4-56.67\"/><line class=\"cls-15\" x1=\"1000.16\" y1=\"849.68\" x2=\"1000.16\" y2=\"364.17\"/><line class=\"cls-15\" x1=\"1000.16\" y1=\"637.85\" x2=\"949.94\" y2=\"587.62\"/><line class=\"cls-15\" x1=\"1000.16\" y1=\"534.21\" x2=\"1030.55\" y2=\"503.83\"/><path class=\"cls-2\" d=\"M750.49,341.65a47.18,47.18,0,0,0-86.25-35.55,37.43,37.43,0,0,0-52.84,34.1c0,.49,0,1,0,1.45Z\"/><path class=\"cls-2\" d=\"M291.91,268.28a47.18,47.18,0,0,1,86.25-35.55A37.4,37.4,0,0,1,431,266.83c0,.48,0,1,0,1.45Z\"/><path class=\"cls-6\" d=\"M924.33,936.06c-50.28,0-91,21.47-91,48h182.05C1015.35,957.53,974.6,936.06,924.33,936.06Z\"/><path class=\"cls-9\" d=\"M502.76,1006.93c-12.55,0-22.73,8.76-22.73,19.57H525.5C525.5,1015.69,515.32,1006.93,502.76,1006.93Z\"/><path class=\"cls-9\" d=\"M833.3,902.44c-12.56,0-22.73,13-22.73,29.06H856C856,915.45,845.85,902.44,833.3,902.44Z\"/><path class=\"cls-9\" d=\"M120.87,974.57c-20,0-36.16,6.51-36.16,14.53H157C157,981.08,140.84,974.57,120.87,974.57Z\"/><path class=\"cls-9\" d=\"M1030.55,974.57c-20,0-36.16,6.51-36.16,14.53h72.31C1066.7,981.08,1050.52,974.57,1030.55,974.57Z\"/><rect class=\"cls-6\" x=\"838.22\" y=\"746.55\" width=\"87.67\" height=\"127.66\" rx=\"43.83\" ry=\"43.83\"/><line class=\"cls-16\" x1=\"882.06\" y1=\"907.53\" x2=\"882.06\" y2=\"786.38\"/><path class=\"cls-16\" d=\"M882.06,837.9C906,837.9,906,823.47,906,801.64\"/><path class=\"cls-16\" d=\"M882.06,815.83c-16.61,0-16.61-10-16.61-25.16\"/><line class=\"cls-14\" x1=\"331.71\" y1=\"947.65\" x2=\"412.75\" y2=\"947.65\"/><line class=\"cls-14\" x1=\"668.4\" y1=\"893.9\" x2=\"722.14\" y2=\"893.9\"/><line class=\"cls-14\" x1=\"627.87\" y1=\"907.53\" x2=\"681.62\" y2=\"907.53\"/><line class=\"cls-14\" x1=\"116.88\" y1=\"918.64\" x2=\"170.63\" y2=\"918.64\"/><line class=\"cls-14\" x1=\"748.55\" y1=\"999.24\" x2=\"824.1\" y2=\"999.24\"/></svg>\n\t\t\t\t\t<h2 class=\"text-xl font-semibold\">Ya ampun! Data tidak ditemukan</h2>\n\t\t\t\t\t<p class=\"mt-2 leading-loose text-gray-600 text-sm\">Apa yang kamu cari sehingga data tidak ditemukan? Tapi, sepertinya ini salah kami memiliki konten yang terlalu sedikit \uD83D\uDE3F.</p>\n\t\t\t\t</div>\n\t\t\t";
+      var tpl = "\n\t\t\t\t<div class=\"text-center\">\n\t\t\t\t\t<svg width=\"300\" class=\"inline-block\" id=\"Layer_2\" data-name=\"Layer 2\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1200 1200\"><defs><style>.cls-1{fill:#e2e2e2;}.cls-2{fill:#f3f3f3;}.cls-3{fill:#d37c59;}.cls-4{fill:#de8e68;}.cls-5{fill:#56cad8;}.cls-6{fill:#74d5de;}.cls-7{fill:#fed385;}.cls-8{fill:#dc8e6c;}.cls-9{fill:#fb836d;}.cls-10{fill:#d3d3d3;}.cls-11,.cls-13,.cls-14,.cls-15,.cls-16{fill:none;}.cls-11{stroke:#d3d3d3;stroke-miterlimit:10;}.cls-11,.cls-14,.cls-15{stroke-width:3.69px;}.cls-12{fill:#fed892;}.cls-13,.cls-14,.cls-16{stroke:#fed385;}.cls-13,.cls-14,.cls-15,.cls-16{stroke-linecap:round;stroke-linejoin:round;}.cls-13{stroke-width:3.84px;}.cls-15{stroke:#74d5de;}.cls-16{stroke-width:2.39px;}</style></defs><path class=\"cls-1\" d=\"M711.1,528.1c0-21.86-47-74.85-84.67-74.85-28.93,0-29.4,15.3-57.59,15.3-43.46,0-75.71-72.66-159.29-72.66-89.05,0-205.41,83.58-205.41,149.14C204.14,638.91,711.1,661.41,711.1,528.1Z\"/><path class=\"cls-2\" d=\"M935.51,849.68c1-102,2.6-265.85,2.6-290.1,0-35.58-52.84-142.15-145.27-142.15-101.26,0-151.3,116.21-217.58,116.21-60.75,0-65.54-30.76-140.74-30.76-49,0-149.82,62.8-149.82,127l67.11,219.75Z\"/><ellipse class=\"cls-3\" cx=\"602.59\" cy=\"679.96\" rx=\"11.73\" ry=\"5.25\" transform=\"translate(-105.6 1249.11) rotate(-87.24)\"/><path class=\"cls-3\" d=\"M590.19,739.68c-.2-1.94,4.32-42.23,7.92-55a16,16,0,0,1,6.71-.94l-.34,39.7-5,18.67Z\"/><polygon points=\"620.7 683.58 589.26 686.18 588.26 679.96 618.52 670.39 620.7 683.58\"/><rect class=\"cls-4\" x=\"544.3\" y=\"999.24\" width=\"13.77\" height=\"11.65\"/><rect class=\"cls-4\" x=\"586.9\" y=\"1001.06\" width=\"13.77\" height=\"11.65\"/><path class=\"cls-5\" d=\"M542.87,805V999.88H559l18.54-104.26S580.09,839.22,542.87,805Z\"/><path class=\"cls-6\" d=\"M596,801.16c.45,5.62,6.06,107.88,6.06,107.88v93.11l-16.55,1.77-10.64-99-32-99.92C547.71,802.34,583.16,797.33,596,801.16Z\"/><path class=\"cls-7\" d=\"M566.51,715.47c31.79,0,33.3,80.83,29.52,85.69s-49,8.17-53.16,3.83S526.9,715.47,566.51,715.47Z\"/><ellipse class=\"cls-4\" cx=\"607.86\" cy=\"679.96\" rx=\"11.73\" ry=\"5.25\" transform=\"translate(-100.59 1254.37) rotate(-87.24)\"/><polygon points=\"585.61 1010.89 585.61 1022.54 618.35 1022.54 618.35 1018.3 601.32 1010.89 585.61 1010.89\"/><polygon points=\"543.87 1009.05 543.87 1020.7 576.61 1020.7 576.61 1016.46 559.58 1009.05 543.87 1009.05\"/><rect x=\"585.55\" y=\"681.34\" width=\"3.86\" height=\"3.86\" transform=\"translate(-98.87 99.39) rotate(-8.92)\"/><path class=\"cls-3\" d=\"M568.84,722.5c0,2.67-12.41,3-12.41,0V696h12.41Z\"/><ellipse class=\"cls-8\" cx=\"568.46\" cy=\"688.32\" rx=\"13.03\" ry=\"19.89\"/><path class=\"cls-9\" d=\"M545.77,680.12c0-6.13,2.67-10,4.84-11.23,4.19-2.4,5.94-1.33,10.16-3.2,4.57-2,8.49-7.84,13.84-7.84,5,0,4.55,2.84,7.94,3.68,2,.49,13.36-2.12,13.36,5.23,0,11.32-12.57,12.24-15.48,13.69a37.43,37.43,0,0,0-1.52-3.83c-2.29,2.36-10.58,4-11.92,4.53-3.1,1.28-4.58,6.13-4.58,9.3s-2.87,3.18-3.59,3.18C552.19,693.63,545.77,689.38,545.77,680.12Z\"/><circle class=\"cls-8\" cx=\"556.67\" cy=\"691.67\" r=\"4.33\"/><rect class=\"cls-10\" x=\"512.81\" y=\"718.34\" width=\"25.14\" height=\"84.61\" rx=\"12.57\" ry=\"12.57\"/><ellipse class=\"cls-11\" cx=\"544.89\" cy=\"751.24\" rx=\"30.38\" ry=\"32.89\"/><path class=\"cls-4\" d=\"M576.84,736.83c2.53,0,15.29.53,20.48,2.4.4-2.53,2.66-38.77,6.51-50.91,1.47-1.62,7.45-1.43,7.45,0s8.51,60.88,0,67.93-37.37-2.4-38.56-3.33S576.84,736.83,576.84,736.83Z\"/><path class=\"cls-12\" d=\"M549.66,734.69c2.82-11.48,28.36-1.93,30.67.69,2.77,3.14-2.18,20.84-6,21.66C568.1,758.39,546,749.58,549.66,734.69Z\"/><polygon class=\"cls-12\" points=\"266.38 341.65 142.64 849.68 390.13 849.68 266.38 341.65\"/><polygon class=\"cls-5\" points=\"169.62 341.65 45.87 893.9 293.36 893.9 169.62 341.65\"/><line class=\"cls-13\" x1=\"170.29\" y1=\"891.44\" x2=\"170.29\" y2=\"395.36\"/><line class=\"cls-13\" x1=\"170.29\" y1=\"558.95\" x2=\"197.18\" y2=\"529.72\"/><line class=\"cls-13\" x1=\"170.29\" y1=\"698.94\" x2=\"210.7\" y2=\"655.02\"/><line class=\"cls-13\" x1=\"170.29\" y1=\"844.98\" x2=\"233.14\" y2=\"776.66\"/><line class=\"cls-13\" x1=\"170.29\" y1=\"558.95\" x2=\"143.4\" y2=\"529.72\"/><line class=\"cls-13\" x1=\"170.29\" y1=\"698.94\" x2=\"129.89\" y2=\"655.02\"/><line class=\"cls-13\" x1=\"170.29\" y1=\"844.98\" x2=\"107.44\" y2=\"776.66\"/><rect class=\"cls-6\" x=\"190.5\" y=\"734.34\" width=\"135.39\" height=\"197.16\" rx=\"67.69\" ry=\"67.69\"/><line class=\"cls-14\" x1=\"258.19\" y1=\"982.94\" x2=\"258.19\" y2=\"795.85\"/><path class=\"cls-14\" d=\"M258.19,875.41c37,0,37-22.28,37-56\"/><path class=\"cls-14\" d=\"M258.19,841.33c-25.65,0-25.65-15.47-25.65-38.84\"/><path class=\"cls-7\" d=\"M1152.37,849.68V667.57a81.52,81.52,0,0,0-81.28-81.28h0a81.65,81.65,0,0,0-13.07,1.06V377.78a55.64,55.64,0,0,0-55.63-55.64h0a55.64,55.64,0,0,0-55.64,55.64v44.86a80.64,80.64,0,0,0-26-4.31h0a81.52,81.52,0,0,0-81.28,81.29V649H804.08a55.7,55.7,0,0,0-55.53,55.53V833.86a55.18,55.18,0,0,0,2.32,15.82Z\"/><path class=\"cls-15\" d=\"M1000.16,740.85c91.61,0,91.61-41,91.61-103\"/><path class=\"cls-15\" d=\"M1000.25,795.48c-50.4,0-50.4-22.56-50.4-56.67\"/><line class=\"cls-15\" x1=\"1000.16\" y1=\"849.68\" x2=\"1000.16\" y2=\"364.17\"/><line class=\"cls-15\" x1=\"1000.16\" y1=\"637.85\" x2=\"949.94\" y2=\"587.62\"/><line class=\"cls-15\" x1=\"1000.16\" y1=\"534.21\" x2=\"1030.55\" y2=\"503.83\"/><path class=\"cls-2\" d=\"M750.49,341.65a47.18,47.18,0,0,0-86.25-35.55,37.43,37.43,0,0,0-52.84,34.1c0,.49,0,1,0,1.45Z\"/><path class=\"cls-2\" d=\"M291.91,268.28a47.18,47.18,0,0,1,86.25-35.55A37.4,37.4,0,0,1,431,266.83c0,.48,0,1,0,1.45Z\"/><path class=\"cls-6\" d=\"M924.33,936.06c-50.28,0-91,21.47-91,48h182.05C1015.35,957.53,974.6,936.06,924.33,936.06Z\"/><path class=\"cls-9\" d=\"M502.76,1006.93c-12.55,0-22.73,8.76-22.73,19.57H525.5C525.5,1015.69,515.32,1006.93,502.76,1006.93Z\"/><path class=\"cls-9\" d=\"M833.3,902.44c-12.56,0-22.73,13-22.73,29.06H856C856,915.45,845.85,902.44,833.3,902.44Z\"/><path class=\"cls-9\" d=\"M120.87,974.57c-20,0-36.16,6.51-36.16,14.53H157C157,981.08,140.84,974.57,120.87,974.57Z\"/><path class=\"cls-9\" d=\"M1030.55,974.57c-20,0-36.16,6.51-36.16,14.53h72.31C1066.7,981.08,1050.52,974.57,1030.55,974.57Z\"/><rect class=\"cls-6\" x=\"838.22\" y=\"746.55\" width=\"87.67\" height=\"127.66\" rx=\"43.83\" ry=\"43.83\"/><line class=\"cls-16\" x1=\"882.06\" y1=\"907.53\" x2=\"882.06\" y2=\"786.38\"/><path class=\"cls-16\" d=\"M882.06,837.9C906,837.9,906,823.47,906,801.64\"/><path class=\"cls-16\" d=\"M882.06,815.83c-16.61,0-16.61-10-16.61-25.16\"/><line class=\"cls-14\" x1=\"331.71\" y1=\"947.65\" x2=\"412.75\" y2=\"947.65\"/><line class=\"cls-14\" x1=\"668.4\" y1=\"893.9\" x2=\"722.14\" y2=\"893.9\"/><line class=\"cls-14\" x1=\"627.87\" y1=\"907.53\" x2=\"681.62\" y2=\"907.53\"/><line class=\"cls-14\" x1=\"116.88\" y1=\"918.64\" x2=\"170.63\" y2=\"918.64\"/><line class=\"cls-14\" x1=\"748.55\" y1=\"999.24\" x2=\"824.1\" y2=\"999.24\"/></svg>\n\t\t\t\t\t<h2 class=\"text-xl font-semibold\">Ya ampun! Data tidak ditemukan</h2>\n\t\t\t\t\t<p class=\"mt-2 leading-loose text-gray-600\">Apa yang kamu cari sehingga data tidak ditemukan? Tapi, sepertinya ini salah kami memiliki konten yang terlalu sedikit \uD83D\uDE3F.</p>\n\t\t\t\t</div>\n\t\t\t";
       return tpl;
     },
 
@@ -2745,7 +4076,7 @@ var api = {
     community: function community(_ref5) {
       var _community = _ref5.post,
           options = _ref5.options;
-      var tpl = "\n\t    \t\t<div class=\"bg-white rounded border border-gray-200 w-full\">\n\t    \t\t\t<div class=\"pb-8 pt-6 px-6\">\n\t    \t\t\t\t<div class=\"float-right\">\n\t    \t\t\t\t\t<a target=\"_blank\" ".concat(_community.website ? "href=\"".concat(_community.website, "\" ") : '', "class=\"").concat(!_community.website ? 'pointer-events-none opacity-50 ' : '', "flex leading-relaxed items-center hover:bg-indigo-600 hover:text-white hover:border-indigo-600 border border-gray-200 uppercase text-xs font-semibold tracking-wider py-1 px-3 rounded-full\">\n\t    \t\t\t\t\t\tWebsite\n\t    \t\t\t\t\t\t<svg class=\"ml-1 w-3 fill-current\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g data-name=\"Layer 2\"><g data-name=\"arrow-forward\"><rect width=\"24\" height=\"24\" transform=\"rotate(-90 12 12)\" opacity=\"0\"/><path d=\"M5 13h11.86l-3.63 4.36a1 1 0 0 0 1.54 1.28l5-6a1.19 1.19 0 0 0 .09-.15c0-.05.05-.08.07-.13A1 1 0 0 0 20 12a1 1 0 0 0-.07-.36c0-.05-.05-.08-.07-.13a1.19 1.19 0 0 0-.09-.15l-5-6A1 1 0 0 0 14 5a1 1 0 0 0-.64.23 1 1 0 0 0-.13 1.41L16.86 11H5a1 1 0 0 0 0 2z\"/></g></g></svg>\n\t    \t\t\t\t\t</a>\n\t    \t\t\t\t</div>\n\t    \t\t\t\t<div class=\"rounded p-2 w-16 h-16 flex-shrink-0 flex items-center justify-center border\" ").concat(_community.logo_bg ? 'style="background-color: ' + _community.logo_bg + ';"' : '', ">\n\t    \t\t\t\t\t<img src=\"").concat(_community.logo, "\" alt=\"").concat(_community.name, "\" class=\"w-full\">\n\t    \t\t\t\t</div>\n\t        \t\t\t<h2 class=\"font-bold text-lg mt-4 truncate\">").concat(_community.name, "</h2>\n\t        \t\t\t<p class=\"mt-1 text-sm text-gray-600 font-light leading-relaxed h-12\">").concat(_community.short_description, "</p>\n\t    \t\t\t</div>\n\t    \t\t\t<div class=\"flex px-6 pb-6\">\n\t    \t\t\t\t<div class=\"flex text-sm items-center\">\n\t    \t\t\t\t\t<svg class=\"w-5 mr-1 fill-current text-gray-600\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g data-name=\"Layer 2\"><g data-name=\"person\"><rect width=\"24\" height=\"24\" opacity=\"0\"/><path d=\"M12 11a4 4 0 1 0-4-4 4 4 0 0 0 4 4z\"/><path d=\"M18 21a1 1 0 0 0 1-1 7 7 0 0 0-14 0 1 1 0 0 0 1 1z\"/></g></g></svg>\n\t    \t\t\t\t\t").concat(_community.formatted_member, "+\n\t    \t\t\t\t</div>\n\t        \t\t\t<div class=\"inline-flex ml-auto\">\n\t        \t\t\t\t").concat(_community.facebook ? "\n\t        \t\t\t\t<a target=\"_blank\" href=\"".concat(_community.facebook, "\">\n\t        \t\t\t\t\t<svg class=\"fill-current text-gray-600 hover:text-indigo-600 w-5 mr-2\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g data-name=\"Layer 2\"><g data-name=\"facebook\"><rect width=\"24\" height=\"24\" transform=\"rotate(180 12 12)\" opacity=\"0\"/><path d=\"M17 3.5a.5.5 0 0 0-.5-.5H14a4.77 4.77 0 0 0-5 4.5v2.7H6.5a.5.5 0 0 0-.5.5v2.6a.5.5 0 0 0 .5.5H9v6.7a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-6.7h2.62a.5.5 0 0 0 .49-.37l.72-2.6a.5.5 0 0 0-.48-.63H13V7.5a1 1 0 0 1 1-.9h2.5a.5.5 0 0 0 .5-.5z\"/></g></g></svg>\n\t        \t\t\t\t</a>") : '', "\n\n\t        \t\t\t\t").concat(_community.twitter ? "\n\t        \t\t\t\t<a target=\"_blank\" href=\"".concat(_community.twitter, "\">\n\t\t\t\t\t\t\t\t<svg class=\"fill-current text-gray-600 hover:text-indigo-600 w-5 mr-2\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g data-name=\"Layer 2\"><g data-name=\"twitter\"><polyline points=\"0 0 24 0 24 24 0 24\" opacity=\"0\"/><path d=\"M8.08 20A11.07 11.07 0 0 0 19.52 9 8.09 8.09 0 0 0 21 6.16a.44.44 0 0 0-.62-.51 1.88 1.88 0 0 1-2.16-.38 3.89 3.89 0 0 0-5.58-.17A4.13 4.13 0 0 0 11.49 9C8.14 9.2 5.84 7.61 4 5.43a.43.43 0 0 0-.75.24 9.68 9.68 0 0 0 4.6 10.05A6.73 6.73 0 0 1 3.38 18a.45.45 0 0 0-.14.84A11 11 0 0 0 8.08 20\"/></g></g></svg>\n\t\t\t\t\t\t\t</a>") : '', "\n\n\t\t\t\t\t\t\t").concat(_community.github ? "\n\t        \t\t\t\t<a target=\"_blank\" href=\"".concat(_community.github, "\">\n\t        \t\t\t\t\t<svg class=\"fill-current text-gray-600 hover:text-indigo-600 w-5 mr-2\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g data-name=\"Layer 2\"><rect width=\"24\" height=\"24\" transform=\"rotate(180 12 12)\" opacity=\"0\"/><path d=\"M12 1A10.89 10.89 0 0 0 1 11.77 10.79 10.79 0 0 0 8.52 22c.55.1.75-.23.75-.52v-1.83c-3.06.65-3.71-1.44-3.71-1.44a2.86 2.86 0 0 0-1.22-1.58c-1-.66.08-.65.08-.65a2.31 2.31 0 0 1 1.68 1.11 2.37 2.37 0 0 0 3.2.89 2.33 2.33 0 0 1 .7-1.44c-2.44-.27-5-1.19-5-5.32a4.15 4.15 0 0 1 1.11-2.91 3.78 3.78 0 0 1 .11-2.84s.93-.29 3 1.1a10.68 10.68 0 0 1 5.5 0c2.1-1.39 3-1.1 3-1.1a3.78 3.78 0 0 1 .11 2.84A4.15 4.15 0 0 1 19 11.2c0 4.14-2.58 5.05-5 5.32a2.5 2.5 0 0 1 .75 2v2.95c0 .35.2.63.75.52A10.8 10.8 0 0 0 23 11.77 10.89 10.89 0 0 0 12 1\" data-name=\"github\"/></g></svg>\n\t\t\t\t\t\t\t</a>") : '', "\n\n\t\t\t\t\t\t\t").concat(_community.telegram ? "\n\t        \t\t\t\t<a target=\"_blank\" href=\"".concat(_community.telegram, "\">\n\t        \t\t\t\t\t<svg class=\"fill-current text-gray-600 hover:text-indigo-600 w-5\" role=\"img\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><path d=\"M23.91 3.79L20.3 20.84c-.25 1.21-.98 1.5-2 .94l-5.5-4.07-2.66 2.57c-.3.3-.55.56-1.1.56-.72 0-.6-.27-.84-.95L6.3 13.7l-5.45-1.7c-1.18-.35-1.19-1.16.26-1.75l21.26-8.2c.97-.43 1.9.24 1.53 1.73z\"/></svg>\n\t\t\t\t\t\t\t</a>") : '', "\n\t        \t\t\t</div>\n\t        \t\t</div>\n\t    \t\t</div>\n\t    \t");
+      var tpl = "\n\t    \t\t<div class=\"bg-white rounded border border-gray-200 w-full\">\n\t    \t\t\t<div class=\"pb-8 pt-6 px-6\">\n\t    \t\t\t\t<div class=\"float-right\">\n\t    \t\t\t\t\t<a target=\"_blank\" ".concat(_community.website ? "href=\"".concat(_community.website, "\" ") : '', "class=\"").concat(!_community.website ? 'pointer-events-none opacity-50 ' : '', "flex leading-relaxed items-center hover:bg-indigo-600 hover:text-white hover:border-indigo-600 border border-gray-200 uppercase text-sm font-semibold tracking-wider py-1 px-3 rounded-full\">\n\t    \t\t\t\t\t\tWebsite\n\t    \t\t\t\t\t\t<svg class=\"ml-1 w-3 fill-current\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g data-name=\"Layer 2\"><g data-name=\"arrow-forward\"><rect width=\"24\" height=\"24\" transform=\"rotate(-90 12 12)\" opacity=\"0\"/><path d=\"M5 13h11.86l-3.63 4.36a1 1 0 0 0 1.54 1.28l5-6a1.19 1.19 0 0 0 .09-.15c0-.05.05-.08.07-.13A1 1 0 0 0 20 12a1 1 0 0 0-.07-.36c0-.05-.05-.08-.07-.13a1.19 1.19 0 0 0-.09-.15l-5-6A1 1 0 0 0 14 5a1 1 0 0 0-.64.23 1 1 0 0 0-.13 1.41L16.86 11H5a1 1 0 0 0 0 2z\"/></g></g></svg>\n\t    \t\t\t\t\t</a>\n\t    \t\t\t\t</div>\n\t    \t\t\t\t<div class=\"rounded p-2 w-16 h-16 flex-shrink-0 flex items-center justify-center border\" ").concat(_community.logo_bg ? 'style="background-color: ' + _community.logo_bg + ';"' : '', ">\n\t    \t\t\t\t\t<img src=\"").concat(_community.logo, "\" alt=\"").concat(_community.name, "\" class=\"w-full\">\n\t    \t\t\t\t</div>\n\t        \t\t\t<h2 class=\"font-bold text-lg mt-4 truncate\">").concat(_community.name, "</h2>\n\t        \t\t\t<p class=\"mt-1 text-gray-600 font-light leading-relaxed h-12\">").concat(_community.short_description, "</p>\n\t    \t\t\t</div>\n\t    \t\t\t<div class=\"flex px-6 pb-6\">\n\t    \t\t\t\t<div class=\"flex items-center\">\n\t    \t\t\t\t\t<svg class=\"w-5 mr-1 fill-current text-gray-600\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g data-name=\"Layer 2\"><g data-name=\"person\"><rect width=\"24\" height=\"24\" opacity=\"0\"/><path d=\"M12 11a4 4 0 1 0-4-4 4 4 0 0 0 4 4z\"/><path d=\"M18 21a1 1 0 0 0 1-1 7 7 0 0 0-14 0 1 1 0 0 0 1 1z\"/></g></g></svg>\n\t    \t\t\t\t\t").concat(_community.formatted_member, "+\n\t    \t\t\t\t</div>\n\t        \t\t\t<div class=\"inline-flex ml-auto\">\n\t        \t\t\t\t").concat(_community.facebook ? "\n\t        \t\t\t\t<a target=\"_blank\" href=\"".concat(_community.facebook, "\">\n\t        \t\t\t\t\t<svg class=\"fill-current text-gray-600 hover:text-indigo-600 w-5 mr-2\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g data-name=\"Layer 2\"><g data-name=\"facebook\"><rect width=\"24\" height=\"24\" transform=\"rotate(180 12 12)\" opacity=\"0\"/><path d=\"M17 3.5a.5.5 0 0 0-.5-.5H14a4.77 4.77 0 0 0-5 4.5v2.7H6.5a.5.5 0 0 0-.5.5v2.6a.5.5 0 0 0 .5.5H9v6.7a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-6.7h2.62a.5.5 0 0 0 .49-.37l.72-2.6a.5.5 0 0 0-.48-.63H13V7.5a1 1 0 0 1 1-.9h2.5a.5.5 0 0 0 .5-.5z\"/></g></g></svg>\n\t        \t\t\t\t</a>") : '', "\n\n\t        \t\t\t\t").concat(_community.twitter ? "\n\t        \t\t\t\t<a target=\"_blank\" href=\"".concat(_community.twitter, "\">\n\t\t\t\t\t\t\t\t<svg class=\"fill-current text-gray-600 hover:text-indigo-600 w-5 mr-2\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g data-name=\"Layer 2\"><g data-name=\"twitter\"><polyline points=\"0 0 24 0 24 24 0 24\" opacity=\"0\"/><path d=\"M8.08 20A11.07 11.07 0 0 0 19.52 9 8.09 8.09 0 0 0 21 6.16a.44.44 0 0 0-.62-.51 1.88 1.88 0 0 1-2.16-.38 3.89 3.89 0 0 0-5.58-.17A4.13 4.13 0 0 0 11.49 9C8.14 9.2 5.84 7.61 4 5.43a.43.43 0 0 0-.75.24 9.68 9.68 0 0 0 4.6 10.05A6.73 6.73 0 0 1 3.38 18a.45.45 0 0 0-.14.84A11 11 0 0 0 8.08 20\"/></g></g></svg>\n\t\t\t\t\t\t\t</a>") : '', "\n\n\t\t\t\t\t\t\t").concat(_community.github ? "\n\t        \t\t\t\t<a target=\"_blank\" href=\"".concat(_community.github, "\">\n\t        \t\t\t\t\t<svg class=\"fill-current text-gray-600 hover:text-indigo-600 w-5 mr-2\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g data-name=\"Layer 2\"><rect width=\"24\" height=\"24\" transform=\"rotate(180 12 12)\" opacity=\"0\"/><path d=\"M12 1A10.89 10.89 0 0 0 1 11.77 10.79 10.79 0 0 0 8.52 22c.55.1.75-.23.75-.52v-1.83c-3.06.65-3.71-1.44-3.71-1.44a2.86 2.86 0 0 0-1.22-1.58c-1-.66.08-.65.08-.65a2.31 2.31 0 0 1 1.68 1.11 2.37 2.37 0 0 0 3.2.89 2.33 2.33 0 0 1 .7-1.44c-2.44-.27-5-1.19-5-5.32a4.15 4.15 0 0 1 1.11-2.91 3.78 3.78 0 0 1 .11-2.84s.93-.29 3 1.1a10.68 10.68 0 0 1 5.5 0c2.1-1.39 3-1.1 3-1.1a3.78 3.78 0 0 1 .11 2.84A4.15 4.15 0 0 1 19 11.2c0 4.14-2.58 5.05-5 5.32a2.5 2.5 0 0 1 .75 2v2.95c0 .35.2.63.75.52A10.8 10.8 0 0 0 23 11.77 10.89 10.89 0 0 0 12 1\" data-name=\"github\"/></g></svg>\n\t\t\t\t\t\t\t</a>") : '', "\n\n\t\t\t\t\t\t\t").concat(_community.telegram ? "\n\t        \t\t\t\t<a target=\"_blank\" href=\"".concat(_community.telegram, "\">\n\t        \t\t\t\t\t<svg class=\"fill-current text-gray-600 hover:text-indigo-600 w-5\" role=\"img\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><path d=\"M23.91 3.79L20.3 20.84c-.25 1.21-.98 1.5-2 .94l-5.5-4.07-2.66 2.57c-.3.3-.55.56-1.1.56-.72 0-.6-.27-.84-.95L6.3 13.7l-5.45-1.7c-1.18-.35-1.19-1.16.26-1.75l21.26-8.2c.97-.43 1.9.24 1.53 1.73z\"/></svg>\n\t\t\t\t\t\t\t</a>") : '', "\n\t        \t\t\t</div>\n\t        \t\t</div>\n\t    \t\t</div>\n\t    \t");
       return tpl;
     },
 
@@ -2754,22 +4085,40 @@ var api = {
      * @return {String}           Interpolated template string
      */
     communityShimmer: function communityShimmer() {
-      var tpl = "\n\t\t    \t<div class=\"w-full\">\n\t\t    \t\t<div class=\"bg-white rounded border border-gray-200\">\n\t\t    \t\t\t<div class=\"pb-8 pt-6 px-6\">\n\t\t    \t\t\t\t<div class=\"float-right\">\n\t\t    \t\t\t\t\t<div class=\"flex py-1 px-3 rounded-full bg-gray-200 w-16 h-6\">\n\t\t    \t\t\t\t\t</div>\n\t\t    \t\t\t\t</div>\n\t\t    \t\t\t\t<div class=\"rounded p-2 w-16 h-16 flex-shrink-0 bg-gray-100\"></div>\n\t\t        \t\t\t<h2 class=\"mt-4 w-32 h-6 bg-gray-200 rounded\"></h2>\n\t\t        \t\t\t<div class=\"mt-3 bg-gray-100 h-3 rounded w-full\"></div>\n\t\t        \t\t\t<div class=\"mt-2 bg-gray-100 h-3 rounded w-20\"></div>\n\t\t    \t\t\t</div>\n\t\t    \t\t\t<div class=\"flex px-6 pb-6\">\n\t\t    \t\t\t\t<div class=\"flex text-sm items-center\">\n\t\t\t    \t\t\t\t<div class=\"rounded w-16 h-4 bg-gray-200\"></div>\n\t\t    \t\t\t\t</div>\n\t\t        \t\t\t<div class=\"inline-flex ml-auto\">\n\t\t\t    \t\t\t\t<div class=\"rounded h-4 w-4 bg-gray-100 mr-2\"></div>\n\t\t\t    \t\t\t\t<div class=\"rounded h-4 w-4 bg-gray-100 mr-2\"></div>\n\t\t\t    \t\t\t\t<div class=\"rounded h-4 w-4 bg-gray-100 mr-2\"></div>\n\t\t\t    \t\t\t\t<div class=\"rounded h-4 w-4 bg-gray-100\"></div>\n\t\t        \t\t\t</div>\n\t\t        \t\t</div>\n\t\t    \t\t</div>\n\t\t    \t</div>\n\t\t\t";
+      var tpl = "\n\t\t    \t<div class=\"w-full\">\n\t\t    \t\t<div class=\"bg-white rounded border border-gray-200\">\n\t\t    \t\t\t<div class=\"pb-8 pt-6 px-6\">\n\t\t    \t\t\t\t<div class=\"float-right\">\n\t\t    \t\t\t\t\t<div class=\"flex py-1 px-3 rounded-full bg-gray-200 w-16 h-6\">\n\t\t    \t\t\t\t\t</div>\n\t\t    \t\t\t\t</div>\n\t\t    \t\t\t\t<div class=\"rounded p-2 w-16 h-16 flex-shrink-0 bg-gray-100\"></div>\n\t\t        \t\t\t<h2 class=\"mt-4 w-32 h-6 bg-gray-200 rounded\"></h2>\n\t\t        \t\t\t<div class=\"mt-3 bg-gray-100 h-3 rounded w-full\"></div>\n\t\t        \t\t\t<div class=\"mt-2 bg-gray-100 h-3 rounded w-20\"></div>\n\t\t    \t\t\t</div>\n\t\t    \t\t\t<div class=\"flex px-6 pb-6\">\n\t\t    \t\t\t\t<div class=\"flex items-center\">\n\t\t\t    \t\t\t\t<div class=\"rounded w-16 h-4 bg-gray-200\"></div>\n\t\t    \t\t\t\t</div>\n\t\t        \t\t\t<div class=\"inline-flex ml-auto\">\n\t\t\t    \t\t\t\t<div class=\"rounded h-4 w-4 bg-gray-100 mr-2\"></div>\n\t\t\t    \t\t\t\t<div class=\"rounded h-4 w-4 bg-gray-100 mr-2\"></div>\n\t\t\t    \t\t\t\t<div class=\"rounded h-4 w-4 bg-gray-100 mr-2\"></div>\n\t\t\t    \t\t\t\t<div class=\"rounded h-4 w-4 bg-gray-100\"></div>\n\t\t        \t\t\t</div>\n\t\t        \t\t</div>\n\t\t    \t\t</div>\n\t\t    \t</div>\n\t\t\t";
+      return tpl;
+    },
+    compTags: function compTags(_ref6) {
+      var post = _ref6.post;
+      var tpl = "\n\t\t        <div class=\"flex flex-wrap\">\n\t\t        ".concat(post.tags.map(function (tag) {
+        if (tag.tag !== null) {
+          return "<a class=\"mt-2 border border-gray-300 bg-gray-100 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded py-1 px-3\" href=\"".concat(routes.search + Object(_utils_full_url_with_query__WEBPACK_IMPORTED_MODULE_7__["default"])({
+            tag: tag.tag.name
+          }), "\">\n\t                        #").concat(tag.tag.name, "\n\t                    </a>");
+        } else {
+          return '';
+        }
+      }).join(''), "\n\t\t        </div>\n\t\t\t");
+      return tpl;
+    },
+    compCtas: function compCtas(_ref7) {
+      var post = _ref7.post;
+      var tpl = "\n\t\t\t\t<div class=\"border-t border-gray-200\">\n\t\t\t\t    <div class=\"flex w-full items-center\">\n\t\t\t\t        <a data-love ".concat(post.is_post_loved ? 'data-loved' : '', " class=\"py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200\" href=\"#\">\n\t\t\t\t            <span></span> \n\t\t\t\t            <div class=\"ml-2 inline-block post-love-count\">").concat(post.total_loves, "</div>\n\t\t\t\t        </a>\n\t\t\t\t        ").concat(post.type !== 'link' ? "<a class=\"py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200\" href=\"".concat(routes.post_single.replace(/username/g, post.user.username).replace(/slug/g, post.slug) + '#comments', "\">\n\t\t\t\t            <svg class=\"stroke-current\" xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#000000\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z\"></path></svg> \n\t\t\t\t            <div class=\"ml-2 inline-block post-comment-count\">").concat(post.total_comments, "</div>\n\t\t\t\t        </a>") : '', "\n\t\t\t\t        <a class=\"py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200\" data-save ").concat(post.is_post_saved ? 'data-saved' : '', " href=\"#\">\n\t\t\t\t        \t<span></span>\n\t\t\t\t            <div class=\"ml-2 inline-block post-save-count\">").concat(post.total_saves, "</div>\n\t\t\t\t        </a>\n\t\t\t\t        <a data-url=\"").concat(routes.post_single.replace(/username/g, post.user.username).replace(/slug/g, post.slug), "\" class=\"share-button py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200\" href=\"#\">\n\t\t\t\t            <svg class=\"stroke-current\" xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#000000\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"18\" cy=\"5\" r=\"3\"></circle><circle cx=\"6\" cy=\"12\" r=\"3\"></circle><circle cx=\"18\" cy=\"19\" r=\"3\"></circle><line x1=\"8.59\" y1=\"13.51\" x2=\"15.42\" y2=\"17.49\"></line><line x1=\"15.41\" y1=\"6.51\" x2=\"8.59\" y2=\"10.49\"></line></svg>\n\t\t\t\t        </a>\n\t\t\t\t    </div>\n\t\t\t\t</div>\n\t\t\t");
       return tpl;
     },
 
     /**
-     * Post template
+     * General post template
      * @param  {Object} options.post    Post data
      * @param  {Object} options.options Instance options
      * @return {String}                 Interpolated template string
      */
-    post: function post(_ref6) {
-      var _post = _ref6.post,
-          options = _ref6.options;
-      var tpl = "\n\t\t\t<div class=\"bg-white rounded border border-gray-200 mb-10\">\n\t\t\t    <div class=\"flex p-6 items-center\">\n\t\t\t        <a href=\"".concat(routes.single + _post.user.the_username, "\">\n\t\t\t            <img class=\"rounded w-12 rounded border\" src=\"").concat(_post.user.the_avatar_sm, "\">\n\t\t\t        </a>\n\t\t\t        <div class=\"ml-3\">\n\t\t\t            <h4 class=\"mb-1 font-bold\">\n\t\t\t                <a class=\"text-indigo-600\" href=\"").concat(routes.single + _post.user.the_username, "\">\n\t\t\t                    ").concat(_post.user.name, "\n\t\t\t                </a>\n\t\t\t            </h4>\n\t\t\t            <div class=\"-mx-1 flex items-center text-xs text-gray-500\">\n\t\t\t                <p class=\"mx-1\">").concat(_post.user.the_username, "</p>\n\t\t\t                <p class=\"mx-1\">&bull;</p>\n\t\t\t                <p class=\"mx-1 text-blue-500 font-semibold\">").concat(_post.time, "</p>\n\t\t\t            </div>\n\t\t\t        </div>\n\t\t\t    </div>\n\n\t\t\t    ").concat(_post.type == 'link' ? "\n\t\t\t\t    <div class=\"md:border border-b border-t md:rounded md:mx-6\">\n\n\t\t\t\t        ".concat(_post.post_card.has_embeddable_code ? "\n\n\t\t\t\t            <div class=\"embeddable-frame\">\n\t\t\t\t                ".concat(_post.post_card.embeddable_code, "\n\t\t\t\t            </div>") : // else
+    post: function post(_ref8) {
+      var _post = _ref8.post,
+          options = _ref8.options;
+      var tpl = "\n\t\t\t<div class=\"bg-white rounded border border-gray-200 mb-10\">\n\t\t\t    <div class=\"flex p-6 items-center\">\n\t\t\t        <a href=\"".concat(routes.single + _post.user.username, "\">\n\t\t\t            <img class=\"rounded w-12 rounded border\" src=\"").concat(_post.user.the_avatar_sm, "\">\n\t\t\t        </a>\n\t\t\t        <div class=\"ml-3\">\n\t\t\t            <h4 class=\"font-semibold\">\n\t\t\t                <a class=\"text-lg\" href=\"").concat(routes.single + _post.user.username, "\">\n\t\t\t                    ").concat(_post.user.name, "\n\t\t\t                </a>\n\t\t\t            </h4>\n\t\t\t            <div class=\"-mx-1 flex items-center text-sm text-gray-500\">\n\t\t\t                <p class=\"mx-1\">@").concat(_post.user.username, "</p>\n\t\t\t                <p class=\"mx-1\">&bull;</p>\n\t\t\t                <p class=\"mx-1 font-semibold\">").concat(_post.time, "</p>\n\t\t\t            </div>\n\t\t\t        </div>\n\t\t\t    </div>\n\n\t\t\t    ").concat(_post.type == 'link' ? "\n\t\t\t\t    <div class=\"md:border border-b border-t md:rounded md:mx-6\">\n\n\t\t\t\t        ".concat(_post.post_card.has_embeddable_code ? "\n\n\t\t\t\t            <div class=\"embeddable-frame\">\n\t\t\t\t                ".concat(_post.post_card.embeddable_code, "\n\t\t\t\t            </div>") : // else
       "\n\t\t\t\t        \t<a href=\"".concat(_post.post_card.url, "\" target=\"_blank\">\n\t\t\t\t        \t").concat(_post.post_card.thumbnail !== null ? "<img src=\"".concat(_post.post_card.thumbnail, "\" class=\"w-full h-64 object-cover\">") : // else
-      "<img src=\"".concat(_post.post_card.default_thumbnail, "\" class=\"w-full h-64 object-scale-down\">"), "\n\t\t\t\t\t        </a>\n\t\t\t\t        "), "\n\n\t\t\t\t        <div class=\"p-4 border-t bg-gray-100\">\n\t\t\t\t        \n\t\t\t\t            <h2 class=\"md:text-lg mb-2 text-base font-semibold hover:text-indigo-600\"><a target=\"_blank\" href=\"").concat(_post.post_card.url, "\">").concat(_post.post_card.title, "</a></h2>\n\n\t\t\t\t            ").concat(_post.post_card.description ? "\n\t\t\t\t                <p class=\"text-gray-600 text-sm break-all\"><a target=\"_blank\" href=\"".concat(_post.post_card.url, "\">").concat(_post.post_card.description.substr(0, 200), "</a></p>\n\t\t\t\t            ") : '', "\n\t\t\t\t            <div class=\"uppercase tracking-wider text-xs mt-3 text-teal-500 font-semibold\"><a target=\"_blank\" href=\"//").concat(Object(_utils_get_hostname__WEBPACK_IMPORTED_MODULE_10__["default"])(_post.post_card.url), "\">").concat(Object(_utils_get_hostname__WEBPACK_IMPORTED_MODULE_10__["default"])(_post.post_card.url), "</a></div>\n\t\t\t\t        </div>\n\t\t\t\t    </div>\n\t\t\t    ") : "", "\n\n\t\t\t    ").concat(_post.type !== 'link' ? "\n\t\t\t    \n\t\t\t    <div class=\"relative".concat(_post.content_object.length > 1 && options.carousel ? ' carousel-outer w-full' : '', "\"> \n\t\t\t        <div class=\"").concat(_post.content_object.length > 1 && options.carousel ? 'carousel w-full' : '', "\">\n\t\t\t            \n\t\t\t            ").concat('carousel' in options && options.carousel == false ? "<a href=\"".concat(routes.single + _post.slug, "\">\n\t\t\t                    <div data-blurry=\"").concat(_post.blurry_image, "\" data-src=\"").concat(_post.first_slide_media, "\" class=\"lazy-image w-full bg-gray-200 bg-cover h-40 sm:h-64\"></div>\n\t\t\t                </a>") : // else
+      "<img src=\"".concat(_post.post_card.default_thumbnail, "\" class=\"w-full h-64 object-scale-down\">"), "\n\t\t\t\t\t        </a>\n\t\t\t\t        "), "\n\n\t\t\t\t        <div class=\"p-4 border-t bg-gray-100\">\n\t\t\t\t        \n\t\t\t\t            <h2 class=\"md:text-lg mb-2 text-base font-semibold hover:text-indigo-600\"><a target=\"_blank\" href=\"").concat(_post.post_card.url, "\">").concat(_post.post_card.title, "</a></h2>\n\n\t\t\t\t            ").concat(_post.post_card.description ? "\n\t\t\t\t                <p class=\"text-gray-600 break-all\"><a target=\"_blank\" href=\"".concat(_post.post_card.url, "\">").concat(_post.post_card.description.substr(0, 200), "</a></p>\n\t\t\t\t            ") : '', "\n\t\t\t\t            <div class=\"uppercase tracking-wider text-sm mt-3 text-teal-500 font-semibold\"><a target=\"_blank\" href=\"//").concat(Object(_utils_get_hostname__WEBPACK_IMPORTED_MODULE_10__["default"])(_post.post_card.url), "\">").concat(Object(_utils_get_hostname__WEBPACK_IMPORTED_MODULE_10__["default"])(_post.post_card.url), "</a></div>\n\t\t\t\t        </div>\n\t\t\t\t    </div>\n\t\t\t    ") : "", "\n\n\t\t\t    ").concat(_post.type !== 'link' ? "\n\t\t\t    \n\t\t\t    <div class=\"relative".concat(_post.content_object.length > 1 && options.carousel ? ' carousel-outer w-full' : '', "\"> \n\t\t\t        <div class=\"").concat(_post.content_object.length > 1 && options.carousel ? 'carousel w-full' : '', "\">\n\t\t\t            \n\t\t\t            ").concat('carousel' in options && options.carousel == false ? "<a href=\"".concat(routes.post_single.replace(/username/g, _post.user.username).replace(/slug/g, _post.slug), "\">\n\t\t\t                    <div data-blurry=\"").concat(_post.blurry_image, "\" data-src=\"").concat(!_post.is_markdown ? _post.first_slide_media : _post.cover, "\" class=\"lazy-image w-full bg-gray-200 bg-cover h-40 sm:h-64\"></div>\n\t\t\t                </a>") : // else
       _post.content_object.map(function (slide) {
         var img = slide.url;
 
@@ -2778,17 +4127,23 @@ var api = {
         } else {
           return "<img src=\"".concat(img, "\" alt=\"image\">");
         }
-      }).join(""), "\n\t\t\t        </div>\n\n\t\t\t        ").concat(_post.content_object.length > 1 && options.carousel !== false ? "\n\t\t\t\t        <button class=\"prev\">&lsaquo;</button>\n\t\t\t\t        <button class=\"next\">&rsaquo;</button>" : '', "\n\t\t\t    </div>\n\t\t\t    ") : '', "\n\n\t\t\t    <div class=\"p-6 text-gray-700 text-sm leading-relaxed\">\n\t\t\t        ").concat(_post.title ? "<h2 class=\"text-xl mb-2 text-black font-bold\"><a class=\"text-indigo-600\" href=\"".concat(routes.single + _post.slug, "\">\n\t\t\t\t            ").concat(_post.title, "\n\t\t\t\t        </a></h2>") : '', "\n\n\t\t\t        ").concat(!options.discover && _post.type !== 'link' && (options.truncate_content || !options.truncate_content && _post.is_single_caption) ? "<div class=\"mb-3\">".concat(options.truncate_content ? _post.first_slide_caption_truncated : _post.first_slide_caption, "</div>") : '', "\n\n\t\t\t        ").concat(!options.discover && !options.truncate_content && !_post.is_single_caption ? _post.content_object.map(function (slide, index) {
+      }).join(""), "\n\t\t\t        </div>\n\n\t\t\t        ").concat(_post.content_object.length > 1 && options.carousel !== false ? "\n\t\t\t\t        <button class=\"prev\">&lsaquo;</button>\n\t\t\t\t        <button class=\"next\">&rsaquo;</button>" : '', "\n\t\t\t    </div>\n\t\t\t    ") : '', "\n\n\t\t\t    <div class=\"p-6 text-gray-700 leading-relaxed\">\n\t\t\t        ").concat(_post.title ? "<h2 class=\"text-xl mb-2 text-black font-bold\"><a class=\"text-indigo-600\" href=\"".concat(routes.post_single.replace(/username/g, _post.user.username).replace(/slug/g, _post.slug), "\">\n\t\t\t\t            ").concat(_post.title, "\n\t\t\t\t        </a></h2>") : '', "\n\n\t\t\t        ").concat(!options.discover && _post.type !== 'link' && (options.truncate_content || !options.truncate_content && _post.is_single_caption) ? "<div class=\"mb-3\">".concat(options.truncate_content ? _post.is_markdown ? _post.content_markdown_truncated : _post.first_slide_caption_truncated : _post.first_slide_caption, "</div>") : '', "\n\n\t\t\t        ").concat(!options.discover && !options.truncate_content && !_post.is_single_caption ? _post.content_object.map(function (slide, index) {
         return "<div data-index=\"".concat(index, "\" class=\"mb-3 markdowned ").concat(index != 0 ? 'hidden' : '', "\">").concat(slide.caption || '<i>Tidak ada keterangan</i>', "</div>");
-      }).join('') : '', "\n\n\t\t\t        <div class=\"flex flex-wrap\">\n\t\t\t        ").concat(_post.tags.map(function (tag) {
-        if (tag.tag !== null) {
-          return "<a class=\"mt-2 border border-gray-300 bg-gray-100 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded py-1 px-3 text-xs\" href=\"".concat(routes.search + Object(_utils_full_url_with_query__WEBPACK_IMPORTED_MODULE_7__["default"])({
-            tag: tag.tag.name
-          }), "\">\n\t\t                        #").concat(tag.tag.name, "\n\t\t                    </a>");
-        } else {
-          return '';
-        }
-      }).join(''), "\n\t\t\t        </div>\n\n\t\t\t    </div>\n\t\t        <div class=\"border-t border-gray-200\">\n\t\t            <div class=\"flex w-full items-center\">\n\t\t                <a data-love ").concat(_post.is_post_loved ? 'data-loved' : '', " class=\"py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200\" href=\"#\">\n\t\t                    <span></span> \n\t\t                    <div class=\"ml-2 inline-block post-love-count\">").concat(_post.total_loves, "</div>\n\t\t                </a>\n\t\t                <a class=\"py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200\" href=\"").concat(routes.single + _post.slug + '#comments', "\">\n\t\t                    <svg class=\"stroke-current\" xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#000000\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z\"></path></svg> \n\t\t                    <div class=\"ml-2 inline-block post-comment-count\">").concat(_post.total_comments, "</div>\n\t\t                </a>\n\t\t                <a class=\"py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200\" data-save ").concat(_post.is_post_saved ? 'data-saved' : '', " href=\"#\">\n\t\t                \t<span></span>\n\t\t                    <div class=\"ml-2 inline-block post-save-count\">").concat(_post.total_saves, "</div>\n\t\t                </a>\n\t\t                <a data-url=\"").concat(routes.single + _post.slug, "\" class=\"share-button py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200\" href=\"#\">\n\t\t                    <svg class=\"stroke-current\" xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#000000\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"18\" cy=\"5\" r=\"3\"></circle><circle cx=\"6\" cy=\"12\" r=\"3\"></circle><circle cx=\"18\" cy=\"19\" r=\"3\"></circle><line x1=\"8.59\" y1=\"13.51\" x2=\"15.42\" y2=\"17.49\"></line><line x1=\"15.41\" y1=\"6.51\" x2=\"8.59\" y2=\"10.49\"></line></svg>\n\t\t                </a>\n\t\t            </div>\n\t\t        </div>\n\t\t\t</div>");
+      }).join('') : '', "\n\n\t\t        \t").concat(this.compTags({
+        post: _post
+      }), "\n\t\t\t    </div>\n\n\t\t\t    ").concat(this.compCtas({
+        post: _post
+      }), "\n\t\t\t</div>");
+      return tpl;
+    },
+    markdown: function markdown(_ref9) {
+      var post = _ref9.post,
+          options = _ref9.options;
+      var tpl = "\n\t\t\t\t<div class=\"mb-10\">\n\t\t\t\t\t<img src=\"".concat(post.cover, "\" class=\"rounded-tl rounded-tr\" />\n\n\t\t\t\t\t<div class=\"border border-gray-200 rounded-bl rounded-br\">\n\t\t\t\t\t\t<div class=\"p-8\">\n\t\t\t\t\t\t\t<h1 class=\"text-4xl font-bold\">").concat(post.title, "</h1>\n\t\t\t\t\t\t\t<div class=\"flex items-center text-gray-600 -mx-2 mt-4 mb-8 border-t border-b border-gray-200 py-4\">\n\t\t\t\t\t\t\t\t<div class=\"px-2 flex items-center\">\n\t\t\t\t\t\t\t\t\t<img class=\"w-8 h-8 rounded-full\" src=\"").concat(user.the_avatar, "\">\n\t\t\t\t\t\t\t\t\t<div class=\"ml-2\">\n\t\t\t\t\t\t\t\t\t\t<a class=\"text-indigo-600 hover:text-indigo-800 font-semibold\" href=\"").concat(routes.single + user.username, "\">").concat(user.name, "</a>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"px-2\">&bull;</div>\n\t\t\t\t\t\t\t\t<div class=\"px-2\">").concat(post.time, "</div>\n\t\t\t\t\t\t\t\t<div class=\"px-2\">&bull;</div>\n\t\t\t\t\t\t\t\t<div class=\"px-2\">").concat(post.ert, " baca</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t<div class=\"markdowned markdowned-mdpost mb-4\">\n\t\t\t\t\t\t\t\t").concat(post.content_markdown, "\n\t\t\t\t\t\t\t</div>\n\n\t\t\t\t        \t").concat(this.compTags({
+        post: post
+      }), "\n\t\t\t        \t</div>\n\t\t\t\t\t    ").concat(this.compCtas({
+        post: post
+      }), "\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t");
       return tpl;
     },
 
@@ -2892,13 +4247,13 @@ var api = {
   query: function () {
     var _query = _asyncToGenerator(
     /*#__PURE__*/
-    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(_ref7, init) {
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(_ref10, init) {
       var page, queryPending, url, buildParams, objParams, params, http;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
-              page = _ref7.page, queryPending = _ref7.queryPending, url = _ref7.url, buildParams = _ref7.buildParams;
+              page = _ref10.page, queryPending = _ref10.queryPending, url = _ref10.url, buildParams = _ref10.buildParams;
 
               if (!(queryPending.status == true)) {
                 _context3.next = 3;
@@ -2985,6 +4340,7 @@ var api = {
   defOptions: {
     first: false,
     carousel: false,
+    syntax: false,
     truncate_content: false,
     discover: false,
     page: 1,
@@ -3063,19 +4419,20 @@ var api = {
      * @param  {Object} options.interactions 	List of interactions we have
      * @param  {Object} options.options      	Instance Options
      */
-    attach: function attach(_ref8) {
-      var data = _ref8.post,
-          element = _ref8.element,
-          interactions = _ref8.interactions,
-          options = _ref8.options;
+    attach: function attach(_ref11) {
+      var data = _ref11.post,
+          element = _ref11.element,
+          interactions = _ref11.interactions,
+          options = _ref11.options;
       var types = post.types; // if post type is discover or post
 
-      if (options.type == types.POST || options.type == types.DISCOVER) {
+      if (options.type == types.POST || options.type == types.DISCOVER || options.type == types.MARKDOWN) {
         interactions.love(element, data.id);
         interactions.save(element, data.id);
         interactions.share(element);
         if (options.carousel && Object(_utils_find__WEBPACK_IMPORTED_MODULE_9__["default"])(element, '.carousel')) interactions.carousel(element);
         if (options.lazyimage !== false) interactions.lazyimage(element);
+        if (options.syntax !== false) interactions.syntax(element);
       }
     }
   },
@@ -3091,16 +4448,16 @@ var api = {
    * @param  {Object}    options.args         Spread operator
    * @return {Promise}                        Resolve or Reject
    */
-  templating: function templating(_ref9) {
-    var res = _ref9.data,
-        direct = _ref9.direct,
-        prepend = _ref9.prepend,
-        render = _ref9.render,
-        options = _ref9.options,
-        templates = _ref9.templates,
-        interactions = _ref9.interactions,
-        events = _ref9.events,
-        args = _objectWithoutProperties(_ref9, ["data", "direct", "prepend", "render", "options", "templates", "interactions", "events"]);
+  templating: function templating(_ref12) {
+    var res = _ref12.data,
+        direct = _ref12.direct,
+        prepend = _ref12.prepend,
+        render = _ref12.render,
+        options = _ref12.options,
+        templates = _ref12.templates,
+        interactions = _ref12.interactions,
+        events = _ref12.events,
+        args = _objectWithoutProperties(_ref12, ["data", "direct", "prepend", "render", "options", "templates", "interactions", "events"]);
 
     var posts = res.data;
     var wrapper = document.createDocumentFragment(); // append post element to the wrapper
@@ -3212,11 +4569,11 @@ var api = {
    * @param  {Object}  options.args 	More args
    * @return {Promise}                Resolve or reject
    */
-  render: function render(_ref10) {
-    var elem = _ref10.elem,
-        dom = _ref10.dom,
-        prepend = _ref10.prepend,
-        args = _objectWithoutProperties(_ref10, ["elem", "dom", "prepend"]);
+  render: function render(_ref13) {
+    var elem = _ref13.elem,
+        dom = _ref13.dom,
+        prepend = _ref13.prepend,
+        args = _objectWithoutProperties(_ref13, ["elem", "dom", "prepend"]);
 
     return new Promise(function (resolve, reject) {
       if (prepend) {
@@ -3237,10 +4594,10 @@ var api = {
    * @param  {Object}    	 options.endOfPage 	EndOfPage method
    * @param  {Object} 	 options.args      	More args
    */
-  loadMore: function loadMore(_ref11) {
-    var run = _ref11.run,
-        endOfPage = _ref11.endOfPage,
-        args = _objectWithoutProperties(_ref11, ["run", "endOfPage"]); // do more stuff here
+  loadMore: function loadMore(_ref14) {
+    var run = _ref14.run,
+        endOfPage = _ref14.endOfPage,
+        args = _objectWithoutProperties(_ref14, ["run", "endOfPage"]); // do more stuff here
 
 
     if (endOfPage.status == false) run(_objectSpread({}, args));
@@ -3344,9 +4701,9 @@ var api = {
      * When data is empty
      * @param  {Node} options.elem Target element
      */
-    empty: function empty(_ref12) {
-      var elem = _ref12.elem,
-          templates = _ref12.templates;
+    empty: function empty(_ref15) {
+      var elem = _ref15.elem,
+          templates = _ref15.templates;
       var tpl = templates.empty();
       elem.insertAdjacentHTML('beforeEnd', tpl);
     }
@@ -3365,16 +4722,16 @@ var api = {
    * @param  {Object} 	options.args         More args
    * @return {Promise}                         Resolve or reject
    */
-  run: function run(_ref13) {
-    var elem = _ref13.elem,
-        end = _ref13.end,
-        options = _ref13.options,
-        lastData = _ref13.lastData,
-        buildParams = _ref13.buildParams,
-        shimmer = _ref13.shimmer,
-        queryPending = _ref13.queryPending,
-        query = _ref13.query,
-        args = _objectWithoutProperties(_ref13, ["elem", "end", "options", "lastData", "buildParams", "shimmer", "queryPending", "query"]); // get new page (don't retrieve from the argument)
+  run: function run(_ref16) {
+    var elem = _ref16.elem,
+        end = _ref16.end,
+        options = _ref16.options,
+        lastData = _ref16.lastData,
+        buildParams = _ref16.buildParams,
+        shimmer = _ref16.shimmer,
+        queryPending = _ref16.queryPending,
+        query = _ref16.query,
+        args = _objectWithoutProperties(_ref16, ["elem", "end", "options", "lastData", "buildParams", "shimmer", "queryPending", "query"]); // get new page (don't retrieve from the argument)
 
 
     var page = api.page,
@@ -3410,9 +4767,9 @@ var api = {
 
         if (options.first || !options.first && page <= last_page) {
           // 2. templating & listen (event listener)
-          (function (_ref14) {
-            var templating = _ref14.templating,
-                args = _objectWithoutProperties(_ref14, ["templating"]); // i promise you <3
+          (function (_ref17) {
+            var templating = _ref17.templating,
+                args = _objectWithoutProperties(_ref17, ["templating"]); // i promise you <3
 
 
             return new Promise(function (resolve) {
@@ -3440,16 +4797,16 @@ var api = {
             elem: elem,
             options: options
           }, args)) // 3. appending element
-          .then(function (_ref15) {
-            var render = _ref15.render,
-                args = _objectWithoutProperties(_ref15, ["render"]);
+          .then(function (_ref18) {
+            var render = _ref18.render,
+                args = _objectWithoutProperties(_ref18, ["render"]);
 
             return render(_objectSpread({}, args));
           }) // 4. rendered
-          .then(function (_ref16) {
-            var lifecycle = _ref16.lifecycle,
-                elem = _ref16.elem,
-                args = _objectWithoutProperties(_ref16, ["lifecycle", "elem"]);
+          .then(function (_ref19) {
+            var lifecycle = _ref19.lifecycle,
+                elem = _ref19.elem,
+                args = _objectWithoutProperties(_ref19, ["lifecycle", "elem"]);
 
             lifecycle.onContentLoaded();
             return resolve({
@@ -3839,6 +5196,28 @@ function str2dom(str) {
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (str2dom);
+
+/***/ }),
+
+/***/ "./resources/js/utils/validate-url.js":
+/*!********************************************!*\
+  !*** ./resources/js/utils/validate-url.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/**
+ * URL string validation
+ * @param  {String} value The string to be tested
+ * @return {Boolean}
+ */
+function validateUrl(value) {
+  return /^(?:(?:(?:https?):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(value);
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (validateUrl);
 
 /***/ }),
 

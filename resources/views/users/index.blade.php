@@ -8,12 +8,12 @@
     		<img src="{{ $user->the_avatar }}" class="w-16 rounded">
     		<div class="ml-4">
         		<div class="items-center flex">
-	        		<div class="py-1 px-2 mr-2 rounded text-xs inline-block text-white capitalize {{ $user->status == 'active' ? 'bg-green-500' : 'bg-orange-500' }}">
+	        		<div class="py-1 px-2 mr-2 rounded text-sm inline-block text-white capitalize {{ $user->status == 'active' ? 'bg-green-500' : 'bg-orange-500' }}">
 	        			{{ $user->status }}
 	        		</div>
-	        		{{ $user->name }} <span class="text-xs ml-2">({{ $user->roles()->pluck('name')->implode(',') }})</span>
+	        		{{ $user->name }} <span class="text-sm ml-2">({{ $user->roles()->pluck('name')->implode(',') }})</span>
         		</div>
-        		<div class="mt-2 -mx-3 text-gray-600 text-sm flex">
+        		<div class="mt-2 -mx-3 text-gray-600 flex">
 	        		<div class="mx-3">{{ $user->created_at->diffForHumans() }}</div>
 	        		<a class="mx-3 text-black" href="@route('user.edit', $user->id)">Edit</a>
 	        		@if($user->id !== 1)

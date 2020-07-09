@@ -10,19 +10,19 @@
 		<div class="w-full lg:w-4/12 mx-4 mb-10 lg:mb-0">
 			<div class="py-4 px-6 rounded shadow border-l-4 border-indigo-600">
 				<div class="text-4xl">{{ $user->total() }}</div>
-				<div class="text-gray-500 uppercase text-sm tracking-wider font-semibold">Total User</div>
+				<div class="text-gray-500 uppercase tracking-wider font-semibold">Total User</div>
 			</div>
 		</div>
 		<div class="w-full lg:w-4/12 mx-4 mb-10 lg:mb-0">
 			<div class="py-4 px-6 rounded shadow border-l-4 border-teal-600">
 				<div class="text-4xl">{{ $contribute->total() }}</div>
-				<div class="text-gray-500 uppercase text-sm tracking-wider font-semibold">Total Contribute</div>
+				<div class="text-gray-500 uppercase tracking-wider font-semibold">Total Contribute</div>
 			</div>
 		</div>
 		<div class="w-full lg:w-4/12 mx-4 mb-10 lg:mb-0">
 			<div class="py-4 px-6 rounded shadow border-l-4 border-blue-600">
 				<div class="text-4xl">{{ $post->total() }}</div>
-				<div class="text-gray-500 uppercase text-sm tracking-wider font-semibold">Total Post</div>
+				<div class="text-gray-500 uppercase tracking-wider font-semibold">Total Post</div>
 			</div>
 		</div>
 	</div>

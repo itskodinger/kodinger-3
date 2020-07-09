@@ -284,6 +284,7 @@ function routes_js()
         "post_markdown_ns" => route('ajax.post.markdown-ns'),
         "delete_post" => route('deletePost', 'slug'),
         "post_both" => route('ajax.post.both'),
+        "post_timeline" => route('ajax.post.timeline'),
         "post_store" => route('ajax.post.store'),
         "post_edit" => route('ajax.post.edit', 'id'),
         "post_update" => route('ajax.post.update', 'slug'),
@@ -294,6 +295,7 @@ function routes_js()
         "check_slug" => route('ajax.post.check_slug'),
         "base_url" => url(''),
         "single" => route('single') . '/',
+        "post_single" => route('post.show', ['username', 'slug']),
         "post_show" => route('ajax.post.show', 'slug'),
         "post_store_discover" => route('ajax.post.store_discover'),
         "post_tags" => route('ajax.tag.search'),
@@ -318,7 +320,7 @@ function user_js()
 		->only([
 			'id',
 			'name', 
-			'the_username', 
+			'username', 
 			'the_avatar_sm', 
 			'the_avatar'
 		])
@@ -408,4 +410,23 @@ function is_provider_google()
 function enable_username()
 {
 	return is_provider_google() && auth()->user()->provider_id == auth()->user()->username;
+}
+
+function edit_post_route($post)
+{
+	if($post->is_markdown) {
+		return route('post.md', $post->id);
+	}else{
+		return route('post.slide', $post->id);
+	}
+}
+
+function ert($content)
+{
+	$word = str_word_count(strip_tags($content));
+	$m = floor($word / 200);
+	$s = floor($word % 200 / (200 / 60));
+	$est = $m . ' menit';
+
+	return $est;
 }

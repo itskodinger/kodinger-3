@@ -106,28 +106,47 @@ class FrontendController extends Controller
 	}
 
 	/**
-	 * Single page (currently: user or post detail)
+	 * Single page (currently: only for user (post moved to singlePost method))
 	 * @param  String  $slug    User's username or post's slug
 	 * @param  Request $request Request
 	 * @return mix
 	 */
 	public function single($slug, Request $request)
 	{
-		$post = $this->postService->findBySlug($slug, true);
-
-		if(!$post)
+		// temporary redirect
+		$post = $this->postService->findBySlugAll($slug, true);
+		if($post)
 		{
-			$user = $this->userService->findByUsername($slug);
-
-
-			if(!$user) return abort(404);
-
-			$posts = $user->posts()->paginate(10);
-
-			return view('profile', compact('user', 'posts'));
+			return redirect()->route('post.show', [$post->user->username, $post->slug]);
 		}
 
-		return view('single', compact('post'));
+		$user = $this->userService->findByUsername($slug);
+
+		if(!$user) return abort(404);
+
+		$posts = $user->posts()->paginate(10);
+
+		return view('profile', compact('user', 'posts'));
+	}
+
+	public function singlePost($username, $slug)
+	{
+		$post = $this->postService->findBySlugAll($slug, true);
+
+		if(!$post || ($post && $post->user->username !== $username))
+		{
+			return abort(404);
+		}
+
+		if(($post->user_id !== auth()->id() && $post->status == 'draft') || $post->type == 'link') return abort(404);
+
+		$posts = $this->postService->getByAuthor($post->user->id);
+		if(!$posts)
+		{
+			$posts = $this->postService->popular();
+		}
+
+		return view('single', compact('post', 'posts'));
 	}
 
 	/**
