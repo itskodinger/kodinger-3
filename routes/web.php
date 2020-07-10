@@ -87,6 +87,7 @@ Route::get('auth/{provider}/callback', 'Auth\AuthController@handleProviderCallba
 Route::get('/', 'FrontendController@index')->name('index');
 Route::get('/post-slide/{id?}', 'FrontendController@postSlide')->name('post.slide');
 Route::get('/post-md/{id?}', 'FrontendController@postMD')->name('post.md');
+Route::get('/post-link', 'FrontendController@postLink')->name('post.link');
 Route::get('/post', 'FrontendController@newPost')->name('post.new');
 Route::get('/community', 'FrontendController@community')->name('community');
 Route::get('/scenes', 'FrontendController@scenes')->name('scenes');

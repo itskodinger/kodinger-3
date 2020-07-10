@@ -14,7 +14,7 @@ let commentTemplate = function(data) {
                 <img class="rounded w-10 h-10 flex-shrink-0" src="${data.avatar}">
                 <div class="ml-5 w-full">
                     <p class="mx-1 text-blue-500 text-sm font-semibold float-right cmt-time">${data.time}</p>
-                    <h4 class="mb-1 font-bold"><a class="text-indigo-600 cmt-name" href="${routes.base_url +'/'+ data.username}">${data.name}</a> <span class="text-gray-600 font-normal">(${data.username})</span></h4>
+                    <h4 class="mb-1 font-bold"><a class="text-indigo-600 cmt-name" href="${routes.base_url +'/'+ data.username}">${data.name}</a> <span class="text-gray-600 font-normal">(@${data.username})</span></h4>
                     <div class= text-gray-700">
                         <div class="quoted-cmt-wrapper my-2"></div>
                         <div class="cmt-content mb-2 text-base break-all markdowned">${data.content}</div>

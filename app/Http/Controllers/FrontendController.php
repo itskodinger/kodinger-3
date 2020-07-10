@@ -351,6 +351,13 @@ class FrontendController extends Controller
 		return view('post_md', compact('id'));
 	}
 
+	public function postLink()
+	{
+		if(!auth()->check()) return abort(403);
+
+		return view('post_link');
+	}
+
 	/**
 	 * Scenes page
 	 * @return  view

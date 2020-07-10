@@ -5,5 +5,3 @@ window.posts = post.init('.posts', {
     carousel: false,
     truncate_content: true
 });
-
-require('./discover');

@@ -690,7 +690,7 @@ let api = {
 
 				        <div class="p-4 border-t bg-gray-100">
 				        
-				            <h2 class="md:text-lg mb-2 text-base font-semibold hover:text-indigo-600"><a target="_blank" href="${post.post_card.url}">${post.post_card.title}</a></h2>
+				            <h2 class="md:text-xl mb-2 text-base font-semibold hover:text-indigo-600"><a target="_blank" href="${post.post_card.url}">${post.post_card.title}</a></h2>
 
 				            ${post.post_card.description ? `
 				                <p class="text-gray-600 break-all"><a target="_blank" href="${post.post_card.url}">${ post.post_card.description.substr(0, 200)}</a></p>
@@ -735,13 +735,13 @@ let api = {
 
 			    <div class="p-6 text-gray-700 leading-relaxed">
 			        ${post.title ?
-				        `<h2 class="text-xl mb-2 text-black font-bold"><a class="text-indigo-600" href="${routes.post_single.replace(/username/g, post.user.username).replace(/slug/g, post.slug)}">
+				        `<h2 class="text-2xl mb-2 text-black font-bold"><a class="text-indigo-600" href="${routes.post_single.replace(/username/g, post.user.username).replace(/slug/g, post.slug)}">
 				            ${post.title}
 				        </a></h2>`
 			        : ''}
 
 			        ${!options.discover && post.type !== 'link' && (options.truncate_content || (!options.truncate_content && post.is_single_caption)) ?
-				        `<div class="mb-3">${options.truncate_content ? (post.is_markdown ? post.content_markdown_truncated : post.first_slide_caption_truncated) : post.first_slide_caption}</div>`
+				        `<div class="mb-3 ${options.first ? 'markdowned' : ''}">${options.truncate_content ? (post.is_markdown ? post.content_markdown_truncated : post.first_slide_caption_truncated) : post.first_slide_caption}</div>`
 			        : ''}
 
 			        ${!options.discover && !options.truncate_content && !post.is_single_caption ?
@@ -765,7 +765,7 @@ let api = {
 					<img src="${post.cover}" class="rounded-tl rounded-tr" />
 
 					<div class="border border-gray-200 rounded-bl rounded-br">
-						<div class="p-8">
+						<div class="p-6">
 							<h1 class="text-4xl font-bold">${post.title}</h1>
 							<div class="flex items-center text-gray-600 -mx-2 mt-4 mb-8 border-t border-b border-gray-200 py-4">
 								<div class="px-2 flex items-center">

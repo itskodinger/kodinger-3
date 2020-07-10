@@ -32,9 +32,9 @@ $title = $post->post_card ? $post->post_card->toArray()['title'] : $post->title;
 
 @section('content')
     <div class="container mx-auto px-4 sm:px-0 py-12">
-        <div class="grid grid-cols-3 sm:grid-cols-5 gap-5 items-start w-full">
+        <div class="flex -mx-2 pb-10">
             @if(!$post->is_markdown)
-            <div>
+            <div class="sm:w-3/12 sm:px-2 md:w-12/12 md:hidden lg:block">
                 <div class="sidebar off-canvasify" id="sidebar">
                     <div class="links mx-auto p-4 sm:p-0 sm:mx-0">
                     	<div class="h-4 mb-4 bg-gray-200 w-32 rounded"></div>
@@ -50,7 +50,7 @@ $title = $post->post_card ? $post->post_card->toArray()['title'] : $post->title;
                 </div>
             </div>
             @else
-            <div class="col-span-1">
+            <div class="sm:w-3/12 sm:px-2 md:w-12/12 md:hidden lg:block">
                 @include('layouts.card_random')
 
                 <div class="bg-white rounded border border-gray-200 mt-10">
@@ -75,7 +75,7 @@ $title = $post->post_card ? $post->post_card->toArray()['title'] : $post->title;
             </div>
             @endif
 
-            <div class="mx-auto text-left col-span-3 sm:col-span-4 lg:col-span-3 w-full">
+            <div class="lg:w-6/12 px-2 md:w-8/12 w-full">
                 @if($post->status == 'draft')
                     <div class="mb-6 -mt-5 border border-orange-200 text-orange-600 bg-orange-100 rounded p-4 block">
                         Hanya kamu yang dapat melihat halaman ini. Post kamu masih berstatus "draft", klik tombol sunting dan publikasikan post ini agar dapat dilihat oleh semua orang.
@@ -89,7 +89,7 @@ $title = $post->post_card ? $post->post_card->toArray()['title'] : $post->title;
                 @include('layouts.card_author')
             	@include('layouts.card_comment')
             </div>
-            <div class="col-span-1 md:hidden lg:block">
+            <div class="lg:w-3/12 lg:px-2 md:w-4/12 md:hidden lg:block">
             	@rightbar
             </div>
         </div>
