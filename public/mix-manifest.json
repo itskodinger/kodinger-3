@@ -4,6 +4,7 @@
     "/js/app.js": "/js/app.js",
     "/js/community.js": "/js/community.js",
     "/js/contribute.js": "/js/contribute.js",
+    "/js/discuss.js": "/js/discuss.js",
     "/js/home.js": "/js/home.js",
     "/js/post-discover.js": "/js/post-discover.js",
     "/js/post-form.js": "/js/post-form.js",

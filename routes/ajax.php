@@ -35,7 +35,7 @@ Route::group(['prefix' => 'posts', 'as' => 'post.'], function()
 
 Route::group(['prefix' => 'comments', 'as' => 'comment.'], function() 
 {
-	Route::get('/{post_id?}', 'CommentAjaxController@index')->name('index');
+	Route::get('/{post_id?}/{user_id?}', 'CommentAjaxController@index')->name('index');
 
 	// needs auth
 	Route::post('/', 'CommentAjaxController@store')->name('store')->middleware('auth');

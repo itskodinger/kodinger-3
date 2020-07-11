@@ -10,6 +10,7 @@ import adds from '../utils/adds';
 let commentTemplate = function(data) {
     return `
         <div id="discuss-${data.id}" class="group bg-white rounded border border-gray-200 mb-6 p-6 cmt-${data.id}">
+            ${ window.cmtSP ? `<div class="text-sm mb-4 text-gray-600">Dalam <a href="${routes.post_single.replace(/username/g, data.post.username).replace(/slug/g, data.post.slug)}#discuss-${data.id}" class="italic underline">${data.post.title}</a></div>` : ''}
             <div class="flex">
                 <img class="rounded w-10 h-10 flex-shrink-0" src="${data.avatar}">
                 <div class="ml-5 w-full">
@@ -141,6 +142,9 @@ function commentAdd(obj, classes, method, target)
 
     item = str2dom(item);
 
+    if(window.hideQuote)
+        delete commentActions.quote;
+
     Object.keys(commentActions).forEach(function(actionKey) {
         let action = commentActions[actionKey];
 
@@ -271,7 +275,9 @@ function quote(id, e)
  */
 function quoteRemove(e)
 {
-    $('.quoted-cmt').remove();
+    if($('.quoted-cmt'))
+        $('.quoted-cmt').remove();
+
     $('.reply-id').value = '';
 }
 
@@ -310,7 +316,7 @@ function commentRemove(id, event)
 /**
  * Add a load more button
  */
-function addLoadMore()
+function addLoadMore(opts)
 {
     let tpl = str2dom('\
     <div class="comment-load px-6 py-2 text-center cursor-pointer bg-gray-200 hover:bg-gray-300">\
@@ -319,7 +325,7 @@ function addLoadMore()
 
     tpl.addEventListener('click', function() {
         adds($('.comment-load').classList, 'pointer-events-none opacity-50');
-        commentLoad(function() {
+        commentLoad(opts, function() {
             if($('.comment-load'))
                 $('.comment-load').classList.removes('pointer-events-none opacity-50');
         });
@@ -378,7 +384,7 @@ function commentGo(id)
  * Post a new comment
  * @param  {String} content Comment message
  */
-function comment(content)
+export function comment(content)
 {
 
     if(content.trim().length < 1)
@@ -442,9 +448,9 @@ let take = 10,
  * Load a comment
  * @param  {Function} done Done callback
  */
-function commentLoad(done)
+export function commentLoad(opts, done)
 {
-    fetch(routes.comment_ajax + post_id + '?take=' + take + '&offset=' + offset)
+    fetch(opts.route + '?take=' + take + '&offset=' + offset)
     .then(res => res.json())
     .then(function(res) {
         removeLoadMore();
@@ -458,14 +464,22 @@ function commentLoad(done)
                 content: item.markdown,
                 time: item.time,
                 is_mine: item.is_mine,
-                reply: item.reply
+                reply: item.reply,
+                post: {
+                    title: item.post.title,
+                    slug: item.post.slug,
+                    username: item.post.user.username
+                }
             }, false, 'append');
         });
 
         if(res.total > 10)
-            addLoadMore();
+            addLoadMore(opts);
 
         offset += res.count;
+
+        if(res.count == 0)
+            comments.innerHTML = '<div class="text-center p-2 no-comment"><i>Belum ada diskusi, jadilah yang pertama.</i></div>';
 
         if(res.count <= 10 && offset >= res.total)
             removeLoadMore();
@@ -473,34 +487,4 @@ function commentLoad(done)
         if(done)
             done.call(this, res);
     })
-}
-
-commentLoad(function(res) {
-    if(res.count == 0)
-        comments.innerHTML = '<div class="text-center p-2 no-comment"><i>Belum ada diskusi, jadilah yang pertama.</i></div>';
-
-    let hash = window.location.hash;
-    setTimeout(function() {
-        if(hash)
-            window.scrollTo(0, document.querySelector(hash).offsetTop - 80);                
-    }, 50);
-});
-
-const message = $('.comment-message');
-if(message) {
-    message.addEventListener('keydown', function(event) {
-        if(event.keyCode == 13 && !event.shiftKey) {
-            event.preventDefault(); 
-            comment(this.value); 
-            this.value = ''; 
-            return false;
-        } 
-    });
-
-    message.addEventListener('keyup', function(event) {
-        if(event.shiftKey && event.keyCode == 13 || event.keyCode == 8) {
-            this.style.height=80 + 'px';
-            this.style.height=(this.scrollHeight) + 'px';
-        } 
-    });
 }

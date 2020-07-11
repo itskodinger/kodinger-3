@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 13);
+/******/ 	return __webpack_require__(__webpack_require__.s = 14);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -26953,15 +26953,48 @@ module.exports = function (module) {
 
 /***/ }),
 
-/***/ "./resources/js/comps/comment.js":
-/*!***************************************!*\
-  !*** ./resources/js/comps/comment.js ***!
-  \***************************************/
-/*! no exports provided */
+/***/ "./resources/js/comps/show-login-alert.js":
+/*!************************************************!*\
+  !*** ./resources/js/comps/show-login-alert.js ***!
+  \************************************************/
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _utils_find__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/find */ "./resources/js/utils/find.js");
+
+/**
+ * Show login element
+ */
+
+function showLoginAlert() {
+  var el = $('.login-alert');
+
+  if (el) {
+    el.classList.remove('hidden');
+    Object(_utils_find__WEBPACK_IMPORTED_MODULE_0__["default"])(el, '.login-alert-close').addEventListener('click', function (e) {
+      el.classList.add('hidden');
+      e.preventDefault();
+    });
+  }
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (showLoginAlert);
+
+/***/ }),
+
+/***/ "./resources/js/libs/comment.js":
+/*!**************************************!*\
+  !*** ./resources/js/libs/comment.js ***!
+  \**************************************/
+/*! exports provided: comment, commentLoad */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "comment", function() { return comment; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "commentLoad", function() { return commentLoad; });
 /* harmony import */ var _utils_str2dom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/str2dom */ "./resources/js/utils/str2dom.js");
 /* harmony import */ var _utils_find__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/find */ "./resources/js/utils/find.js");
 /* harmony import */ var _utils_adds__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/adds */ "./resources/js/utils/adds.js");
@@ -27040,7 +27073,7 @@ function _typeof(obj) {
  */
 
 var commentTemplate = function commentTemplate(data) {
-  return "\n        <div id=\"discuss-".concat(data.id, "\" class=\"group bg-white rounded border border-gray-200 mb-6 p-6 cmt-").concat(data.id, "\">\n            <div class=\"flex\">\n                <img class=\"rounded w-10 h-10 flex-shrink-0\" src=\"").concat(data.avatar, "\">\n                <div class=\"ml-5 w-full\">\n                    <p class=\"mx-1 text-blue-500 text-sm font-semibold float-right cmt-time\">").concat(data.time, "</p>\n                    <h4 class=\"mb-1 font-bold\"><a class=\"text-indigo-600 cmt-name\" href=\"").concat(routes.base_url + '/' + data.username, "\">").concat(data.name, "</a> <span class=\"text-gray-600 font-normal\">(@").concat(data.username, ")</span></h4>\n                    <div class= text-gray-700\">\n                        <div class=\"quoted-cmt-wrapper my-2\"></div>\n                        <div class=\"cmt-content mb-2 text-base break-all markdowned\">").concat(data.content, "</div>\n                    </div>\n                    <div class=\"cmt-actions opacity-25 group-hover:opacity-100\"></div>\n                </div>\n            </div>\n        </div>\n    ");
+  return "\n        <div id=\"discuss-".concat(data.id, "\" class=\"group bg-white rounded border border-gray-200 mb-6 p-6 cmt-").concat(data.id, "\">\n            ").concat(window.cmtSP ? "<div class=\"text-sm mb-4 text-gray-600\">Dalam <a href=\"".concat(routes.post_single.replace(/username/g, data.post.username).replace(/slug/g, data.post.slug), "#discuss-").concat(data.id, "\" class=\"italic underline\">").concat(data.post.title, "</a></div>") : '', "\n            <div class=\"flex\">\n                <img class=\"rounded w-10 h-10 flex-shrink-0\" src=\"").concat(data.avatar, "\">\n                <div class=\"ml-5 w-full\">\n                    <p class=\"mx-1 text-blue-500 text-sm font-semibold float-right cmt-time\">").concat(data.time, "</p>\n                    <h4 class=\"mb-1 font-bold\"><a class=\"text-indigo-600 cmt-name\" href=\"").concat(routes.base_url + '/' + data.username, "\">").concat(data.name, "</a> <span class=\"text-gray-600 font-normal\">(@").concat(data.username, ")</span></h4>\n                    <div class= text-gray-700\">\n                        <div class=\"quoted-cmt-wrapper my-2\"></div>\n                        <div class=\"cmt-content mb-2 text-base break-all markdowned\">").concat(data.content, "</div>\n                    </div>\n                    <div class=\"cmt-actions opacity-25 group-hover:opacity-100\"></div>\n                </div>\n            </div>\n        </div>\n    ");
 };
 /**
  * Comment action buttons
@@ -27143,6 +27176,7 @@ function commentAdd(obj, classes, method, target) {
   if (!method) method = 'append';
   var item = commentTemplate(obj);
   item = Object(_utils_str2dom__WEBPACK_IMPORTED_MODULE_0__["default"])(item);
+  if (window.hideQuote) delete commentActions.quote;
   Object.keys(commentActions).forEach(function (actionKey) {
     var action = commentActions[actionKey];
 
@@ -27237,7 +27271,7 @@ function quote(id, e) {
 
 
 function quoteRemove(e) {
-  $('.quoted-cmt').remove();
+  if ($('.quoted-cmt')) $('.quoted-cmt').remove();
   $('.reply-id').value = '';
 }
 /**
@@ -27272,14 +27306,14 @@ function commentRemove(id, event) {
  */
 
 
-function addLoadMore() {
+function addLoadMore(opts) {
   var tpl = Object(_utils_str2dom__WEBPACK_IMPORTED_MODULE_0__["default"])('\
     <div class="comment-load px-6 py-2 text-center cursor-pointer bg-gray-200 hover:bg-gray-300">\
         Load More\
     </div>');
   tpl.addEventListener('click', function () {
     Object(_utils_adds__WEBPACK_IMPORTED_MODULE_2__["default"])($('.comment-load').classList, 'pointer-events-none opacity-50');
-    commentLoad(function () {
+    commentLoad(opts, function () {
       if ($('.comment-load')) $('.comment-load').classList.removes('pointer-events-none opacity-50');
     });
   });
@@ -27385,7 +27419,6 @@ function comment(content) {
  * @type {Number}
  */
 
-
 var take = 10,
     offset = 0;
 /**
@@ -27393,8 +27426,8 @@ var take = 10,
  * @param  {Function} done Done callback
  */
 
-function commentLoad(done) {
-  fetch(routes.comment_ajax + post_id + '?take=' + take + '&offset=' + offset).then(function (res) {
+function commentLoad(opts, done) {
+  fetch(opts.route + '?take=' + take + '&offset=' + offset).then(function (res) {
     return res.json();
   }).then(function (res) {
     removeLoadMore();
@@ -27407,72 +27440,21 @@ function commentLoad(done) {
         content: item.markdown,
         time: item.time,
         is_mine: item.is_mine,
-        reply: item.reply
+        reply: item.reply,
+        post: {
+          title: item.post.title,
+          slug: item.post.slug,
+          username: item.post.user.username
+        }
       }, false, 'append');
     });
-    if (res.total > 10) addLoadMore();
+    if (res.total > 10) addLoadMore(opts);
     offset += res.count;
+    if (res.count == 0) comments.innerHTML = '<div class="text-center p-2 no-comment"><i>Belum ada diskusi, jadilah yang pertama.</i></div>';
     if (res.count <= 10 && offset >= res.total) removeLoadMore();
     if (done) done.call(this, res);
   });
 }
-
-commentLoad(function (res) {
-  if (res.count == 0) comments.innerHTML = '<div class="text-center p-2 no-comment"><i>Belum ada diskusi, jadilah yang pertama.</i></div>';
-  var hash = window.location.hash;
-  setTimeout(function () {
-    if (hash) window.scrollTo(0, document.querySelector(hash).offsetTop - 80);
-  }, 50);
-});
-var message = $('.comment-message');
-
-if (message) {
-  message.addEventListener('keydown', function (event) {
-    if (event.keyCode == 13 && !event.shiftKey) {
-      event.preventDefault();
-      comment(this.value);
-      this.value = '';
-      return false;
-    }
-  });
-  message.addEventListener('keyup', function (event) {
-    if (event.shiftKey && event.keyCode == 13 || event.keyCode == 8) {
-      this.style.height = 80 + 'px';
-      this.style.height = this.scrollHeight + 'px';
-    }
-  });
-}
-
-/***/ }),
-
-/***/ "./resources/js/comps/show-login-alert.js":
-/*!************************************************!*\
-  !*** ./resources/js/comps/show-login-alert.js ***!
-  \************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _utils_find__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/find */ "./resources/js/utils/find.js");
-
-/**
- * Show login element
- */
-
-function showLoginAlert() {
-  var el = $('.login-alert');
-
-  if (el) {
-    el.classList.remove('hidden');
-    Object(_utils_find__WEBPACK_IMPORTED_MODULE_0__["default"])(el, '.login-alert-close').addEventListener('click', function (e) {
-      el.classList.add('hidden');
-      e.preventDefault();
-    });
-  }
-}
-
-/* harmony default export */ __webpack_exports__["default"] = (showLoginAlert);
 
 /***/ }),
 
@@ -29022,6 +29004,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var highlight_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(highlight_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var highlight_js_styles_tomorrow_night_bright_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! highlight.js/styles/tomorrow-night-bright.css */ "./node_modules/highlight.js/styles/tomorrow-night-bright.css");
 /* harmony import */ var highlight_js_styles_tomorrow_night_bright_css__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(highlight_js_styles_tomorrow_night_bright_css__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _libs_comment__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./libs/comment */ "./resources/js/libs/comment.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
@@ -29069,7 +29052,32 @@ window.tns = tiny_slider_src_tiny_slider__WEBPACK_IMPORTED_MODULE_1__["tns"];
 
 window.hljs = highlight_js__WEBPACK_IMPORTED_MODULE_4___default.a;
 
-__webpack_require__(/*! ./comps/comment */ "./resources/js/comps/comment.js");
+Object(_libs_comment__WEBPACK_IMPORTED_MODULE_6__["commentLoad"])({
+  route: routes.comment_ajax + post_id
+}, function (res) {
+  var hash = window.location.hash;
+  setTimeout(function () {
+    if (hash) window.scrollTo(0, document.querySelector(hash).offsetTop - 80);
+  }, 50);
+});
+var message = $('.comment-message');
+
+if (message) {
+  message.addEventListener('keydown', function (event) {
+    if (event.keyCode == 13 && !event.shiftKey) {
+      event.preventDefault();
+      Object(_libs_comment__WEBPACK_IMPORTED_MODULE_6__["comment"])(this.value);
+      this.value = '';
+      return false;
+    }
+  });
+  message.addEventListener('keyup', function (event) {
+    if (event.shiftKey && event.keyCode == 13 || event.keyCode == 8) {
+      this.style.height = 80 + 'px';
+      this.style.height = this.scrollHeight + 'px';
+    }
+  });
+}
 
 var type = post_type == 'markdown' ? _libs_post__WEBPACK_IMPORTED_MODULE_3__["types"].MARKDOWN : _libs_post__WEBPACK_IMPORTED_MODULE_3__["types"].POST;
 var mypost = _libs_post__WEBPACK_IMPORTED_MODULE_3__["post"].init('.post', {
@@ -29479,7 +29487,7 @@ function wrapNode(wrap, element) {
 
 /***/ }),
 
-/***/ 13:
+/***/ 14:
 /*!**************************************!*\
   !*** multi ./resources/js/single.js ***!
   \**************************************/

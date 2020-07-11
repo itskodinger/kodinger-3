@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 10);
+/******/ 	return __webpack_require__(__webpack_require__.s = 11);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -5074,7 +5074,7 @@ var player = new plyr__WEBPACK_IMPORTED_MODULE_0___default.a('#player');
 
 /***/ }),
 
-/***/ 10:
+/***/ 11:
 /*!*************************************!*\
   !*** multi ./resources/js/scene.js ***!
   \*************************************/

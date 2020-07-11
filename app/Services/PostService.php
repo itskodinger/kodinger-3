@@ -403,14 +403,14 @@ class PostService
 		return $post;
 	}
 
-	public function popular($first=true)
+	public function popular($first=true, $limit=5)
 	{
 		$posts = $this->model()->orderBy('views', 'desc')->whereStatus('publish')->whereNull('type');
 
 		if($first)
 			$posts = $posts->first();
 		else
-			$posts = $posts->get();
+			$posts = $posts->take($limit)->get();
 
 		return $posts;
 	}

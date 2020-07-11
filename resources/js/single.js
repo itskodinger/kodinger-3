@@ -7,7 +7,36 @@ import hljs from 'highlight.js';
 import 'highlight.js/styles/tomorrow-night-bright.css';
 window.hljs = hljs;
 
-require('./comps/comment');
+import { commentLoad, comment } from './libs/comment';
+
+commentLoad({
+    route: routes.comment_ajax + post_id
+}, function(res) {
+    let hash = window.location.hash;
+    setTimeout(function() {
+        if(hash)
+            window.scrollTo(0, document.querySelector(hash).offsetTop - 80);                
+    }, 50);
+});
+
+const message = $('.comment-message');
+if(message) {
+    message.addEventListener('keydown', function(event) {
+        if(event.keyCode == 13 && !event.shiftKey) {
+            event.preventDefault(); 
+            comment(this.value); 
+            this.value = ''; 
+            return false;
+        } 
+    });
+
+    message.addEventListener('keyup', function(event) {
+        if(event.shiftKey && event.keyCode == 13 || event.keyCode == 8) {
+            this.style.height=80 + 'px';
+            this.style.height=(this.scrollHeight) + 'px';
+        } 
+    });
+}
 
 const type = post_type == 'markdown' ? types.MARKDOWN : types.POST;
 
