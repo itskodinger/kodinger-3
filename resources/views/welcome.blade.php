@@ -15,15 +15,7 @@
                 @sidebar
             </div>
             <div class="lg:w-6/12 px-2 md:w-8/12 w-full">
-                <div class="flex mb-4 font-semibold">
-                    <div class="text-gray-600">Terbaru</div>
-                    <ul class="flex items-center -mx-2 ml-auto text-sm">
-                        <li class="mx-2"><a href="">Semua</a></li>
-                        <li class="mx-2"><a href="">Slide</a></li>
-                        <li class="mx-2"><a href="">Markdown</a></li>
-                        <li class="mx-2"><a href="">Tautan</a></li>
-                    </ul>
-                </div>
+                @include('layouts.posts_header')
                 <div class="posts"></div>
             </div>
             <div class="lg:w-3/12 lg:px-2 md:w-4/12">
@@ -34,5 +26,6 @@
 @stop
 
 @push('js')
+    <script>const type = '{{ request()->type ?? false }}', sort = '{{ request()->sort ?? 'newest' }}';</script>
     <script src="{{ mix('js/home.js') }}"></script>
 @endpush

@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -10513,9 +10513,9 @@ module.exports = function (module) {
 
 /***/ }),
 
-/***/ "./resources/js/comps/form-markdown.js":
+/***/ "./resources/js/comps/form-discover.js":
 /*!*********************************************!*\
-  !*** ./resources/js/comps/form-markdown.js ***!
+  !*** ./resources/js/comps/form-discover.js ***!
   \*********************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -10526,12 +10526,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _utils_slugify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/slugify */ "./resources/js/utils/slugify.js");
-/* harmony import */ var _yaireo_tagify__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @yaireo/tagify */ "./node_modules/@yaireo/tagify/dist/tagify.min.js");
-/* harmony import */ var _yaireo_tagify__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_yaireo_tagify__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _toast__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./toast */ "./resources/js/comps/toast.js");
-/* harmony import */ var _utils_adds__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/adds */ "./resources/js/utils/adds.js");
-/* harmony import */ var _utils_removes__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/removes */ "./resources/js/utils/removes.js");
+/* harmony import */ var _yaireo_tagify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @yaireo/tagify */ "./node_modules/@yaireo/tagify/dist/tagify.min.js");
+/* harmony import */ var _yaireo_tagify__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_yaireo_tagify__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _toast__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./toast */ "./resources/js/comps/toast.js");
 
 
 function _typeof(obj) {
@@ -10608,55 +10605,6 @@ function _asyncToGenerator(fn) {
   };
 }
 
-function ownKeys(object, enumerableOnly) {
-  var keys = Object.keys(object);
-
-  if (Object.getOwnPropertySymbols) {
-    var symbols = Object.getOwnPropertySymbols(object);
-    if (enumerableOnly) symbols = symbols.filter(function (sym) {
-      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-    });
-    keys.push.apply(keys, symbols);
-  }
-
-  return keys;
-}
-
-function _objectSpread(target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i] != null ? arguments[i] : {};
-
-    if (i % 2) {
-      ownKeys(Object(source), true).forEach(function (key) {
-        _defineProperty(target, key, source[key]);
-      });
-    } else if (Object.getOwnPropertyDescriptors) {
-      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-    } else {
-      ownKeys(Object(source)).forEach(function (key) {
-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-      });
-    }
-  }
-
-  return target;
-}
-
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -10730,160 +10678,56 @@ function _setPrototypeOf(o, p) {
 
 
 
-
-
-
-var FormMarkdown =
+var Form =
 /*#__PURE__*/
 function (_Component) {
-  _inherits(FormMarkdown, _Component);
+  _inherits(Form, _Component);
 
-  function FormMarkdown(props) {
+  function Form() {
     var _this;
 
-    _classCallCheck(this, FormMarkdown);
+    _classCallCheck(this, Form);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(FormMarkdown).call(this, props));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Form).call(this));
     _this.state = {
-      edit: false,
-      id: false,
-      title: '',
-      slug: '',
-      slugDirty: false,
-      status: 'DRAFT',
-      publish: false,
-      statusSaving: ''
+      link: '',
+      success: false,
+      progress: false
     };
     return _this;
   }
 
-  _createClass(FormMarkdown, [{
-    key: "setID",
-    value: function setID(id) {
-      if (this.state.id !== false) return false;
-      this.setState({
-        id: id
-      });
-      window.history.pushState({}, null, '/post-md/' + id);
+  _createClass(Form, [{
+    key: "linkOnInput",
+    value: function linkOnInput(e) {
+      var link = e.target.value;
+      var data = {
+        link: link
+      };
+      this.setState(data);
     }
   }, {
-    key: "saveFirstStep",
-    value: function saveFirstStep(e) {
-      var _this2 = this;
-
-      var _this$state = this.state,
-          title = _this$state.title,
-          slug = _this$state.slug;
-      var status = 'draft';
-
-      if (title.trim().length < 1) {
-        document.querySelector('[name=title]').focus();
-      } else if (slug.trim().length < 1) {
-        document.querySelector('[name=slug]').focus();
-      } else {
-        var button = e.target;
-        Object(_utils_adds__WEBPACK_IMPORTED_MODULE_5__["default"])(button.classList, 'pointer-events-none opacity-50');
-        button.disabled = true;
-        this.request({
-          route: routes.post_md_store,
-          method: 'POST',
-          body: JSON.stringify({
-            title: title,
-            slug: slug,
-            status: status
-          }),
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }).then(function (_ref) {
-          var data = _ref.data;
-
-          _this2.setID(data.id);
-
-          _this2.setPublicFolder(data.public_folder);
-
-          _this2.setState({
-            status: status,
-            publish: true
-          });
-
-          _this2.addDOMFunctionality();
-        })["finally"](function () {
-          Object(_utils_removes__WEBPACK_IMPORTED_MODULE_6__["default"])(button.classList, 'pointer-events-none opacity-50');
-          button.disabled = false;
-        });
-      }
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.addTagify({});
+      this.addToast();
     }
   }, {
-    key: "saveAll",
-    value: function saveAll(data) {
-      var _this3 = this;
-
-      var _this$state2 = this.state,
-          id = _this$state2.id,
-          title = _this$state2.title,
-          slug = _this$state2.slug,
-          statusSaving = _this$state2.statusSaving; // if(!title || !slug) return this.toast.add('❓&nbsp; Auto-save akan jalan ketika kamu sudah mengisi judul dan slug');
-
-      this.statusSaving();
-      this.saveContentController && clearTimeout(this.saveContentController);
-      this.saveContentController = new AbortController();
-      var body = data;
-      if (id) body = _objectSpread({}, body, {
-        id: id
-      });
-      body = JSON.stringify(body);
-      this.request({
-        route: routes.post_md_update.replace(/slug/g, id),
-        body: body,
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        method: 'PUT',
-        signal: this.saveContentController.signal
-      }).then(function (_ref2) {
-        var data = _ref2.data;
-
-        _this3.statusSaved();
-
-        _this3.isContentDirty = false;
-      });
-    }
-  }, {
-    key: "autoSaveAll",
-    value: function autoSaveAll(data, time) {
-      var _this4 = this;
-
-      this.autoSaveAllTimeout = setTimeout(function () {
-        _this4.saveAll(data);
-      }, time);
-    }
-  }, {
-    key: "startAutoSaveAll",
-    value: function startAutoSaveAll(data) {
-      var time = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 5000;
-      var _this$state3 = this.state,
-          id = _this$state3.id,
-          statusSaving = _this$state3.statusSaving; // reject
-
-      if (!id || statusSaving.toUpperCase() == 'PROCESSING') return false;
-      if (this.isUploadingImage()) return false;
-      this.isContentDirty = true;
-      clearTimeout(this.autoSaveAllTimeout);
-      if (time === true) time = 0;
-      this.autoSaveAll(data, time);
+    key: "addToast",
+    value: function addToast() {
+      this.toast = new _toast__WEBPACK_IMPORTED_MODULE_3__["default"]();
     }
   }, {
     key: "request",
     value: function request(options) {
-      var _this5 = this;
+      var _this2 = this;
 
       return new Promise(function (resolve, reject) {
-        _this5._request(options).then(function (data) {
+        _this2._request(options).then(function (data) {
           return resolve(data);
-        })["catch"](function (_ref3) {
-          var err = _ref3.err,
-              data = _ref3.data;
+        })["catch"](function (_ref) {
+          var err = _ref.err,
+              data = _ref.data;
 
           if (err && !err.ok) {
             switch (err.status) {
@@ -10892,28 +10736,20 @@ function (_Component) {
                 var firstKey = Object.keys(errors)[0];
                 var firstError = errors[firstKey][0];
 
-                if (firstKey == 'slug') {
-                  _this5.setState({
-                    slugOk: false
-                  });
-                }
-
-                _this5.toast.add("\uD83D\uDE20&nbsp; ".concat(firstError));
+                _this2.toast.add("\uD83D\uDE20&nbsp; ".concat(firstError.replace(/pages/, 'link')));
 
                 break;
 
               case 500:
-                _this5.toast.add("\uD83D\uDE2D&nbsp; Error 500: ".concat(data.message));
+                _this2.toast.add("\uD83D\uDE2D&nbsp; Error 500: ".concat(data.message));
 
                 break;
 
               case 504:
-                _this5.toast.add("\uD83D\uDC0C&nbsp; Error 504: ".concat(data.message));
+                _this2.toast.add("\uD83D\uDC0C&nbsp; Error 504: ".concat(data.message));
 
                 break;
             }
-
-            _this5.statusFailed();
           }
 
           return reject(err);
@@ -10925,13 +10761,13 @@ function (_Component) {
     value: function () {
       var _request2 = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(_ref4) {
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(_ref2) {
         var route, body, method, signal, headers, response, json;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                route = _ref4.route, body = _ref4.body, method = _ref4.method, signal = _ref4.signal, headers = _ref4.headers;
+                route = _ref2.route, body = _ref2.body, method = _ref2.method, signal = _ref2.signal, headers = _ref2.headers;
                 headers = Object.assign({
                   'X-CSRF-TOKEN': token,
                   'Accept': 'application/json'
@@ -10980,195 +10816,10 @@ function (_Component) {
       return _request;
     }()
   }, {
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      var _this6 = this;
-
-      this.addToast(); // unsaved changes!
-
-      window.onbeforeunload = function () {
-        if (_this6.state.id && _this6.isContentDirty) {
-          return true;
-        }
-      };
-    }
-  }, {
-    key: "publishWholeContent",
-    value: function publishWholeContent(data) {
-      this.saveWholeContent(data).then(function () {
-        window.location.reload();
-      })["catch"](function (err) {
-        console.log(err);
-      });
-    }
-  }, {
-    key: "saveWholeContent",
-    value: function () {
-      var _saveWholeContent = _asyncToGenerator(
-      /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
-        var _this7 = this;
-
-        var objectData,
-            route,
-            _args2 = arguments;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                objectData = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : {};
-                route = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : false;
-                return _context2.abrupt("return", new Promise(function (resolve, reject) {
-                  // basic data
-                  var _this7$state = _this7.state,
-                      title = _this7$state.title,
-                      slug = _this7$state.slug,
-                      tags = _this7$state.tags,
-                      keyword = _this7$state.keyword,
-                      id = _this7$state.id;
-                  if (!route) route = routes.post_md_publish.replace(/slug/g, id); // images
-
-                  var images = _this7.flattenedImageFormat(); // validation
-
-
-                  if (_this7.isUploadingImage()) {
-                    _this7.toast.add("\uD83D\uDDBC&nbsp; Sedang mengunggah media, post akan otomatis tersimpan bila proses telah selesai");
-
-                    return reject();
-                  } else if (_this7.isDeletingImage()) {
-                    _this7.toast.add("\uD83D\uDC0C&nbsp; Sedang menghapus media, post akan otomatis tersimpan bila proses telah selesai");
-
-                    return reject();
-                  } else if (objectData && objectData.status.toUpperCase() == 'PUBLISH' && images.length < 1) {
-                    _this7.toast.add("\uD83D\uDC21&nbsp; Tidak ada gambar satu pun");
-
-                    return reject();
-                  } else if (objectData && objectData.status.toUpperCase() == 'PUBLISH' && images.length > 0 && (!images[0].caption || images[0].caption.trim().length < 1)) {
-                    _this7.toast.add("\uD83D\uDE0F&nbsp; Slide pertama gambar harus diisi caption");
-
-                    return reject();
-                  }
-
-                  var body = Object.assign({
-                    title: title,
-                    slug: slug,
-                    tags: tags,
-                    keyword: keyword,
-                    content: JSON.stringify(images)
-                  }, objectData);
-                  Object.keys(key2str).forEach(function (key) {
-                    body[key] = _this7.doFlattenLinkFormat(key);
-                  });
-
-                  _this7.setState({
-                    statusSaving: 'Processing',
-                    publish: false
-                  });
-
-                  clearTimeout(_this7.autoSaveAllTimeout);
-
-                  _this7.request({
-                    method: 'PUT',
-                    route: route,
-                    headers: {
-                      'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(body)
-                  }).then(function () {
-                    _this7.isContentDirty = false;
-
-                    _this7.statusSaved();
-
-                    return resolve(body);
-                  })["finally"](function () {
-                    _this7.enablePublish();
-                  })["catch"](function () {});
-                }));
-
-              case 3:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2);
-      }));
-
-      function saveWholeContent() {
-        return _saveWholeContent.apply(this, arguments);
-      }
-
-      return saveWholeContent;
-    }()
-  }, {
-    key: "disablePublish",
-    value: function disablePublish() {
-      this.setState({
-        publish: false
-      });
-    }
-  }, {
-    key: "enablePublish",
-    value: function enablePublish() {
-      this.setState({
-        publish: true
-      });
-    }
-  }, {
-    key: "statusSaving",
-    value: function statusSaving() {
-      this.setState({
-        publish: false,
-        statusSaving: 'Saving'
-      });
-    }
-  }, {
-    key: "statusSaved",
-    value: function statusSaved() {
-      this.setState({
-        publish: true,
-        statusSaving: 'Saved'
-      });
-    }
-  }, {
-    key: "statusFailed",
-    value: function statusFailed() {
-      this.setState({
-        statusSaving: 'Failed'
-      });
-    }
-  }, {
-    key: "addToast",
-    value: function addToast() {
-      this.toast = new _toast__WEBPACK_IMPORTED_MODULE_4__["default"]();
-    }
-  }, {
-    key: "addKeyboardShortcut",
-    value: function addKeyboardShortcut() {
-      var _this8 = this;
-
-      var _this$state4 = this.state,
-          status = _this$state4.status,
-          id = _this$state4.id;
-      window.addEventListener('keydown', function (e) {
-        var key = _this8.isMac() ? 'metaKey' : 'ctrlKey';
-
-        if (status == 'draft' && e[key] && e.key == 's') {
-          e.preventDefault();
-          if (!_this8.isContentDirty) return _this8.toast.add('🤘&nbsp; Post sudah tersimpan sebagai draft');
-
-          _this8.saveWholeContent({
-            status: 'draft'
-          }, routes.post_md_update.replace(/slug/g, id)).then(function () {
-            _this8.toast.add("\uD83D\uDD96&nbsp; Post sudah disimpan sebagai draft");
-          })["catch"](function () {});
-        }
-      });
-    }
-  }, {
     key: "addTagify",
-    value: function addTagify(_ref5) {
-      var defaultTags = _ref5.defaultTags;
-      this.tagify = new _yaireo_tagify__WEBPACK_IMPORTED_MODULE_3___default.a($('.tags'), {
+    value: function addTagify(_ref3) {
+      var defaultTags = _ref3.defaultTags;
+      this.tagify = new _yaireo_tagify__WEBPACK_IMPORTED_MODULE_2___default.a($('.tags'), {
         enforceWhitelist: true,
         whitelist: defaultTags ? _toConsumableArray(defaultTags) : [],
         maxTags: 5,
@@ -11206,8 +10857,6 @@ function (_Component) {
        */
 
       tagify.on('input', onInput);
-      tagify.on('add', this.tagAddHandle.bind(this));
-      tagify.on('remove', this.tagRemoveHandle.bind(this));
       /**
        * Tagify on input handler
        * @param  {Object} e Event
@@ -11233,237 +10882,51 @@ function (_Component) {
       }
     }
   }, {
-    key: "tagAddHandle",
-    value: function tagAddHandle(e) {
-      var oldTags = this.state.tags;
-      var tags = [].concat(_toConsumableArray(oldTags), [e.detail.data.id]);
+    key: "publishPost",
+    value: function publishPost() {
+      var _this3 = this;
+
+      var pages = this.state.link;
+      var rawTags = this.tagify.value;
+      var tags = '';
+      rawTags.forEach(function (item) {
+        tags += item.id + ',';
+      });
+      tags = tags.replace(/,+$/g, "");
       this.setState({
-        tags: tags
+        progress: true,
+        success: false
       });
-      this.startAutoSaveAll({
-        tags: tags
-      });
-    }
-  }, {
-    key: "tagRemoveHandle",
-    value: function tagRemoveHandle(e) {
-      var oldTags = this.state.tags;
-
-      var tags = _toConsumableArray(oldTags.filter(function (tag) {
-        return tag !== e.detail.data.id;
-      }));
-
-      this.setState({
-        tags: tags
-      });
-      this.startAutoSaveAll({
-        tags: tags
-      });
-    }
-  }, {
-    key: "keywordOnInput",
-    value: function keywordOnInput(e) {
-      var keyword = e.target.value;
-      this.setState({
-        keyword: keyword
-      });
-      this.startAutoSaveAll({
-        keyword: keyword
-      });
-    }
-  }, {
-    key: "titleOnInput",
-    value: function titleOnInput(e) {
-      var title = e.target.value;
-      var data = {
-        title: title
-      };
-      var autoSaveData = {
-        title: title
-      };
-
-      if (!this.state.slugDirty) {
-        data = _objectSpread({}, data, {
-          slug: Object(_utils_slugify__WEBPACK_IMPORTED_MODULE_2__["default"])(title)
+      this.request({
+        route: routes.post_store_discover,
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          pages: pages,
+          tags: tags
+        })
+      })["finally"](function () {
+        _this3.setState({
+          progress: false
         });
-        autoSaveData = _objectSpread({}, autoSaveData, {
-          slug: Object(_utils_slugify__WEBPACK_IMPORTED_MODULE_2__["default"])(title)
+      }).then(function (res) {
+        _this3.setState({
+          success: true,
+          link: ''
         });
-      }
 
-      this.setState(data);
-      this.startAutoSaveAll(autoSaveData);
-    }
-  }, {
-    key: "slugOnInput",
-    value: function slugOnInput(e) {
-      var _this9 = this;
+        document.querySelector('[name=link]').value = '';
 
-      var _this$state5 = this.state,
-          title = _this$state5.title,
-          id = _this$state5.id;
-      var slug = Object(_utils_slugify__WEBPACK_IMPORTED_MODULE_2__["default"])(e.target.value);
-      this.setState({
-        slug: slug,
-        slugDirty: true
+        _this3.tagify.removeAllTags();
+      })["catch"](function (err) {
+        console.log(err);
       });
-      if (!id) return false;
-      this.slugController && this.slugController.abort();
-      this.slugController = new AbortController();
-      var body = JSON.stringify({
-        slug: slug,
-        id: id
-      });
-      this.checkSlugTimeout && clearTimeout(this.checkSlugTimeout);
-      this.checkSlugTimeout = setTimeout(function () {
-        _this9.request({
-          method: 'POST',
-          route: routes.check_slug,
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          signal: _this9.slugController.signal,
-          body: body
-        }).then(function (res) {
-          _this9.setState({
-            slugOk: true
-          });
-
-          _this9.startAutoSaveAll({
-            slug: slug,
-            title: title
-          });
-        })["catch"](function (error) {
-          _this9.setState({
-            slugOk: false
-          });
-        });
-      }, 2000);
-    }
-  }, {
-    key: "slugOnBlur",
-    value: function slugOnBlur(e) {
-      if (e.target.value !== this.state.slug) e.target.value = this.state.slug;
-    }
-  }, {
-    key: "OS",
-    value: function OS() {
-      return function (ua) {
-        if (ua.indexOf('Windows') != -1) return 'WINDOWS';else if (ua.indexOf('Mac') != -1) return 'MAC';else if (ua.indexOf('Linux') != -1) return 'LINUX';
-      }(window.navigator.userAgent);
-    }
-  }, {
-    key: "isWindows",
-    value: function isWindows() {
-      return this.OS() == 'WINDOWS' ? true : false;
-    }
-  }, {
-    key: "isMac",
-    value: function isMac() {
-      return this.OS() == 'MAC' ? true : false;
-    }
-  }, {
-    key: "contentChange",
-    value: function contentChange(e) {
-      var target = e.target;
-      target.style.height = '250px';
-      target.style.height = target.scrollHeight + 'px';
-    }
-  }, {
-    key: "contentHandlePaste",
-    value: function contentHandlePaste(e) {
-      var data = e.clipboardData || window.clipboardData;
-    }
-  }, {
-    key: "fileObject",
-    value: function fileObject(id) {
-      var fileObjectElement = document.getElementById(id);
-      if (fileObjectElement) fileObjectElement.remove();
-      var file = document.createElement('input');
-      file.type = 'file';
-      file.style = 'display: hidden';
-      file.id = id;
-      file.accept = 'image/*';
-      document.body.appendChild(file);
-      file.click();
-      return file;
-    }
-  }, {
-    key: "uploadContentImage",
-    value: function uploadContentImage(e) {
-      var btn = e.target;
-      var file = this.fileObject('upload-image');
-      file.addEventListener('change', function (f) {
-        var selectedFile = f.target.files[0];
-      });
-    }
-  }, {
-    key: "coverImageHandler",
-    value: function coverImageHandler(e) {
-      var target = e.currentTarget;
-      var file = this.fileObject('cover-image');
-      file.addEventListener('change', function (f) {
-        var selectedFile = f.target.files[0];
-        var urlImage = URL.createObjectURL(selectedFile);
-        var img = new Image();
-        img.src = urlImage;
-        img.className = 'w-full rounded';
-
-        img.onload = function () {
-          var currentImg = target.querySelector('img');
-          currentImg && currentImg.remove();
-          target.appendChild(img);
-          target.classList.remove('h-64');
-          document.querySelector('.cover-image-label').innerText = 'Ganti Gambar';
-        };
-      });
-    }
-  }, {
-    key: "contentSwitch",
-    value: function contentSwitch(mode, e) {
-      var btn = e.currentTarget;
-      var modeBtns = document.querySelectorAll('.editor-modes button');
-      modeBtns.forEach(function (btnI) {
-        return Object(_utils_removes__WEBPACK_IMPORTED_MODULE_6__["default"])(btnI.classList, 'bg-indigo-600 text-white');
-      });
-      Object(_utils_adds__WEBPACK_IMPORTED_MODULE_5__["default"])(btn.classList, 'bg-indigo-600 text-white');
-
-      if (mode == 'editor') {
-        document.querySelector('.content-editor').classList.remove('hidden');
-        document.querySelector('.content-preview').classList.add('hidden');
-      } else if (mode == 'preview') {
-        document.querySelector('.content-editor').classList.add('hidden');
-        document.querySelector('.content-preview').classList.remove('hidden');
-        var caption = document.querySelector('.content-area').value.trim();
-        this.request({
-          route: routes.post_markdown_ns,
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          method: 'post',
-          body: JSON.stringify({
-            caption: caption
-          })
-        }).then(function (data) {
-          if ("parsed" in data) document.querySelector('.content-preview').innerHTML = data.parsed;
-        })["catch"](function (error) {
-          document.querySelector('.content-preview').innerHTML = "Gagal parsing markdown, coba kembali.";
-        });
-      }
     }
   }, {
     key: "render",
     value: function render() {
-      var _this$state6 = this.state,
-          id = _this$state6.id,
-          title = _this$state6.title,
-          slug = _this$state6.slug,
-          publish = _this$state6.publish,
-          statusSaving = _this$state6.statusSaving,
-          edit = _this$state6.edit,
-          stateStatus = _this$state6.stateStatus,
-          status = _this$state6.status,
-          newStatus = _this$state6.newStatus;
       return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("nav", {
         className: "bg-white border-b border-gray-200 top-0 mb-4 py-3 fixed left-0 w-full z-10"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
@@ -11479,145 +10942,56 @@ function (_Component) {
         width: "45"
       })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "ml-auto flex items-center"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "text-gray-600 mr-6 save-status capitalize"
-      }, statusSaving), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
-        onClick: this.publishWholeContent.bind(this, {
-          status: newStatus ? newStatus : 'publish'
-        }),
-        className: "items-center bg-indigo-600 text-white px-4 py-2 rounded mr-6 flex" + (!publish || this.isUploadingImage() ? ' pointer-events-none opacity-50' : '')
-      }, edit && status.toUpperCase() == 'PUBLISH' ? 'Simpan Perubahan' : 'Publish Post'))))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+        onClick: this.publishPost.bind(this),
+        className: "items-center bg-indigo-600 text-white px-4 py-2 rounded mr-6 flex ".concat(this.state.progress ? 'opacity-50 pointer-events-none' : '')
+      }, "Publish Post"))))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "container mx-auto px-4 sm:px-0"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "flex py-12 -mx-4 justify-center"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "w-full lg:w-6/12 px-4 md:w-8/12"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      }, this.state.success && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "py-4 px-6 mb-4 bg-teal-100 text-teal-600 border border-teal-200 rounded leading-loose"
+      }, "Tautan kamu sudah berhasil dibagikan, orang lain dapat mengaksesnya. ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
+        href: routes.single + user.username,
+        className: "border-b border-teal-600 pb-1 font-semibold"
+      }, "Pergi ke profile"), " atau ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
+        href: routes.post_new,
+        className: "border-b border-teal-600 pb-1 font-semibold"
+      }, "buat post baru")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "border border-gray-200 p-6 md:p-8 rounded"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h1", {
         className: "text-indigo-600 text-xl font-semibold"
-      }, "Buat Post Markdown"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
+      }, "Bagikan Tautan Eksternal"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
         className: "mb-4 mt-2 text-gray-600"
-      }, "Bagikan pengetahuan kamu dengan developer lain; begitu pula dengan developer lain, mereka akan melakukan hal serupa."), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      }, "Kamu menulis artikel di blog pribadi kamu? Atau menemukan sesuatu yang keren di internet, bagikan tautannya di sini."), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "mb-6 mt-6"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
         className: "mb-1 inline-block text-gray-600"
-      }, "Judul"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
-        onChange: this.titleOnInput.bind(this),
+      }, "Tautan"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+        onChange: this.linkOnInput.bind(this),
         type: "text",
-        name: "title",
+        name: "link",
         className: "text-gray-600 border border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600",
         autoComplete: "off",
         tabIndex: "1",
-        defaultValue: title
-      })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "mb-6 mt-6"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
-        className: "mb-1 inline-block text-gray-600"
-      }, "Slug"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
-        onChange: this.slugOnInput.bind(this),
-        onBlur: this.slugOnBlur.bind(this),
-        type: "text",
-        name: "slug",
-        className: "text-gray-600 border border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600",
-        autoComplete: "off",
-        defaultValue: slug,
-        tabIndex: "2"
-      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
-        className: "mt-2 text-indigo-600"
-      }, routes.single.replace(/slug/g, '') + slug)), !id && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
-        tabIndex: "3",
-        onClick: this.saveFirstStep.bind(this),
-        type: "button",
-        className: "bg-indigo-600 text-white p-4 w-full p-4 rounded shadow hover:bg-indigo-700"
-      }, "Simpan & Lanjutkan"), id && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "mb-6"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+        placeholder: "https://blogkamu.com/tutorial-figma"
+      })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
         className: "mb-1 inline-block text-gray-600"
       }, "Topik"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
         type: "text",
         name: "tags[]",
         className: "tags text-gray-600 border border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600",
         tabIndex: "3"
-      })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "mb-6"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
-        className: "mb-1 inline-block text-gray-600"
-      }, "Konten"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "flex items-center"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
-        onClick: this.uploadImage.bind(this),
-        className: "flex items-center border border-gray-300 hover:border-indigo-500 hover:text-indigo-500 mb-2 px-4 py-2 rounded"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("svg", {
-        className: "mr-2",
-        xmlns: "http://www.w3.org/2000/svg",
-        width: "20",
-        height: "20",
-        viewBox: "0 0 24 24",
-        fill: "none",
-        stroke: "currentColor",
-        strokeWidth: "1",
-        strokeLinecap: "round",
-        strokeLinejoin: "round"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("rect", {
-        x: "3",
-        y: "3",
-        width: "18",
-        height: "18",
-        rx: "2",
-        ry: "2"
-      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("circle", {
-        cx: "8.5",
-        cy: "8.5",
-        r: "1.5"
-      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("polyline", {
-        points: "21 15 16 10 5 21"
-      })), "Unggah Gambar"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "ml-auto flex editor-modes"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
-        onClick: this.contentSwitch.bind(this, 'editor'),
-        className: "border-t border-b border-l rounded-tl rounded-bl px-4 py-2 border-gray-200 bg-indigo-600 text-white"
-      }, "Editor"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
-        onClick: this.contentSwitch.bind(this, 'preview'),
-        className: "border-t border-b border-r rounded-tr rounded-br px-4 py-2 border-gray-200"
-      }, "Preview"))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "content-editor"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("textarea", {
-        name: "content",
-        onInput: this.contentChange.bind(this),
-        onPaste: this.contentHandlePaste.bind(this),
-        style: {
-          minHeight: 250
-        },
-        className: "content-area mb-2 overflow-hidden resize-none text-gray-600 border border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600",
-        tabIndex: "4",
-        placeholder: "Tulis apapun di sini ..."
-      })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "content-preview p-4 hidden border-gray-200 border mb-2 rounded overflow-auto markdowned"
-      }, "Parsing ..."), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
-        className: "text-sm text-gray-600"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
-        className: "text-indigo-600",
-        target: "_blank",
-        href: routes.docs + '/markdown#supported-markdown',
-        tabIndex: "-1"
-      }, "Markdown"))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
-        className: "mb-1 inline-block text-gray-600"
-      }, "Thumbnail"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "mb-2 italic"
-      }, "Bila dikosongkan, sistem akan otomatis menggenerasi thumbnail untuk post ini. Bila diisi, gambar akan otomatis dipotong oleh sistem bila dimensinya tidak 500 x 300."), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        onClick: this.coverImageHandler.bind(this),
-        className: "group w-full border border-gray-300 rounded flex items-center justify-center cursor-pointer h-64"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "cover-image-label absolute bg-white border border-gray-300 group-hover:border-indigo-500 group-hover:text-indigo-500 px-3 py-2 rounded"
-      }, "Unggah Gambar")))))))));
+      })))))));
     }
   }]);
 
-  return FormMarkdown;
+  return Form;
 }(react__WEBPACK_IMPORTED_MODULE_1__["Component"]);
 
-/* harmony default export */ __webpack_exports__["default"] = (FormMarkdown);
+/* harmony default export */ __webpack_exports__["default"] = (Form);
 
 /***/ }),
 
@@ -11744,16 +11118,16 @@ function () {
 
 /***/ }),
 
-/***/ "./resources/js/post-markdown.js":
+/***/ "./resources/js/post-discover.js":
 /*!***************************************!*\
-  !*** ./resources/js/post-markdown.js ***!
+  !*** ./resources/js/post-discover.js ***!
   \***************************************/
 /*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _comps_form_markdown__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./comps/form-markdown */ "./resources/js/comps/form-markdown.js");
+/* harmony import */ var _comps_form_discover__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./comps/form-discover */ "./resources/js/comps/form-discover.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
@@ -11761,38 +11135,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+var postType = typeof type !== 'undefined' ? type : 'slide';
 
-if (document.getElementById('post-markdown')) {
-  react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.render(react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_comps_form_markdown__WEBPACK_IMPORTED_MODULE_0__["default"], null), document.getElementById('post-markdown'));
+if (document.getElementById('post-discover')) {
+  react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.render(react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_comps_form_discover__WEBPACK_IMPORTED_MODULE_0__["default"], {
+    postType: postType
+  }), document.getElementById('post-discover'));
 }
-
-/***/ }),
-
-/***/ "./resources/js/utils/adds.js":
-/*!************************************!*\
-  !*** ./resources/js/utils/adds.js ***!
-  \************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/**
- * Alternative to the `.add` method. 
- * You can add multiple string at once
- * @param  {Object} me  Target
- * @param  {String} str String you want to add
- * @return {String}     
- */
-function adds(me, str) {
-  str = str.split(' ');
-  str.forEach(function (item) {
-    me.add(item);
-  });
-  return str;
-}
-
-/* harmony default export */ __webpack_exports__["default"] = (adds);
 
 /***/ }),
 
@@ -11829,186 +11178,14 @@ function objExtend(out) {
 
 /***/ }),
 
-/***/ "./resources/js/utils/removes.js":
-/*!***************************************!*\
-  !*** ./resources/js/utils/removes.js ***!
-  \***************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/**
- * Alternative to the `.remove` method. 
- * You can remove multiple string at once
- * @param  {Object} me  Target
- * @param  {String} str String you want to remove
- * @return {String}     
- */
-function removes(me, str) {
-  str = str.split(' ');
-  str.forEach(function (item) {
-    me.remove(item);
-  });
-  return str;
-}
-
-/* harmony default export */ __webpack_exports__["default"] = (removes);
-
-/***/ }),
-
-/***/ "./resources/js/utils/slugify.js":
-/*!***************************************!*\
-  !*** ./resources/js/utils/slugify.js ***!
-  \***************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// https://gist.github.com/codeguy/6684588#gistcomment-2820314
-/* harmony default export */ __webpack_exports__["default"] = (function (str) {
-  str = String(str).toString();
-  str = str.replace(/^\s+|\s+$/g, ""); // trim
-
-  str = str.toLowerCase(); // remove accents, swap ñ for n, etc
-
-  var swaps = {
-    '0': ['°', '₀', '۰', '０'],
-    '1': ['¹', '₁', '۱', '１'],
-    '2': ['²', '₂', '۲', '２'],
-    '3': ['³', '₃', '۳', '３'],
-    '4': ['⁴', '₄', '۴', '٤', '４'],
-    '5': ['⁵', '₅', '۵', '٥', '５'],
-    '6': ['⁶', '₆', '۶', '٦', '６'],
-    '7': ['⁷', '₇', '۷', '７'],
-    '8': ['⁸', '₈', '۸', '８'],
-    '9': ['⁹', '₉', '۹', '９'],
-    'a': ['à', 'á', 'ả', 'ã', 'ạ', 'ă', 'ắ', 'ằ', 'ẳ', 'ẵ', 'ặ', 'â', 'ấ', 'ầ', 'ẩ', 'ẫ', 'ậ', 'ā', 'ą', 'å', 'α', 'ά', 'ἀ', 'ἁ', 'ἂ', 'ἃ', 'ἄ', 'ἅ', 'ἆ', 'ἇ', 'ᾀ', 'ᾁ', 'ᾂ', 'ᾃ', 'ᾄ', 'ᾅ', 'ᾆ', 'ᾇ', 'ὰ', 'ά', 'ᾰ', 'ᾱ', 'ᾲ', 'ᾳ', 'ᾴ', 'ᾶ', 'ᾷ', 'а', 'أ', 'အ', 'ာ', 'ါ', 'ǻ', 'ǎ', 'ª', 'ა', 'अ', 'ا', 'ａ', 'ä'],
-    'b': ['б', 'β', 'ب', 'ဗ', 'ბ', 'ｂ'],
-    'c': ['ç', 'ć', 'č', 'ĉ', 'ċ', 'ｃ'],
-    'd': ['ď', 'ð', 'đ', 'ƌ', 'ȡ', 'ɖ', 'ɗ', 'ᵭ', 'ᶁ', 'ᶑ', 'д', 'δ', 'د', 'ض', 'ဍ', 'ဒ', 'დ', 'ｄ'],
-    'e': ['é', 'è', 'ẻ', 'ẽ', 'ẹ', 'ê', 'ế', 'ề', 'ể', 'ễ', 'ệ', 'ë', 'ē', 'ę', 'ě', 'ĕ', 'ė', 'ε', 'έ', 'ἐ', 'ἑ', 'ἒ', 'ἓ', 'ἔ', 'ἕ', 'ὲ', 'έ', 'е', 'ё', 'э', 'є', 'ə', 'ဧ', 'ေ', 'ဲ', 'ე', 'ए', 'إ', 'ئ', 'ｅ'],
-    'f': ['ф', 'φ', 'ف', 'ƒ', 'ფ', 'ｆ'],
-    'g': ['ĝ', 'ğ', 'ġ', 'ģ', 'г', 'ґ', 'γ', 'ဂ', 'გ', 'گ', 'ｇ'],
-    'h': ['ĥ', 'ħ', 'η', 'ή', 'ح', 'ه', 'ဟ', 'ှ', 'ჰ', 'ｈ'],
-    'i': ['í', 'ì', 'ỉ', 'ĩ', 'ị', 'î', 'ï', 'ī', 'ĭ', 'į', 'ı', 'ι', 'ί', 'ϊ', 'ΐ', 'ἰ', 'ἱ', 'ἲ', 'ἳ', 'ἴ', 'ἵ', 'ἶ', 'ἷ', 'ὶ', 'ί', 'ῐ', 'ῑ', 'ῒ', 'ΐ', 'ῖ', 'ῗ', 'і', 'ї', 'и', 'ဣ', 'ိ', 'ီ', 'ည်', 'ǐ', 'ი', 'इ', 'ی', 'ｉ'],
-    'j': ['ĵ', 'ј', 'Ј', 'ჯ', 'ج', 'ｊ'],
-    'k': ['ķ', 'ĸ', 'к', 'κ', 'Ķ', 'ق', 'ك', 'က', 'კ', 'ქ', 'ک', 'ｋ'],
-    'l': ['ł', 'ľ', 'ĺ', 'ļ', 'ŀ', 'л', 'λ', 'ل', 'လ', 'ლ', 'ｌ'],
-    'm': ['м', 'μ', 'م', 'မ', 'მ', 'ｍ'],
-    'n': ['ñ', 'ń', 'ň', 'ņ', 'ŉ', 'ŋ', 'ν', 'н', 'ن', 'န', 'ნ', 'ｎ'],
-    'o': ['ó', 'ò', 'ỏ', 'õ', 'ọ', 'ô', 'ố', 'ồ', 'ổ', 'ỗ', 'ộ', 'ơ', 'ớ', 'ờ', 'ở', 'ỡ', 'ợ', 'ø', 'ō', 'ő', 'ŏ', 'ο', 'ὀ', 'ὁ', 'ὂ', 'ὃ', 'ὄ', 'ὅ', 'ὸ', 'ό', 'о', 'و', 'θ', 'ို', 'ǒ', 'ǿ', 'º', 'ო', 'ओ', 'ｏ', 'ö'],
-    'p': ['п', 'π', 'ပ', 'პ', 'پ', 'ｐ'],
-    'q': ['ყ', 'ｑ'],
-    'r': ['ŕ', 'ř', 'ŗ', 'р', 'ρ', 'ر', 'რ', 'ｒ'],
-    's': ['ś', 'š', 'ş', 'с', 'σ', 'ș', 'ς', 'س', 'ص', 'စ', 'ſ', 'ს', 'ｓ'],
-    't': ['ť', 'ţ', 'т', 'τ', 'ț', 'ت', 'ط', 'ဋ', 'တ', 'ŧ', 'თ', 'ტ', 'ｔ'],
-    'u': ['ú', 'ù', 'ủ', 'ũ', 'ụ', 'ư', 'ứ', 'ừ', 'ử', 'ữ', 'ự', 'û', 'ū', 'ů', 'ű', 'ŭ', 'ų', 'µ', 'у', 'ဉ', 'ု', 'ူ', 'ǔ', 'ǖ', 'ǘ', 'ǚ', 'ǜ', 'უ', 'उ', 'ｕ', 'ў', 'ü'],
-    'v': ['в', 'ვ', 'ϐ', 'ｖ'],
-    'w': ['ŵ', 'ω', 'ώ', 'ဝ', 'ွ', 'ｗ'],
-    'x': ['χ', 'ξ', 'ｘ'],
-    'y': ['ý', 'ỳ', 'ỷ', 'ỹ', 'ỵ', 'ÿ', 'ŷ', 'й', 'ы', 'υ', 'ϋ', 'ύ', 'ΰ', 'ي', 'ယ', 'ｙ'],
-    'z': ['ź', 'ž', 'ż', 'з', 'ζ', 'ز', 'ဇ', 'ზ', 'ｚ'],
-    'aa': ['ع', 'आ', 'آ'],
-    'ae': ['æ', 'ǽ'],
-    'ai': ['ऐ'],
-    'ch': ['ч', 'ჩ', 'ჭ', 'چ'],
-    'dj': ['ђ', 'đ'],
-    'dz': ['џ', 'ძ'],
-    'ei': ['ऍ'],
-    'gh': ['غ', 'ღ'],
-    'ii': ['ई'],
-    'ij': ['ĳ'],
-    'kh': ['х', 'خ', 'ხ'],
-    'lj': ['љ'],
-    'nj': ['њ'],
-    'oe': ['ö', 'œ', 'ؤ'],
-    'oi': ['ऑ'],
-    'oii': ['ऒ'],
-    'ps': ['ψ'],
-    'sh': ['ш', 'შ', 'ش'],
-    'shch': ['щ'],
-    'ss': ['ß'],
-    'sx': ['ŝ'],
-    'th': ['þ', 'ϑ', 'ث', 'ذ', 'ظ'],
-    'ts': ['ц', 'ც', 'წ'],
-    'ue': ['ü'],
-    'uu': ['ऊ'],
-    'ya': ['я'],
-    'yu': ['ю'],
-    'zh': ['ж', 'ჟ', 'ژ'],
-    '(c)': ['©'],
-    'A': ['Á', 'À', 'Ả', 'Ã', 'Ạ', 'Ă', 'Ắ', 'Ằ', 'Ẳ', 'Ẵ', 'Ặ', 'Â', 'Ấ', 'Ầ', 'Ẩ', 'Ẫ', 'Ậ', 'Å', 'Ā', 'Ą', 'Α', 'Ά', 'Ἀ', 'Ἁ', 'Ἂ', 'Ἃ', 'Ἄ', 'Ἅ', 'Ἆ', 'Ἇ', 'ᾈ', 'ᾉ', 'ᾊ', 'ᾋ', 'ᾌ', 'ᾍ', 'ᾎ', 'ᾏ', 'Ᾰ', 'Ᾱ', 'Ὰ', 'Ά', 'ᾼ', 'А', 'Ǻ', 'Ǎ', 'Ａ', 'Ä'],
-    'B': ['Б', 'Β', 'ब', 'Ｂ'],
-    'C': ['Ç', 'Ć', 'Č', 'Ĉ', 'Ċ', 'Ｃ'],
-    'D': ['Ď', 'Ð', 'Đ', 'Ɖ', 'Ɗ', 'Ƌ', 'ᴅ', 'ᴆ', 'Д', 'Δ', 'Ｄ'],
-    'E': ['É', 'È', 'Ẻ', 'Ẽ', 'Ẹ', 'Ê', 'Ế', 'Ề', 'Ể', 'Ễ', 'Ệ', 'Ë', 'Ē', 'Ę', 'Ě', 'Ĕ', 'Ė', 'Ε', 'Έ', 'Ἐ', 'Ἑ', 'Ἒ', 'Ἓ', 'Ἔ', 'Ἕ', 'Έ', 'Ὲ', 'Е', 'Ё', 'Э', 'Є', 'Ə', 'Ｅ'],
-    'F': ['Ф', 'Φ', 'Ｆ'],
-    'G': ['Ğ', 'Ġ', 'Ģ', 'Г', 'Ґ', 'Γ', 'Ｇ'],
-    'H': ['Η', 'Ή', 'Ħ', 'Ｈ'],
-    'I': ['Í', 'Ì', 'Ỉ', 'Ĩ', 'Ị', 'Î', 'Ï', 'Ī', 'Ĭ', 'Į', 'İ', 'Ι', 'Ί', 'Ϊ', 'Ἰ', 'Ἱ', 'Ἳ', 'Ἴ', 'Ἵ', 'Ἶ', 'Ἷ', 'Ῐ', 'Ῑ', 'Ὶ', 'Ί', 'И', 'І', 'Ї', 'Ǐ', 'ϒ', 'Ｉ'],
-    'J': ['Ｊ'],
-    'K': ['К', 'Κ', 'Ｋ'],
-    'L': ['Ĺ', 'Ł', 'Л', 'Λ', 'Ļ', 'Ľ', 'Ŀ', 'ल', 'Ｌ'],
-    'M': ['М', 'Μ', 'Ｍ'],
-    'N': ['Ń', 'Ñ', 'Ň', 'Ņ', 'Ŋ', 'Н', 'Ν', 'Ｎ'],
-    'O': ['Ó', 'Ò', 'Ỏ', 'Õ', 'Ọ', 'Ô', 'Ố', 'Ồ', 'Ổ', 'Ỗ', 'Ộ', 'Ơ', 'Ớ', 'Ờ', 'Ở', 'Ỡ', 'Ợ', 'Ø', 'Ō', 'Ő', 'Ŏ', 'Ο', 'Ό', 'Ὀ', 'Ὁ', 'Ὂ', 'Ὃ', 'Ὄ', 'Ὅ', 'Ὸ', 'Ό', 'О', 'Θ', 'Ө', 'Ǒ', 'Ǿ', 'Ｏ', 'Ö'],
-    'P': ['П', 'Π', 'Ｐ'],
-    'Q': ['Ｑ'],
-    'R': ['Ř', 'Ŕ', 'Р', 'Ρ', 'Ŗ', 'Ｒ'],
-    'S': ['Ş', 'Ŝ', 'Ș', 'Š', 'Ś', 'С', 'Σ', 'Ｓ'],
-    'T': ['Ť', 'Ţ', 'Ŧ', 'Ț', 'Т', 'Τ', 'Ｔ'],
-    'U': ['Ú', 'Ù', 'Ủ', 'Ũ', 'Ụ', 'Ư', 'Ứ', 'Ừ', 'Ử', 'Ữ', 'Ự', 'Û', 'Ū', 'Ů', 'Ű', 'Ŭ', 'Ų', 'У', 'Ǔ', 'Ǖ', 'Ǘ', 'Ǚ', 'Ǜ', 'Ｕ', 'Ў', 'Ü'],
-    'V': ['В', 'Ｖ'],
-    'W': ['Ω', 'Ώ', 'Ŵ', 'Ｗ'],
-    'X': ['Χ', 'Ξ', 'Ｘ'],
-    'Y': ['Ý', 'Ỳ', 'Ỷ', 'Ỹ', 'Ỵ', 'Ÿ', 'Ῠ', 'Ῡ', 'Ὺ', 'Ύ', 'Ы', 'Й', 'Υ', 'Ϋ', 'Ŷ', 'Ｙ'],
-    'Z': ['Ź', 'Ž', 'Ż', 'З', 'Ζ', 'Ｚ'],
-    'AE': ['Æ', 'Ǽ'],
-    'Ch': ['Ч'],
-    'Dj': ['Ђ'],
-    'Dz': ['Џ'],
-    'Gx': ['Ĝ'],
-    'Hx': ['Ĥ'],
-    'Ij': ['Ĳ'],
-    'Jx': ['Ĵ'],
-    'Kh': ['Х'],
-    'Lj': ['Љ'],
-    'Nj': ['Њ'],
-    'Oe': ['Œ'],
-    'Ps': ['Ψ'],
-    'Sh': ['Ш'],
-    'Shch': ['Щ'],
-    'Ss': ['ẞ'],
-    'Th': ['Þ'],
-    'Ts': ['Ц'],
-    'Ya': ['Я'],
-    'Yu': ['Ю'],
-    'Zh': ['Ж']
-  };
-  Object.keys(swaps).forEach(function (swap) {
-    swaps[swap].forEach(function (s) {
-      str = str.replace(new RegExp(s, "g"), swap);
-    });
-  });
-  return str.replace(/[^a-z0-9 -]/g, "") // remove invalid chars
-  .replace(/\s+/g, "-") // collapse whitespace and replace by -
-  .replace(/-+/g, "-") // collapse dashes
-  .replace(/^-+/, "") // trim - from start of text
-  .replace(/-+$/, "");
-});
-
-/***/ }),
-
-/***/ 6:
+/***/ 5:
 /*!*********************************************!*\
-  !*** multi ./resources/js/post-markdown.js ***!
+  !*** multi ./resources/js/post-discover.js ***!
   \*********************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! D:\server\www\kdgr\resources\js\post-markdown.js */"./resources/js/post-markdown.js");
+module.exports = __webpack_require__(/*! D:\server\www\kdgr\resources\js\post-discover.js */"./resources/js/post-discover.js");
 
 
 /***/ })

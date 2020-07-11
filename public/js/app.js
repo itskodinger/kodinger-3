@@ -81,21 +81,10 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ({
-
-/***/ "./resources/css/app.css":
-/*!*******************************!*\
-  !*** ./resources/css/app.css ***!
-  \*******************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
 
 /***/ "./resources/js/app.js":
 /*!*****************************!*\
@@ -304,15 +293,14 @@ if (typeof sidebar == 'undefined' || sidebar !== 'manual') sidebarSticky(); // O
 
 /***/ }),
 
-/***/ 0:
-/*!***********************************************************!*\
-  !*** multi ./resources/js/app.js ./resources/css/app.css ***!
-  \***********************************************************/
+/***/ 1:
+/*!***********************************!*\
+  !*** multi ./resources/js/app.js ***!
+  \***********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\server\www\kdgr\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\server\www\kdgr\resources\css\app.css */"./resources/css/app.css");
+module.exports = __webpack_require__(/*! D:\server\www\kdgr\resources\js\app.js */"./resources/js/app.js");
 
 
 /***/ })

@@ -71,9 +71,15 @@ class PostService
 		], $arr2);
 	}
 
-	public function find($id)
+	public function find($id, $views=false)
 	{
-		return $this->model()->find($id);
+		$post = $this->model()->find($id);
+
+		if($post && $views) {
+			$post->update(['views' => ($post->views ?? 0) + 1]);
+		}
+
+		return $post;
 	}
 
 	public function total()
@@ -156,7 +162,7 @@ class PostService
 
 	public function content(...$args)
 	{
-		$this->init = $this->model()->whereType(null)->whereStatus('publish');
+		$this->init = $this->model()->whereStatus('publish');
 
 		return $this->paginate(...$args);
 	}
@@ -197,7 +203,7 @@ class PostService
 			}
 
 			if($req_type) {
-				$req_type = $req_type == 'content' ? null : $req_type;
+				$req_type = $req_type == 'slide' ? null : $req_type;
 				$posts = $posts->whereType($req_type);
 			}
 
@@ -224,9 +230,17 @@ class PostService
 			{
 				$posts = $posts->whereStatus($request->status);
 			}
+
+			if(isset($request->sort))
+			{
+				if($request->sort == 'popular')
+					$posts = $posts->orderBy('views', 'desc');
+				else
+					$posts = $posts->orderBy('published_at', 'desc');
+			}
 		}
 
-		$posts = $posts->orderBy('published_at', 'desc')->paginate($num);
+		$posts = $posts->paginate($num);
 
 		$posts->appends(['search' => $req_search, 'type' => $req_type, 'status' => $request->status]);
 
@@ -403,7 +417,10 @@ class PostService
 
 	public function getByAuthor($id, $limit=5)
 	{
-		$posts = $this->model()->orderBy('views', 'desc')->whereStatus('publish')->whereUserId($id)->whereNull('type')->orWhere('type','markdown')->take($limit)->get();
+		$posts = $this->model()->orderBy('views', 'desc')->whereStatus('publish')->whereUserId($id)->where(function($query) {
+			$query->whereNull('type');
+			$query->orWhere('type','markdown');
+		})->take($limit)->get();
 
 		return $posts;
 	}

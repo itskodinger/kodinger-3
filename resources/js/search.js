@@ -16,7 +16,9 @@ let posts = post.init('.posts', {
     params: params => ({
 		...params,
 		search,
-		tag
+		tag,
+		type: postType,
+		sort
     }),
     wrap
 });

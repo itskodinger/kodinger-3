@@ -3,6 +3,8 @@
 @push('search_js')
 	<script>
 		const type = 'COMMUNITY',
+			  postType = '',
+			  sort = false,
 			  url = routes.communities,
 			  lazyimage = false,
 			  discover = false,

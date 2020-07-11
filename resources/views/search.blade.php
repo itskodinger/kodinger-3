@@ -10,9 +10,9 @@
             	<div class="border border-gray-200 p-6 rounded pb-0">
 	            	<h1 class="text-xl font-semibold">Pencarian</h1>
 	            	<div class="flex overflow-x-auto flex-no-wrap mt-6">
-	            		@foreach($types as $k => $t)
-		            		<a href="@current(['type' => $k])" class="{{ $k == $type ? 'border-indigo-600 text-indigo-600 font-semibold' : ''}} flex items-center hover:border-indigo-600 hover:text-indigo-600 text-gray-600 border-b-2 py-4 border-transparent mr-8 mr-2">
-	            				{!! type_icons($k) !!}
+	            		@foreach($datasources as $k => $t)
+		            		<a href="@current(['datasource' => $k])" class="{{ $k == $datasource ? 'border-indigo-600 text-indigo-600 font-semibold' : ''}} flex items-center hover:border-indigo-600 hover:text-indigo-600 text-gray-600 border-b-2 py-4 border-transparent mr-8 mr-2">
+	            				{!! datasource_icons($k) !!}
 		            			{{ $t }}
 		            		</a>
 	            		@endforeach
@@ -48,7 +48,7 @@
 	            </div>
 
             	<div class="mt-8">
-	                @include('search_' . $type)
+	                @include('search_' . $datasource)
 	            </div>
             </div>
             <div class="lg:w-3/12 lg:px-4 md:w-4/12">

@@ -29,6 +29,7 @@ module.exports = {
   	borderColor: ['responsive', 'hover', 'focus', 'focus-within', 'group-hover'],
   	opacity: ['responsive', 'hover', 'focus', 'group-hover'],
     textColor: ['responsive', 'hover', 'focus', 'group-hover'],
+    display: ['responsive', 'group-hover']
   },
   plugins: [
   	function({ addUtilities, theme }) {

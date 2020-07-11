@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Embed\Embed;
 use Illuminate\Http\Request;
+use Services\PostService;
 
 class RedirectorPageController extends Controller
 {
@@ -33,26 +34,30 @@ class RedirectorPageController extends Controller
      * @param  Illuminate\Http\Request    $request
      * @return Illuminate\Http\Response
      */
-    public function __invoke(Request $request) {
-        if( ! $request->has('q') ) return abort(404);
+    public function __invoke(Request $request, PostService $postService) {
+        if( ! $request->has('go') ) return abort(404);
 
-        $url = parse_url($request->q);
+        $url = parse_url($request->go);
 
         if(isset($url['host'])) {
 
-            $this->url = $request->q;
+            $this->url = $request->go;
 
         }
         else
         {
             try {
 
-                $decryptedUrl = decrypt($request->q);
-                $parsedUrl    = parse_url($decryptedUrl);
+                $decryptedUrl = decrypt($request->go);
+                $decryptedUrl = explode('|', $decryptedUrl);
+                $postId = $decryptedUrl[0];
+                $parsedUrl    = parse_url($decryptedUrl[1]);
+
+                $post = $postService->find($postId, true);
 
                 if(!isset($parsedUrl['host'])) return abort(404);
 
-                $this->url = $decryptedUrl;
+                $this->url = $decryptedUrl[1];
 
                 return $this->showRedirectorPage();
 
@@ -78,10 +83,11 @@ class RedirectorPageController extends Controller
     protected function showRedirectorPage($ignorePreview = false) {
         $parsedUrl = parse_url($this->url);
 
+
         // Need to optimize this!!!
         $redirectData = [
             'whitelisted_domain' => false,
-            'url'                => $this->url
+            'url'                => $this->url . '?ref=kodinger'
         ];
 
         if(!$ignorePreview) {

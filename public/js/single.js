@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 12);
+/******/ 	return __webpack_require__(__webpack_require__.s = 13);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -28193,7 +28193,7 @@ var api = {
           options = _ref8.options;
       var tpl = "\n\t\t\t<div class=\"bg-white rounded border border-gray-200 mb-10\">\n\t\t\t    <div class=\"flex p-6 items-center\">\n\t\t\t        <a href=\"".concat(routes.single + _post.user.username, "\">\n\t\t\t            <img class=\"rounded w-12 rounded border\" src=\"").concat(_post.user.the_avatar_sm, "\">\n\t\t\t        </a>\n\t\t\t        <div class=\"ml-3\">\n\t\t\t            <h4 class=\"font-semibold\">\n\t\t\t                <a class=\"text-lg\" href=\"").concat(routes.single + _post.user.username, "\">\n\t\t\t                    ").concat(_post.user.name, "\n\t\t\t                </a>\n\t\t\t            </h4>\n\t\t\t            <div class=\"-mx-1 flex items-center text-sm text-gray-500\">\n\t\t\t                <p class=\"mx-1\">@").concat(_post.user.username, "</p>\n\t\t\t                <p class=\"mx-1\">&bull;</p>\n\t\t\t                <p class=\"mx-1 font-semibold\">").concat(_post.time, "</p>\n\t\t\t            </div>\n\t\t\t        </div>\n\t\t\t    </div>\n\n\t\t\t    ").concat(_post.type == 'link' ? "\n\t\t\t\t    <div class=\"md:border border-b border-t md:rounded md:mx-6\">\n\n\t\t\t\t        ".concat(_post.post_card.has_embeddable_code ? "\n\n\t\t\t\t            <div class=\"embeddable-frame\">\n\t\t\t\t                ".concat(_post.post_card.embeddable_code, "\n\t\t\t\t            </div>") : // else
       "\n\t\t\t\t        \t<a href=\"".concat(_post.post_card.url, "\" target=\"_blank\">\n\t\t\t\t        \t").concat(_post.post_card.thumbnail !== null ? "<img src=\"".concat(_post.post_card.thumbnail, "\" class=\"w-full h-64 object-cover\">") : // else
-      "<img src=\"".concat(_post.post_card.default_thumbnail, "\" class=\"w-full h-64 object-scale-down\">"), "\n\t\t\t\t\t        </a>\n\t\t\t\t        "), "\n\n\t\t\t\t        <div class=\"p-4 border-t bg-gray-100\">\n\t\t\t\t        \n\t\t\t\t            <h2 class=\"md:text-xl mb-2 text-base font-semibold hover:text-indigo-600\"><a target=\"_blank\" href=\"").concat(_post.post_card.url, "\">").concat(_post.post_card.title, "</a></h2>\n\n\t\t\t\t            ").concat(_post.post_card.description ? "\n\t\t\t\t                <p class=\"text-gray-600 break-all\"><a target=\"_blank\" href=\"".concat(_post.post_card.url, "\">").concat(_post.post_card.description.substr(0, 200), "</a></p>\n\t\t\t\t            ") : '', "\n\t\t\t\t            <div class=\"uppercase tracking-wider text-sm mt-3 text-teal-500 font-semibold\"><a target=\"_blank\" href=\"//").concat(Object(_utils_get_hostname__WEBPACK_IMPORTED_MODULE_10__["default"])(_post.post_card.url), "\">").concat(Object(_utils_get_hostname__WEBPACK_IMPORTED_MODULE_10__["default"])(_post.post_card.url), "</a></div>\n\t\t\t\t        </div>\n\t\t\t\t    </div>\n\t\t\t    ") : "", "\n\n\t\t\t    ").concat(_post.type !== 'link' ? "\n\t\t\t    \n\t\t\t    <div class=\"relative".concat(_post.content_object.length > 1 && options.carousel ? ' carousel-outer w-full' : '', "\"> \n\t\t\t        <div class=\"").concat(_post.content_object.length > 1 && options.carousel ? 'carousel w-full' : '', "\">\n\t\t\t            \n\t\t\t            ").concat('carousel' in options && options.carousel == false ? "<a href=\"".concat(routes.post_single.replace(/username/g, _post.user.username).replace(/slug/g, _post.slug), "\">\n\t\t\t                    <div data-blurry=\"").concat(_post.blurry_image, "\" data-src=\"").concat(!_post.is_markdown ? _post.first_slide_media : _post.cover, "\" class=\"lazy-image w-full bg-gray-200 bg-cover h-40 sm:h-64\"></div>\n\t\t\t                </a>") : // else
+      "<img src=\"".concat(_post.post_card.default_thumbnail, "\" class=\"w-full h-64 object-scale-down\">"), "\n\t\t\t\t\t        </a>\n\t\t\t\t        "), "\n\n\t\t\t\t        <div class=\"p-4 border-t bg-gray-100\">\n\t\t\t\t        \n\t\t\t\t            <h2 class=\"md:text-xl mb-2 text-base font-semibold hover:text-indigo-600\"><a target=\"_blank\" href=\"").concat(_post.post_card.url, "\">").concat(_post.post_card.title, "</a></h2>\n\n\t\t\t\t            ").concat(_post.post_card.description ? "\n\t\t\t\t                <p class=\"text-gray-600 break-all\"><a target=\"_blank\" href=\"".concat(_post.post_card.url, "\">").concat(_post.post_card.description.substr(0, 200), "</a></p>\n\t\t\t\t            ") : '', "\n\t\t\t\t            <div class=\"uppercase tracking-wider text-sm mt-3 text-teal-500 font-semibold\">").concat(_post.post_card.hostname, "</div>\n\t\t\t\t        </div>\n\t\t\t\t    </div>\n\t\t\t    ") : "", "\n\n\t\t\t    ").concat(_post.type !== 'link' ? "\n\t\t\t    \n\t\t\t    <div class=\"relative".concat(_post.content_object.length > 1 && options.carousel ? ' carousel-outer w-full' : '', "\"> \n\t\t\t        <div class=\"").concat(_post.content_object.length > 1 && options.carousel ? 'carousel w-full' : '', "\">\n\t\t\t            \n\t\t\t            ").concat('carousel' in options && options.carousel == false ? "<a href=\"".concat(routes.post_single.replace(/username/g, _post.user.username).replace(/slug/g, _post.slug), "\">\n\t\t\t                    <div data-blurry=\"").concat(_post.blurry_image, "\" data-src=\"").concat(!_post.is_markdown ? _post.first_slide_media : _post.cover, "\" class=\"lazy-image w-full bg-gray-200 bg-cover h-40 sm:h-64\"></div>\n\t\t\t                </a>") : // else
       _post.content_object.map(function (slide) {
         var img = slide.url;
 
@@ -29094,7 +29094,7 @@ mypost.onRender.then(function (_ref) {
       var originalName = _ref2.originalName,
           name = _ref2.name,
           links = _ref2.links;
-      return "\n                <div class=\"mb-12\">\n                \t<h2 class=\"pb-3 font-bold text-indigo-600\">".concat(name, "</h2>\n                \t<div class=\"bg-white rounded border border-gray-200\">\n                \t").concat(links.length > 0 ? links.map(function (page) {
+      return "\n                <div class=\"mb-12\">\n                \t<h2 class=\"pb-3 font-semibold\">".concat(name, "</h2>\n                \t<div class=\"bg-white rounded border border-gray-200\">\n                \t").concat(links.length > 0 ? links.map(function (page) {
         return "\n                    \t\t<a data-fetch=\"".concat(page, "\" target=\"_blank\" class=\"flex items-center hover:bg-gray-100 px-5 py-4 border-b border-gray-100\" href=\"").concat(page, "\">\n    \t                \t\t<img class=\"w-8 flex-shrink-0\" src=\"https://s2.googleusercontent.com/s2/favicons?domain_url=").concat(page, "\">\n    \t                \t\t<div class=\"ml-4 overflow-hidden\">\n    \t                \t\t\t<div class=\"text-indigo-600 font-semibold title truncate\"></div>\n    \t\t                \t\t<span class=\"text-sm text-gray-700 truncate\">").concat(page, "</span>\n    \t                \t\t</div>\n    \t                \t</a>");
       }).join('') : // else
       "\n    \t            <div class=\"px-5 py-4 border-b border-gray-100 text-center\">\n                    \t<h4>Tidak ada link ".concat(name, "</h4>\n                \t</div>\n    \t            "), "\n                    \t<div class=\"flex items-center justify-center px-2 py-2 border-b border-gray-100\">\n    \t                \t<a href=\"").concat(routes.contribute_create.replace(/slug/g, post_data.slug), "?col=").concat(originalName, "\" class=\"inline-block bg-indigo-600 hover:bg-indigo-700 border border-indigo-600 text-white rounded py-1 px-4\">Rekomendasikan</a>\n                    \t</div>\n                    </div>\n                </div>\n            ");
@@ -29111,7 +29111,6 @@ mypost.onRender.then(function (_ref) {
       }));
     });
     setTimeout(function () {
-      sidebarSticky();
       $$('[data-fetch]').forEach(function (item) {
         var url = item.dataset.fetch;
 
@@ -29480,7 +29479,7 @@ function wrapNode(wrap, element) {
 
 /***/ }),
 
-/***/ 12:
+/***/ 13:
 /*!**************************************!*\
   !*** multi ./resources/js/single.js ***!
   \**************************************/

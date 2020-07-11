@@ -141,9 +141,10 @@ class FrontendController extends Controller
 		if(($post->user_id !== auth()->id() && $post->status == 'draft') || $post->type == 'link') return abort(404);
 
 		$posts = $this->postService->getByAuthor($post->user->id);
-		if(!$posts)
+
+		if(count($posts) < 2)
 		{
-			$posts = $this->postService->popular();
+			$posts = $this->postService->popular(false);
 		}
 
 		return view('single', compact('post', 'posts'));
@@ -261,8 +262,8 @@ class FrontendController extends Controller
 	 */
 	public function search(Request $request)
 	{
-		$types = search_types();
-		$type = $request->type ?? 'post';
+		$datasources = search_datasource();
+		$datasource = $request->datasource ?? 'post';
 		$search = [['name' => 'Search', 'search' => true]];
 		$tags = $this->tagService->popular([5, 5]);
 
@@ -280,7 +281,7 @@ class FrontendController extends Controller
 
 		$tags = array_merge($search, $tags);
 
-		return view('search', compact('types', 'type', 'tags', 'tag'));
+		return view('search', compact('datasources', 'datasource', 'tags', 'tag'));
 	}
 
 	/**

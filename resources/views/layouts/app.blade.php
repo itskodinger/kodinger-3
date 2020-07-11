@@ -229,7 +229,7 @@
     	@if(@$navbar !== false)
         <nav class="primary-nav {{!isset($auto_hide) ? 'nav-auto-hide ' : ''}}bg-white border-b border-gray-200 top-0 mb-4 py-3 fixed left-0 w-full z-10">
             <div class="container mx-auto sm:px-6 px-4 md:px-0">
-                <div class="flex items-center{{ !isset($empty_navbar) ? ' justify-center' : ''}}">
+                <div class="flex items-center{{ !isset($empty_navbar) ? ' justify-center' : ''}} relative">
                     <a href="{{ url('/') }}" class="text-lg flex-shrink-0 font-semibold text-indigo-600 no-underline">
                         <svg width="45" class="text-indigo-600" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                         	viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
@@ -269,20 +269,31 @@
                         </svg>
                     </a>
                     @if(!isset($empty_navbar))
-                    <div class="ml-4 hidden sm:flex">
-                        <a class="py-4 mx-5 md:mx-4 flex items-center {{ is_route('index', 'text-indigo-600 font-semibold', 'text-gray-900')}} hover:text-indigo-600" href="{{ url('') }}">
+                    <ul class="ml-4 hidden sm:flex">
+                        <li><a class="py-4 mx-5 md:mx-4 flex items-center {{ is_route('index', 'text-indigo-600 font-semibold', 'text-gray-900')}} hover:text-indigo-600" href="{{ url('') }}">
                         	<svg xmlns="http://www.w3.org/2000/svg" class="w-5 mr-2 lg:hidden block fill-current" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="home"><rect width="24" height="24" opacity="0"/><path d="M20.42 10.18L12.71 2.3a1 1 0 0 0-1.42 0l-7.71 7.89A2 2 0 0 0 3 11.62V20a2 2 0 0 0 1.89 2h14.22A2 2 0 0 0 21 20v-8.38a2.07 2.07 0 0 0-.58-1.44zM10 20v-6h4v6zm9 0h-3v-7a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v7H5v-8.42l7-7.15 7 7.19z"/></g></g></svg>
                         	<span class="md:hidden lg:block">Beranda</span>
-                        </a>
-                        <a class="py-4 mx-5 md:mx-4 flex items-center {{ is_route('discover', 'text-indigo-600 font-semibold', 'text-gray-900')}} hover:text-indigo-600" href="@route('discover')">
-                        	<svg xmlns="http://www.w3.org/2000/svg" class="w-5 mr-2 lg:hidden block fill-current" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="layers"><rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"/><path d="M21 11.35a1 1 0 0 0-.61-.86l-2.15-.92 2.26-1.3a1 1 0 0 0 .5-.92 1 1 0 0 0-.61-.86l-8-3.41a1 1 0 0 0-.78 0l-8 3.41a1 1 0 0 0-.61.86 1 1 0 0 0 .5.92l2.26 1.3-2.15.92a1 1 0 0 0-.61.86 1 1 0 0 0 .5.92l2.26 1.3-2.15.92a1 1 0 0 0-.61.86 1 1 0 0 0 .5.92l8 4.6a1 1 0 0 0 1 0l8-4.6a1 1 0 0 0 .5-.92 1 1 0 0 0-.61-.86l-2.15-.92 2.26-1.3a1 1 0 0 0 .5-.92zm-9-6.26l5.76 2.45L12 10.85 6.24 7.54zm-.5 7.78a1 1 0 0 0 1 0l3.57-2 1.69.72L12 14.85l-5.76-3.31 1.69-.72zm6.26 2.67L12 18.85l-5.76-3.31 1.69-.72 3.57 2.05a1 1 0 0 0 1 0l3.57-2.05z"/></g></g></svg>
-                        	<span class="md:hidden lg:block">Discover</span>
-                        </a>
-                        <a class="py-4 mx-5 md:mx-4 flex items-center {{ is_route('community', 'text-indigo-600 font-semibold', 'text-gray-900')}} hover:text-indigo-600" href="@route('community')">
+                        </a></li>
+                        <li class="group">
+                            <a class="py-4 mx-5 md:mx-4 flex items-center {{ is_route('discover', 'text-indigo-600 font-semibold', 'text-gray-900')}} hover:text-indigo-600" href="@route('discover')">
+                            	<svg xmlns="http://www.w3.org/2000/svg" class="w-5 mr-2 lg:hidden block fill-current" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="layers"><rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"/><path d="M21 11.35a1 1 0 0 0-.61-.86l-2.15-.92 2.26-1.3a1 1 0 0 0 .5-.92 1 1 0 0 0-.61-.86l-8-3.41a1 1 0 0 0-.78 0l-8 3.41a1 1 0 0 0-.61.86 1 1 0 0 0 .5.92l2.26 1.3-2.15.92a1 1 0 0 0-.61.86 1 1 0 0 0 .5.92l2.26 1.3-2.15.92a1 1 0 0 0-.61.86 1 1 0 0 0 .5.92l8 4.6a1 1 0 0 0 1 0l8-4.6a1 1 0 0 0 .5-.92 1 1 0 0 0-.61-.86l-2.15-.92 2.26-1.3a1 1 0 0 0 .5-.92zm-9-6.26l5.76 2.45L12 10.85 6.24 7.54zm-.5 7.78a1 1 0 0 0 1 0l3.57-2 1.69.72L12 14.85l-5.76-3.31 1.69-.72zm6.26 2.67L12 18.85l-5.76-3.31 1.69-.72 3.57 2.05a1 1 0 0 0 1 0l3.57-2.05z"/></g></g></svg>
+                            	<span class="md:hidden lg:block">Discover</span>
+                                <svg class="w-4 ml-1 hidden lg:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </a>
+                            <div class="hidden group-hover:block absolute w-4/12 bg-white shadow p-6">
+                                <div class="flex flex-col">
+                                    <a href="">
+                                        <span class="block text-lg font-semibold">Komunitas</span>
+                                        <span>Temukan komunitas yang akan membuatmu lebih cepat berkembang.</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                        <li><a class="py-4 mx-5 md:mx-4 flex items-center {{ is_route('community', 'text-indigo-600 font-semibold', 'text-gray-900')}} hover:text-indigo-600" href="@route('community')">
                         	<svg xmlns="http://www.w3.org/2000/svg" class="w-5 mr-2 lg:hidden block fill-current" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="people"><rect width="24" height="24" opacity="0"/><path d="M9 11a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0-6a2 2 0 1 1-2 2 2 2 0 0 1 2-2z"/><path d="M17 13a3 3 0 1 0-3-3 3 3 0 0 0 3 3zm0-4a1 1 0 1 1-1 1 1 1 0 0 1 1-1z"/><path d="M17 14a5 5 0 0 0-3.06 1.05A7 7 0 0 0 2 20a1 1 0 0 0 2 0 5 5 0 0 1 10 0 1 1 0 0 0 2 0 6.9 6.9 0 0 0-.86-3.35A3 3 0 0 1 20 19a1 1 0 0 0 2 0 5 5 0 0 0-5-5z"/></g></g></svg>
                         	<span class="md:hidden lg:block">Komunitas</span>
-                        </a>
-                    </div>
+                        </a></li>
+                    </ul>
                     <div class="ml-auto w-full sm:w-auto flex items-center">
                         <form action="@route('search')" autocomplete="off" class="mx-4 sm:mx-0 w-full sm:w-auto">
                         	@if(request()->has('type'))

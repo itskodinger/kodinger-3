@@ -7,8 +7,13 @@
             @inject('post', 'Services\PostService')
             @foreach($post->loved() as $post)
             @isset($post->post)
-            <a class="flex items-center hover:bg-gray-100 px-5 py-4 border-b border-gray-100" href="@route('post.show', [$post->post->user->username, $post->post->slug])">
-                <div class="text-gray-600 font-semibold truncate">{{ $post->post->title }}</div>
+            <a class="inline-block w-full hover:bg-gray-100 px-5 py-4 border-b border-gray-100" href="@route('post.show', [$post->post->user->username, $post->post->slug])">
+                <div class="font-semibold">{{ $post->post->title }}</div>
+                <div class="mt-2 -mx-1">
+                    @foreach($post->post->tags->slice(0, 3) as $tag)
+                    <span class="text-gray-600 mx-1">#{!! $tag->tag->name !!}</span>
+                    @endforeach
+                </div>
             </a>
             @endisset
             @endforeach

@@ -695,7 +695,7 @@ let api = {
 				            ${post.post_card.description ? `
 				                <p class="text-gray-600 break-all"><a target="_blank" href="${post.post_card.url}">${ post.post_card.description.substr(0, 200)}</a></p>
 				            ` : ''}
-				            <div class="uppercase tracking-wider text-sm mt-3 text-teal-500 font-semibold"><a target="_blank" href="//${getHostname(post.post_card.url)}">${ getHostname(post.post_card.url) }</a></div>
+				            <div class="uppercase tracking-wider text-sm mt-3 text-teal-500 font-semibold">${ post.post_card.hostname }</div>
 				        </div>
 				    </div>
 			    ` : ``}

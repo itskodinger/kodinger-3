@@ -327,16 +327,15 @@ function user_js()
 		->toJson();
 }
 
-function search_types() 
+function search_datasource() 
 {
 	return [
 		'post' => 'Post',
-		'discover' => 'Discover',
 		'community' => 'Komunitas',
 	];
 }
 
-function type_icons($key)
+function datasource_icons($key)
 {
 	return [
 		'post' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 mr-2 fill-current" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="grid"><rect width="24" height="24" opacity="0"/><path d="M9 3H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zM5 9V5h4v4z"/><path d="M19 3h-4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-4 6V5h4v4z"/><path d="M9 13H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2zm-4 6v-4h4v4z"/><path d="M19 13h-4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2zm-4 6v-4h4v4z"/></g></g></svg>',
@@ -429,4 +428,29 @@ function ert($content)
 	$est = $m . ' menit';
 
 	return $est;
+}
+
+function is_type($test)
+{
+	if(request()->type == $test)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+function sorting()
+{
+	return ['newest' => 'Terbaru', 'popular' => 'Populer'];
+}
+
+function current_sort()
+{
+	return sorting()[(request()->sort ?? 'newest')];
+}
+
+function post_types()
+{
+	return ['slide', 'markdown', 'link'];
 }

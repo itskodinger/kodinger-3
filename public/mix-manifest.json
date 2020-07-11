@@ -1,10 +1,11 @@
 {
-    "/js/app.js": "/js/app.js",
+    "/js/(dontuse)discover.js": "/js/(dontuse)discover.js",
     "/css/app.css": "/css/app.css",
+    "/js/app.js": "/js/app.js",
     "/js/community.js": "/js/community.js",
     "/js/contribute.js": "/js/contribute.js",
-    "/js/discover.js": "/js/discover.js",
     "/js/home.js": "/js/home.js",
+    "/js/post-discover.js": "/js/post-discover.js",
     "/js/post-form.js": "/js/post-form.js",
     "/js/post-markdown.js": "/js/post-markdown.js",
     "/js/profile.js": "/js/profile.js",

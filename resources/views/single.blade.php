@@ -52,26 +52,7 @@ $title = $post->post_card ? $post->post_card->toArray()['title'] : $post->title;
             @else
             <div class="sm:w-3/12 sm:px-2 md:w-12/12 md:hidden lg:block">
                 @include('layouts.card_random')
-
-                <div class="bg-white rounded border border-gray-200 mt-10">
-                    <h4 class="font-bold text-indigo-600 py-4 px-5">
-                        @if($post->user->posts->count() > 0)
-                        Yang lainnya dari {{ $post->user->name }}
-                        @else
-                        Baca juga
-                        @endif
-                    </h4>
-                    @foreach($posts as $post)
-                        <a class="inline-block w-full hover:bg-gray-100 px-5 py-4 border-b border-gray-100" href="@route('post.show', [$post->user->username, $post->slug])">
-                            <div class="font-semibold">{{ $post->title }}</div>
-                            <div class="mt-2 -mx-1">
-                                @foreach($post->tags->slice(0, 3) as $tag)
-                                <span class="text-gray-600 mx-1">#{!! $tag->tag->name !!}</span>
-                                @endforeach
-                            </div>
-                        </a>
-                    @endforeach
-                </div>
+                @include('layouts.card_more_post')
             </div>
             @endif
 
@@ -86,6 +67,11 @@ $title = $post->post_card ? $post->post_card->toArray()['title'] : $post->title;
                 <div class="mb-6 -mt-5 border border-blue-200 text-blue-600 bg-blue-100 rounded p-4 block sm:hidden" id="links-info-alert">
                     Tekan tombol "<span class="font-bold">L</span>" di navigasi bawah untuk menampilkan tautan referensi.
                 </div>
+
+                <div class="mb-6 border border-blue-200 text-blue-600 bg-blue-100 rounded p-4 block hidden sm:block">
+                    Kamu dapat <a href="{{ edit_post_route($post) }}" class="border-b border-blue-600 pb-1">menyunting</a> post ini atau <a href="@route('deletePost', $post->slug)" class="text-red-600 border-b border-red-600 pb-1">menghapusnya</a>.
+                </div>
+
                 @include('layouts.card_author')
             	@include('layouts.card_comment')
             </div>

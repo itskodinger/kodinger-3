@@ -36,7 +36,7 @@ mypost.onRender.then(function({lastData: {data}}) {
         let link_tpl = function({originalName, name, links}) {
         	return `
                 <div class="mb-12">
-                	<h2 class="pb-3 font-bold text-indigo-600">${name}</h2>
+                	<h2 class="pb-3 font-semibold">${name}</h2>
                 	<div class="bg-white rounded border border-gray-200">
                 	${ links.length > 0 ?
                 		links.map(function(page) {
@@ -74,8 +74,6 @@ mypost.onRender.then(function({lastData: {data}}) {
         });
 
         setTimeout(function() {
-            sidebarSticky();
-
             $$('[data-fetch]').forEach(function(item) {
                 let url = item.dataset.fetch;
 

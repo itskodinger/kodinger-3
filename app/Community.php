@@ -27,7 +27,7 @@ class Community extends Model
         'telegram'
     ];
 
-    public function parseUrl()
+    private function parseUrl()
     {
     	return json_decode($this->links);
     }
@@ -44,7 +44,7 @@ class Community extends Model
    
     public function getWebsiteAttribute()
     {
-        return optional($this->parseUrl())->website;
+        return optional($this->parseUrl())->website . '?ref=kodinger';
     }
 
     public function getGithubAttribute()
