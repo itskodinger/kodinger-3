@@ -4,7 +4,7 @@
     <div class="container py-12 mx-auto px-4 sm:px-0">
         <h1 class="text-indigo-600 text-xl font-semibold">Warga Kodinger</h1>
         <p class="mt-1 text-gray-600">
-        	Daftar pengguna Kodinger diurutkan berdasarkan banyaknya kontribusi masing-masing pengguna.
+        	Daftar pengguna Kodinger diurutkan berdasarkan banyaknya kontribusi (mingguan) masing-masing pengguna.
         </p>
 
         <div class="block sm:hidden">

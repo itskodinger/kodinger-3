@@ -9,6 +9,8 @@ use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Passport\HasApiTokens;
 use Facades\Services\PostService;
+use DB;
+use Carbon\Carbon;
 
 class User extends Authenticatable
 {
@@ -111,8 +113,23 @@ class User extends Authenticatable
         return $this->hasMany('App\Post');
     }
 
+    public function postsWeek()
+    {
+        $from = Carbon::now()->subDay()->startOfWeek()->toDateString();
+        $to = Carbon::now()->subDay()->toDateString();
+        return $this->hasMany('App\Post')->whereBetween(DB::raw('date(created_at)'), [$from, $to]);
+    }
+
     public function comments()
     {
         return $this->hasMany('App\Comment');
+    }
+
+    public function commentsWeek()
+    {
+        $from = Carbon::now()->subDay()->startOfWeek()->toDateString();
+        $to = Carbon::now()->subDay()->toDateString();
+
+        return $this->hasMany('App\Comment')->whereBetween(DB::raw('date(created_at)'), [$from, $to]);
     }
 }

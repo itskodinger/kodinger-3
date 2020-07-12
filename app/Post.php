@@ -97,7 +97,7 @@ class Post extends Model
 
     public function getTitleAttribute($value)
     {
-        return e($value);
+        return $value;
     }
 
     public function getIsSingleCaptionAttribute()

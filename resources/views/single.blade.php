@@ -1,13 +1,13 @@
-@extends('layouts.app', ['title' => $post->post_card ? $post->post_card->toArray()['title'] : $post->title, 'footer' => false])
+@extends('layouts.app', ['title' => $post->title, 'footer' => false])
 
 @php 
-$title = $post->post_card ? $post->post_card->toArray()['title'] : $post->title;
+$title = $post->title;
 @endphp
 
 @push('meta')
 	<meta property="og:title" content="{{ $title }}">
 	<meta property="og:description" content="Simak materi tentang {{ $title }} oleh {{ $post->user->name }} di Kodinger">
-	<meta property="og:image" content="{{ $post->thumbnail ? $post->thumbnail : $post->post_card->toArray()['thumbnail'] }}">
+	<meta property="og:image" content="{{ $post->thumbnail ? $post->thumbnail : (optional($post->post_card)->toArray()['thumbnail'] ?? '') }}">
 	<meta property="og:url" content="@route('post.show', [$post->user->username, $post->slug])">
 	<meta name="twitter:card" content="summary_large_image">
 @endpush

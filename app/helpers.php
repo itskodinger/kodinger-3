@@ -457,3 +457,13 @@ function post_types()
 {
 	return ['slide', 'markdown', 'link'];
 }
+
+function points()
+{
+	return [
+		'post_slide' => 100,
+		'post_markdown' => 100,
+		'post_link' => 50,
+		'discuss' => 10
+	];
+}

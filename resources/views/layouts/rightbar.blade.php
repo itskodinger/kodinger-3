@@ -15,6 +15,10 @@
         @include('layouts.card_more_post')
     @endif
 
+    @if(request()->route()->getName() !== 'post.show')
+        @include('layouts.card_top_user')
+    @endif
+
     <div class="mx-auto p-4 sm:p-0 sm:mx-0">
         <div class="bg-white rounded border border-gray-200">
             <h4 class="font-bold mb-3 px-4 pt-4">Topik Populer</h4>

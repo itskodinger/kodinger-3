@@ -30,6 +30,21 @@ class UserService
 		return $users;
 	}
 
+	public function weeklyTop($num=5)
+	{
+		return $this->model()
+			->withCount('postsWeek')
+			->withCount('posts')
+			->withCount('commentsWeek')
+			->withCount('comments')
+			->orderBy('posts_week_count', 'desc')
+			->orderBy('posts_count', 'desc')
+			->orderBy('comments_week_count', 'desc')
+			->orderBy('comments_count', 'desc')
+			->take($num)
+			->get($num);
+	}
+
 	public function userList($num=10)
 	{
 		$users = $this->model();
@@ -44,9 +59,13 @@ class UserService
 		}
 
 		$users = $users
+			->withCount('postsWeek')
 			->withCount('posts')
+			->withCount('commentsWeek')
 			->withCount('comments')
+			->orderBy('posts_week_count', 'desc')
 			->orderBy('posts_count', 'desc')
+			->orderBy('comments_week_count', 'desc')
 			->orderBy('comments_count', 'desc')
 			->paginate($num);
 

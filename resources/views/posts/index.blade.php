@@ -25,7 +25,7 @@
         		@if($post->status == 'draft')
         		<a class="mx-3 text-green-500" href="@route('post.publish', $post->id)">Publish</a>
         		@endif
-        		<a class="mx-3 text-black" href="@route('post', $post->id)">Edit</a>
+        		<a class="mx-3 text-black" href="{{ edit_post_route($post) }}">Edit</a>
         		<a class="mx-3 text-red-600 cursor-pointer" onclick="let c = confirm('Are you sure?'); if(!c) return false; else document.getElementById('delete-{{$post->id}}').submit();">Delete</a>
         		<form action="@route('post.delete', $post->id)" method="post" id="delete-{{$post->id}}">
         			{!! method_field('delete') !!}

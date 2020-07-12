@@ -300,7 +300,7 @@ class FrontendController extends Controller
 	 */
 	public function deletePost($slug)
 	{
-		$post = $this->postService->findBySlug($slug);
+		$post = $this->postService->findBySlugAll($slug);
 
 		if(!auth()->check() || (!$post->is_mine && !auth()->user()->can('post-update')))
 			return abort(404);

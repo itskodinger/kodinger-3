@@ -28,7 +28,8 @@
         "orangehill/iseed": "^2.6",
         "pusher/pusher-php-server": "^4.1",
         "ramsey/uuid-doctrine": "^1.6",
-        "spatie/laravel-permission": "^3.0"
+        "spatie/laravel-permission": "^3.0",
+        "trexology/pointable": "^1.0"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

@@ -9,6 +9,7 @@ import Sortable from 'sortablejs';
 // import SimpleMDE from 'simplemde/dist/simplemde.min.js';
 // import 'simplemde/dist/simplemde.min.css';
 import Tagify from '@yaireo/tagify';
+import he from 'he';
 
 /**
  * INI HARUSNYA SEPARATION OF CONCERN AWKOAWKOWAK
@@ -42,7 +43,7 @@ class Form extends Component {
 			keyword: '',
 			tags: [],
 			content: '',
-			images: this.isMarkdownPost() ? '' : [],
+			images: [],
 			pages: [],
 			tutorials: [],
 			helps: [],
@@ -51,6 +52,7 @@ class Form extends Component {
 			status: 'DRAFT',
 			publish: false,
 			statusSaving: '',
+			cover: '',
 
 			currentLinkKey: Object.keys(key2str)[0],
 		}
@@ -354,8 +356,10 @@ class Form extends Component {
 		setTimeout(() => {
 			this.addTagify({defaultTags});
 
-			this.addSortable();
-			this.addDropzone();
+			if(this.isSlidePost()) {			
+				this.addSortable();
+				this.addDropzone();
+			}
 			this.addKeyboardShortcut();
 		}, 0);
 	}
@@ -373,7 +377,7 @@ class Form extends Component {
 	async saveWholeContent(objectData={}, route=false) {
 		return new Promise((resolve, reject) => {
 			// basic data
-			const { title, slug, tags, keyword, id, content } = this.state;
+			const { title, slug, tags, cover, keyword, id, content } = this.state;
 
 			if(!route) route = routes.post_publish.replace(/slug/g, id);
 
@@ -397,6 +401,10 @@ class Form extends Component {
 				this.toast.add(`😏&nbsp; Slide pertama gambar harus diisi caption`);
 
 				return reject();
+			}else if(this.isMarkdownPost() && this.uploadingCover) {
+				this.toast.add(`😏&nbsp; Tunggu, sedang mengunggah cover.`);
+
+				return reject();
 			}else if(this.isMarkdownPost() && !content) {
 				this.toast.add(`😏&nbsp; Harap isi konten post`);
 
@@ -408,6 +416,7 @@ class Form extends Component {
 				slug,
 				tags,
 				keyword,
+				cover,
 				content: this.isSlidePost() ? JSON.stringify(images) : content,
 				type: this.isMarkdownPost() ? 'markdown': null
 			}, objectData);
@@ -1200,6 +1209,8 @@ class Form extends Component {
 	 * @return {Array}
 	 */
 	flattenedImageFormat(autoSave=false, now) {
+		if(!this.isSlidePost()) return;
+
 		const { images } = this.state;
 
 		let newImages = [];
@@ -1568,6 +1579,7 @@ class Form extends Component {
 
 	saveFirstStep(e) {
 		const { title, slug } = this.state;
+		const type = this.props.postType;
 
 		const status = 'draft';
 
@@ -1584,7 +1596,7 @@ class Form extends Component {
 			this.request({
 				route: routes.post_store,
 				method: 'POST',
-				body: JSON.stringify({title, slug, status}),
+				body: JSON.stringify({title, slug, status, type}),
 				headers: {
 					'Content-Type': 'application/json'
 				}
@@ -1879,11 +1891,16 @@ class Form extends Component {
 					img.classList.remove('opacity-75');
 				})
 				.then(({data: {url: cover} }) => {
-					this.statusSaved();
+					const { cover: currentCover } = this.state;
+
+					if(!currentCover)
+						img.remove();
 
 					this.setState({
 						cover
 					});
+
+					this.statusSaved();
 
 					this.startAutoSaveAll({ cover });
 
@@ -1963,13 +1980,11 @@ class Form extends Component {
 			newStatus
 		} = this.state;
 
-		if(this.isSlidePost()) {
-			const { 
-				uploadingImage, 
-				totalImage,
-				uploadedImage
-			} = this.uploadingImageStatus();
-		}
+		const { 
+			uploadingImage, 
+			totalImage,
+			uploadedImage
+		} = this.uploadingImageStatus();
 
 		return (
 			<>
@@ -1983,7 +1998,7 @@ class Form extends Component {
 				            	<div className="text-gray-600 mr-6 save-status capitalize">
 				            		{statusSaving}
 				            	</div>
-				            	<button onClick={this.publishWholeContent.bind(this, {status: newStatus ? newStatus : 'publish'})} className={`items-center bg-indigo-600 text-white px-4 py-2 rounded mr-6 flex` + (!publish || this.isUploadingImage() ? ' pointer-events-none opacity-50' : '')}>
+				            	<button onClick={this.publishWholeContent.bind(this, {status: newStatus ? newStatus : 'publish'})} className={`items-center bg-indigo-600 text-white px-4 py-2 rounded mr-6 flex` + (!publish || (this.isSlidePost() && this.isUploadingImage()) ? ' pointer-events-none opacity-50' : '')}>
 				            		{edit && status.toUpperCase() == 'PUBLISH' ? 'Simpan Perubahan' : 'Publish Post'}
 				            	</button>
 				            </div>
@@ -2083,7 +2098,7 @@ class Form extends Component {
 
 										<div className="mb-6 mt-6">
 											<label className="mb-1 inline-block text-gray-600">Judul</label>
-											<input onChange={this.titleOnInput.bind(this)} type="text" name="title" className="text-gray-600 border border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600" autoComplete="off" tabIndex="1" defaultValue={title} />
+											<input onChange={this.titleOnInput.bind(this)} type="text" name="title" className="text-gray-600 border border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600" autoComplete="off" tabIndex="1" defaultValue={he.decode(title)} />
 										</div>
 										<div className="mb-6 mt-6">
 											<label className="mb-1 inline-block text-gray-600">Slug</label>
@@ -2207,7 +2222,7 @@ class Form extends Component {
 					        			        		</div>
 					        			        	</div>
 					                	        	<div className="content-editor">
-					        				        	<textarea name="content" onChange={this.mdContentChange.bind(this)} onPaste={this.mdContentHandlePaste.bind(this)} style={{minHeight: '50vh'}} className="content-area mb-2 overflow-hidden resize-y text-gray-600 border border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600" tabIndex="4" placeholder="Tulis apapun di sini ..." defaultValue={content}></textarea>
+					        				        	<textarea name="content" onChange={this.mdContentChange.bind(this)} onPaste={this.mdContentHandlePaste.bind(this)} style={{minHeight: '50vh'}} className="content-area mb-2 resize-y text-gray-600 border border-gray-200 rounded block w-full py-3 px-5 focus:outline-none focus:border-indigo-600" tabIndex="4" placeholder="Tulis apapun di sini ..." defaultValue={content}></textarea>
 					                	        	</div>
 					                	        	<div className="content-preview p-5 hidden border-gray-200 border mb-2 rounded overflow-auto markdowned markdowned-mdpost">
 					                	        		Parsing ...

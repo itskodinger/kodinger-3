@@ -2,8 +2,9 @@
     <div class="mx-auto p-4 sm:p-0 sm:mx-0">
         @include('layouts.card_random')
 
-        <h4 class="mt-10 font-bold mb-3 text-indigo-600">Paling Banyak Disukai</h4>
-        <div class="bg-white rounded border border-gray-200">
+        <div class="bg-white rounded border border-gray-200 mt-10">
+            <h4 class="font-bold py-4 px-5">Paling Banyak Disukai</h4>
+
             @inject('post', 'Services\PostService')
             @foreach($post->loved() as $post)
             @isset($post->post)

@@ -15,10 +15,10 @@
 
 	            		<p class="mb-2 text-gray-600">Post Terkait</p>
                         <div class="flex bg-gray-100 border border-gray-200 mb-8 p-3 rounded">
-	            			<div class="bg-cover w-24 rounded flex-shrink-0" style="background-image: url({{$post->first_slide_media ?? $post_card['thumbnail'] ?? ''}});"></div>	
+	            			<div class="bg-cover w-24 rounded flex-shrink-0" style="background-image: url({{$post->cover ?? $post->first_slide_media ?? $post_card['thumbnail'] ?? ''}});"></div>	
 	            			<div class="ml-4 w-full">
-	            				<h4 class="font-semibold text-indigo-600">{{ $post->title ?? $post_card['title'] ?? '' }}</h4>
-	            				<p class="text-gray-600 mt-1">{{ html_entity_decode($post->first_slide_caption_truncated) ?? $post_card['description'] ?? '' }}</p>
+	            				<h4 class="font-semibold text-indigo-600">{!! $post->title ?? $post_card['title'] ?? '' !!}</h4>
+	            				<p class="text-gray-600 mt-1">Oleh {{ $post->user->name }}</p>
 	            			</div>
 	            		</div>
 
