@@ -15,5 +15,6 @@
     "/js/scene.js": "/js/scene.js",
     "/js/search.js": "/js/search.js",
     "/js/setting.js": "/js/setting.js",
-    "/js/single.js": "/js/single.js"
+    "/js/single.js": "/js/single.js",
+    "/js/users.js": "/js/users.js"
 }

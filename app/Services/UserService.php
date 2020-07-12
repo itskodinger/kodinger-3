@@ -10,7 +10,7 @@ class UserService
 {
 	public function model()
 	{
-		return User::with('posts', 'savePosts', 'lovePosts', 'savePosts.post')->withTrashed();
+		return User::with('posts', 'comments', 'savePosts', 'lovePosts', 'savePosts.post')->withTrashed();
 	}
 
 	public function total()
@@ -25,7 +25,32 @@ class UserService
 
 	public function paginate($num=10)
 	{
-		return $this->model()->paginate($num);
+		$users = $this->model()->paginate($num);
+
+		return $users;
+	}
+
+	public function userList($num=10)
+	{
+		$users = $this->model();
+
+		$request = request();
+
+		if($request) {
+			$req_search = $request['search'] ?? null;
+			if($req_search) {
+				$users = $users->where('name', 'like', '%'. $req_search .'%');
+			}
+		}
+
+		$users = $users
+			->withCount('posts')
+			->withCount('comments')
+			->orderBy('posts_count', 'desc')
+			->orderBy('comments_count', 'desc')
+			->paginate($num);
+
+		return $users;
 	}
 
 	public function findAndUpdate($request, $id)

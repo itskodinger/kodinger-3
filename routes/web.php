@@ -61,7 +61,7 @@ Route::group(['prefix' => 'contributes', 'as' => 'contribute.', 'middleware' => 
 	Route::post('{id}/reject', 'ContributeController@reject')->name('reject');
 });
 
-Route::group(['prefix' => 'users', 'as' => 'user.'], function() 
+Route::group(['prefix' => 'manage-users', 'as' => 'user.'], function() 
 {
 	// Route::get('/create', 'UserController@create')->name('create');
 	Route::get('/', 'UserController@index')->name('index')->middleware('permission:user-list');
@@ -89,6 +89,7 @@ Route::get('/post-slide/{id?}', 'FrontendController@postSlide')->name('post.slid
 Route::get('/post-md/{id?}', 'FrontendController@postMD')->name('post.md');
 Route::get('/post-link', 'FrontendController@postLink')->name('post.link');
 Route::get('/post', 'FrontendController@newPost')->name('post.new');
+Route::get('/users', 'FrontendController@users')->name('users');
 Route::get('/community', 'FrontendController@community')->name('community');
 Route::get('/scenes', 'FrontendController@scenes')->name('scenes');
 Route::get('/scene', 'FrontendController@scene')->name('scene');

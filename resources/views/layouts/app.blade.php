@@ -280,19 +280,36 @@
                             	<span class="md:hidden lg:block">Discover</span>
                                 <svg class="w-4 ml-1 hidden lg:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                             </a>
-                            <div class="hidden group-hover:block absolute w-4/12 bg-white shadow p-6">
+                            <div class="hidden group-hover:block absolute w-4/12 bg-white shadow p-4">
                                 <div class="flex flex-col">
-                                    <a href="">
-                                        <span class="block text-lg font-semibold">Komunitas</span>
-                                        <span>Temukan komunitas yang akan membuatmu lebih cepat berkembang.</span>
+                                    <a href="@route('community')" class="flex hover:bg-gray-100 p-3 rounded">
+                                        <span class="text-2xl">🚀</span>
+                                        <div class="ml-6">
+                                            <span class="block text-lg font-semibold">Komunitas</span>
+                                            <span class="text-gray-600 text-sm">Temukan komunitas yang akan membuatmu lebih cepat berkembang.</span>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="flex flex-col mt-2">
+                                    <a href="@route('users')" class="flex hover:bg-gray-100 p-3 rounded">
+                                        <span class="text-2xl">👨</span>
+                                        <div class="ml-6">
+                                            <span class="block text-lg font-semibold">User</span>
+                                            <span class="text-gray-600 text-sm">Daftar seluruh pengguna Kodinger yang aktif buat tulisan.</span>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="flex flex-col mt-2">
+                                    <a href="#" class="flex hover:bg-gray-100 p-3 rounded pointer-events-none opacity-75">
+                                        <span class="text-2xl">📽</span>
+                                        <div class="ml-6">
+                                            <span class="block text-lg font-semibold">Scene <span class="text-sm text-gray-600">(Coming Soon!)</span></span>
+                                            <span class="text-gray-600 text-sm">Belajar lebih mudah dengan video, dan lihat aksi kece para developer.</span>
+                                        </div>
                                     </a>
                                 </div>
                             </div>
                         </li>
-                        <li><a class="py-4 mx-5 md:mx-4 flex items-center {{ is_route('community', 'text-indigo-600 font-semibold', 'text-gray-900')}} hover:text-indigo-600" href="@route('community')">
-                        	<svg xmlns="http://www.w3.org/2000/svg" class="w-5 mr-2 lg:hidden block fill-current" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="people"><rect width="24" height="24" opacity="0"/><path d="M9 11a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0-6a2 2 0 1 1-2 2 2 2 0 0 1 2-2z"/><path d="M17 13a3 3 0 1 0-3-3 3 3 0 0 0 3 3zm0-4a1 1 0 1 1-1 1 1 1 0 0 1 1-1z"/><path d="M17 14a5 5 0 0 0-3.06 1.05A7 7 0 0 0 2 20a1 1 0 0 0 2 0 5 5 0 0 1 10 0 1 1 0 0 0 2 0 6.9 6.9 0 0 0-.86-3.35A3 3 0 0 1 20 19a1 1 0 0 0 2 0 5 5 0 0 0-5-5z"/></g></g></svg>
-                        	<span class="md:hidden lg:block">Komunitas</span>
-                        </a></li>
                     </ul>
                     <div class="ml-auto w-full sm:w-auto flex items-center">
                         <form action="@route('search')" autocomplete="off" class="mx-4 sm:mx-0 w-full sm:w-auto">

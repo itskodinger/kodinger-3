@@ -73,6 +73,15 @@ class FrontendController extends Controller
 	}
 
 	/**
+	 * Users page
+	 * @return view
+	 */
+	public function users()
+	{
+		return view('users');
+	}
+
+	/**
 	 * Discover page
 	 * @param  Request $request Request
 	 * @return view

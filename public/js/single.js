@@ -27651,6 +27651,10 @@ var types = {
     template: 'community',
     shimmer: 'community'
   },
+  USER: {
+    template: 'user',
+    shimmer: 'user'
+  },
   POST: {
     template: 'post',
     shimmer: 'post'
@@ -28136,6 +28140,22 @@ var api = {
       var tpl = "\n\t    \t\t<div class=\"bg-white rounded border border-gray-200 w-full\">\n\t    \t\t\t<div class=\"pb-8 pt-6 px-6\">\n\t    \t\t\t\t<div class=\"float-right\">\n\t    \t\t\t\t\t<a target=\"_blank\" ".concat(_community.website ? "href=\"".concat(_community.website, "\" ") : '', "class=\"").concat(!_community.website ? 'pointer-events-none opacity-50 ' : '', "flex leading-relaxed items-center hover:bg-indigo-600 hover:text-white hover:border-indigo-600 border border-gray-200 uppercase text-sm font-semibold tracking-wider py-1 px-3 rounded-full\">\n\t    \t\t\t\t\t\tWebsite\n\t    \t\t\t\t\t\t<svg class=\"ml-1 w-3 fill-current\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g data-name=\"Layer 2\"><g data-name=\"arrow-forward\"><rect width=\"24\" height=\"24\" transform=\"rotate(-90 12 12)\" opacity=\"0\"/><path d=\"M5 13h11.86l-3.63 4.36a1 1 0 0 0 1.54 1.28l5-6a1.19 1.19 0 0 0 .09-.15c0-.05.05-.08.07-.13A1 1 0 0 0 20 12a1 1 0 0 0-.07-.36c0-.05-.05-.08-.07-.13a1.19 1.19 0 0 0-.09-.15l-5-6A1 1 0 0 0 14 5a1 1 0 0 0-.64.23 1 1 0 0 0-.13 1.41L16.86 11H5a1 1 0 0 0 0 2z\"/></g></g></svg>\n\t    \t\t\t\t\t</a>\n\t    \t\t\t\t</div>\n\t    \t\t\t\t<div class=\"rounded p-2 w-16 h-16 flex-shrink-0 flex items-center justify-center border\" ").concat(_community.logo_bg ? 'style="background-color: ' + _community.logo_bg + ';"' : '', ">\n\t    \t\t\t\t\t<img src=\"").concat(_community.logo, "\" alt=\"").concat(_community.name, "\" class=\"w-full\">\n\t    \t\t\t\t</div>\n\t        \t\t\t<h2 class=\"font-bold text-lg mt-4 truncate\">").concat(_community.name, "</h2>\n\t        \t\t\t<p class=\"mt-1 text-gray-600 font-light leading-relaxed h-12\">").concat(_community.short_description, "</p>\n\t    \t\t\t</div>\n\t    \t\t\t<div class=\"flex px-6 pb-6\">\n\t    \t\t\t\t<div class=\"flex items-center\">\n\t    \t\t\t\t\t<svg class=\"w-5 mr-1 fill-current text-gray-600\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g data-name=\"Layer 2\"><g data-name=\"person\"><rect width=\"24\" height=\"24\" opacity=\"0\"/><path d=\"M12 11a4 4 0 1 0-4-4 4 4 0 0 0 4 4z\"/><path d=\"M18 21a1 1 0 0 0 1-1 7 7 0 0 0-14 0 1 1 0 0 0 1 1z\"/></g></g></svg>\n\t    \t\t\t\t\t").concat(_community.formatted_member, "+\n\t    \t\t\t\t</div>\n\t        \t\t\t<div class=\"inline-flex ml-auto\">\n\t        \t\t\t\t").concat(_community.facebook ? "\n\t        \t\t\t\t<a target=\"_blank\" href=\"".concat(_community.facebook, "\">\n\t        \t\t\t\t\t<svg class=\"fill-current text-gray-600 hover:text-indigo-600 w-5 mr-2\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g data-name=\"Layer 2\"><g data-name=\"facebook\"><rect width=\"24\" height=\"24\" transform=\"rotate(180 12 12)\" opacity=\"0\"/><path d=\"M17 3.5a.5.5 0 0 0-.5-.5H14a4.77 4.77 0 0 0-5 4.5v2.7H6.5a.5.5 0 0 0-.5.5v2.6a.5.5 0 0 0 .5.5H9v6.7a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-6.7h2.62a.5.5 0 0 0 .49-.37l.72-2.6a.5.5 0 0 0-.48-.63H13V7.5a1 1 0 0 1 1-.9h2.5a.5.5 0 0 0 .5-.5z\"/></g></g></svg>\n\t        \t\t\t\t</a>") : '', "\n\n\t        \t\t\t\t").concat(_community.twitter ? "\n\t        \t\t\t\t<a target=\"_blank\" href=\"".concat(_community.twitter, "\">\n\t\t\t\t\t\t\t\t<svg class=\"fill-current text-gray-600 hover:text-indigo-600 w-5 mr-2\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g data-name=\"Layer 2\"><g data-name=\"twitter\"><polyline points=\"0 0 24 0 24 24 0 24\" opacity=\"0\"/><path d=\"M8.08 20A11.07 11.07 0 0 0 19.52 9 8.09 8.09 0 0 0 21 6.16a.44.44 0 0 0-.62-.51 1.88 1.88 0 0 1-2.16-.38 3.89 3.89 0 0 0-5.58-.17A4.13 4.13 0 0 0 11.49 9C8.14 9.2 5.84 7.61 4 5.43a.43.43 0 0 0-.75.24 9.68 9.68 0 0 0 4.6 10.05A6.73 6.73 0 0 1 3.38 18a.45.45 0 0 0-.14.84A11 11 0 0 0 8.08 20\"/></g></g></svg>\n\t\t\t\t\t\t\t</a>") : '', "\n\n\t\t\t\t\t\t\t").concat(_community.github ? "\n\t        \t\t\t\t<a target=\"_blank\" href=\"".concat(_community.github, "\">\n\t        \t\t\t\t\t<svg class=\"fill-current text-gray-600 hover:text-indigo-600 w-5 mr-2\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g data-name=\"Layer 2\"><rect width=\"24\" height=\"24\" transform=\"rotate(180 12 12)\" opacity=\"0\"/><path d=\"M12 1A10.89 10.89 0 0 0 1 11.77 10.79 10.79 0 0 0 8.52 22c.55.1.75-.23.75-.52v-1.83c-3.06.65-3.71-1.44-3.71-1.44a2.86 2.86 0 0 0-1.22-1.58c-1-.66.08-.65.08-.65a2.31 2.31 0 0 1 1.68 1.11 2.37 2.37 0 0 0 3.2.89 2.33 2.33 0 0 1 .7-1.44c-2.44-.27-5-1.19-5-5.32a4.15 4.15 0 0 1 1.11-2.91 3.78 3.78 0 0 1 .11-2.84s.93-.29 3 1.1a10.68 10.68 0 0 1 5.5 0c2.1-1.39 3-1.1 3-1.1a3.78 3.78 0 0 1 .11 2.84A4.15 4.15 0 0 1 19 11.2c0 4.14-2.58 5.05-5 5.32a2.5 2.5 0 0 1 .75 2v2.95c0 .35.2.63.75.52A10.8 10.8 0 0 0 23 11.77 10.89 10.89 0 0 0 12 1\" data-name=\"github\"/></g></svg>\n\t\t\t\t\t\t\t</a>") : '', "\n\n\t\t\t\t\t\t\t").concat(_community.telegram ? "\n\t        \t\t\t\t<a target=\"_blank\" href=\"".concat(_community.telegram, "\">\n\t        \t\t\t\t\t<svg class=\"fill-current text-gray-600 hover:text-indigo-600 w-5\" role=\"img\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><path d=\"M23.91 3.79L20.3 20.84c-.25 1.21-.98 1.5-2 .94l-5.5-4.07-2.66 2.57c-.3.3-.55.56-1.1.56-.72 0-.6-.27-.84-.95L6.3 13.7l-5.45-1.7c-1.18-.35-1.19-1.16.26-1.75l21.26-8.2c.97-.43 1.9.24 1.53 1.73z\"/></svg>\n\t\t\t\t\t\t\t</a>") : '', "\n\t        \t\t\t</div>\n\t        \t\t</div>\n\t    \t\t</div>\n\t    \t");
       return tpl;
     },
+    user: function (_user) {
+      function user(_x) {
+        return _user.apply(this, arguments);
+      }
+
+      user.toString = function () {
+        return _user.toString();
+      };
+
+      return user;
+    }(function (_ref6) {
+      var user = _ref6.post,
+          options = _ref6.options;
+      var tpl = "\n\t    \t\t<div class=\"bg-white rounded border border-gray-200 w-full\">\n\t    \t\t\t<div class=\"py-6 px-6\">\n\t    \t\t\t\t<div class=\"flex\">\n\t    \t\t\t\t\t<img src=\"".concat(user.the_avatar, "\" alt=\"").concat(user.name, "\" class=\"rounded w-16 h-16 border flex-shrink-0\">\n\t\t    \t\t\t\t<div class=\"ml-4 overflow-hidden\">\n\t\t\t        \t\t\t<h2 class=\"font-bold truncate text-lg\">").concat(user.name, "</h2>\n\t\t\t        \t\t\t<p class=\"mt-1 text-gray-600\">@").concat(user.username, "</p>\n\t\t        \t\t\t</div>\n\t        \t\t\t</div>\n\t        \t\t\t<div class=\"flex -mx-2 mt-6\">\n\t        \t\t\t\t<div class=\"w-4/12 text-center px-2\">\n\t        \t\t\t\t\t<div class=\"text-xs uppercase tracking-wider font-semibold text-gray-600\">Posts</div>\n\t        \t\t\t\t\t<div class=\"text-xl\">").concat(user.posts.length, "</div>\n\t        \t\t\t\t</div>\n\t        \t\t\t\t<div class=\"w-4/12 text-center px-2\">\n\t        \t\t\t\t\t<div class=\"text-xs uppercase tracking-wider font-semibold text-gray-600\">Diskusi</div>\n\t        \t\t\t\t\t<div class=\"text-xl\">").concat(user.comments.length, "</div>\n\t        \t\t\t\t</div>\n\t        \t\t\t\t<div class=\"w-4/12 text-center px-2\">\n\t        \t\t\t\t\t<div class=\"text-xs uppercase tracking-wider font-semibold text-gray-600\">Poin</div>\n\t        \t\t\t\t\t<div class=\"text-xl\">123</div>\n\t        \t\t\t\t</div>\n\t        \t\t\t</div>\n\n\t        \t\t\t<a class=\"block text-center mt-4 rounded py-2 text-white bg-indigo-600 hover:bg-indigo-700\" href=\"").concat(routes.single + user.username, "\">Lihat Profile</a>\n\t    \t\t\t</div>\n\t    \t\t</div>\n\t    \t");
+      return tpl;
+    }),
 
     /**
      * Community shimmer template
@@ -28145,8 +28165,12 @@ var api = {
       var tpl = "\n\t\t    \t<div class=\"w-full\">\n\t\t    \t\t<div class=\"bg-white rounded border border-gray-200\">\n\t\t    \t\t\t<div class=\"pb-8 pt-6 px-6\">\n\t\t    \t\t\t\t<div class=\"float-right\">\n\t\t    \t\t\t\t\t<div class=\"flex py-1 px-3 rounded-full bg-gray-200 w-16 h-6\">\n\t\t    \t\t\t\t\t</div>\n\t\t    \t\t\t\t</div>\n\t\t    \t\t\t\t<div class=\"rounded p-2 w-16 h-16 flex-shrink-0 bg-gray-100\"></div>\n\t\t        \t\t\t<h2 class=\"mt-4 w-32 h-6 bg-gray-200 rounded\"></h2>\n\t\t        \t\t\t<div class=\"mt-3 bg-gray-100 h-3 rounded w-full\"></div>\n\t\t        \t\t\t<div class=\"mt-2 bg-gray-100 h-3 rounded w-20\"></div>\n\t\t    \t\t\t</div>\n\t\t    \t\t\t<div class=\"flex px-6 pb-6\">\n\t\t    \t\t\t\t<div class=\"flex items-center\">\n\t\t\t    \t\t\t\t<div class=\"rounded w-16 h-4 bg-gray-200\"></div>\n\t\t    \t\t\t\t</div>\n\t\t        \t\t\t<div class=\"inline-flex ml-auto\">\n\t\t\t    \t\t\t\t<div class=\"rounded h-4 w-4 bg-gray-100 mr-2\"></div>\n\t\t\t    \t\t\t\t<div class=\"rounded h-4 w-4 bg-gray-100 mr-2\"></div>\n\t\t\t    \t\t\t\t<div class=\"rounded h-4 w-4 bg-gray-100 mr-2\"></div>\n\t\t\t    \t\t\t\t<div class=\"rounded h-4 w-4 bg-gray-100\"></div>\n\t\t        \t\t\t</div>\n\t\t        \t\t</div>\n\t\t    \t\t</div>\n\t\t    \t</div>\n\t\t\t";
       return tpl;
     },
-    compTags: function compTags(_ref6) {
-      var post = _ref6.post;
+    userShimmer: function userShimmer() {
+      var tpl = "\n\t\t    \t<div class=\"w-full\">\n\t\t    \t\t<div class=\"bg-white rounded border border-gray-200\">\n\t\t    \t\t\t<div class=\"pb-8 pt-6 px-6\">\n\t\t    \t\t\t\t<div class=\"float-right\">\n\t\t    \t\t\t\t\t<div class=\"flex py-1 px-3 rounded-full bg-gray-200 w-16 h-6\">\n\t\t    \t\t\t\t\t</div>\n\t\t    \t\t\t\t</div>\n\t\t    \t\t\t\t<div class=\"rounded p-2 w-16 h-16 flex-shrink-0 bg-gray-100\"></div>\n\t\t        \t\t\t<h2 class=\"mt-4 w-32 h-6 bg-gray-200 rounded\"></h2>\n\t\t        \t\t\t<div class=\"mt-3 bg-gray-100 h-3 rounded w-full\"></div>\n\t\t        \t\t\t<div class=\"mt-2 bg-gray-100 h-3 rounded w-20\"></div>\n\t\t    \t\t\t</div>\n\t\t    \t\t\t<div class=\"flex px-6 pb-6\">\n\t\t    \t\t\t\t<div class=\"flex items-center\">\n\t\t\t    \t\t\t\t<div class=\"rounded w-16 h-4 bg-gray-200\"></div>\n\t\t    \t\t\t\t</div>\n\t\t        \t\t\t<div class=\"inline-flex ml-auto\">\n\t\t\t    \t\t\t\t<div class=\"rounded h-4 w-4 bg-gray-100 mr-2\"></div>\n\t\t\t    \t\t\t\t<div class=\"rounded h-4 w-4 bg-gray-100 mr-2\"></div>\n\t\t\t    \t\t\t\t<div class=\"rounded h-4 w-4 bg-gray-100 mr-2\"></div>\n\t\t\t    \t\t\t\t<div class=\"rounded h-4 w-4 bg-gray-100\"></div>\n\t\t        \t\t\t</div>\n\t\t        \t\t</div>\n\t\t    \t\t</div>\n\t\t    \t</div>\n\t\t\t";
+      return tpl;
+    },
+    compTags: function compTags(_ref7) {
+      var post = _ref7.post;
       var tpl = "\n\t\t        <div class=\"flex flex-wrap\">\n\t\t        ".concat(post.tags.map(function (tag) {
         if (tag.tag !== null) {
           return "<a class=\"mt-2 border border-gray-300 bg-gray-100 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded py-1 px-3\" href=\"".concat(routes.search + Object(_utils_full_url_with_query__WEBPACK_IMPORTED_MODULE_7__["default"])({
@@ -28158,8 +28182,8 @@ var api = {
       }).join(''), "\n\t\t        </div>\n\t\t\t");
       return tpl;
     },
-    compCtas: function compCtas(_ref7) {
-      var post = _ref7.post;
+    compCtas: function compCtas(_ref8) {
+      var post = _ref8.post;
       var tpl = "\n\t\t\t\t<div class=\"border-t border-gray-200\">\n\t\t\t\t    <div class=\"flex w-full items-center\">\n\t\t\t\t        <a data-love ".concat(post.is_post_loved ? 'data-loved' : '', " class=\"py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200\" href=\"#\">\n\t\t\t\t            <span></span> \n\t\t\t\t            <div class=\"ml-2 inline-block post-love-count\">").concat(post.total_loves, "</div>\n\t\t\t\t        </a>\n\t\t\t\t        ").concat(post.type !== 'link' ? "<a class=\"py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200\" href=\"".concat(routes.post_single.replace(/username/g, post.user.username).replace(/slug/g, post.slug) + '#comments', "\">\n\t\t\t\t            <svg class=\"stroke-current\" xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#000000\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z\"></path></svg> \n\t\t\t\t            <div class=\"ml-2 inline-block post-comment-count\">").concat(post.total_comments, "</div>\n\t\t\t\t        </a>") : '', "\n\t\t\t\t        <a class=\"py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200\" data-save ").concat(post.is_post_saved ? 'data-saved' : '', " href=\"#\">\n\t\t\t\t        \t<span></span>\n\t\t\t\t            <div class=\"ml-2 inline-block post-save-count\">").concat(post.total_saves, "</div>\n\t\t\t\t        </a>\n\t\t\t\t        <a data-url=\"").concat(routes.post_single.replace(/username/g, post.user.username).replace(/slug/g, post.slug), "\" class=\"share-button py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200\" href=\"#\">\n\t\t\t\t            <svg class=\"stroke-current\" xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#000000\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"18\" cy=\"5\" r=\"3\"></circle><circle cx=\"6\" cy=\"12\" r=\"3\"></circle><circle cx=\"18\" cy=\"19\" r=\"3\"></circle><line x1=\"8.59\" y1=\"13.51\" x2=\"15.42\" y2=\"17.49\"></line><line x1=\"15.41\" y1=\"6.51\" x2=\"8.59\" y2=\"10.49\"></line></svg>\n\t\t\t\t        </a>\n\t\t\t\t    </div>\n\t\t\t\t</div>\n\t\t\t");
       return tpl;
     },
@@ -28170,9 +28194,9 @@ var api = {
      * @param  {Object} options.options Instance options
      * @return {String}                 Interpolated template string
      */
-    post: function post(_ref8) {
-      var _post = _ref8.post,
-          options = _ref8.options;
+    post: function post(_ref9) {
+      var _post = _ref9.post,
+          options = _ref9.options;
       var tpl = "\n\t\t\t<div class=\"bg-white rounded border border-gray-200 mb-10\">\n\t\t\t    <div class=\"flex p-6 items-center\">\n\t\t\t        <a href=\"".concat(routes.single + _post.user.username, "\">\n\t\t\t            <img class=\"rounded w-12 rounded border\" src=\"").concat(_post.user.the_avatar_sm, "\">\n\t\t\t        </a>\n\t\t\t        <div class=\"ml-3\">\n\t\t\t            <h4 class=\"font-semibold\">\n\t\t\t                <a class=\"text-lg\" href=\"").concat(routes.single + _post.user.username, "\">\n\t\t\t                    ").concat(_post.user.name, "\n\t\t\t                </a>\n\t\t\t            </h4>\n\t\t\t            <div class=\"-mx-1 flex items-center text-sm text-gray-500\">\n\t\t\t                <p class=\"mx-1\">@").concat(_post.user.username, "</p>\n\t\t\t                <p class=\"mx-1\">&bull;</p>\n\t\t\t                <p class=\"mx-1 font-semibold\">").concat(_post.time, "</p>\n\t\t\t            </div>\n\t\t\t        </div>\n\t\t\t    </div>\n\n\t\t\t    ").concat(_post.type == 'link' ? "\n\t\t\t\t    <div class=\"md:border border-b border-t md:rounded md:mx-6\">\n\n\t\t\t\t        ".concat(_post.post_card.has_embeddable_code ? "\n\n\t\t\t\t            <div class=\"embeddable-frame\">\n\t\t\t\t                ".concat(_post.post_card.embeddable_code, "\n\t\t\t\t            </div>") : // else
       "\n\t\t\t\t        \t<a href=\"".concat(_post.post_card.url, "\" target=\"_blank\">\n\t\t\t\t        \t").concat(_post.post_card.thumbnail !== null ? "<img src=\"".concat(_post.post_card.thumbnail, "\" class=\"w-full h-64 object-cover\">") : // else
       "<img src=\"".concat(_post.post_card.default_thumbnail, "\" class=\"w-full h-64 object-scale-down\">"), "\n\t\t\t\t\t        </a>\n\t\t\t\t        "), "\n\n\t\t\t\t        <div class=\"p-4 border-t bg-gray-100\">\n\t\t\t\t        \n\t\t\t\t            <h2 class=\"md:text-xl mb-2 text-base font-semibold hover:text-indigo-600\"><a target=\"_blank\" href=\"").concat(_post.post_card.url, "\">").concat(_post.post_card.title, "</a></h2>\n\n\t\t\t\t            ").concat(_post.post_card.description ? "\n\t\t\t\t                <p class=\"text-gray-600 break-all\"><a target=\"_blank\" href=\"".concat(_post.post_card.url, "\">").concat(_post.post_card.description.substr(0, 200), "</a></p>\n\t\t\t\t            ") : '', "\n\t\t\t\t            <div class=\"uppercase tracking-wider text-sm mt-3 text-teal-500 font-semibold\">").concat(_post.post_card.hostname, "</div>\n\t\t\t\t        </div>\n\t\t\t\t    </div>\n\t\t\t    ") : "", "\n\n\t\t\t    ").concat(_post.type !== 'link' ? "\n\t\t\t    \n\t\t\t    <div class=\"relative".concat(_post.content_object.length > 1 && options.carousel ? ' carousel-outer w-full' : '', "\"> \n\t\t\t        <div class=\"").concat(_post.content_object.length > 1 && options.carousel ? 'carousel w-full' : '', "\">\n\t\t\t            \n\t\t\t            ").concat('carousel' in options && options.carousel == false ? "<a href=\"".concat(routes.post_single.replace(/username/g, _post.user.username).replace(/slug/g, _post.slug), "\">\n\t\t\t                    <div data-blurry=\"").concat(_post.blurry_image, "\" data-src=\"").concat(!_post.is_markdown ? _post.first_slide_media : _post.cover, "\" class=\"lazy-image w-full bg-gray-200 bg-cover h-40 sm:h-64\"></div>\n\t\t\t                </a>") : // else
@@ -28193,9 +28217,9 @@ var api = {
       }), "\n\t\t\t</div>");
       return tpl;
     },
-    markdown: function markdown(_ref9) {
-      var post = _ref9.post,
-          options = _ref9.options;
+    markdown: function markdown(_ref10) {
+      var post = _ref10.post,
+          options = _ref10.options;
       var tpl = "\n\t\t\t\t<div class=\"mb-10\">\n\t\t\t\t\t<img src=\"".concat(post.cover, "\" class=\"rounded-tl rounded-tr\" />\n\n\t\t\t\t\t<div class=\"border border-gray-200 rounded-bl rounded-br\">\n\t\t\t\t\t\t<div class=\"p-6\">\n\t\t\t\t\t\t\t<h1 class=\"text-4xl font-bold\">").concat(post.title, "</h1>\n\t\t\t\t\t\t\t<div class=\"flex items-center text-gray-600 -mx-2 mt-4 mb-8 border-t border-b border-gray-200 py-4\">\n\t\t\t\t\t\t\t\t<div class=\"px-2 flex items-center\">\n\t\t\t\t\t\t\t\t\t<img class=\"w-8 h-8 rounded-full\" src=\"").concat(user.the_avatar, "\">\n\t\t\t\t\t\t\t\t\t<div class=\"ml-2\">\n\t\t\t\t\t\t\t\t\t\t<a class=\"text-indigo-600 hover:text-indigo-800 font-semibold\" href=\"").concat(routes.single + user.username, "\">").concat(user.name, "</a>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"px-2\">&bull;</div>\n\t\t\t\t\t\t\t\t<div class=\"px-2\">").concat(post.time, "</div>\n\t\t\t\t\t\t\t\t<div class=\"px-2\">&bull;</div>\n\t\t\t\t\t\t\t\t<div class=\"px-2\">").concat(post.ert, " baca</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t<div class=\"markdowned markdowned-mdpost mb-4\">\n\t\t\t\t\t\t\t\t").concat(post.content_markdown, "\n\t\t\t\t\t\t\t</div>\n\n\t\t\t\t        \t").concat(this.compTags({
         post: post
       }), "\n\t\t\t        \t</div>\n\t\t\t\t\t    ").concat(this.compCtas({
@@ -28304,13 +28328,13 @@ var api = {
   query: function () {
     var _query = _asyncToGenerator(
     /*#__PURE__*/
-    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(_ref10, init) {
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(_ref11, init) {
       var page, queryPending, url, buildParams, objParams, params, http;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
-              page = _ref10.page, queryPending = _ref10.queryPending, url = _ref10.url, buildParams = _ref10.buildParams;
+              page = _ref11.page, queryPending = _ref11.queryPending, url = _ref11.url, buildParams = _ref11.buildParams;
 
               if (!(queryPending.status == true)) {
                 _context3.next = 3;
@@ -28361,7 +28385,7 @@ var api = {
       }, _callee3, this);
     }));
 
-    function query(_x, _x2) {
+    function query(_x2, _x3) {
       return _query.apply(this, arguments);
     }
 
@@ -28476,11 +28500,11 @@ var api = {
      * @param  {Object} options.interactions 	List of interactions we have
      * @param  {Object} options.options      	Instance Options
      */
-    attach: function attach(_ref11) {
-      var data = _ref11.post,
-          element = _ref11.element,
-          interactions = _ref11.interactions,
-          options = _ref11.options;
+    attach: function attach(_ref12) {
+      var data = _ref12.post,
+          element = _ref12.element,
+          interactions = _ref12.interactions,
+          options = _ref12.options;
       var types = post.types; // if post type is discover or post
 
       if (options.type == types.POST || options.type == types.DISCOVER || options.type == types.MARKDOWN) {
@@ -28505,16 +28529,16 @@ var api = {
    * @param  {Object}    options.args         Spread operator
    * @return {Promise}                        Resolve or Reject
    */
-  templating: function templating(_ref12) {
-    var res = _ref12.data,
-        direct = _ref12.direct,
-        prepend = _ref12.prepend,
-        render = _ref12.render,
-        options = _ref12.options,
-        templates = _ref12.templates,
-        interactions = _ref12.interactions,
-        events = _ref12.events,
-        args = _objectWithoutProperties(_ref12, ["data", "direct", "prepend", "render", "options", "templates", "interactions", "events"]);
+  templating: function templating(_ref13) {
+    var res = _ref13.data,
+        direct = _ref13.direct,
+        prepend = _ref13.prepend,
+        render = _ref13.render,
+        options = _ref13.options,
+        templates = _ref13.templates,
+        interactions = _ref13.interactions,
+        events = _ref13.events,
+        args = _objectWithoutProperties(_ref13, ["data", "direct", "prepend", "render", "options", "templates", "interactions", "events"]);
 
     var posts = res.data;
     var wrapper = document.createDocumentFragment(); // append post element to the wrapper
@@ -28626,11 +28650,11 @@ var api = {
    * @param  {Object}  options.args 	More args
    * @return {Promise}                Resolve or reject
    */
-  render: function render(_ref13) {
-    var elem = _ref13.elem,
-        dom = _ref13.dom,
-        prepend = _ref13.prepend,
-        args = _objectWithoutProperties(_ref13, ["elem", "dom", "prepend"]);
+  render: function render(_ref14) {
+    var elem = _ref14.elem,
+        dom = _ref14.dom,
+        prepend = _ref14.prepend,
+        args = _objectWithoutProperties(_ref14, ["elem", "dom", "prepend"]);
 
     return new Promise(function (resolve, reject) {
       if (prepend) {
@@ -28651,10 +28675,10 @@ var api = {
    * @param  {Object}    	 options.endOfPage 	EndOfPage method
    * @param  {Object} 	 options.args      	More args
    */
-  loadMore: function loadMore(_ref14) {
-    var run = _ref14.run,
-        endOfPage = _ref14.endOfPage,
-        args = _objectWithoutProperties(_ref14, ["run", "endOfPage"]); // do more stuff here
+  loadMore: function loadMore(_ref15) {
+    var run = _ref15.run,
+        endOfPage = _ref15.endOfPage,
+        args = _objectWithoutProperties(_ref15, ["run", "endOfPage"]); // do more stuff here
 
 
     if (endOfPage.status == false) run(_objectSpread({}, args));
@@ -28758,9 +28782,9 @@ var api = {
      * When data is empty
      * @param  {Node} options.elem Target element
      */
-    empty: function empty(_ref15) {
-      var elem = _ref15.elem,
-          templates = _ref15.templates;
+    empty: function empty(_ref16) {
+      var elem = _ref16.elem,
+          templates = _ref16.templates;
       var tpl = templates.empty();
       elem.insertAdjacentHTML('beforeEnd', tpl);
     }
@@ -28779,16 +28803,16 @@ var api = {
    * @param  {Object} 	options.args         More args
    * @return {Promise}                         Resolve or reject
    */
-  run: function run(_ref16) {
-    var elem = _ref16.elem,
-        end = _ref16.end,
-        options = _ref16.options,
-        lastData = _ref16.lastData,
-        buildParams = _ref16.buildParams,
-        shimmer = _ref16.shimmer,
-        queryPending = _ref16.queryPending,
-        query = _ref16.query,
-        args = _objectWithoutProperties(_ref16, ["elem", "end", "options", "lastData", "buildParams", "shimmer", "queryPending", "query"]); // get new page (don't retrieve from the argument)
+  run: function run(_ref17) {
+    var elem = _ref17.elem,
+        end = _ref17.end,
+        options = _ref17.options,
+        lastData = _ref17.lastData,
+        buildParams = _ref17.buildParams,
+        shimmer = _ref17.shimmer,
+        queryPending = _ref17.queryPending,
+        query = _ref17.query,
+        args = _objectWithoutProperties(_ref17, ["elem", "end", "options", "lastData", "buildParams", "shimmer", "queryPending", "query"]); // get new page (don't retrieve from the argument)
 
 
     var page = api.page,
@@ -28824,9 +28848,9 @@ var api = {
 
         if (options.first || !options.first && page <= last_page) {
           // 2. templating & listen (event listener)
-          (function (_ref17) {
-            var templating = _ref17.templating,
-                args = _objectWithoutProperties(_ref17, ["templating"]); // i promise you <3
+          (function (_ref18) {
+            var templating = _ref18.templating,
+                args = _objectWithoutProperties(_ref18, ["templating"]); // i promise you <3
 
 
             return new Promise(function (resolve) {
@@ -28854,16 +28878,16 @@ var api = {
             elem: elem,
             options: options
           }, args)) // 3. appending element
-          .then(function (_ref18) {
-            var render = _ref18.render,
-                args = _objectWithoutProperties(_ref18, ["render"]);
+          .then(function (_ref19) {
+            var render = _ref19.render,
+                args = _objectWithoutProperties(_ref19, ["render"]);
 
             return render(_objectSpread({}, args));
           }) // 4. rendered
-          .then(function (_ref19) {
-            var lifecycle = _ref19.lifecycle,
-                elem = _ref19.elem,
-                args = _objectWithoutProperties(_ref19, ["lifecycle", "elem"]);
+          .then(function (_ref20) {
+            var lifecycle = _ref20.lifecycle,
+                elem = _ref20.elem,
+                args = _objectWithoutProperties(_ref20, ["lifecycle", "elem"]);
 
             lifecycle.onContentLoaded();
             return resolve({

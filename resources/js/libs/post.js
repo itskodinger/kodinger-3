@@ -26,6 +26,10 @@ const types = {
 		template: 'community',
 		shimmer: 'community'
 	},
+	USER: {
+		template: 'user',
+		shimmer: 'user'
+	},
 	POST: {
 		template: 'post',
 		shimmer: 'post',
@@ -560,11 +564,77 @@ let api = {
 	    	return tpl;
 		},
 
+		user: function({post: user, options}) {
+			let tpl = `
+	    		<div class="bg-white rounded border border-gray-200 w-full">
+	    			<div class="py-6 px-6">
+	    				<div class="flex">
+	    					<img src="${ user.the_avatar }" alt="${ user.name }" class="rounded w-16 h-16 border flex-shrink-0">
+		    				<div class="ml-4 overflow-hidden">
+			        			<h2 class="font-bold truncate text-lg">${ user.name }</h2>
+			        			<p class="mt-1 text-gray-600">@${ user.username }</p>
+		        			</div>
+	        			</div>
+	        			<div class="flex -mx-2 mt-6">
+	        				<div class="w-4/12 text-center px-2">
+	        					<div class="text-xs uppercase tracking-wider font-semibold text-gray-600">Posts</div>
+	        					<div class="text-xl">${user.posts.length}</div>
+	        				</div>
+	        				<div class="w-4/12 text-center px-2">
+	        					<div class="text-xs uppercase tracking-wider font-semibold text-gray-600">Diskusi</div>
+	        					<div class="text-xl">${user.comments.length}</div>
+	        				</div>
+	        				<div class="w-4/12 text-center px-2">
+	        					<div class="text-xs uppercase tracking-wider font-semibold text-gray-600">Poin</div>
+	        					<div class="text-xl">123</div>
+	        				</div>
+	        			</div>
+
+	        			<a class="block text-center mt-4 rounded py-2 text-white bg-indigo-600 hover:bg-indigo-700" href="${routes.single + user.username}">Lihat Profile</a>
+	    			</div>
+	    		</div>
+	    	`;
+
+	    	return tpl;
+		},
+
 		/**
 		 * Community shimmer template
 		 * @return {String}           Interpolated template string
 		 */
 		communityShimmer: function() {
+			let tpl = `
+		    	<div class="w-full">
+		    		<div class="bg-white rounded border border-gray-200">
+		    			<div class="pb-8 pt-6 px-6">
+		    				<div class="float-right">
+		    					<div class="flex py-1 px-3 rounded-full bg-gray-200 w-16 h-6">
+		    					</div>
+		    				</div>
+		    				<div class="rounded p-2 w-16 h-16 flex-shrink-0 bg-gray-100"></div>
+		        			<h2 class="mt-4 w-32 h-6 bg-gray-200 rounded"></h2>
+		        			<div class="mt-3 bg-gray-100 h-3 rounded w-full"></div>
+		        			<div class="mt-2 bg-gray-100 h-3 rounded w-20"></div>
+		    			</div>
+		    			<div class="flex px-6 pb-6">
+		    				<div class="flex items-center">
+			    				<div class="rounded w-16 h-4 bg-gray-200"></div>
+		    				</div>
+		        			<div class="inline-flex ml-auto">
+			    				<div class="rounded h-4 w-4 bg-gray-100 mr-2"></div>
+			    				<div class="rounded h-4 w-4 bg-gray-100 mr-2"></div>
+			    				<div class="rounded h-4 w-4 bg-gray-100 mr-2"></div>
+			    				<div class="rounded h-4 w-4 bg-gray-100"></div>
+		        			</div>
+		        		</div>
+		    		</div>
+		    	</div>
+			`;
+
+			return tpl;
+		},
+
+		userShimmer: function() {
 			let tpl = `
 		    	<div class="w-full">
 		    		<div class="bg-white rounded border border-gray-200">

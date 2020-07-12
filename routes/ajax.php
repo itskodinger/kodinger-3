@@ -44,7 +44,12 @@ Route::group(['prefix' => 'comments', 'as' => 'comment.'], function()
 
 Route::group(['prefix' => 'communities', 'as' => 'community.'], function() 
 {
-	Route::get('/get', 'CommunityAjaxController@index')->name('index');
+	Route::get('/', 'CommunityAjaxController@index')->name('index');
+});
+
+Route::group(['prefix' => 'users', 'as' => 'user.'], function() 
+{
+	Route::get('/', 'UserAjaxController@index')->name('index');
 });
 
 // needs auth

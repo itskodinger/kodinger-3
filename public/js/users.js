@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 12);
+/******/ 	return __webpack_require__(__webpack_require__.s = 15);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -3614,242 +3614,35 @@ var post = {
 
 /***/ }),
 
-/***/ "./resources/js/search.js":
-/*!********************************!*\
-  !*** ./resources/js/search.js ***!
-  \********************************/
+/***/ "./resources/js/users.js":
+/*!*******************************!*\
+  !*** ./resources/js/users.js ***!
+  \*******************************/
 /*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _libs_post__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./libs/post */ "./resources/js/libs/post.js");
-/* harmony import */ var _utils_str2dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils/str2dom */ "./resources/js/utils/str2dom.js");
-/* harmony import */ var _utils_finds__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils/finds */ "./resources/js/utils/finds.js");
-/* harmony import */ var _utils_find__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils/find */ "./resources/js/utils/find.js");
-/* harmony import */ var _utils_removes__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils/removes */ "./resources/js/utils/removes.js");
-/* harmony import */ var _utils_adds__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./utils/adds */ "./resources/js/utils/adds.js");
-/* harmony import */ var _utils_full_url_with_query__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./utils/full-url-with-query */ "./resources/js/utils/full-url-with-query.js");
-function ownKeys(object, enumerableOnly) {
-  var keys = Object.keys(object);
 
-  if (Object.getOwnPropertySymbols) {
-    var symbols = Object.getOwnPropertySymbols(object);
-    if (enumerableOnly) symbols = symbols.filter(function (sym) {
-      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-    });
-    keys.push.apply(keys, symbols);
-  }
-
-  return keys;
-}
-
-function _objectSpread(target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i] != null ? arguments[i] : {};
-
-    if (i % 2) {
-      ownKeys(Object(source), true).forEach(function (key) {
-        _defineProperty(target, key, source[key]);
-      });
-    } else if (Object.getOwnPropertyDescriptors) {
-      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-    } else {
-      ownKeys(Object(source)).forEach(function (key) {
-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-      });
-    }
-  }
-
-  return target;
-}
-
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-
-
-
-
-
-
-
-
-var posts = _libs_post__WEBPACK_IMPORTED_MODULE_0__["post"].init('.posts', {
-  url: url,
+var users = _libs_post__WEBPACK_IMPORTED_MODULE_0__["post"].init('.users', {
+  url: routes.users,
   carousel: false,
   truncate_content: true,
-  discover: discover,
-  type: _libs_post__WEBPACK_IMPORTED_MODULE_0__["types"][type],
-  lazyimage: lazyimage,
-  params: function params(_params) {
-    return _objectSpread({}, _params, {
-      search: search,
-      tag: tag,
-      type: postType,
-      sort: sort
-    });
+  type: _libs_post__WEBPACK_IMPORTED_MODULE_0__["types"].USER,
+  shimmer: 4,
+  wrap: {
+    tag: 'div',
+    attrs: {
+      className: 'sm:px-4 px-0 lg:w-3/12 md:w-6/12 mb-8 w-full'
+    }
   },
-  wrap: wrap
-});
-/**
- * Toggle tag search input
- */
-
-var tagSearch = function tagSearch() {
-  $('.tag-search').classList.toggle('hidden');
-};
-/**
- * Hide search button
- * @return {[type]} [description]
- */
-
-
-var tagSearchButton = function tagSearchButton() {
-  $('.tags a[href^="#search"]').classList.toggle('hidden');
-};
-/**
- * Tag search collection DOM
- * @param  {Node} search Tag search element
- */
-
-
-var tagSearchCollection = function tagSearchCollection(search) {
-  if ($('.tag-search-collection')) return;
-  var this_height = search.clientHeight,
-      tpl = "\n\t\t<div class=\"absolute z-10 left-0 w-full bg-white tag-search-collection shadow-lg rounded\" style=\"top: ".concat(this_height + 10, "px;\">\n\t\t\t<div class=\"px-4 py-2\">Ketik min. 3 huruf</div>\n\t\t</div>");
-  tpl = Object(_utils_str2dom__WEBPACK_IMPORTED_MODULE_1__["default"])(tpl);
-  search.appendChild(tpl);
-};
-/**
- * Add tags to the collection
- * @param {Object} collection Tags data
- */
-
-
-var addTagToCollection = function addTagToCollection(collection) {
-  var target = $('.tag-search-collection');
-
-  var tagFunction = function tagFunction(e) {
-    var tag = this.dataset.name;
-    window.location.href = routes.search + Object(_utils_full_url_with_query__WEBPACK_IMPORTED_MODULE_6__["default"])({
-      tag: tag
-    });
-  }; // reset
-
-
-  $$('.tag-search-item').forEach(function (tag) {
-    tag.removeEventListener('click', tagFunction);
-  });
-  target.innerHTML = '';
-
-  if (collection.length < 1) {
-    collection = [];
-    collection.push({
-      value: 'Tidak ditemukan',
-      id: -1
-    });
+  shimmerWrap: {
+    tag: 'div',
+    attrs: {
+      className: 'sm:px-4 px-0 lg:w-3/12 md:w-6/12 mb-8 w-full'
+    }
   }
-
-  collection.forEach(function (item) {
-    target.appendChild(Object(_utils_str2dom__WEBPACK_IMPORTED_MODULE_1__["default"])("\n\t\t\t\t<div class=\"px-4 py-2 border-b border-gray-100 ".concat(item.id !== -1 ? 'tag-search-item' : '', "\" data-name=\"").concat(item.value, "\">\n\t\t\t\t\t").concat(item.id !== -1 ? '#' + item.value : item.value, "\n\t\t\t\t</div>\n\t\t\t")));
-  });
-
-  if (collection.length > 0) {
-    $$('.tag-search-item').forEach(function (tag) {
-      tag.addEventListener('click', tagFunction);
-    });
-  }
-};
-/**
- * Tag input interaction (up/dowm)
- * @param  {String} key Keyword (up/down)
- */
-
-
-var tagSearchCollectionMove = function tagSearchCollectionMove(key) {
-  var collection = $('.tag-search-collection'),
-      first_item = Object(_utils_find__WEBPACK_IMPORTED_MODULE_3__["default"])(collection, '.tag-search-item'),
-      selected_classes = 'tag-selected bg-gray-200';
-  if (collection && Object(_utils_finds__WEBPACK_IMPORTED_MODULE_2__["default"])(collection, '.tag-search-item').length < 1) return;
-
-  if (!Object(_utils_find__WEBPACK_IMPORTED_MODULE_3__["default"])(collection, '.tag-selected')) {
-    return Object(_utils_adds__WEBPACK_IMPORTED_MODULE_5__["default"])(Object(_utils_find__WEBPACK_IMPORTED_MODULE_3__["default"])(collection, '.tag-search-item').classList, selected_classes);
-  }
-
-  var selected = Object(_utils_find__WEBPACK_IMPORTED_MODULE_3__["default"])(collection, '.tag-selected');
-  Object(_utils_removes__WEBPACK_IMPORTED_MODULE_4__["default"])(selected.classList, selected_classes);
-
-  if (key == 'up') {
-    var previous = selected.previousElementSibling;
-    if (previous) Object(_utils_adds__WEBPACK_IMPORTED_MODULE_5__["default"])(previous.classList, selected_classes);else Object(_utils_adds__WEBPACK_IMPORTED_MODULE_5__["default"])(collection.lastChild.classList, selected_classes);
-  } else if (key == 'down') {
-    var next = selected.nextElementSibling;
-    if (next) Object(_utils_adds__WEBPACK_IMPORTED_MODULE_5__["default"])(next.classList, selected_classes);else Object(_utils_adds__WEBPACK_IMPORTED_MODULE_5__["default"])(collection.firstChild.classList, selected_classes);
-  }
-};
-
-$('.tags a[href^="#search"]').addEventListener('click', function (e) {
-  var self = this;
-  tagSearchButton();
-  tagSearch();
-  var search_input = $('.tag-search input');
-  search_input.focus();
-  tagSearchCollection($('.tag-search'));
-  e.preventDefault();
-});
-var controller;
-$('.tag-search input').addEventListener('keydown', function (e) {
-  if (e.code == 'ArrowDown') {
-    tagSearchCollectionMove('down');
-    return e.preventDefault();
-  }
-
-  if (e.code == 'ArrowUp') {
-    tagSearchCollectionMove('up');
-    return e.preventDefault();
-  }
-
-  if (e.code == 'Enter') {
-    if ($('.tag-selected')) $('.tag-selected').click();
-    return e.preventDefault();
-  }
-});
-$('.tag-search input').addEventListener('keyup', function (e) {
-  var self = this,
-      value = self.value;
-  if (e.code == 'ArrowUp' || e.code == 'ArrowDown') return;
-  if (value.trim().length <= 2) return;
-  controller && controller.abort();
-  controller = new AbortController();
-  fetch(routes.post_tags + '?value=' + value, {
-    signal: controller.signal
-  }).then(function (res) {
-    return res.json();
-  }).then(function (data) {
-    addTagToCollection(data.slice(0, 5));
-  });
-});
-$('.tag-search input').addEventListener('blur', function (e) {
-  setTimeout(function () {
-    tagSearchButton();
-    tagSearch();
-    tagSearchCollection(false);
-  }, 500);
-});
-if ($('.dispose-tag')) $('.dispose-tag').addEventListener('click', function () {
-  window.location.href = Object(_utils_full_url_with_query__WEBPACK_IMPORTED_MODULE_6__["default"])(['tag'], true);
 });
 
 /***/ }),
@@ -4153,14 +3946,14 @@ function wrapNode(wrap, element) {
 
 /***/ }),
 
-/***/ 12:
-/*!**************************************!*\
-  !*** multi ./resources/js/search.js ***!
-  \**************************************/
+/***/ 15:
+/*!*************************************!*\
+  !*** multi ./resources/js/users.js ***!
+  \*************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! D:\server\www\kdgr\resources\js\search.js */"./resources/js/search.js");
+module.exports = __webpack_require__(/*! D:\server\www\kdgr\resources\js\users.js */"./resources/js/users.js");
 
 
 /***/ })
