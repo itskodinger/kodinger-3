@@ -8,21 +8,21 @@
         @csrf
         @card
             <h4 class="mb-1 text-lg font-semibold text-indigo-500">Pengaturan Avatar</h4>
-            <p class="mb-5 text-sm text-gray-500 font-light">Gunakan foto asli kamu agar orang lain dapat mengenali kamu dengan mudah.</p>
+            <p class="mb-5 text-gray-500 font-light">Gunakan foto asli kamu agar orang lain dapat mengenali kamu dengan mudah.</p>
             <label class="relative inline-block cursor-pointer">
                 <div style="background-image: url({{ $user->the_avatar }});" class="w-32 h-32 bg-cover bg-center rounded-lg border {{ $errors->has('avatar') ? 'border-red-600' : 'border-gray-400'}}" id="avatar"></div>
                 <input type="file" name="avatar" class="avatar-field hidden">
-                <div class="absolute bottom-0 right-0 z-1 bg-black text-white rounded-tl text-sm py-1 px-2">Pilih Foto</div>
+                <div class="absolute bottom-0 right-0 z-1 bg-black text-white rounded-tl py-1 px-2">Pilih Foto</div>
             </label>
 
             @if($errors->has('avatar'))
-            <div class="text-red-600 text-sm">
+            <div class="text-red-600">
                 {!! $errors->first('avatar') !!}
             </div>
             @endif
 
             <h4 class="mb-1 mt-10 text-lg font-semibold text-indigo-500">Pengaturan Umum</h4>
-            <p class="mb-5 text-sm text-gray-500 font-light">Lengkapi nama, bio, lokasi kamu dan data lainnya agar orang lain dapat mengenali kamu.</p>
+            <p class="mb-5 text-gray-500 font-light">Lengkapi nama, bio, lokasi kamu dan data lainnya agar orang lain dapat mengenali kamu.</p>
 
             @field([
                 'name' => 'name',
@@ -73,8 +73,8 @@
                 'help' => 'Cantumkan perusahaan tempat kamu bekerja sekarang.'
             ])
 
-            <h4 class="mb-1 mt-6 text-lg font-semibold text-indigo-500">Pengaturan Akun</h4>
-            <p class="mb-5 text-sm text-gray-500 font-light">Informasi akun tidak dapat kamu ubah sendiri, kamu perlu menghubungi salah satu admin untuk membuat permintaan pengubahan informasi akun.</p>
+            <h4 id="account-setting" class="mb-1 mt-6 text-lg font-semibold text-indigo-500">Pengaturan Akun</h4>
+            <p class="mb-5 text-gray-500 font-light">Informasi akun tidak dapat kamu ubah sendiri, kamu perlu menghubungi salah satu admin untuk membuat permintaan pengubahan informasi akun.</p>
 
             @field([
                 'name' => 'email',
@@ -87,9 +87,9 @@
             @field([
                 'name' => 'username',
                 'label' => 'Username',
-                'type' => 'div',
+                'type' => (enable_username() ? 'input' : 'div'),
                 'value' => $user->username,
-                'help' => 'Username digunakan oleh orang lain untuk menyebut kamu di dalam sebuah diskusi atau post.'
+                'help' => (enable_username() ? '<span class="text-red-600 font-bold">Username tidak dapat diubah kembali setelah ini, tentukan username dengan benar.</span> ' : '') . 'Username digunakan oleh orang lain untuk menyebut kamu di dalam sebuah diskusi atau post.'
             ])
 
             @field([

@@ -5,7 +5,7 @@
 	</div>
 	@endisset
 
-	{!! isset($slot) ? '<div class="p-6">' : '' !!}
+	{!! isset($slot) ? '<div class="'.(@$bodyClass ? $bodyClass : "p-6") .'">' : '' !!}
 	{!! $slot !!}
 	{!! isset($slot) ? '</div>' : '' !!}
 </div>

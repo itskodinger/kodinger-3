@@ -1,6 +1,13 @@
 module.exports = {
+  purge: false,
   theme: {
     extend: {
+      screens: {
+        xxl: '1920px'
+      },
+      fontFamily: {
+        sans: 'Source Sans Pro, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
+      },
 		colors: {
 			indigo: {
 				100: '#EAEFFF',
@@ -20,9 +27,10 @@ module.exports = {
     },
   },
   variants: {
-  	borderColor: ['responsive', 'hover', 'focus', 'focus-within'],
+  	borderColor: ['responsive', 'hover', 'focus', 'focus-within', 'group-hover'],
   	opacity: ['responsive', 'hover', 'focus', 'group-hover'],
     textColor: ['responsive', 'hover', 'focus', 'group-hover'],
+    display: ['responsive', 'group-hover']
   },
   plugins: [
   	function({ addUtilities, theme }) {

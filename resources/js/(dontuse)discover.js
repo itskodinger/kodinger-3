@@ -1,18 +1,8 @@
-import { post, types } from './libs/post';
 import Tagify from '@yaireo/tagify';
 import validateUrl from './utils/validate-url';
 import adds from './utils/adds';
 import removes from './utils/removes';
 import showLoginAlert from './comps/show-login-alert';
-
-let posts = post.init('.posts', {
-    url: routes.discover,
-    discover: true,
-    carousel: false,
-    truncate_content: true,
-    lazyimage: false,
-    type: types.DISCOVER
-});
 
 /**
  * Init Tagify library
@@ -64,7 +54,7 @@ let tagify = new Tagify($('.tags'), {
                     sanitizedValue = (value || item).replace(/`|'/g, "&#39;");
 
             return `<div ${this.getAttributes(item)}
-                                    class='tagify__dropdown__item text-sm px-4 ${item.class ? item.class : ""}'
+                                    class='tagify__dropdown__item px-4 ${item.class ? item.class : ""}'
                                     tabindex="0"
                                     role="option"
                                     aria-labelledby="dropdown-label">${sanitizedValue}</div>`;
@@ -118,7 +108,7 @@ $('#discover-form').addEventListener('submit', function(e) {
     } else if(tags.length < 1) {
         tagify.DOM.input.focus();
     } else {
-        const shimmer = posts.shimmer.add('prepend');
+        const shimmer = window.posts.shimmer.add('prepend');
         adds(btn.classList, 'pointer-events-none opacity-50');
         btn.disabled = true;
 
@@ -157,7 +147,7 @@ $('#discover-form').addEventListener('submit', function(e) {
             form.reset();
             tagify.removeAllTags();
 
-            posts.append({
+            window.posts.append({
                 data: res
             }, true);
 

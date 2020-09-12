@@ -25,7 +25,7 @@ class Kdgrdown
 
     # ~
 
-    function __construct($opts)
+    function __construct($opts=[])
     {
         $this->options = array_merge(['safe' => false, 'comment' => false], $opts);
     }
@@ -526,7 +526,9 @@ class Kdgrdown
                 $level ++;
             }
 
-            if ($level <= 4 || $level > 6)
+            $from = $this->options['safe'] ? 4 : 1;
+
+            if ($level <= $from || $level > 6)
             {
                 return;
             }

@@ -19,7 +19,7 @@ class PostPublishRequest extends FormRequest
             'title' => 'required|max:100|min:5',
             'slug' => 'required|min:5|unique:posts,slug,' . $this->id,
             'tags' => ['array', new ArrayMin(1)],
-            'content' => [new Content]
+            'content' => [new Content(request()->type)]
         ];
     }
 }

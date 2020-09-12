@@ -278,10 +278,13 @@ function routes_js()
 	return json_encode([
         "save" => route('ajax.saves.store'),
         "post" => route('ajax.post.posts'),
-        "post_form" => route('post'),
+        "post_form" => route('post.slide'),
+        "post_new" => route('post.new'),
         "post_markdown" => route('ajax.post.markdown'),
+        "post_markdown_ns" => route('ajax.post.markdown-ns'),
         "delete_post" => route('deletePost', 'slug'),
         "post_both" => route('ajax.post.both'),
+        "post_timeline" => route('ajax.post.timeline'),
         "post_store" => route('ajax.post.store'),
         "post_edit" => route('ajax.post.edit', 'id'),
         "post_update" => route('ajax.post.update', 'slug'),
@@ -292,6 +295,7 @@ function routes_js()
         "check_slug" => route('ajax.post.check_slug'),
         "base_url" => url(''),
         "single" => route('single') . '/',
+        "post_single" => route('post.show', ['username', 'slug']),
         "post_show" => route('ajax.post.show', 'slug'),
         "post_store_discover" => route('ajax.post.store_discover'),
         "post_tags" => route('ajax.tag.search'),
@@ -305,6 +309,7 @@ function routes_js()
         "profile_loves" => route('loves', 'slug'),
         "profile_saves" => route('saves'),
         "communities" => route('ajax.community.index'),
+        "users" => route('ajax.user.index'),
         "search" => route('search'),
         "docs" => route('larecipe.show', ['1.0', ''])
 	]);
@@ -316,26 +321,27 @@ function user_js()
 		->only([
 			'id',
 			'name', 
-			'the_username', 
+			'username', 
 			'the_avatar_sm', 
 			'the_avatar'
 		])
 		->toJson();
 }
 
-function search_types() 
+function search_datasource() 
 {
 	return [
 		'post' => 'Post',
-		'discover' => 'Discover',
+		'user' => 'User',
 		'community' => 'Komunitas',
 	];
 }
 
-function type_icons($key)
+function datasource_icons($key)
 {
 	return [
 		'post' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 mr-2 fill-current" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="grid"><rect width="24" height="24" opacity="0"/><path d="M9 3H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zM5 9V5h4v4z"/><path d="M19 3h-4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-4 6V5h4v4z"/><path d="M9 13H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2zm-4 6v-4h4v4z"/><path d="M19 13h-4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2zm-4 6v-4h4v4z"/></g></g></svg>',
+		'user' => '<svg class="w-5 mr-2 stroke-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>',
 		'discover' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 mr-2 fill-current" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="layers"><rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"/><path d="M21 11.35a1 1 0 0 0-.61-.86l-2.15-.92 2.26-1.3a1 1 0 0 0 .5-.92 1 1 0 0 0-.61-.86l-8-3.41a1 1 0 0 0-.78 0l-8 3.41a1 1 0 0 0-.61.86 1 1 0 0 0 .5.92l2.26 1.3-2.15.92a1 1 0 0 0-.61.86 1 1 0 0 0 .5.92l2.26 1.3-2.15.92a1 1 0 0 0-.61.86 1 1 0 0 0 .5.92l8 4.6a1 1 0 0 0 1 0l8-4.6a1 1 0 0 0 .5-.92 1 1 0 0 0-.61-.86l-2.15-.92 2.26-1.3a1 1 0 0 0 .5-.92zm-9-6.26l5.76 2.45L12 10.85 6.24 7.54zm-.5 7.78a1 1 0 0 0 1 0l3.57-2 1.69.72L12 14.85l-5.76-3.31 1.69-.72zm6.26 2.67L12 18.85l-5.76-3.31 1.69-.72 3.57 2.05a1 1 0 0 0 1 0l3.57-2.05z"/></g></g></svg>',
 		'community' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 mr-2 fill-current" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="people"><rect width="24" height="24" opacity="0"/><path d="M9 11a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0-6a2 2 0 1 1-2 2 2 2 0 0 1 2-2z"/><path d="M17 13a3 3 0 1 0-3-3 3 3 0 0 0 3 3zm0-4a1 1 0 1 1-1 1 1 1 0 0 1 1-1z"/><path d="M17 14a5 5 0 0 0-3.06 1.05A7 7 0 0 0 2 20a1 1 0 0 0 2 0 5 5 0 0 1 10 0 1 1 0 0 0 2 0 6.9 6.9 0 0 0-.86-3.35A3 3 0 0 1 20 19a1 1 0 0 0 2 0 5 5 0 0 0-5-5z"/></g></g></svg>'
 	][$key];
@@ -396,4 +402,68 @@ function safe_file_name($string, $force_lowercase=true, $anal=false)
 function is_home()
 {
 	return request()->route()->getName() == 'index' ? true : false;
+}
+
+function is_provider_google() 
+{
+	return auth()->user()->provider == 'google' ? true : false;
+}
+
+function enable_username()
+{
+	return is_provider_google() && auth()->user()->provider_id == auth()->user()->username;
+}
+
+function edit_post_route($post)
+{
+	if($post->is_markdown) {
+		return route('post.md', $post->id);
+	}else{
+		return route('post.slide', $post->id);
+	}
+}
+
+function ert($content)
+{
+	$word = str_word_count(strip_tags($content));
+	$m = floor($word / 200);
+	$s = floor($word % 200 / (200 / 60));
+	$est = $m . ' menit';
+
+	return $est;
+}
+
+function is_type($test)
+{
+	if(request()->type == $test)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+function sorting()
+{
+	return ['newest' => 'Terbaru', 'popular' => 'Populer'];
+}
+
+function current_sort()
+{
+	return sorting()[(request()->sort ?? 'newest')];
+}
+
+function post_types()
+{
+	return ['slide', 'markdown', 'link'];
+}
+
+function points()
+{
+	return [
+		'post_slide' => 100,
+		'post_markdown' => 100,
+		'post_link' => 50,
+		'discuss' => 10
+	];
 }

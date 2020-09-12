@@ -26,8 +26,16 @@ const types = {
 		template: 'community',
 		shimmer: 'community'
 	},
+	USER: {
+		template: 'user',
+		shimmer: 'user'
+	},
 	POST: {
 		template: 'post',
+		shimmer: 'post',
+	},
+	MARKDOWN: {
+		template: 'markdown',
 		shimmer: 'post',
 	},
 	DISCOVER: {
@@ -85,6 +93,14 @@ let api = {
 	 * @type {Object}
 	 */
 	interactions: {
+		syntax: function(element) {
+			if(window.hljs) {			
+				element.querySelectorAll('pre code').forEach((block) => {
+				  hljs.highlightBlock(block);
+				});
+			}
+		},
+
 		/**
 		 * Lazy-load Image Using Intersection Observer
 		 * @param  {Node} element Target element
@@ -341,7 +357,7 @@ let api = {
 			// then append all buttons to the modal element
 			if($$('.share-buttons a').length < 1) {
 				// this is share button template
-				let share_btn = '<a href="" target="_blank" class="text-white shadow-md mb-3 py-3 px-4 flex justify-center items-center rounded text-sm"></a>';
+				let share_btn = '<a href="" target="_blank" class="text-white shadow-md mb-3 py-3 px-4 flex justify-center items-center rounded"></a>';
 
 				// show all the buttons from the `uris` key (see the uris var form destructuring object above)
 				for(let i=0; i < uris.length; i++) {
@@ -487,7 +503,7 @@ let api = {
 				<div class="text-center">
 					<svg width="300" class="inline-block" id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200"><defs><style>.cls-1{fill:#e2e2e2;}.cls-2{fill:#f3f3f3;}.cls-3{fill:#d37c59;}.cls-4{fill:#de8e68;}.cls-5{fill:#56cad8;}.cls-6{fill:#74d5de;}.cls-7{fill:#fed385;}.cls-8{fill:#dc8e6c;}.cls-9{fill:#fb836d;}.cls-10{fill:#d3d3d3;}.cls-11,.cls-13,.cls-14,.cls-15,.cls-16{fill:none;}.cls-11{stroke:#d3d3d3;stroke-miterlimit:10;}.cls-11,.cls-14,.cls-15{stroke-width:3.69px;}.cls-12{fill:#fed892;}.cls-13,.cls-14,.cls-16{stroke:#fed385;}.cls-13,.cls-14,.cls-15,.cls-16{stroke-linecap:round;stroke-linejoin:round;}.cls-13{stroke-width:3.84px;}.cls-15{stroke:#74d5de;}.cls-16{stroke-width:2.39px;}</style></defs><path class="cls-1" d="M711.1,528.1c0-21.86-47-74.85-84.67-74.85-28.93,0-29.4,15.3-57.59,15.3-43.46,0-75.71-72.66-159.29-72.66-89.05,0-205.41,83.58-205.41,149.14C204.14,638.91,711.1,661.41,711.1,528.1Z"/><path class="cls-2" d="M935.51,849.68c1-102,2.6-265.85,2.6-290.1,0-35.58-52.84-142.15-145.27-142.15-101.26,0-151.3,116.21-217.58,116.21-60.75,0-65.54-30.76-140.74-30.76-49,0-149.82,62.8-149.82,127l67.11,219.75Z"/><ellipse class="cls-3" cx="602.59" cy="679.96" rx="11.73" ry="5.25" transform="translate(-105.6 1249.11) rotate(-87.24)"/><path class="cls-3" d="M590.19,739.68c-.2-1.94,4.32-42.23,7.92-55a16,16,0,0,1,6.71-.94l-.34,39.7-5,18.67Z"/><polygon points="620.7 683.58 589.26 686.18 588.26 679.96 618.52 670.39 620.7 683.58"/><rect class="cls-4" x="544.3" y="999.24" width="13.77" height="11.65"/><rect class="cls-4" x="586.9" y="1001.06" width="13.77" height="11.65"/><path class="cls-5" d="M542.87,805V999.88H559l18.54-104.26S580.09,839.22,542.87,805Z"/><path class="cls-6" d="M596,801.16c.45,5.62,6.06,107.88,6.06,107.88v93.11l-16.55,1.77-10.64-99-32-99.92C547.71,802.34,583.16,797.33,596,801.16Z"/><path class="cls-7" d="M566.51,715.47c31.79,0,33.3,80.83,29.52,85.69s-49,8.17-53.16,3.83S526.9,715.47,566.51,715.47Z"/><ellipse class="cls-4" cx="607.86" cy="679.96" rx="11.73" ry="5.25" transform="translate(-100.59 1254.37) rotate(-87.24)"/><polygon points="585.61 1010.89 585.61 1022.54 618.35 1022.54 618.35 1018.3 601.32 1010.89 585.61 1010.89"/><polygon points="543.87 1009.05 543.87 1020.7 576.61 1020.7 576.61 1016.46 559.58 1009.05 543.87 1009.05"/><rect x="585.55" y="681.34" width="3.86" height="3.86" transform="translate(-98.87 99.39) rotate(-8.92)"/><path class="cls-3" d="M568.84,722.5c0,2.67-12.41,3-12.41,0V696h12.41Z"/><ellipse class="cls-8" cx="568.46" cy="688.32" rx="13.03" ry="19.89"/><path class="cls-9" d="M545.77,680.12c0-6.13,2.67-10,4.84-11.23,4.19-2.4,5.94-1.33,10.16-3.2,4.57-2,8.49-7.84,13.84-7.84,5,0,4.55,2.84,7.94,3.68,2,.49,13.36-2.12,13.36,5.23,0,11.32-12.57,12.24-15.48,13.69a37.43,37.43,0,0,0-1.52-3.83c-2.29,2.36-10.58,4-11.92,4.53-3.1,1.28-4.58,6.13-4.58,9.3s-2.87,3.18-3.59,3.18C552.19,693.63,545.77,689.38,545.77,680.12Z"/><circle class="cls-8" cx="556.67" cy="691.67" r="4.33"/><rect class="cls-10" x="512.81" y="718.34" width="25.14" height="84.61" rx="12.57" ry="12.57"/><ellipse class="cls-11" cx="544.89" cy="751.24" rx="30.38" ry="32.89"/><path class="cls-4" d="M576.84,736.83c2.53,0,15.29.53,20.48,2.4.4-2.53,2.66-38.77,6.51-50.91,1.47-1.62,7.45-1.43,7.45,0s8.51,60.88,0,67.93-37.37-2.4-38.56-3.33S576.84,736.83,576.84,736.83Z"/><path class="cls-12" d="M549.66,734.69c2.82-11.48,28.36-1.93,30.67.69,2.77,3.14-2.18,20.84-6,21.66C568.1,758.39,546,749.58,549.66,734.69Z"/><polygon class="cls-12" points="266.38 341.65 142.64 849.68 390.13 849.68 266.38 341.65"/><polygon class="cls-5" points="169.62 341.65 45.87 893.9 293.36 893.9 169.62 341.65"/><line class="cls-13" x1="170.29" y1="891.44" x2="170.29" y2="395.36"/><line class="cls-13" x1="170.29" y1="558.95" x2="197.18" y2="529.72"/><line class="cls-13" x1="170.29" y1="698.94" x2="210.7" y2="655.02"/><line class="cls-13" x1="170.29" y1="844.98" x2="233.14" y2="776.66"/><line class="cls-13" x1="170.29" y1="558.95" x2="143.4" y2="529.72"/><line class="cls-13" x1="170.29" y1="698.94" x2="129.89" y2="655.02"/><line class="cls-13" x1="170.29" y1="844.98" x2="107.44" y2="776.66"/><rect class="cls-6" x="190.5" y="734.34" width="135.39" height="197.16" rx="67.69" ry="67.69"/><line class="cls-14" x1="258.19" y1="982.94" x2="258.19" y2="795.85"/><path class="cls-14" d="M258.19,875.41c37,0,37-22.28,37-56"/><path class="cls-14" d="M258.19,841.33c-25.65,0-25.65-15.47-25.65-38.84"/><path class="cls-7" d="M1152.37,849.68V667.57a81.52,81.52,0,0,0-81.28-81.28h0a81.65,81.65,0,0,0-13.07,1.06V377.78a55.64,55.64,0,0,0-55.63-55.64h0a55.64,55.64,0,0,0-55.64,55.64v44.86a80.64,80.64,0,0,0-26-4.31h0a81.52,81.52,0,0,0-81.28,81.29V649H804.08a55.7,55.7,0,0,0-55.53,55.53V833.86a55.18,55.18,0,0,0,2.32,15.82Z"/><path class="cls-15" d="M1000.16,740.85c91.61,0,91.61-41,91.61-103"/><path class="cls-15" d="M1000.25,795.48c-50.4,0-50.4-22.56-50.4-56.67"/><line class="cls-15" x1="1000.16" y1="849.68" x2="1000.16" y2="364.17"/><line class="cls-15" x1="1000.16" y1="637.85" x2="949.94" y2="587.62"/><line class="cls-15" x1="1000.16" y1="534.21" x2="1030.55" y2="503.83"/><path class="cls-2" d="M750.49,341.65a47.18,47.18,0,0,0-86.25-35.55,37.43,37.43,0,0,0-52.84,34.1c0,.49,0,1,0,1.45Z"/><path class="cls-2" d="M291.91,268.28a47.18,47.18,0,0,1,86.25-35.55A37.4,37.4,0,0,1,431,266.83c0,.48,0,1,0,1.45Z"/><path class="cls-6" d="M924.33,936.06c-50.28,0-91,21.47-91,48h182.05C1015.35,957.53,974.6,936.06,924.33,936.06Z"/><path class="cls-9" d="M502.76,1006.93c-12.55,0-22.73,8.76-22.73,19.57H525.5C525.5,1015.69,515.32,1006.93,502.76,1006.93Z"/><path class="cls-9" d="M833.3,902.44c-12.56,0-22.73,13-22.73,29.06H856C856,915.45,845.85,902.44,833.3,902.44Z"/><path class="cls-9" d="M120.87,974.57c-20,0-36.16,6.51-36.16,14.53H157C157,981.08,140.84,974.57,120.87,974.57Z"/><path class="cls-9" d="M1030.55,974.57c-20,0-36.16,6.51-36.16,14.53h72.31C1066.7,981.08,1050.52,974.57,1030.55,974.57Z"/><rect class="cls-6" x="838.22" y="746.55" width="87.67" height="127.66" rx="43.83" ry="43.83"/><line class="cls-16" x1="882.06" y1="907.53" x2="882.06" y2="786.38"/><path class="cls-16" d="M882.06,837.9C906,837.9,906,823.47,906,801.64"/><path class="cls-16" d="M882.06,815.83c-16.61,0-16.61-10-16.61-25.16"/><line class="cls-14" x1="331.71" y1="947.65" x2="412.75" y2="947.65"/><line class="cls-14" x1="668.4" y1="893.9" x2="722.14" y2="893.9"/><line class="cls-14" x1="627.87" y1="907.53" x2="681.62" y2="907.53"/><line class="cls-14" x1="116.88" y1="918.64" x2="170.63" y2="918.64"/><line class="cls-14" x1="748.55" y1="999.24" x2="824.1" y2="999.24"/></svg>
 					<h2 class="text-xl font-semibold">Ya ampun! Data tidak ditemukan</h2>
-					<p class="mt-2 leading-loose text-gray-600 text-sm">Apa yang kamu cari sehingga data tidak ditemukan? Tapi, sepertinya ini salah kami memiliki konten yang terlalu sedikit 😿.</p>
+					<p class="mt-2 leading-loose text-gray-600">Apa yang kamu cari sehingga data tidak ditemukan? Tapi, sepertinya ini salah kami memiliki konten yang terlalu sedikit 😿.</p>
 				</div>
 			`;
 
@@ -504,7 +520,7 @@ let api = {
 	    		<div class="bg-white rounded border border-gray-200 w-full">
 	    			<div class="pb-8 pt-6 px-6">
 	    				<div class="float-right">
-	    					<a target="_blank" ${ community.website ? `href="${community.website}" `:'' }class="${!community.website ? 'pointer-events-none opacity-50 ':''}flex leading-relaxed items-center hover:bg-indigo-600 hover:text-white hover:border-indigo-600 border border-gray-200 uppercase text-xs font-semibold tracking-wider py-1 px-3 rounded-full">
+	    					<a target="_blank" ${ community.website ? `href="${community.website}" `:'' }class="${!community.website ? 'pointer-events-none opacity-50 ':''}flex leading-relaxed items-center hover:bg-indigo-600 hover:text-white hover:border-indigo-600 border border-gray-200 uppercase text-sm font-semibold tracking-wider py-1 px-3 rounded-full">
 	    						Website
 	    						<svg class="ml-1 w-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="arrow-forward"><rect width="24" height="24" transform="rotate(-90 12 12)" opacity="0"/><path d="M5 13h11.86l-3.63 4.36a1 1 0 0 0 1.54 1.28l5-6a1.19 1.19 0 0 0 .09-.15c0-.05.05-.08.07-.13A1 1 0 0 0 20 12a1 1 0 0 0-.07-.36c0-.05-.05-.08-.07-.13a1.19 1.19 0 0 0-.09-.15l-5-6A1 1 0 0 0 14 5a1 1 0 0 0-.64.23 1 1 0 0 0-.13 1.41L16.86 11H5a1 1 0 0 0 0 2z"/></g></g></svg>
 	    					</a>
@@ -513,10 +529,10 @@ let api = {
 	    					<img src="${ community.logo }" alt="${ community.name }" class="w-full">
 	    				</div>
 	        			<h2 class="font-bold text-lg mt-4 truncate">${ community.name }</h2>
-	        			<p class="mt-1 text-sm text-gray-600 font-light leading-relaxed h-12">${ community.short_description }</p>
+	        			<p class="mt-1 text-gray-600 font-light leading-relaxed h-12">${ community.short_description }</p>
 	    			</div>
 	    			<div class="flex px-6 pb-6">
-	    				<div class="flex text-sm items-center">
+	    				<div class="flex items-center">
 	    					<svg class="w-5 mr-1 fill-current text-gray-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="person"><rect width="24" height="24" opacity="0"/><path d="M12 11a4 4 0 1 0-4-4 4 4 0 0 0 4 4z"/><path d="M18 21a1 1 0 0 0 1-1 7 7 0 0 0-14 0 1 1 0 0 0 1 1z"/></g></g></svg>
 	    					${ community.formatted_member }+
 	    				</div>
@@ -548,6 +564,36 @@ let api = {
 	    	return tpl;
 		},
 
+		user: function({post: user, options}) {
+			let tpl = `
+	    		<div class="bg-white rounded border border-gray-200 w-full">
+	    			<div class="py-6 px-6">
+	    				<div class="flex">
+	    					<img src="${ user.the_avatar }" alt="${ user.name }" class="rounded w-16 h-16 border flex-shrink-0">
+		    				<div class="ml-4 overflow-hidden">
+			        			<h2 class="font-bold truncate text-lg">${ user.name }</h2>
+			        			<p class="mt-1 text-gray-600">@${ user.username }</p>
+		        			</div>
+	        			</div>
+	        			<div class="flex -mx-2 mt-6 border-t border-b border-gray-200 py-2">
+	        				<div class="w-6/12 text-center px-2">
+	        					<div class="text-xs uppercase tracking-wider font-semibold text-gray-600">Posts</div>
+	        					<div class="text-xl">${user.posts.length}</div>
+	        				</div>
+	        				<div class="w-6/12 text-center px-2">
+	        					<div class="text-xs uppercase tracking-wider font-semibold text-gray-600">Diskusi</div>
+	        					<div class="text-xl">${user.comments.length}</div>
+	        				</div>
+	        			</div>
+
+	        			<a class="block text-center mt-4 rounded py-2 text-white bg-indigo-600 hover:bg-indigo-700" href="${routes.single + user.username}">Lihat Profile</a>
+	    			</div>
+	    		</div>
+	    	`;
+
+	    	return tpl;
+		},
+
 		/**
 		 * Community shimmer template
 		 * @return {String}           Interpolated template string
@@ -567,7 +613,7 @@ let api = {
 		        			<div class="mt-2 bg-gray-100 h-3 rounded w-20"></div>
 		    			</div>
 		    			<div class="flex px-6 pb-6">
-		    				<div class="flex text-sm items-center">
+		    				<div class="flex items-center">
 			    				<div class="rounded w-16 h-4 bg-gray-200"></div>
 		    				</div>
 		        			<div class="inline-flex ml-auto">
@@ -584,8 +630,85 @@ let api = {
 			return tpl;
 		},
 
+		userShimmer: function() {
+			let tpl = `
+		    	<div class="w-full">
+		    		<div class="bg-white rounded border border-gray-200">
+		    			<div class="pb-8 pt-6 px-6">
+		    				<div class="flex">
+			    				<div class="rounded p-2 w-16 h-16 flex-shrink-0 bg-gray-100"></div>
+			    				<div class="ml-4">
+				        			<div class="mt-2 w-32 h-6 bg-gray-200 rounded"></div>
+				        			<div class="mt-3 bg-gray-100 h-3 rounded w-full"></div>
+			    				</div>
+		    				</div>
+			    			<div class="flex -mx-2 mt-6 border-t border-b border-gray-100 py-2">
+			    				<div class="w-6/12 px-2 text-center flex items-center flex-col">
+			    					<div class="inline-block mb-2 w-20 h-4 bg-gray-100 rounded"></div>
+			    					<div class="inline-block"><div class="w-10 h-6 bg-gray-200 rounded"></div></div>
+			    				</div>
+			    				<div class="w-6/12 px-2 text-center flex items-center flex-col">
+			    					<div class="inline-block mb-2 w-20 h-4 bg-gray-100 rounded"></div>
+			    					<div class="inline-block"><div class="w-10 h-6 bg-gray-200 rounded"></div></div>
+			    				</div>
+			    			</div>
+		    				<div class="mt-4 rounded w-full h-10 bg-gray-200"></div>
+		    			</div>
+		    		</div>
+		    	</div>
+			`;
+
+			return tpl;
+		},
+
+		compTags: function({post}) {
+			const tpl = `
+		        <div class="flex flex-wrap">
+		        ${post.tags.map(function(tag) {
+		        	if(tag.tag !== null) {
+	                    return `<a class="mt-2 border border-gray-300 bg-gray-100 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded py-1 px-3" href="${routes.search + fullUrlWithQuery({tag: tag.tag.name})}">
+	                        #${ tag.tag.name }
+	                    </a>`;			        		
+		        	}else {
+		        		return '';
+		        	}
+		        }).join('')}
+		        </div>
+			`;
+
+			return tpl;
+		},
+
+		compCtas: function({post}) {
+			const tpl = `
+				<div class="border-t border-gray-200">
+				    <div class="flex w-full items-center">
+				        <a data-love ${ post.is_post_loved ? 'data-loved' : '' } class="py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200" href="#">
+				            <span></span> 
+				            <div class="ml-2 inline-block post-love-count">${post.total_loves}</div>
+				        </a>
+				        ${post.type !== 'link' ?
+				        `<a class="py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200" href="${routes.post_single.replace(/username/g, post.user.username).replace(/slug/g, post.slug) + '#comments'}">
+				            <svg class="stroke-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg> 
+				            <div class="ml-2 inline-block post-comment-count">${post.total_comments}</div>
+				        </a>`
+				        : ''}
+				        <a class="py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200" data-save ${ post.is_post_saved ? 'data-saved' : '' } href="#">
+				        	<span></span>
+				            <div class="ml-2 inline-block post-save-count">${post.total_saves}</div>
+				        </a>
+				        <a data-url="${ routes.post_single.replace(/username/g, post.user.username).replace(/slug/g, post.slug) }" class="share-button py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200" href="#">
+				            <svg class="stroke-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+				        </a>
+				    </div>
+				</div>
+			`;
+
+			return tpl;
+		},
+
 		/**
-		 * Post template
+		 * General post template
 		 * @param  {Object} options.post    Post data
 		 * @param  {Object} options.options Instance options
 		 * @return {String}                 Interpolated template string
@@ -594,19 +717,19 @@ let api = {
 			let tpl = `
 			<div class="bg-white rounded border border-gray-200 mb-10">
 			    <div class="flex p-6 items-center">
-			        <a href="${routes.single + post.user.the_username}">
+			        <a href="${routes.single + post.user.username}">
 			            <img class="rounded w-12 rounded border" src="${ post.user.the_avatar_sm }">
 			        </a>
 			        <div class="ml-3">
-			            <h4 class="mb-1 font-bold">
-			                <a class="text-indigo-600" href="${ routes.single + post.user.the_username }">
+			            <h4 class="font-semibold">
+			                <a class="text-lg" href="${ routes.single + post.user.username }">
 			                    ${ post.user.name }
 			                </a>
 			            </h4>
-			            <div class="-mx-1 flex items-center text-xs text-gray-500">
-			                <p class="mx-1">${ post.user.the_username }</p>
+			            <div class="-mx-1 flex items-center text-sm text-gray-500">
+			                <p class="mx-1">@${ post.user.username }</p>
 			                <p class="mx-1">&bull;</p>
-			                <p class="mx-1 text-blue-500 font-semibold">${ post.time }</p>
+			                <p class="mx-1 font-semibold">${ post.time }</p>
 			            </div>
 			        </div>
 			    </div>
@@ -632,12 +755,12 @@ let api = {
 
 				        <div class="p-4 border-t bg-gray-100">
 				        
-				            <h2 class="md:text-lg mb-2 text-base font-semibold hover:text-indigo-600"><a target="_blank" href="${post.post_card.url}">${post.post_card.title}</a></h2>
+				            <h2 class="md:text-xl mb-2 text-base font-semibold hover:text-indigo-600"><a target="_blank" href="${post.post_card.url}">${post.post_card.title}</a></h2>
 
 				            ${post.post_card.description ? `
-				                <p class="text-gray-600 text-sm break-all"><a target="_blank" href="${post.post_card.url}">${ post.post_card.description.substr(0, 200)}</a></p>
+				                <p class="text-gray-600 break-all"><a target="_blank" href="${post.post_card.url}">${ post.post_card.description.substr(0, 200)}</a></p>
 				            ` : ''}
-				            <div class="uppercase tracking-wider text-xs mt-3 text-teal-500 font-semibold"><a target="_blank" href="//${getHostname(post.post_card.url)}">${ getHostname(post.post_card.url) }</a></div>
+				            <div class="uppercase tracking-wider text-sm mt-3 text-teal-500 font-semibold">${ post.post_card.hostname }</div>
 				        </div>
 				    </div>
 			    ` : ``}
@@ -648,8 +771,8 @@ let api = {
 			        <div class="${post.content_object.length > 1 && options.carousel ? 'carousel w-full' : ''}">
 			            
 			            ${'carousel' in options && options.carousel == false ? 
-			            	`<a href="${routes.single + post.slug}">
-			                    <div data-blurry="${post.blurry_image}" data-src="${post.first_slide_media}" class="lazy-image w-full bg-gray-200 bg-cover h-40 sm:h-64"></div>
+			            	`<a href="${routes.post_single.replace(/username/g, post.user.username).replace(/slug/g, post.slug)}">
+			                    <div data-blurry="${post.blurry_image}" data-src="${!post.is_markdown ? post.first_slide_media : post.cover}" class="lazy-image w-full bg-gray-200 bg-cover h-40 sm:h-64"></div>
 			                </a>`
 
 		                : // else
@@ -675,15 +798,15 @@ let api = {
 			    </div>
 			    ` : ''}
 
-			    <div class="p-6 text-gray-700 text-sm leading-relaxed">
+			    <div class="p-6 text-gray-700 leading-relaxed">
 			        ${post.title ?
-				        `<h2 class="text-xl mb-2 text-black font-bold"><a class="text-indigo-600" href="${routes.single + post.slug}">
+				        `<h2 class="text-2xl mb-2 text-black font-bold"><a class="text-indigo-600" href="${routes.post_single.replace(/username/g, post.user.username).replace(/slug/g, post.slug)}">
 				            ${post.title}
 				        </a></h2>`
 			        : ''}
 
 			        ${!options.discover && post.type !== 'link' && (options.truncate_content || (!options.truncate_content && post.is_single_caption)) ?
-				        `<div class="mb-3">${options.truncate_content ? post.first_slide_caption_truncated : post.first_slide_caption}</div>`
+				        `<div class="mb-3 ${options.first ? 'markdowned' : ''}">${options.truncate_content ? (post.is_markdown ? post.content_markdown_truncated : post.first_slide_caption_truncated) : post.first_slide_caption}</div>`
 			        : ''}
 
 			        ${!options.discover && !options.truncate_content && !post.is_single_caption ?
@@ -692,39 +815,45 @@ let api = {
 			        	}).join('')
 		        	: ''}
 
-			        <div class="flex flex-wrap">
-			        ${post.tags.map(function(tag) {
-			        	if(tag.tag !== null) {
-		                    return `<a class="mt-2 border border-gray-300 bg-gray-100 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded py-1 px-3 text-xs" href="${routes.search + fullUrlWithQuery({tag: tag.tag.name})}">
-		                        #${ tag.tag.name }
-		                    </a>`;			        		
-			        	}else {
-			        		return '';
-			        	}
-			        }).join('')}
-			        </div>
-
+		        	${this.compTags({post})}
 			    </div>
-		        <div class="border-t border-gray-200">
-		            <div class="flex w-full items-center">
-		                <a data-love ${ post.is_post_loved ? 'data-loved' : '' } class="py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200" href="#">
-		                    <span></span> 
-		                    <div class="ml-2 inline-block post-love-count">${post.total_loves}</div>
-		                </a>
-		                <a class="py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200" href="${routes.single + post.slug + '#comments'}">
-		                    <svg class="stroke-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg> 
-		                    <div class="ml-2 inline-block post-comment-count">${post.total_comments}</div>
-		                </a>
-		                <a class="py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200" data-save ${ post.is_post_saved ? 'data-saved' : '' } href="#">
-		                	<span></span>
-		                    <div class="ml-2 inline-block post-save-count">${post.total_saves}</div>
-		                </a>
-		                <a data-url="${ routes.single + post.slug }" class="share-button py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200" href="#">
-		                    <svg class="stroke-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-		                </a>
-		            </div>
-		        </div>
+
+			    ${this.compCtas({post})}
 			</div>`;
+
+			return tpl;
+		},
+
+		markdown: function({post, options}) {
+			let tpl = `
+				<div class="mb-10">
+					<img src="${post.cover}" class="rounded-tl rounded-tr" />
+
+					<div class="border border-gray-200 rounded-bl rounded-br">
+						<div class="p-6">
+							<h1 class="text-4xl font-bold">${post.title}</h1>
+							<div class="flex items-center text-gray-600 -mx-2 mt-4 mb-8 border-t border-b border-gray-200 py-4">
+								<div class="px-2 flex items-center">
+									<img class="w-8 h-8 rounded-full" src="${user.the_avatar}">
+									<div class="ml-2">
+										<a class="text-indigo-600 hover:text-indigo-800 font-semibold" href="${routes.single + user.username}">${user.name}</a>
+									</div>
+								</div>
+								<div class="px-2">&bull;</div>
+								<div class="px-2">${post.time}</div>
+								<div class="px-2">&bull;</div>
+								<div class="px-2">${post.ert} baca</div>
+							</div>
+							<div class="markdowned markdowned-mdpost mb-4">
+								${post.content_markdown}
+							</div>
+
+				        	${this.compTags({post})}
+			        	</div>
+					    ${this.compCtas({post})}
+					</div>
+				</div>
+			`;
 
 			return tpl;
 		},
@@ -972,6 +1101,7 @@ let api = {
 	defOptions: {
 		first: false,
 		carousel: false,
+		syntax: false,
 		truncate_content: false,
 		discover: false,
 		page: 1,
@@ -1060,7 +1190,7 @@ let api = {
 			const { types } = post;
 
 			// if post type is discover or post
-			if(options.type == types.POST || options.type == types.DISCOVER) {
+			if(options.type == types.POST || options.type == types.DISCOVER || options.type == types.MARKDOWN) {
 				interactions.love(element, data.id);
 				interactions.save(element, data.id);
 				interactions.share(element);
@@ -1070,6 +1200,9 @@ let api = {
 
 				if(options.lazyimage !== false)
 					interactions.lazyimage(element);
+
+				if(options.syntax !== false)
+					interactions.syntax(element);
 			}
 		}
 	},

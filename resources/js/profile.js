@@ -5,7 +5,8 @@ let posts = post.init('.posts', {
     params: params => ({
         ...params,
         status: status,
-        username: this_user
+        username: this_user,
+        sort: 'newest'
     }),
     truncate_content: true
 });

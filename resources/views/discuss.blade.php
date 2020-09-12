@@ -4,16 +4,17 @@
     <h1 class="mb-4 text-lg flex items-center">Semua Diskusi</h1>
 
     @forelse($comments as $comment)
-        @include('layouts.card_comment_item', ['comment' => $comment])
+        <div id="comments"></div>
     @empty
         <div class="text-center">
         	<svg width="250" class="inline-block mb-4" id="Vector" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200"><defs><style>.cls-1{fill:#de8e68;}.cls-2{fill:none;stroke:#fd8369;stroke-linecap:round;stroke-miterlimit:10;stroke-width:6px;}.cls-3{fill:#56cad8;}.cls-4{fill:#74d5de;}.cls-5{fill:#fd8369;}.cls-6{fill:#dfdfdf;}.cls-7{fill:#fff;}.cls-8{fill:#fed385;}.cls-9{fill:#d37c59;}.cls-10{fill:#fed892;}</style></defs><title>Artboard 1</title><rect class="cls-1" x="370.42" y="1048.53" width="54.86" height="28.53" transform="translate(177.29 -50.39) rotate(9.32)"/><rect class="cls-1" x="663.33" y="987.78" width="43.01" height="28.53" transform="translate(-470.06 628.81) rotate(-37.74)"/><line class="cls-2" x1="592" y1="1051" x2="592" y2="573"/><path class="cls-3" d="M525.56,804.47c-1.4,7.26,120.26,201.2,130,201.2,12.49,0,41.17-21.28,41.17-27.29s-54.79-145.7-54.79-169.29S537.58,742,525.56,804.47Z"/><line class="cls-2" x1="504" y1="1105" x2="504" y2="573"/><path class="cls-4" d="M912.34,744.47c0-15-220.58-103.63-375.87-103.63-90.75,0-165,397.4-165,404.25,7.28,2.14,56.52,9,56.52,9S551.34,802.29,554.77,785.16c12.42,8.56,168.89,89.92,229.3,89.92C850.28,875.08,912.34,807,912.34,744.47Z"/><rect class="cls-5" x="936.54" y="390.6" width="33.6" height="546.61" transform="translate(177.73 -201) rotate(13.26)"/><rect class="cls-5" x="741.03" y="724.14" width="33.6" height="314.42" transform="translate(1789.52 345.92) rotate(103.26)"/><rect class="cls-6" x="504" y="216" width="167" height="113"/><polygon class="cls-6" points="701.5 272.5 626.5 255 626.5 290 701.5 272.5"/><circle class="cls-7" cx="549.5" cy="272.5" r="8.5"/><circle class="cls-7" cx="587.5" cy="272.5" r="8.5"/><circle class="cls-7" cx="625.5" cy="272.5" r="8.5"/><path class="cls-8" d="M903,329c46,0,65,48,65,82,0,157-32.32,314.12-51,326-33,21-187.12-29-201-62C700,637,734,329,903,329Z"/><path class="cls-9" d="M913,253c-1,6,1,57,15,89-5,8-51,26-73,8,2-16,3-42,1-57s34-46,34-46Z"/><ellipse class="cls-1" cx="844.5" cy="216.5" rx="52.5" ry="85.5"/><path class="cls-5" d="M828,69c22,0,38.5,21,52,28,23,12,78,10,78,52,0,30-11,38-11,52,0,8,2,11,2,27,0,21-21,31-32,31-39,0-48.81-44.64-53-55-17-42-49-37-59-37-5,9-9,27-9,27-58,0-66-39-66-53,0-37,33-38,47-46C792.94,85.89,805,69,828,69Z"/><circle class="cls-1" cx="888.5" cy="225.5" r="18.5"/><path class="cls-1" d="M841,515c-3,6-18,39-20,69-15-6-159-71-186-71-53,0-67,17-67,25,0,15,65,13,74,18S829,677,851,677s77-94,79-117"/><path class="cls-10" d="M940,394c47.59,22.8,16,174-6,175s-102-41-108-54S892,371,940,394Z"/><rect class="cls-5" x="107" y="560" width="510" height="20"/><line class="cls-2" x1="138" y1="1105" x2="138" y2="573"/><line class="cls-2" x1="230" y1="1051" x2="230" y2="573"/><rect class="cls-6" x="481" y="549" width="115" height="11"/><rect class="cls-6" x="376.57" y="479.54" width="156.62" height="3.31" transform="translate(154.71 1071.42) rotate(-109.65)"/><line class="cls-2" x1="854.27" y1="914.6" x2="924.05" y2="1123.93"/><line class="cls-2" x1="780.63" y1="901.62" x2="620.15" y2="1114.88"/><line class="cls-2" x1="672.24" y1="876.08" x2="511.76" y2="1089.34"/><line class="cls-2" x1="749.18" y1="895.67" x2="818.96" y2="1105"/><polygon points="424.25 1078.41 364.1 1068.11 269.56 1094.37 265.57 1106.99 415.12 1131.09 424.25 1078.41"/><polygon points="703.64 991.72 668.68 1025.49 631.27 1117.36 637.45 1126.23 733.42 1023 703.64 991.72"/></svg>
             <h2 class="text-xl font-semibold">Tidak Ada Diskusi</h2>
-            <p class="mt-2 leading-loose text-gray-600 text-sm">{{ $user->name }} belum pernah melakukan diskusi dengan siapapun.</p>
+            <p class="mt-2 leading-loose text-gray-600">{{ $user->name }} belum pernah melakukan diskusi dengan siapapun.</p>
         </div>
     @endforelse
-
-    <div class="inline-block w-full mt-5">
-	    {!! $comments->links('vendor.pagination.simple-default') !!}
-	</div>
 @stop
+
+@push('js')
+    <script>const userId = '{{$user->id}}';</script>
+    <script src="{{ mix('js/discuss.js') }}"></script>
+@endpush

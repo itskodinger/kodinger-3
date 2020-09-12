@@ -6,14 +6,16 @@ use Illuminate\Contracts\Validation\Rule;
 
 class Content implements Rule
 {
+    public $type;
+
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($type)
     {
-        //
+        $this->type = $type;
     }
 
     /**
@@ -23,19 +25,25 @@ class Content implements Rule
      * @param  mixed  $value
      * @return bool
      */
-    public function passes($attribute, $value)
+    public function passes($attribute, $value, $parameters = [])
     {
-        $value = json_decode($value, true);
+        if($this->type == 'markdown') {
+            if(strlen(trim($value)) > 0) return true;
 
-        if($value && is_array($value) && count($value) > 0)
-        {
-            if(array_key_exists('caption', $value[0]) && strlen(trim($value[0]['caption'])) > 0)
+            return false;
+        }else{
+            $value = json_decode($value, true);
+
+            if($value && is_array($value) && count($value) > 0)
             {
-                return true;
+                if(array_key_exists('caption', $value[0]) && strlen(trim($value[0]['caption'])) > 0)
+                {
+                    return true;
+                }
             }
-        }
 
-        return false;
+            return false;
+        }
     }
 
     /**

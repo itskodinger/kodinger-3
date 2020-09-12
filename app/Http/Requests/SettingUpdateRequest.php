@@ -17,6 +17,7 @@ class SettingUpdateRequest extends FormRequest
             'name' => 'required|min:3|max:20',
             'avatar' => 'nullable|image',
             'github' => 'nullable|url',
+            'username' => 'nullable|unique:users,username',
             'link' => 'nullable|url',
             'bio' => 'nullable|min:10|max:255'
         ];

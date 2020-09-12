@@ -71,9 +71,15 @@ class PostService
 		], $arr2);
 	}
 
-	public function find($id)
+	public function find($id, $views=false)
 	{
-		return $this->model()->find($id);
+		$post = $this->model()->find($id);
+
+		if($post && $views) {
+			$post->update(['views' => ($post->views ?? 0) + 1]);
+		}
+
+		return $post;
 	}
 
 	public function total()
@@ -156,7 +162,7 @@ class PostService
 
 	public function content(...$args)
 	{
-		$this->init = $this->model()->whereType(null)->whereStatus('publish');
+		$this->init = $this->model()->whereStatus('publish');
 
 		return $this->paginate(...$args);
 	}
@@ -166,6 +172,19 @@ class PostService
 		$status = request()->status ?? 'publish';
 
 		$this->init = $this->model()->whereStatus($status);
+
+		return $this->paginate(...$args);
+	}
+
+	public function timeline(...$args)
+	{
+		$status = request()->status ?? 'publish';
+
+		$this->init = $this->model()->whereStatus($status)->where(function($query) {
+			$query->orWhereNull('type');
+			$query->orWhere('type', 'link');
+			$query->orWhere('type', 'markdown');
+		});
 
 		return $this->paginate(...$args);
 	}
@@ -184,7 +203,7 @@ class PostService
 			}
 
 			if($req_type) {
-				$req_type = $req_type == 'content' ? null : $req_type;
+				$req_type = $req_type == 'slide' ? null : $req_type;
 				$posts = $posts->whereType($req_type);
 			}
 
@@ -211,9 +230,17 @@ class PostService
 			{
 				$posts = $posts->whereStatus($request->status);
 			}
+
+			if(isset($request->sort))
+			{
+				if($request->sort == 'popular')
+					$posts = $posts->orderBy('views', 'desc');
+				else
+					$posts = $posts->orderBy('published_at', 'desc');
+			}
 		}
 
-		$posts = $posts->orderBy('published_at', 'desc')->paginate($num);
+		$posts = $posts->paginate($num);
 
 		$posts->appends(['search' => $req_search, 'type' => $req_type, 'status' => $request->status]);
 
@@ -230,7 +257,7 @@ class PostService
 		$post = $this->find($id);
 
 		$base = 'posts/';
-		$name = safe_file_name(pathinfo($request->name, PATHINFO_FILENAME)) . '.' . $request->image->getClientOriginalExtension();
+		$name = safe_file_name(pathinfo($request->name, PATHINFO_FILENAME)) . '-' . uniqid() . '.' . $request->image->getClientOriginalExtension();
 		$path = $base . $public_folder . '/' . $name;
 		$url = space_url($path);
 
@@ -369,16 +396,38 @@ class PostService
 		return $post;
 	}
 
-	public function popular()
+	public function findBySlugAll($slug)
 	{
-		$posts = $this->model()->orderBy('views', 'desc')->whereStatus('publish')->whereNull('type')->first();
+		$post = $this->model()->whereSlug($slug)->first();
+
+		return $post;
+	}
+
+	public function popular($first=true, $limit=5)
+	{
+		$posts = $this->model()->orderBy('views', 'desc')->whereStatus('publish')->whereNull('type');
+
+		if($first)
+			$posts = $posts->first();
+		else
+			$posts = $posts->take($limit)->get();
+
+		return $posts;
+	}
+
+	public function getByAuthor($id, $limit=5)
+	{
+		$posts = $this->model()->orderBy('views', 'desc')->whereStatus('publish')->whereUserId($id)->where(function($query) {
+			$query->whereNull('type');
+			$query->orWhere('type','markdown');
+		})->take($limit)->get();
 
 		return $posts;
 	}
 
 	public function random()
 	{
-		$posts = $this->model()->inRandomOrder()->whereStatus('publish')->whereNull('type')->first();
+		$posts = $this->model()->inRandomOrder()->whereNull('deleted_at')->whereStatus('publish')->whereNull('type')->orWhere('type', 'markdown')->first();
 
 		return $posts;
 	}
@@ -392,7 +441,8 @@ class PostService
 						->orderBy('total', 'desc')
 						->with('post')
 						->whereHas('post', function($query) {
-							return $query->whereNull('type');
+							$query->whereNull('type');
+							$query->orWhere('type', 'markdown');
 						})
 						->take($take)
 						->get();

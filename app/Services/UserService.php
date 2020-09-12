@@ -10,7 +10,7 @@ class UserService
 {
 	public function model()
 	{
-		return User::with('posts', 'savePosts', 'lovePosts', 'savePosts.post')->withTrashed();
+		return User::with('posts', 'comments', 'savePosts', 'lovePosts', 'savePosts.post')->withTrashed();
 	}
 
 	public function total()
@@ -25,7 +25,51 @@ class UserService
 
 	public function paginate($num=10)
 	{
-		return $this->model()->paginate($num);
+		$users = $this->model()->paginate($num);
+
+		return $users;
+	}
+
+	public function weeklyTop($num=5)
+	{
+		return $this->model()
+			->withCount('postsWeek')
+			->withCount('posts')
+			->withCount('commentsWeek')
+			->withCount('comments')
+			->orderBy('posts_week_count', 'desc')
+			->orderBy('posts_count', 'desc')
+			->orderBy('comments_week_count', 'desc')
+			->orderBy('comments_count', 'desc')
+			->take($num)
+			->get($num);
+	}
+
+	public function userList($num=10)
+	{
+		$users = $this->model();
+
+		$request = request();
+
+		if($request) {
+			$req_search = $request['search'] ?? null;
+			if($req_search) {
+				$users = $users->where('name', 'like', '%'. $req_search .'%');
+			}
+		}
+
+		$users = $users
+			->withCount('postsWeek')
+			->withCount('posts')
+			->withCount('commentsWeek')
+			->withCount('comments')
+			->orderBy('posts_week_count', 'desc')
+			->orderBy('posts_count', 'desc')
+			->orderBy('comments_week_count', 'desc')
+			->orderBy('comments_count', 'desc')
+			->paginate($num);
+
+		return $users;
 	}
 
 	public function findAndUpdate($request, $id)
@@ -93,10 +137,20 @@ class UserService
 			$avatar = $avatar_name;
 		}
 
+		$except = [
+			'email', 
+			'provider'
+		];
+
+		if(enable_username())
+		{
+			$except = array_push($except, 'username');
+		}
+
 		// save new user data
 		return auth()->user()->update([
 			'avatar' => $avatar
-		] + $request->except(['email', 'username', 'provider']));
+		] + $request->except($except));
 	}
 
 	public function cropAvatar($the_image)
@@ -112,7 +166,8 @@ class UserService
 
 	public function register($user, $provider)
 	{
-        $auth_user = User::where('provider_id', $user->id)->first();
+        $auth_user = User::where('email', $user->email)->first();
+
         if ($auth_user) {
             return $auth_user;
         }
@@ -135,16 +190,16 @@ class UserService
             $user = User::create([
                 'name'     => $user->name ?? $user->nickname,
                 'email'    => !empty($user->email)? $user->email : '' ,
-                'username' => $user->nickname,
+                'username' => $user->nickname ?? $user->id,
                 'provider' => $provider,
                 'provider_id' => $user->id,
                 'avatar' => $avatar,
-                'bio' => $user->user['bio'],
-                'link' => $user->user['blog'],
-                'location' => $user->user['location'],
-                'hireable' => $user->user['hireable'],
-                'github' => $user->user['html_url'],
-                'company' => $user->user['company'],
+                'bio' => $user->user['bio'] ?? '',
+                'link' => $user->user['blog'] ?? '',
+                'location' => $user->user['location'] ?? '',
+                'hireable' => $user->user['hireable'] ?? '',
+                'github' => $user->user['html_url'] ?? '',
+                'company' => $user->user['company'] ?? '',
                 'status' => 'active'
             ]);
 

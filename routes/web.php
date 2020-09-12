@@ -61,7 +61,7 @@ Route::group(['prefix' => 'contributes', 'as' => 'contribute.', 'middleware' => 
 	Route::post('{id}/reject', 'ContributeController@reject')->name('reject');
 });
 
-Route::group(['prefix' => 'users', 'as' => 'user.'], function() 
+Route::group(['prefix' => 'manage-users', 'as' => 'user.'], function() 
 {
 	// Route::get('/create', 'UserController@create')->name('create');
 	Route::get('/', 'UserController@index')->name('index')->middleware('permission:user-list');
@@ -81,13 +81,22 @@ Route::group(['prefix' => 'comments', 'as' => 'comment.'], function()
 	});
 });
 
+Route::get('auth/{provider}', 'Auth\AuthController@redirectToProvider')->name('auth');
+Route::get('auth/{provider}/callback', 'Auth\AuthController@handleProviderCallback');
+
 Route::get('/', 'FrontendController@index')->name('index');
-Route::get('/post/{id?}', 'FrontendController@post')->name('post');
+Route::get('/post-slide/{id?}', 'FrontendController@postSlide')->name('post.slide');
+Route::get('/post-md/{id?}', 'FrontendController@postMD')->name('post.md');
+Route::get('/post-link', 'FrontendController@postLink')->name('post.link');
+Route::get('/post', 'FrontendController@newPost')->name('post.new');
+Route::get('/users', 'FrontendController@users')->name('users');
 Route::get('/community', 'FrontendController@community')->name('community');
+Route::get('/scenes', 'FrontendController@scenes')->name('scenes');
+Route::get('/scene', 'FrontendController@scene')->name('scene');
 Route::get('/search', 'FrontendController@search')->name('search');
 Route::get('/about', 'FrontendController@about')->name('about');
 Route::get('/contact', 'FrontendController@contact')->name('contact');
-Route::get('/discover/{tag?}', 'FrontendController@discover')->name('discover');
+// Route::get('/discover/{tag?}', 'FrontendController@discover')->name('discover');
 Route::get('/{slug}/loves', 'FrontendController@profileLoves')->name('loves');
 Route::get('/saves', 'FrontendController@profileSaves')->name('saves');
 Route::get('/contribute/myposts', 'FrontendController@contributesMyPosts')->name('contribute.myposts');
@@ -97,8 +106,6 @@ Route::get('/{slug}/discuss', 'FrontendController@discuss')->name('discuss');
 Route::get('/setting', 'FrontendController@setting')->name('setting');
 Route::post('/setting', 'FrontendController@settingUpdate')->name('setting_update');
 Route::get('/{slug?}', 'FrontendController@single')->name('single');
+Route::get('/{username?}/{slug?}', 'FrontendController@singlePost')->name('post.show');
 Route::get('/tag/{slug}', 'FrontendController@index')->name('tag');
 // Route::get('/home', 'HomeController@index')->name('home');
-
-Route::get('auth/{provider}', 'Auth\AuthController@redirectToProvider')->name('auth');
-Route::get('auth/{provider}/callback', 'Auth\AuthController@handleProviderCallback');

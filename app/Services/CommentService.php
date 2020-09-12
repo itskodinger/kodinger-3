@@ -9,7 +9,7 @@ class CommentService
 {
 	public function model()
 	{
-		return Comment::with('user', 'post', 'reply', 'reply.user');
+		return Comment::with('user', 'post', 'post.user', 'reply', 'reply.user');
 	}
 
 	public function find($id)
@@ -17,9 +17,15 @@ class CommentService
 		return $this->model()->find($id);
 	}
 
-	public function total($post_id)
+	public function total($post_id, $user_id=false)
 	{
-		return $this->model()->wherePostId($post_id)->count();
+		$comments = $this->model();
+		if($post_id == 'mine')
+			$comments = $comments->whereUserId($user_id);
+		else
+			$comments = $comments->wherePostId($post_id);
+
+		return $comments->count();
 	}
 
 	public function paginate($limit=5)
@@ -43,15 +49,22 @@ class CommentService
 	// 	$comment->content = $comment->markdown;
 	// 	$comment->time = $comment->time;
 	// 	$comment->avatar = $comment->user->the_avatar;
-	// 	$comment->username = $comment->user->the_username;
+	// 	$comment->username = $comment->user->username;
 	// 	$comment->is_mine = $comment->is_mine;
 
 	// 	return $comment;
 	// }
 
-	public function take($post_id, $start, $end)
+	public function take($post_id, $user_id, $start, $end)
 	{
-		$comments = $this->model()->wherePostId($post_id)->offset($start)->take($end)->orderBy('created_at', 'desc')->get();
+		$comments = $this->model();
+
+		if($post_id == 'mine')
+			$comments = $comments->whereUserId($user_id);
+		else
+			$comments = $comments->wherePostId($post_id);
+
+		$comments = $comments->offset($start)->take($end)->orderBy('created_at', 'desc')->get();
 
 		return $comments;
 	}

@@ -86,6 +86,8 @@
 /************************************************************************/
 /******/ ({
 
+<<<<<<< HEAD
+=======
 /***/ "./node_modules/@babel/runtime/regenerator/index.js":
 /*!**********************************************************!*\
   !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
@@ -3152,11 +3154,17 @@ function showLoginAlert() {
 
 /***/ }),
 
+>>>>>>> master
 /***/ "./resources/js/discover.js":
 /*!**********************************!*\
   !*** ./resources/js/discover.js ***!
   \**********************************/
 /*! no exports provided */
+<<<<<<< HEAD
+/***/ (function(module, exports) {
+
+throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index.js):\nError: ENOENT: no such file or directory, open 'D:\\server\\www\\kdgr\\resources\\js\\discover.js'");
+=======
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5197,6 +5205,7 @@ function wrapNode(wrap, element) {
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (wrapNode);
+>>>>>>> master
 
 /***/ }),
 

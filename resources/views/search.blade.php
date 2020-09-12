@@ -10,9 +10,9 @@
             	<div class="border border-gray-200 p-6 rounded pb-0">
 	            	<h1 class="text-xl font-semibold">Pencarian</h1>
 	            	<div class="flex overflow-x-auto flex-no-wrap mt-6">
-	            		@foreach($types as $k => $t)
-		            		<a href="@current(['type' => $k])" class="{{ $k == $type ? 'border-indigo-600 text-indigo-600 font-semibold' : ''}} flex items-center hover:border-indigo-600 hover:text-indigo-600 text-gray-600 text-sm border-b-2 py-4 border-transparent mr-8 mr-2">
-	            				{!! type_icons($k) !!}
+	            		@foreach($datasources as $k => $t)
+		            		<a href="@current(['datasource' => $k])" class="{{ $k == $datasource ? 'border-indigo-600 text-indigo-600 font-semibold' : ''}} flex items-center hover:border-indigo-600 hover:text-indigo-600 text-gray-600 border-b-2 py-4 border-transparent mr-8 mr-2">
+	            				{!! datasource_icons($k) !!}
 		            			{{ $t }}
 		            		</a>
 	            		@endforeach
@@ -21,13 +21,13 @@
 
             	<div class="flex mt-6 items-center">
 	        		<div class="hidden tag-search relative z-10">
-	        			<input type="text" name="tag" class="w-64 border border-gray-200 px-6 py-2 mr-2 text-sm focus:outline-none focus:border-indigo-600 rounded-full" placeholder="Cari tag">
+	        			<input type="text" name="tag" class="w-64 border border-gray-200 px-6 py-2 mr-2 focus:outline-none focus:border-indigo-600 rounded-full" placeholder="Cari tag">
 	        		</div>
 	            	<div class="flex flex-no-wrap overflow-x-auto tags">
 	            		@foreach($tags as $r)
 	            		<a 
 	            			{!! $r['name'] !== $tag ? 'href="' . (!isset($r['search']) ? request()->fullUrlWithQuery(['tag' => $r['name']]) : '#search') . '"' : '' !!} 
-	            			class="{{ $r['name'] == $tag ? 'border-indigo-600 text-indigo-600 font-semibold pr-8' : ''}} relative flex items-center hover:border-indigo-600 hover:text-indigo-600 border-gray-200 text-gray-600 text-sm border py-2 px-6 flex-shrink-0 rounded-full mr-2 tag"
+	            			class="{{ $r['name'] == $tag ? 'border-indigo-600 text-indigo-600 font-semibold pr-8' : ''}} relative flex items-center hover:border-indigo-600 hover:text-indigo-600 border-gray-200 text-gray-600 border py-2 px-6 flex-shrink-0 rounded-full mr-2 tag"
 	            		>
 		            		{!! 
 		            			!isset($r['search']) ? '#' . $r['name'] 
@@ -48,7 +48,7 @@
 	            </div>
 
             	<div class="mt-8">
-	                @include('search_' . $type)
+	                @include('search_' . $datasource)
 	            </div>
             </div>
             <div class="lg:w-3/12 lg:px-4 md:w-4/12">

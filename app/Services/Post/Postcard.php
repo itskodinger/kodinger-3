@@ -92,7 +92,7 @@ class Postcard implements Arrayable, Jsonable {
      * @return string
      */
     public function getPostUrl() {
-        return route('single', $this->post->slug);
+        return route('post.show', [$this->post->user->username, $this->post->slug]);
     }
 
     /**
@@ -118,19 +118,32 @@ class Postcard implements Arrayable, Jsonable {
 
     }
 
-    /**
-     * Get the Url.
-     * 
-     * @return string
-     */
-    public function getUrl() {
+    private function getTheUrl()
+    {
         $url = $this->attributes->where('key', 'url')->first();
 
         if($url instanceof PostAttribute) return $url->value; 
 
         if(is_null($this->post->pages)) return $this->post->pages;
 
-        return nl_array_first($this->post->pages);
+        return nl_array_first($this->post->pages);        
+    }
+
+    /**
+     * Get the Url.
+     * 
+     * @return string
+     */
+    public function getUrl() 
+    {
+        return route('leave.kodinger', ['go' => encrypt($this->post->id . '|' . $this->getTheUrl())]);
+    }
+
+    public function getHostname()
+    {
+        $url = parse_url($this->getTheUrl());
+
+        return $url['host'] ?? 'Unknown';
     }
 
 	/**
@@ -140,6 +153,7 @@ class Postcard implements Arrayable, Jsonable {
      */
     public function toArray() {
         return [
+            'hostname'            => $this->getHostname(),
             'url'                 => $this->getUrl(),
             'title'               => $this->getTitle(),
             'thumbnail'           => $this->getThumbnail(),

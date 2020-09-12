@@ -16,7 +16,9 @@ let posts = post.init('.posts', {
     params: params => ({
 		...params,
 		search,
-		tag
+		tag,
+		type: postType,
+		sort
     }),
     wrap
 });
@@ -46,7 +48,7 @@ let tagSearchCollection = function(search) {
 
 	let this_height = search.clientHeight,
 		tpl = `
-		<div class="absolute z-10 text-sm left-0 w-full bg-white tag-search-collection shadow-lg rounded" style="top: ${this_height + 10}px;">
+		<div class="absolute z-10 left-0 w-full bg-white tag-search-collection shadow-lg rounded" style="top: ${this_height + 10}px;">
 			<div class="px-4 py-2">Ketik min. 3 huruf</div>
 		</div>`;
 

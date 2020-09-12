@@ -9,16 +9,18 @@ class StorageFileExist implements Rule
 {
     protected $publicFolder;
     protected $name;
+    protected $force;
 
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct($public_folder, $name)
+    public function __construct($public_folder, $name, $force)
     {
         $this->publicFolder = $public_folder;
         $this->name = $name;
+        $this->force = $force;
     }
 
     /**
@@ -30,6 +32,8 @@ class StorageFileExist implements Rule
      */
     public function passes($attribute, $value)
     {
+        if($this->force) return true;
+
         $path = 'posts/' . $this->publicFolder . '/' . $this->name;
 
         // if file exists

@@ -164,42 +164,42 @@ window.sidebarSticky = function() {
 if(typeof sidebar == 'undefined' || sidebar !== 'manual') sidebarSticky();
 
 // On Boarding
-(function() {
-	const modal = $('.onboarding-modal');
+// (function() {
+// 	const modal = $('.onboarding-modal');
 
-	if(window.localStorage && !!!window.localStorage.getItem('boarding'))
-		modal.classList.remove('hidden');
+// 	if(window.localStorage && !!!window.localStorage.getItem('boarding'))
+// 		modal.classList.remove('hidden');
 
-	const boarding = new Siema({
-	    selector: $('.boarding')
-	});
+// 	const boarding = new Siema({
+// 	    selector: $('.boarding')
+// 	});
 
-	$$('.boarding-close').forEach(btn => btn.addEventListener('click', (e) => {
-		e.preventDefault();
+// 	$$('.boarding-close').forEach(btn => btn.addEventListener('click', (e) => {
+// 		e.preventDefault();
 
-		modal.classList.add('hidden');
+// 		modal.classList.add('hidden');
 
-		if(window.localStorage)
-			window.localStorage.setItem('boarding', false);
-	}));
+// 		if(window.localStorage)
+// 			window.localStorage.setItem('boarding', false);
+// 	}));
 
-	['prev', 'next'].forEach(method => {
-		((btns, boarding, method) => btns.forEach((btn) => btn.addEventListener('click', (e) => {
-		    e.preventDefault();
+// 	['prev', 'next'].forEach(method => {
+// 		((btns, boarding, method) => btns.forEach((btn) => btn.addEventListener('click', (e) => {
+// 		    e.preventDefault();
 
-		    boarding[method]();
-		})))($$('.boarding-' + method), boarding, method);
-	});
+// 		    boarding[method]();
+// 		})))($$('.boarding-' + method), boarding, method);
+// 	});
 
-	$('.boarding-login').addEventListener('click', function(e) {
-		e.preventDefault();
+// 	$('.boarding-login').addEventListener('click', function(e) {
+// 		e.preventDefault();
 
-		if(window.localStorage)
-			window.localStorage.setItem('boarding', false);
+// 		if(window.localStorage)
+// 			window.localStorage.setItem('boarding', false);
 
-		window.location.href = this.dataset.href;
-	});
-})();
+// 		window.location.href = this.dataset.href;
+// 	});
+// })();
 
 (function() {
 	const alert = $('.drafted-post-alert');

@@ -4,9 +4,9 @@
     <div class="container mx-auto">
         <div class="flex py-12 -mx-6 justify-center">
             <div class="w-6/12 px-6">
-            	<div class="p-8 bg-white border-2 border-gray-200 rounded">
+            	<div class="p-8 bg-white border border-gray-200 rounded">
             		<div>
-	            		<h4 class="text-lg font-bold text-gray-600 border-b-2 border-gray-200 pb-4 mb-6">Konfirmasi</h4>
+	            		<h4 class="text-lg font-bold text-gray-600 border-b border-gray-200 pb-4 mb-6">Konfirmasi</h4>
 
                         <div class="bg-red-100 border-l-4 border-red-500 text-red-700 px-4 py-2 mb-4" role="alert">
                             <p class="font-bold">Perhatian</p>
@@ -14,13 +14,13 @@
                         </div>
 
 	            		<p class="mb-2 text-gray-600">Post Terkait</p>
-                        <a href="" class="flex bg-gray-100 hover:bg-gray-200 hover:border-gray-300 border border-gray-200 mb-8 p-3 rounded">
-	            			<div class="bg-cover w-24 rounded flex-shrink-0" style="background-image: url({{$post->first_slide_media ?? $post_card['thumbnail'] ?? ''}});"></div>	
+                        <div class="flex bg-gray-100 border border-gray-200 mb-8 p-3 rounded">
+	            			<div class="bg-cover w-24 rounded flex-shrink-0" style="background-image: url({{$post->cover ?? $post->first_slide_media ?? $post_card['thumbnail'] ?? ''}});"></div>	
 	            			<div class="ml-4 w-full">
-	            				<h4 class="font-semibold text-indigo-600">{{ $post->title ?? $post_card['title'] ?? '' }}</h4>
-	            				<p class="text-sm text-gray-600 mt-1">{{ html_entity_decode($post->first_slide_caption_truncated) ?? $post_card['description'] ?? '' }}</p>
+	            				<h4 class="font-semibold text-indigo-600">{!! $post->title ?? $post_card['title'] ?? '' !!}</h4>
+	            				<p class="text-gray-600 mt-1">Oleh {{ $post->user->name }}</p>
 	            			</div>
-	            		</a>
+	            		</div>
 
 	            		<a onclick="document.querySelector('#delete').submit();" role="button" class="cursor-pointer bg-red-600 block text-center py-3 rounded text-white hover:bg-red-700">
                             Hapus Konten Secara Permanen
@@ -31,7 +31,7 @@
 	            		</form>
 
 						<div class="text-center">
-							<a href="@route('single', $post->slug)" class="text-gray-600 mt-5 hover:text-indigo-600 inline-block">Batalkan</a>
+							<a href="@route('post.show', [$post->user->username, $post->slug])" class="text-gray-600 mt-5 hover:text-indigo-600 inline-block">Batalkan</a>
 						</div>
 					</div>
             	</div>

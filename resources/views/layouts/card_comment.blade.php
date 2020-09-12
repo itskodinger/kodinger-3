@@ -1,5 +1,5 @@
 <div id="comment-box" class="bg-white rounded border border-gray-200 mb-6 hidden">
-  <h2 class="py-4 px-6 font-bold">Diskusi</h2>
+  <h2 class="py-4 px-6 font-bold text-xl">Diskusi</h2>
   <a name="comments"></a>
   @if(auth()->check())
   <div class="py-4 px-6">
@@ -7,20 +7,20 @@
           <input type="hidden" name="reply_id" class="reply-id">
           <img class="w-10 h-10 flex-shrink-0 rounded border border-gray-200" src="{{ the_avatar() }}">
           <div class="ml-3 w-full">
-              <textarea class="rounded comment-message focus:shadow focus:border-indigo-600 resize-none w-full border border-gray-200 py-2 h-10 px-4 text-sm focus:outline-none focus:border-gray-300" placeholder="Tulis komentar kamu ..." name="message"></textarea>
+              <textarea class="rounded comment-message focus:shadow focus:border-indigo-600 resize-none overflow-hidden w-full border border-gray-200 py-2 h-20 px-4 focus:outline-none focus:border-gray-300" placeholder="Tulis komentar kamu ..." name="message"></textarea>
               <div class="flex items-center">
                   <svg width="20px" class="mr-2 fill-current text-gray-600" viewBox="0 0 256 158" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid">
                       <g>
                           <path d="M238.371257,157.892216 L18.3952096,157.892216 C8.43113772,157.892216 0,149.461078 0,139.497006 L0,18.3952096 C0,8.43113772 8.43113772,0 18.3952096,0 L237.60479,0 C247.568862,0 256,8.43113772 256,18.3952096 L256,139.497006 C256,149.461078 248.335329,157.892216 238.371257,157.892216 L238.371257,157.892216 Z M18.3952096,12.2634731 C15.3293413,12.2634731 12.2634731,15.3293413 12.2634731,18.3952096 L12.2634731,139.497006 C12.2634731,143.329341 15.3293413,145.628743 18.3952096,145.628743 L237.60479,145.628743 C241.437126,145.628743 243.736527,142.562874 243.736527,139.497006 L243.736527,18.3952096 C243.736527,14.5628743 240.670659,12.2634731 237.60479,12.2634731 C238.371257,12.2634731 18.3952096,12.2634731 18.3952096,12.2634731 L18.3952096,12.2634731 Z M36.7904192,121.101796 L36.7904192,36.7904192 L61.3173653,36.7904192 L85.8443114,67.4491018 L110.371257,36.7904192 L134.898204,36.7904192 L134.898204,121.101796 L110.371257,121.101796 L110.371257,72.8143713 L85.8443114,103.473054 L61.3173653,72.8143713 L61.3173653,121.101796 L36.7904192,121.101796 L36.7904192,121.101796 Z M190.850299,121.101796 L154.05988,80.4790419 L178.586826,80.4790419 L178.586826,36.7904192 L203.113772,36.7904192 L203.113772,79.7125749 L227.640719,79.7125749 L190.850299,121.101796 L190.850299,121.101796 Z"></path>
                       </g>
                   </svg>
-                  <p class="text-xs text-indigo-600 font-bold"><a target="_blank" href="@docs('markdown')#supported-markdown">Markdown</a> &nbsp;&bull;&nbsp; <a href="@docs('discuss')" class="text-indigo-700 font-bold" target="_blank">Berdiskusi dengan bijak </a></p>
+                  <p class="text-sm text-indigo-600 font-semibold"><a target="_blank" href="@docs('markdown')#supported-markdown">Markdown</a> &nbsp;&bull;&nbsp; <a href="@docs('discuss')" class="text-indigo-700 font-semibold" target="_blank">Berdiskusi dengan bijak </a></p>
               </div>
           </div>
       </form>
   </div>
   @else
-      <div class="border-b border-gray-200 px-6 md:px-12 pb-10 text-sm text-gray-600 text-center">
+      <div class="border-b border-gray-200 px-6 md:px-12 pb-10 text-gray-600 text-center">
           <svg class="w-40 inline-block mb-6" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 609.98 593.41">
             <defs>
               <linearGradient id="linear-gradient" x1="316.53" y1="649.55" x2="298.51" y2="397.28" gradientUnits="userSpaceOnUse">
@@ -129,7 +129,7 @@
           </svg>
           <h2 class="text-xl mb-2 font-bold text-indigo-600">Login Dulu, Ya!</h2>
           <p class="mb-4">Mau ikutan diskusi? Untuk ikutan diskusi kamu harus punya identitas, maka dari itu login dulu.</p>
-          <a href="@route('auth', 'github')" class="inline-flex items-center justify-center bg-black py-3 px-4 rounded text-white text-sm shadow-lg hover:shadow-none hover:bg-indigo-800">
+          <a href="@route('auth', 'github')" class="inline-flex items-center justify-center bg-black py-3 px-4 rounded text-white shadow-lg hover:shadow-none hover:bg-indigo-800">
               <svg class="w-5 fill-current text-white inline-block mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><rect width="24" height="24" opacity="0"/><path d="M16.24 22a1 1 0 0 1-1-1v-2.6a2.15 2.15 0 0 0-.54-1.66 1 1 0 0 1 .61-1.67C17.75 14.78 20 14 20 9.77a4 4 0 0 0-.67-2.22 2.75 2.75 0 0 1-.41-2.06 3.71 3.71 0 0 0 0-1.41 7.65 7.65 0 0 0-2.09 1.09 1 1 0 0 1-.84.15 10.15 10.15 0 0 0-5.52 0 1 1 0 0 1-.84-.15 7.4 7.4 0 0 0-2.11-1.09 3.52 3.52 0 0 0 0 1.41 2.84 2.84 0 0 1-.43 2.08 4.07 4.07 0 0 0-.67 2.23c0 3.89 1.88 4.93 4.7 5.29a1 1 0 0 1 .82.66 1 1 0 0 1-.21 1 2.06 2.06 0 0 0-.55 1.56V21a1 1 0 0 1-2 0v-.57a6 6 0 0 1-5.27-2.09 3.9 3.9 0 0 0-1.16-.88 1 1 0 1 1 .5-1.94 4.93 4.93 0 0 1 2 1.36c1 1 2 1.88 3.9 1.52a3.89 3.89 0 0 1 .23-1.58c-2.06-.52-5-2-5-7a6 6 0 0 1 1-3.33.85.85 0 0 0 .13-.62 5.69 5.69 0 0 1 .33-3.21 1 1 0 0 1 .63-.57c.34-.1 1.56-.3 3.87 1.2a12.16 12.16 0 0 1 5.69 0c2.31-1.5 3.53-1.31 3.86-1.2a1 1 0 0 1 .63.57 5.71 5.71 0 0 1 .33 3.22.75.75 0 0 0 .11.57 6 6 0 0 1 1 3.34c0 5.07-2.92 6.54-5 7a4.28 4.28 0 0 1 .22 1.67V21a1 1 0 0 1-.94 1z"/></g></svg>
               Login with GitHub
           </a>

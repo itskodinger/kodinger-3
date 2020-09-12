@@ -73,6 +73,15 @@ class FrontendController extends Controller
 	}
 
 	/**
+	 * Users page
+	 * @return view
+	 */
+	public function users()
+	{
+		return view('users');
+	}
+
+	/**
 	 * Discover page
 	 * @param  Request $request Request
 	 * @return view
@@ -106,28 +115,48 @@ class FrontendController extends Controller
 	}
 
 	/**
-	 * Single page (currently: user or post detail)
+	 * Single page (currently: only for user (post moved to singlePost method))
 	 * @param  String  $slug    User's username or post's slug
 	 * @param  Request $request Request
 	 * @return mix
 	 */
 	public function single($slug, Request $request)
 	{
-		$post = $this->postService->findBySlug($slug, true);
-
-		if(!$post)
+		// temporary redirect
+		$post = $this->postService->findBySlugAll($slug, true);
+		if($post)
 		{
-			$user = $this->userService->findByUsername($slug);
-
-
-			if(!$user) return abort(404);
-
-			$posts = $user->posts()->paginate(10);
-
-			return view('profile', compact('user', 'posts'));
+			return redirect()->route('post.show', [$post->user->username, $post->slug]);
 		}
 
-		return view('single', compact('post'));
+		$user = $this->userService->findByUsername($slug);
+
+		if(!$user) return abort(404);
+
+		$posts = $user->posts()->paginate(10);
+
+		return view('profile', compact('user', 'posts'));
+	}
+
+	public function singlePost($username, $slug)
+	{
+		$post = $this->postService->findBySlugAll($slug, true);
+
+		if(!$post || ($post && $post->user->username !== $username))
+		{
+			return abort(404);
+		}
+
+		if(($post->user_id !== auth()->id() && $post->status == 'draft') || $post->type == 'link') return abort(404);
+
+		$posts = $this->postService->getByAuthor($post->user->id);
+
+		if(count($posts) < 2)
+		{
+			$posts = $this->postService->popular(false);
+		}
+
+		return view('single', compact('post', 'posts'));
 	}
 
 	/**
@@ -242,8 +271,8 @@ class FrontendController extends Controller
 	 */
 	public function search(Request $request)
 	{
-		$types = search_types();
-		$type = $request->type ?? 'post';
+		$datasources = search_datasource();
+		$datasource = $request->datasource ?? 'post';
 		$search = [['name' => 'Search', 'search' => true]];
 		$tags = $this->tagService->popular([5, 5]);
 
@@ -261,7 +290,7 @@ class FrontendController extends Controller
 
 		$tags = array_merge($search, $tags);
 
-		return view('search', compact('types', 'type', 'tags', 'tag'));
+		return view('search', compact('datasources', 'datasource', 'tags', 'tag'));
 	}
 
 	/**
@@ -271,7 +300,7 @@ class FrontendController extends Controller
 	 */
 	public function deletePost($slug)
 	{
-		$post = $this->postService->findBySlug($slug);
+		$post = $this->postService->findBySlugAll($slug);
 
 		if(!auth()->check() || (!$post->is_mine && !auth()->user()->can('post-update')))
 			return abort(404);
@@ -285,20 +314,75 @@ class FrontendController extends Controller
 	 * Create a new post
 	 * @return view
 	 */
-	public function post($id=false)
+	public function postSlide($id=false)
 	{
 		if(!auth()->check()) return abort(403);
 
 		if($id) 
 		{
-			$post = $this->postService->find($id);
-
-			if($post->type == 'link') return abort(404);
-
-			if($post->user_id !== auth()->user()->id && !auth()->user()->can('post-update')) 
-				return abort(403);
+			$this->isAllowedEdit($id);
 		}
 
-		return view('post_form');
+		return view('post_slide');
+	}
+
+	/**
+	 * New post
+	 * @return view
+	 */
+	public function newPost($type=false) 
+	{
+		return view('post_new', compact('type'));
+	}
+
+	private function isAllowedEdit($id)
+	{
+		$post = $this->postService->find($id);
+
+		if($post->type == 'link') return abort(404);
+
+		if($post->user_id !== auth()->user()->id && !auth()->user()->can('post-update')) 
+			return abort(403);
+	}
+
+	/**
+	 * Markdown post
+	 * @return view
+	 */
+	public function postMD($id=false) 
+	{
+		if(!auth()->check()) return abort(403);
+
+		if($id) 
+		{
+			$this->isAllowedEdit($id);
+		}
+
+		return view('post_md', compact('id'));
+	}
+
+	public function postLink()
+	{
+		if(!auth()->check()) return abort(403);
+
+		return view('post_link');
+	}
+
+	/**
+	 * Scenes page
+	 * @return  view
+	 */
+	public function scenes()
+	{
+		return view('scenes');
+	}
+
+	/**
+	 * Scene page
+	 * @return  view
+	 */
+	public function scene()
+	{
+		return view('scene');
 	}
 }

@@ -27,14 +27,14 @@ class CommentAjaxController extends Controller
 	 * @param  Integer  $post_id Post ID
 	 * @return JSON
 	 */
-	public function index(Request $request, $post_id)
+	public function index(Request $request, $post_id, $user_id=false)
 	{
-		$comments = $this->commentService->take($post_id, $request->offset ?? 0, $request->take ?? 10);
+		$comments = $this->commentService->take($post_id, $user_id, $request->offset ?? 0, $request->take ?? 10);
 
 		return response([
 			'data' => $comments,
 			'count' => count($comments),
-			'total' => $this->commentService->total($post_id)
+			'total' => $this->commentService->total($post_id, $user_id)
 		], 200);
 	}
 
