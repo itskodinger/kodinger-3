@@ -1,4 +1,4 @@
-            <h2 class="text-2xl font-semibold mb-2">Bergabung Dengan <i>developer</i> Lainnya dan Mulai Berbagi</h2>
+            <h2 class="text-2xl font-semibold mb-2">{{ $title }}</h2>
             <p class="mb-4 text-gray-600 leading-relaxed">Dengan memiliki akun, kamu akan dapat melakukan:</p>
             <ul class="mb-3 inline-block w-full">
             	@foreach(login_features() as $item)

@@ -232,17 +232,6 @@ html {
 		block;
 }
 
-@screen sm {
-	.off-canvasify {
-		@apply
-			static
-			bg-transparent
-			block
-			h-auto
-			overflow-hidden;
-	}
-}
-
 @screen md {
 	.container {
 		max-width: 680px;
@@ -252,6 +241,15 @@ html {
 @screen lg {
 	.container {
 		max-width: 980px;
+	}
+
+	.off-canvasify {
+		@apply
+			static
+			bg-transparent
+			block
+			h-auto
+			overflow-hidden;
 	}
 
 	.sidebar {

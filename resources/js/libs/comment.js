@@ -456,21 +456,23 @@ export function commentLoad(opts, done)
         removeLoadMore();
 
         res.data.forEach((item) => {
-            commentAdd({
-                id: item.id,
-                name: item.user.name,
-                username: item.user.username,
-                avatar: item.user.the_avatar_sm,
-                content: item.markdown,
-                time: item.time,
-                is_mine: item.is_mine,
-                reply: item.reply,
-                post: {
-                    title: item.post.title,
-                    slug: item.post.slug,
-                    username: item.post.user.username
-                }
-            }, false, 'append');
+            if(item.post) {
+                commentAdd({
+                    id: item.id,
+                    name: item.user.name,
+                    username: item.user.username,
+                    avatar: item.user.the_avatar_sm,
+                    content: item.markdown,
+                    time: item.time,
+                    is_mine: item.is_mine,
+                    reply: item.reply,
+                    post: {
+                        title: item.post.title,
+                        slug: item.post.slug,
+                        username: item.post.user.username
+                    }
+                }, false, 'append');
+            }
         });
 
         if(res.total > 10)

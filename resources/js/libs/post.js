@@ -643,11 +643,11 @@ let api = {
 			    				</div>
 		    				</div>
 			    			<div class="flex -mx-2 mt-6 border-t border-b border-gray-100 py-2">
-			    				<div class="w-6/12 px-2 text-center">
+			    				<div class="w-6/12 px-2 text-center flex items-center flex-col">
 			    					<div class="inline-block mb-2 w-20 h-4 bg-gray-100 rounded"></div>
 			    					<div class="inline-block"><div class="w-10 h-6 bg-gray-200 rounded"></div></div>
 			    				</div>
-			    				<div class="w-6/12 px-2 text-center">
+			    				<div class="w-6/12 px-2 text-center flex items-center flex-col">
 			    					<div class="inline-block mb-2 w-20 h-4 bg-gray-100 rounded"></div>
 			    					<div class="inline-block"><div class="w-10 h-6 bg-gray-200 rounded"></div></div>
 			    				</div>

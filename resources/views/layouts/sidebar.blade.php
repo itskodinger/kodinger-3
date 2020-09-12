@@ -1,5 +1,5 @@
 <div class="off-canvasify sidebar" id="sidebar">
-    <div class="mx-auto p-4 sm:p-0 sm:mx-0">
+    <div class="mx-auto p-4 lg:p-0 lg:mx-0">
         @include('layouts.card_random')
 
         <div class="bg-white rounded border border-gray-200 mt-10">
