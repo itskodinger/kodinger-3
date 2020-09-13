@@ -69,7 +69,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Blade::directive('currentRemove', function($expression) {
-            return "<?php echo route(request()->route()->getName(), array_except(request()->all(), $expression)); ?>";
+            return "<?php echo rtrim(url(request()->path()) . '?' . http_build_query(array_except(request()->all(), $expression)), '?'); ?>";
         });
 
         Paginator::defaultView('pagination::default');

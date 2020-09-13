@@ -54,6 +54,24 @@ module.exports = {
 			'.bg-whatsapp': {
 			  backgroundColor: '#075e54'
 			},
+      '.bg-instagram': {
+        backgroundColor: '#5851db'
+      },
+      '.bg-youtube': {
+        backgroundColor: '#ff0000'
+      },
+      '.bg-dribbble': {
+        backgroundColor: '#ea4c89'
+      },
+      '.bg-buymeacoffee': {
+        backgroundColor: '#FFDD00'
+      },
+      '.bg-karyakarsa': {
+        backgroundColor: '#FF5569'
+      },
+      '.bg-trakteer': {
+        backgroundColor: '#BE1E2D'
+      },
 			'.min-h-main': {
 			  minHeight: 'calc(100vh - 142px)'
 			},
@@ -89,6 +107,12 @@ module.exports = {
 				width: '100%',
 				content: 'attr(data-title)'
 			},
+      '.tooltip-lg::after': {
+        minWidth: '100px'
+      },
+      '.tooltip-top::after': {
+        top: '-100%'
+      },
 			'.tooltip:hover::after': {
 				display: 'block'
 			},

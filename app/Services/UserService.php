@@ -3,6 +3,7 @@
 namespace Services;
 
 use App\User;
+use Facades\Services\UserSettingService;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as Image;
 
@@ -99,6 +100,27 @@ class UserService
 
 	public function setting($request)
 	{
+		$req = $request->all();
+	
+		foreach(supported_links() as $link)
+		{
+			$the_link = $req[$link['name']];
+			if(isset($the_link))
+			{
+				$parse_url = parse_url($the_link);
+
+				if(!isset($parse_url['host']))
+				{
+					return ['error' => true, 'msg' => 'URL ' . $link['display_name'] . ' tidak valid'];
+				}
+
+				if(isset($parse_url['host']) && str_replace('www.', '', $parse_url['host']) !== $link['domain'])
+				{
+					return ['error' => true, 'msg' => 'URL ' . $link['display_name'] . ' tidak benar'];
+				}
+			}
+		}
+
 		// define user's avatar
 		$avatar = auth()->user()->avatar;
 
@@ -139,8 +161,15 @@ class UserService
 
 		$except = [
 			'email', 
-			'provider'
+			'provider',
+			...collect(supported_links())->pluck('name')
 		];
+
+		foreach(supported_links() as $link)
+		{
+			if(isset($req[$link['name']]))
+				UserSettingService::sync(auth()->id(), $link['name'], $req[$link['name']]);
+		}
 
 		if(enable_username())
 		{
