@@ -159,11 +159,10 @@ class UserService
 			$avatar = $avatar_name;
 		}
 
-		$except = [
+		$except = array_merge([
 			'email', 
 			'provider',
-			...collect(supported_links())->pluck('name')
-		];
+		], collect(supported_links())->pluck('name'));
 
 		foreach(supported_links() as $link)
 		{
