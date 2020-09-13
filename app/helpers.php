@@ -467,3 +467,57 @@ function points()
 		'discuss' => 10
 	];
 }
+
+function supported_links() 
+{
+	return [
+		[
+			'name' => 'facebook',
+			'display_name' => 'Facebook',
+			'domain' => 'facebook.com',
+			'eg' => 'https://facebook.com/username'
+		],
+		[
+			'name' => 'twitter',
+			'display_name' => 'Twitter',
+			'domain' => 'twitter.com',
+			'eg' => 'https://twitter.com/username'
+		],
+		[
+			'name' => 'instagram',
+			'display_name' => 'Instagram',
+			'domain' => 'instagram.com',
+			'eg' => 'https://instagram.com/username'
+		],
+		[
+			'name' => 'youtube',
+			'display_name' => 'Youtube',
+			'domain' => 'youtube.com',
+			'eg' => 'https://youtube.com/channel/channel_id'
+		],
+		[
+			'name' => 'dribbble',
+			'display_name' => 'Dribbble',
+			'domain' => 'dribbble.com',
+			'eg' => 'https://dribbble.com/username'
+		],
+		[
+			'name' => 'buymeacoffee',
+			'display_name' => 'Buy me a coffee',
+			'domain' => 'buymeacoffee.com',
+			'eg' => 'https://buymeacoffee.com/username'
+		],
+		[
+			'name' => 'karyakarsa',
+			'display_name' => 'KaryaKarsa',
+			'domain' => 'karyakarsa.com',
+			'eg' => 'https://karyakarsa.com/username'
+		],
+		[
+			'name' => 'trakteer',
+			'display_name' => 'Trakteer',
+			'domain' => 'trakteer.com',
+			'eg' => 'https://trakteer.id/username'
+		],
+	];
+}

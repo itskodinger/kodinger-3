@@ -10,6 +10,7 @@
             @endforeach
         </ul>
     </div>
+
     <ul class="flex items-center -mx-2 ml-auto text-sm">
         <li class="mx-2"><a href="@currentRemove(['type'])" class="hover:text-indigo-600 {{ is_type('') ? 'text-indigo-600' : '' }}">Semua</a></li>
         @foreach(post_types() as $type)

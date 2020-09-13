@@ -229,8 +229,8 @@ class FrontendController extends Controller
 	{
 		$setting = $this->userService->setting($request);
 
-		if(!$setting)
-			return redirect()->back()->withErrors();
+		if(is_array($setting) && isset($setting['error']) && $setting['error'] === true)
+			return redirect()->back()->withErrors($setting['msg']);
 
 		flash()->success('Profile berhasil diperbarui');
 

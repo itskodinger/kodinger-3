@@ -73,6 +73,19 @@
                 'help' => 'Cantumkan perusahaan tempat kamu bekerja sekarang.'
             ])
 
+            <h4 id="account-setting" class="mb-1 mt-6 text-lg font-semibold text-indigo-500">Pengaturan Tautan</h4>
+            <p class="mb-5 text-gray-500 font-light">Definisikan tautan eksternal ke sosial media, platform portfolio atau halaman dukungan kamu. Ini akan mempermudah pengguna lain untuk menjalin koneksi dengan kamu di luar platform Kodinger.</p>
+
+            @foreach(supported_links() as $link)
+                @field([
+                    'name' => $link['name'],
+                    'label' => $link['display_name'],
+                    'type' => 'text',
+                    'value' => $user->setting->pluck('value', 'name')[$link['name']] ?? null,
+                    'placeholder' => $link['eg']
+                ])
+            @endforeach
+
             <h4 id="account-setting" class="mb-1 mt-6 text-lg font-semibold text-indigo-500">Pengaturan Akun</h4>
             <p class="mb-5 text-gray-500 font-light">Informasi akun tidak dapat kamu ubah sendiri, kamu perlu menghubungi salah satu admin untuk membuat permintaan pengubahan informasi akun.</p>
 

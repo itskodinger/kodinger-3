@@ -108,6 +108,11 @@ class User extends Authenticatable
         return avatar($this->avatar, 80, $this->name);
     }
 
+    public function getLinksAttribute()
+    {
+        return $this->setting->whereIn('name', collect(supported_links())->pluck('name'));
+    }
+
     public function posts()
     {
         return $this->hasMany('App\Post');
@@ -131,5 +136,10 @@ class User extends Authenticatable
         $to = Carbon::now()->subDay()->toDateString();
 
         return $this->hasMany('App\Comment')->whereBetween(DB::raw('date(created_at)'), [$from, $to]);
+    }
+
+    public function setting()
+    {
+        return $this->hasMany('App\UserSetting');
     }
 }
