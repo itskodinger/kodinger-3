@@ -162,7 +162,7 @@ class UserService
 		$except = array_merge([
 			'email', 
 			'provider',
-		], collect(supported_links())->pluck('name'));
+		], collect(supported_links())->pluck('name')->all());
 
 		foreach(supported_links() as $link)
 		{
