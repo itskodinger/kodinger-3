@@ -4,12 +4,14 @@
     <div class="p-4 mx-auto sm:p-0 sm:mx-0">
 
 
-            <div class="hidden lg:block">
-                @include('layouts.card_random')
-                @include('layouts.card_more_post')
-            </div>
+            @if(isset($post) && $post->is_markdown)
+                <div class="hidden lg:block ">
+                    @include('layouts.card_random')
+                    @include('layouts.card_more_post')
+                </div>
+            @endif
 
-            <div class="block lg:hidden">
+            <div class="{{ (isset($post)) ? 'block lg:hidden' : '' }}">
                 <div class="p-6 mb-10 rounded" style="background-image: linear-gradient( 109.5deg,  rgba(76,221,242,1) 11.2%, rgba(92,121,255,1) 91.1% );">
                     <div class="mb-2 text-3xl">👨👧</div>
                     <h2 class="mb-2 text-lg font-semibold text-white">Belajar Bareng Komunitas</h2>
@@ -40,7 +42,7 @@
             </div>
 
 
-        <div class="{{ $post->is_markdown ? '' : 'py-6' }}">
+        <div class="{{ (isset($post) && $post->is_markdown) ? '' : 'py-6' }}">
             <div class="container mx-auto">
                 <div class="mb-2 -mx-2">
                 	@include('layouts.links')
