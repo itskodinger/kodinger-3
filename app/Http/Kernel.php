@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use Fruitcake\Cors\HandleCors;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -14,6 +15,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
+        HandleCors::class,
         // Middleware\AttachTokenIntoRequestHeader::class,
         // Middleware\AttachUserToRequestIfAuthenticated::class,
         \App\Http\Middleware\CheckForMaintenanceMode::class,

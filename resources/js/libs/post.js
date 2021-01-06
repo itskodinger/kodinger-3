@@ -94,7 +94,7 @@ let api = {
 	 */
 	interactions: {
 		syntax: function(element) {
-			if(window.hljs) {			
+			if(window.hljs) {
 				element.querySelectorAll('pre code').forEach((block) => {
 				  hljs.highlightBlock(block);
 				});
@@ -112,7 +112,7 @@ let api = {
 
 			if(the_image) {
 				let image = new Image;
-	
+
 				image.src = the_image.dataset.blurry;
 				image.dataset.src = the_image.dataset.src;
 				image.className = 'w-full';
@@ -246,7 +246,7 @@ let api = {
 						item.classList.remove('pointer-events-none');
 					})
 					.then(function(res) {
-						is_saved = res.saved; 
+						is_saved = res.saved;
 						item.dataset.saved = res.saved;
 
 						toggle_icon_save(is_saved, item, true);
@@ -262,7 +262,7 @@ let api = {
 				});
 			});
 		},
-		
+
 		/**
 		 * Love buttons
 		 * @param  {Node} parent Target element
@@ -272,7 +272,7 @@ let api = {
 				ic_unlove = '<svg class="fill-current text-red-600" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>',
 			    ic_spin = '<svg class="stroke-current spin" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="6"></line><line x1="12" y1="18" x2="12" y2="22"></line><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line><line x1="2" y1="12" x2="6" y2="12"></line><line x1="18" y1="12" x2="22" y2="12"></line><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line></svg>';
 
-			function toggle_icon_love(is_loved, item, calc=false) 
+			function toggle_icon_love(is_loved, item, calc=false)
 			{
 				if(is_loved){
 					find(item, 'span').append(str2dom(ic_unlove));
@@ -329,7 +329,7 @@ let api = {
 						item.classList.remove('pointer-events-none');
 					})
 					.then(function(res) {
-						is_loved = res.saved; 
+						is_loved = res.saved;
 						item.dataset.loved = res.saved;
 
 						toggle_icon_love(is_loved, item, true);
@@ -365,9 +365,9 @@ let api = {
 						btn = ''; // button wrapper
 
 					// convert share_btn template to DOM
-					btn = str2dom(share_btn); 
+					btn = str2dom(share_btn);
 
-					if(key.class.split(' ').length > 1)	
+					if(key.class.split(' ').length > 1)
 						adds(btn.classList, key.class);
 					else
 						btn.classList.add(key.class);
@@ -408,7 +408,7 @@ let api = {
 					for(let i=0; i < uris.length; i++) {
 						// when the button has uri value
 						if(uris[i].uri)
-							// set the href attribute to the value of the uri property 
+							// set the href attribute to the value of the uri property
 							$$('.share-buttons a')[i].setAttribute('href', uris[i].uri + url);
 
 						// when the button is has copy action
@@ -465,7 +465,7 @@ let api = {
 		onContentCollected: function({dom, interactions}) {
 			// do stuff here
 		},
-		
+
 		onContentLoaded: function() {
 			// do stuff here
 		},
@@ -473,7 +473,7 @@ let api = {
 		firstContentLoaded: function() {
 			const { loadMore, options } = api;
 
-			if(!options.first) {			
+			if(!options.first) {
 				let scrollReachBottom = (function(reach) {
 					window.addEventListener('scroll', function(e) {
 						if ((window.innerHeight + window.scrollY) >= $('#app').offsetHeight) {
@@ -668,7 +668,7 @@ let api = {
 		        	if(tag.tag !== null) {
 	                    return `<a class="mt-2 border border-gray-300 bg-gray-100 hover:border-indigo-800 hover:text-indigo-800 mr-1 rounded py-1 px-3" href="${routes.search + fullUrlWithQuery({tag: tag.tag.name})}">
 	                        #${ tag.tag.name }
-	                    </a>`;			        		
+	                    </a>`;
 		        	}else {
 		        		return '';
 		        	}
@@ -684,12 +684,12 @@ let api = {
 				<div class="border-t border-gray-200">
 				    <div class="flex w-full items-center">
 				        <a data-love ${ post.is_post_loved ? 'data-loved' : '' } class="py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200" href="#">
-				            <span></span> 
+				            <span></span>
 				            <div class="ml-2 inline-block post-love-count">${post.total_loves}</div>
 				        </a>
 				        ${post.type !== 'link' ?
 				        `<a class="py-4 px-5 hover:bg-gray-100 flex-1 sm:flex-none text-gray-600 flex items-center justify-center border-r border-gray-200" href="${routes.post_single.replace(/username/g, post.user.username).replace(/slug/g, post.slug) + '#comments'}">
-				            <svg class="stroke-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg> 
+				            <svg class="stroke-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
 				            <div class="ml-2 inline-block post-comment-count">${post.total_comments}</div>
 				        </a>`
 				        : ''}
@@ -745,7 +745,7 @@ let api = {
 				        : // else
 				        `
 				        	<a href="${post.post_card.url}" target="_blank">
-				        	${post.post_card.thumbnail !== null ? 
+				        	${post.post_card.thumbnail !== null ?
 					            `<img src="${post.post_card.thumbnail}" class="w-full h-64 object-cover">`
 				            : // else
 					            `<img src="${post.post_card.default_thumbnail}" class="w-full h-64 object-scale-down">`
@@ -754,7 +754,7 @@ let api = {
 				        `}
 
 				        <div class="p-4 border-t bg-gray-100">
-				        
+
 				            <h2 class="md:text-xl mb-2 text-base font-semibold hover:text-indigo-600"><a target="_blank" href="${post.post_card.url}">${post.post_card.title}</a></h2>
 
 				            ${post.post_card.description ? `
@@ -766,17 +766,17 @@ let api = {
 			    ` : ``}
 
 			    ${ post.type !== 'link' ? `
-			    
-			    <div class="relative${post.content_object.length > 1 && options.carousel ? ' carousel-outer w-full' : ''}"> 
+
+			    <div class="relative${post.content_object.length > 1 && options.carousel ? ' carousel-outer w-full' : ''}">
 			        <div class="${post.content_object.length > 1 && options.carousel ? 'carousel w-full' : ''}">
-			            
-			            ${'carousel' in options && options.carousel == false ? 
+
+			            ${'carousel' in options && options.carousel == false ?
 			            	`<a href="${routes.post_single.replace(/username/g, post.user.username).replace(/slug/g, post.slug)}">
 			                    <div data-blurry="${post.blurry_image}" data-src="${!post.is_markdown ? post.first_slide_media : post.cover}" class="lazy-image w-full bg-gray-200 bg-cover h-40 sm:h-64"></div>
 			                </a>`
 
 		                : // else
-			                
+
 			                post.content_object.map(function(slide) {
 			                	const img = slide.url;
 
@@ -830,13 +830,13 @@ let api = {
 					<img src="${post.cover}" class="rounded-tl rounded-tr" />
 
 					<div class="border border-gray-200 rounded-bl rounded-br">
-						<div class="p-6">
+						<div class="lg:p-10 p-6">
 							<h1 class="text-4xl font-bold">${post.title}</h1>
 							<div class="flex items-center text-gray-600 -mx-2 mt-4 mb-8 border-t border-b border-gray-200 py-4">
 								<div class="px-2 flex items-center">
-									<img class="w-8 h-8 rounded-full" src="${user.the_avatar}">
+									<img class="w-8 h-8 rounded-full" src="${post.user.the_avatar}">
 									<div class="ml-2">
-										<a class="text-indigo-600 hover:text-indigo-800 font-semibold" href="${routes.single + user.username}">${user.name}</a>
+										<a class="text-indigo-600 hover:text-indigo-800 font-semibold" href="${routes.single + post.user.username}">${post.user.name}</a>
 									</div>
 								</div>
 								<div class="px-2">&bull;</div>
@@ -878,7 +878,7 @@ let api = {
 
 				    <div class="bg-gray-100 w-full" style="height: 470px;">
 				    </div>
-				    
+
 
 				    <div class="p-6">
 				        <div class="mb-4 bg-gray-200 w-64 h-8 rounded-lg"></div>
@@ -1020,8 +1020,8 @@ let api = {
 		}
 
 		Object.keys(parameters).forEach(function(key) {
-			if(parameters[key] == "" || parameters[key] == null) 
-				delete parameters[key]; 
+			if(parameters[key] == "" || parameters[key] == null)
+				delete parameters[key];
 		});
 
 		let url = new URLSearchParams(parameters).toString();
@@ -1067,7 +1067,7 @@ let api = {
 			queryPending.dispose();
 		}
 
-		if(http.ok) 
+		if(http.ok)
 			return Promise.resolve(http.json());
 		else
 			return Promise.reject(http);
@@ -1124,7 +1124,7 @@ let api = {
 	 * @param  {Object} options Object to be set
 	 */
 	set opts(options) {
-		this.options = objExtend(this.defOptions, options);			
+		this.options = objExtend(this.defOptions, options);
 	},
 
 	/**
@@ -1147,7 +1147,7 @@ let api = {
 						image.addEventListener('load', function() {
 							setTimeout(function() {
 								target.parentNode.appendChild(image);
-							
+
 								api.vars.io.unobserve(target);
 
 								target.remove();
@@ -1208,8 +1208,8 @@ let api = {
 	},
 
 	/**
-	 * Templating method; get template string, pass an object to it; 
-	 * attach a few events 
+	 * Templating method; get template string, pass an object to it;
+	 * attach a few events
 	 * @param  {Object}    data:res     		Post data
 	 * @param  {Object}    options.options      Instance options
 	 * @param  {Object}    options.templates    List of template literal we have
@@ -1263,7 +1263,7 @@ let api = {
 		}
 
 		return new Promise(function(resolve, reject) {
-			// if `posts`` has only one data 
+			// if `posts`` has only one data
 			if(options.first || direct){
 				appendingTemplate(posts);
 			}else{
@@ -1370,7 +1370,7 @@ let api = {
 			// if wrap option defined
 			let wrap = options.shimmerWrap;
 			if(wrap && typeof wrap == 'object') {
-				// then wrap the element template					
+				// then wrap the element template
 				tpl = wrapNode(wrap, tpl);
 			}
 
@@ -1476,7 +1476,7 @@ let api = {
 			let shi;
 
 			// 0. start fetching
-			query({page, queryPending, url: options.url, buildParams, options}, 
+			query({page, queryPending, url: options.url, buildParams, options},
 				function() {
 					// init query callback
 					// show the shimmer
@@ -1564,7 +1564,7 @@ const post = {
 	types,
 
 	/**
-	 * Initialize 
+	 * Initialize
 	 * @param  {Node} 	target Target element
 	 * @param  {Object} opts   Options given
 	 * @return {Object}        Public API
@@ -1589,13 +1589,13 @@ const post = {
 
 		// destructuring
 		const {
-			elem, 
-			options, 
+			elem,
+			options,
 			query,
-			templates, 
+			templates,
 			templating,
-			exception, 
-			lifecycle, 
+			exception,
+			lifecycle,
 			loadMore,
 			shimmer,
 			io,
@@ -1652,7 +1652,7 @@ const post = {
 				prepend,
 				...args
 			}).catch(function(error) {
-				
+
 			});
 		}
 

@@ -13,6 +13,7 @@
         "doctrine/dbal": "^2.9",
         "embed/embed": "^3.4",
         "fideloper/proxy": "^4.0",
+        "fruitcake/laravel-cors": "^2.0",
         "graham-campbell/markdown": "^11.1",
         "intervention/image": "^2.5",
         "kodinger/docs": "*",
