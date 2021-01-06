@@ -15,8 +15,8 @@
                             </div>
 
 		            		<p class="mb-2 text-gray-600">Halaman Terkait</p>
-                            <div class="flex flex-wrap items-center p-3 mb-8 bg-gray-100 border border-gray-200 rounded">
-		            			<div class="w-full h-32 bg-cover bg-center rounded lg:h-16 lg:w-16" style="background-image: url({{ isset($redirectData['preview']) ? $redirectData['preview']->image : '' }});"></div>
+                            <div class="flex flex-wrap items-center p-3 mb-8 bg-gray-100 border border-gray-200 rounded lg:flex-no-wrap">
+		            			<div class="flex-shrink-0 w-full h-32 bg-center bg-cover rounded lg:h-16 lg:w-16" style="background-image: url({{ isset($redirectData['preview']) ? $redirectData['preview']->image : '' }});"></div>
 		            			<div class="mt-2 lg:ml-4 lg:mt-0">
 		            				<h4 class="font-semibold text-indigo-600">{{ isset($redirectData['preview']) ? $redirectData['preview']->title : truncate($redirectData['url'], 50) }}</h4>
 		            				<p class="mt-1 text-gray-600">{{ isset($redirectData['preview']) ? truncate($redirectData['preview']->description, 60) : '' }}</p>
