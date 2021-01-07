@@ -62,7 +62,7 @@ class CommentAjaxController extends Controller
     {
     	$comment = $this->commentService->find($request->id);
 
-    	if($comment->user_id == auth()->user()->id) {
+    	if($comment->user_id == auth()->user()->id || is_user_admin() ) {
     		$comment->delete();
 
     		return response([

@@ -149,8 +149,6 @@ function commentAdd(obj, classes, method, target)
     Object.keys(commentActions).forEach(function(actionKey) {
         let action = commentActions[actionKey];
 
-        console.log(action, user)
-
         if(((('auth' in action && action.auth) == auth) && !('isMine' in action)) || (('isMine' in action && action.isMine) == obj.is_mine) || (!('auth' in action) && !('isMine' in action)) || ('isAdmin' in action && isCurrentUserAdmin)) {
             let act = str2dom(
                 typeof action == 'object' ? action.markup.call(obj) : action.call(obj)
