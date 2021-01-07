@@ -43,6 +43,7 @@ let commentActions = {
             `;
         },
         isMine: true,
+        isAdmin: true,
         listener: {
             on: 'click',
             handler: function(obj, event) {
@@ -148,7 +149,9 @@ function commentAdd(obj, classes, method, target)
     Object.keys(commentActions).forEach(function(actionKey) {
         let action = commentActions[actionKey];
 
-        if(((('auth' in action && action.auth) == auth) && !('isMine' in action)) || (('isMine' in action && action.isMine) == obj.is_mine) || (!('auth' in action) && !('isMine' in action))) {
+        console.log(action, user)
+
+        if(((('auth' in action && action.auth) == auth) && !('isMine' in action)) || (('isMine' in action && action.isMine) == obj.is_mine) || (!('auth' in action) && !('isMine' in action)) || ('isAdmin' in action && isCurrentUserAdmin)) {
             let act = str2dom(
                 typeof action == 'object' ? action.markup.call(obj) : action.call(obj)
             );
@@ -190,7 +193,7 @@ function commentAdd(obj, classes, method, target)
     if($('.no-comment'))
         $('.no-comment').remove();
 
-    if(window.hljs) {           
+    if(window.hljs) {
         item.querySelectorAll('pre code').forEach((block) => {
           hljs.highlightBlock(block);
         });
@@ -247,7 +250,7 @@ function quote(id, e)
         action = quoteTemplateActions[action];
 
         let act = str2dom(
-            typeof action == 'object' ? action.markup.call(data) : action.call(data)  
+            typeof action == 'object' ? action.markup.call(data) : action.call(data)
         );
 
         if(action.listener)

@@ -134,7 +134,7 @@ function user_statuses()
 function check_url($value)
 {
 	$value = trim($value);
-	if (get_magic_quotes_gpc()) 
+	if (get_magic_quotes_gpc())
 	{
 		$value = stripslashes($value);
 	}
@@ -142,7 +142,7 @@ function check_url($value)
 	$value = strip_tags($value);
 	$value = htmlspecialchars($value);
 	return $value;
-}	
+}
 
 function get_data($url)
 {
@@ -156,7 +156,7 @@ function get_data($url)
 
     $data = curl_exec($ch);
 	$info = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
-	
+
 	//checking mime types
 	if(strstr($info,'text/html')) {
 		curl_close($ch);
@@ -320,15 +320,21 @@ function user_js()
 	return collect(auth()->user())
 		->only([
 			'id',
-			'name', 
-			'username', 
-			'the_avatar_sm', 
-			'the_avatar'
+			'name',
+			'username',
+			'the_avatar_sm',
+            'the_avatar'
 		])
 		->toJson();
 }
 
-function search_datasource() 
+function is_user_admin() {
+    if( ! auth()->check() ) return false;
+
+    return auth()->user()->hasRole('admin');
+}
+
+function search_datasource()
 {
 	return [
 		'post' => 'Post',
@@ -369,7 +375,7 @@ function link_nl2obj($str)
 		foreach($link_array as $k => $link)
 		{
 			if(!empty($link))
-			{		
+			{
 				$new_array[$k]['id'] = str_random();
 				$new_array[$k]['value'] = $link;
 			}
@@ -404,7 +410,7 @@ function is_home()
 	return request()->route()->getName() == 'index' ? true : false;
 }
 
-function is_provider_google() 
+function is_provider_google()
 {
 	return auth()->user()->provider == 'google' ? true : false;
 }
@@ -468,7 +474,7 @@ function points()
 	];
 }
 
-function supported_links() 
+function supported_links()
 {
 	return [
 		[
