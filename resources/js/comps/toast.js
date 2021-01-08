@@ -4,7 +4,7 @@ class Toast {
 	constructor(options) {
 		this.id = 'toast-' + this.generateID();
 		this.classes = {
-			wrapper: 'fixed absolutely-center bottom-0 p-4',
+			wrapper: 'fixed absolutely-center bottom-0 p-4  z-9999',
 			toast: 'anim-fade-up transition bg-black text-white px-4 py-3 rounded mt-2 shadow'
 		};
 

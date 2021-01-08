@@ -24,6 +24,13 @@ module.exports = {
     	cursor: {
     		help: 'help'
     	},
+        zIndex: {
+            9999: '9999'
+        },
+        marginTop: {
+            70: 70
+        }
+
     },
   },
   variants: {

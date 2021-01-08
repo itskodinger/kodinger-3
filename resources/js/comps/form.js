@@ -11,8 +11,9 @@ import Sortable from 'sortablejs';
 import Tagify from '@yaireo/tagify';
 import he from 'he';
 
-/**
- * INI HARUSNYA SEPARATION OF CONCERN AWKOAWKOWAK
+/** INI HARUSNYA SEPARATION OF CONCERN AWKOAWKOWAK
+ *
+ * TAU LU, BUKANYA DI SEPARATION OF CONCERN, MAKANYA MAIN JUDI DULU
  */
 
 class Form extends Component {
@@ -53,6 +54,7 @@ class Form extends Component {
 			publish: false,
 			statusSaving: '',
 			cover: '',
+			editorMaximized: false,
 
 			currentLinkKey: Object.keys(key2str)[0],
 		}
@@ -476,7 +478,10 @@ class Form extends Component {
 		this.setState({
 			publish: true,
 			statusSaving: 'Saved'
-		});
+        }, () => {
+            this.toast.add('💾&nbsp; Post autosaved.')
+        });
+
 	}
 
 	statusFailed() {
@@ -1780,6 +1785,30 @@ class Form extends Component {
 	    }
 	}
 
+
+    toggleEditorMaximizer(e) {
+        e.preventDefault()
+
+        let container = document.getElementById('editorContainer');
+        let classes = 'fixed inset-0 z-9999 bg-white p-10 mt-70';
+
+        if( this.state.editorMaximized )  {
+            classes.split(' ').map(c => container.classList.remove(c))
+            this.setState({'editorMaximized': false})
+            document.body.style.overflow = 'initial';
+            this.contentSwitch('editor', {currentTarget: document.querySelector('.editor-modes button')})
+        }
+        else
+        {
+            classes.split(' ').map(c => container.classList.add(c))
+            this.setState({'editorMaximized': true})
+            document.body.style.overflow = 'hidden';
+            this.contentSwitch('editor', {currentTarget: document.querySelector('.editor-modes button')})
+        }
+
+
+    }
+
 	uploadContentImage(e) {
 		const { id, publicFolder } = this.state;
 		const btn = e.currentTarget;
@@ -2010,7 +2039,7 @@ class Form extends Component {
 				    <div className="fixed w-screen h-screen bg-black opacity-50"></div>
 				    <div className="relative w-full h-full p-10 my-0 bg-white shadow-lg md:my-10 sm:w-6/12 lg:w-6/12 md:w-8/12 md:h-auto md:rounded">
 				        <h2 className="text-xl font-bold">Tentukan Deskripsi</h2>
-				        <p className="text-gray-600 mt-2 leading-relaxed">Berikan deskripsi pada slide ini. Kamu dapat mengosongkan deskripsi bila tidak ada. <a href={routes.docs + '/create-content#captioning'} className="text-indigo-600 border-b border-indigo-600">Pelajari selengkapnya</a> tentang mengisi keterangan.</p>
+				        <p className="mt-2 leading-relaxed text-gray-600">Berikan deskripsi pada slide ini. Kamu dapat mengosongkan deskripsi bila tidak ada. <a href={routes.docs + '/create-content#captioning'} className="text-indigo-600 border-b border-indigo-600">Pelajari selengkapnya</a> tentang mengisi keterangan.</p>
 				        <div className="mt-6 mb-5">
 				        	<div className="flex">
 				        		<button onClick={this.captionSwitch.bind(this, 'editor')} className="px-4 py-2 border-t border-l border-gray-200 rounded-tl-lg">Editor</button>
@@ -2083,7 +2112,7 @@ class Form extends Component {
 				            			<>
 					            		{ status.toUpperCase() == 'PUBLISH' ?
 						            		<div className="px-6 py-4 mb-4 leading-loose text-teal-600 bg-teal-100 border border-teal-200 rounded">
-						            			Post ini sudah dipublikasikan – semua orang dapat melihatnya. <a href={routes.single + slug} className="border-b border-teal-600 pb-1 font-semibold">Lihat post</a> atau <a href={routes.post_new} className="pb-1 font-semibold border-b border-teal-600">Buat post baru</a>
+						            			Post ini sudah dipublikasikan – semua orang dapat melihatnya. <a href={routes.single + slug} className="pb-1 font-semibold border-b border-teal-600">Lihat post</a> atau <a href={routes.post_new} className="pb-1 font-semibold border-b border-teal-600">Buat post baru</a>
 						            		</div>
 						            		:
 						            		<div className="px-6 py-4 mb-4 leading-loose text-blue-600 bg-blue-100 border border-blue-200 rounded">
@@ -2207,32 +2236,53 @@ class Form extends Component {
 										{ this.isMarkdownPost() &&
 											<>
 												<div className="p-6 mt-10 border border-gray-200 rounded md:p-8">
-											        <h2 className="mb-4 text-xl font-semibold text-indigo-600">Konten</h2>
+                                                    <div className="flex flex-row items-center mb-4">
+                                                        <h2 className="text-xl font-semibold text-indigo-600 ">Konten</h2>
+                                                    </div>
 											        <p className="mt-2 mb-6 leading-relaxed text-gray-600">Tulis isi post yang ingin kamu sampaikan. Kamu dapat menggunakan format Markdown, <a href=""  target="_blank">pelajari selengkapnya</a>.</p>
 
-					        			        	<div className="sticky flex items-center mb-2" style={{top: '90px'}}>
-					        			        		<button onClick={this.uploadContentImage.bind(this)} className="flex items-center px-4 py-2 bg-white border border-gray-300 rounded hover:border-indigo-500 hover:text-indigo-500">
-					        				        		<svg className="mr-2" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-					        			        			<span>Unggah Gambar</span>
-					        			        		</button>
+                                                    <div id="editorContainer">
 
-					        			        		<div className="flex ml-auto bg-white rounded editor-modes">
-					        				        		<button onClick={this.contentSwitch.bind(this, 'editor')} className="px-4 py-2 text-white bg-indigo-600 border-t border-b border-l border-gray-200 rounded-tl rounded-bl">Editor</button>
-					        				        		<button onClick={this.contentSwitch.bind(this, 'preview')} className="px-4 py-2 border-t border-b border-r border-gray-200 rounded-tr rounded-br">Preview</button>
-					        			        		</div>
-					        			        	</div>
-					                	        	<div className="content-editor">
-					        				        	<textarea name="content" onChange={this.mdContentChange.bind(this)} onPaste={this.mdContentHandlePaste.bind(this)} style={{minHeight: '50vh'}} className="block w-full px-5 py-3 mb-2 text-gray-600 border border-gray-200 rounded resize-y content-area focus:outline-none focus:border-indigo-600" tabIndex="4" placeholder="Tulis apapun di sini ..." defaultValue={content}></textarea>
-					                	        	</div>
-					                	        	<div className="hidden p-5 mb-2 overflow-auto border border-gray-200 rounded content-preview markdowned markdowned-mdpost">
-					                	        		Parsing ...
-					                	        	</div>
-					        			        	<p className="text-sm text-gray-600"><a className="text-indigo-600" target="_blank" href={routes.docs + '/markdown#supported-markdown'} tabIndex="-1">Markdown</a></p>
+                                                        <div className={`sticky flex items-center mb-2 z-9999 ${this.state.editorMaximized ? '' : ''}`} style={{top: '90px'}}>
+                                                            <button onClick={this.uploadContentImage.bind(this)} className="flex items-center px-4 py-2 bg-white border border-gray-300 rounded hover:border-indigo-500 hover:text-indigo-500">
+                                                                <svg className="mr-2" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                                                                <span>Unggah Gambar</span>
+                                                            </button>
+
+                                                            <button onClick={this.toggleEditorMaximizer.bind(this)} className="flex items-center px-4 py-2 ml-1 bg-white border border-gray-300 rounded hover:border-indigo-500 hover:text-indigo-500">
+                                                                <svg className="ml-auto" xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" /></svg>
+                                                            </button>
+
+
+                                                            <div className="flex ml-auto bg-white rounded editor-modes">
+                                                                <button onClick={this.contentSwitch.bind(this, 'editor')} className="px-4 py-2 text-white bg-indigo-600 border-t border-b border-l border-gray-200 rounded-tl rounded-bl">Editor</button>
+                                                                <button onClick={this.contentSwitch.bind(this, 'preview')} className="px-4 py-2 border-t border-b border-r border-gray-200 rounded-tr rounded-br">Preview</button>
+                                                            </div>
+                                                        </div>
+                                                        <div className="content-editor">
+                                                            <textarea name="content" onChange={this.mdContentChange.bind(this)} onPaste={this.mdContentHandlePaste.bind(this)} style={{minHeight: '50vh'}} className={`
+                                                                ${this.state.editorMaximized ? 'absolute inset-0 px-10 pt-32 h-full pb-32' : 'focus:border-indigo-600 px-5 py-3 border border-gray-200 rounded'}
+                                                                block
+                                                                w-full
+                                                                mb-2
+                                                                text-gray-600  resize-y content-area focus:outline-none `}
+                                                                tabIndex="4" placeholder="Tulis apapun di sini ..." defaultValue={content}>
+                                                            </textarea>
+                                                        </div>
+                                                        <div className={`prose prose-lg max-w-full hidden overflow-auto  content-preview
+                                                                ${this.state.editorMaximized ? 'absolute inset-0 px-10 pt-32 h-full w-full pb-32' : 'focus:border-indigo-600 px-5 py-3 border border-gray-200 rounded'}
+                                                            `}>
+                                                            Parsing ...
+                                                        </div>
+                                                    </div>
+
+                                                    <p className="text-sm text-gray-600"><a className="text-indigo-600" target="_blank" href={routes.docs + '/markdown#supported-markdown'} tabIndex="-1">Markdown</a></p>
+
 					        			        </div>
 
 				        			        	<div className="p-6 mt-10 border border-gray-200 rounded md:p-8">
 				        			                <h2 className="mb-4 text-xl font-semibold text-indigo-600">Cover</h2>
-				        			                <p className="mt-2 mb-6 leading-relaxed text-gray-600">Bila dikosongkan, sistem akan otomatis menggenerasi thumbnail untuk post ini. Bila diisi, gambar akan otomatis dipotong oleh sistem bila dimensinya tidak 500 x 300 (Maksimal: 10MB. Format yang didukung: {[...this.allowedImageTypesReadable].join(', ')}).</p>
+				        			                <p className="mt-2 mb-6 leading-relaxed text-gray-600">Gambar akan otomatis dipotong oleh sistem bila dimensinya tidak 500 x 300 (Maksimal: 10MB. Format yang didukung: {[...this.allowedImageTypesReadable].join(', ')}).</p>
 
 					        			        	<div onClick={this.coverImageHandler.bind(this)} className={`group w-full border border-gray-300 rounded flex items-center justify-center cursor-pointer ${cover ? '' : 'h-64'}`}>
 					        			        		{cover && <img src={cover} className="w-full rounded" />}
@@ -2244,8 +2294,8 @@ class Form extends Component {
 
 									    { this.isSlidePost() &&
 											<div className="p-6 mt-10 border border-gray-200 rounded md:p-8">
-										        <h2 className="text-indigo-600 mb-4 text-xl font-semibold">Tautan <span className="text-sm font-normal text-gray-600">(Optional)</span></h2>
-										        <p className="leading-relaxed mb-6 mt-2 text-gray-600">Sertakan tautan referensi yang relevan dengan konten, bisa tautan ke halaman resmi situs web, tutorial, <code>code playground</code>, atau yang lainnya. <a href={routes.docs + '/content#form-links'} className="text-indigo-600 border-b border-indigo-600" target="_blank">Pelajari selengkapnya</a> tentang tautan.</p>
+										        <h2 className="mb-4 text-xl font-semibold text-indigo-600">Tautan <span className="text-sm font-normal text-gray-600">(Optional)</span></h2>
+										        <p className="mt-2 mb-6 leading-relaxed text-gray-600">Sertakan tautan referensi yang relevan dengan konten, bisa tautan ke halaman resmi situs web, tutorial, <code>code playground</code>, atau yang lainnya. <a href={routes.docs + '/content#form-links'} className="text-indigo-600 border-b border-indigo-600" target="_blank">Pelajari selengkapnya</a> tentang tautan.</p>
 
 										        <div className="flex flex-no-wrap mb-4 overflow-x-auto">
 										        	{ Object.keys(key2str).map((name, index) => {
