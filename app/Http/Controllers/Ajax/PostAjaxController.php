@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Ajax;
 
+use App\Events\Post\Markdown\MarkdownPostPublished;
 use Illuminate\Http\Request;
 use Requests\PostDiscoverCreateRequest;
 use Requests\PostCreateRequest;
@@ -32,7 +33,7 @@ class PostAjaxController extends Controller
 	 * @param  Request $request
 	 * @return JSON
 	 */
-	public function checkSlug(PostCheckSlugRequest $request) 
+	public function checkSlug(PostCheckSlugRequest $request)
 	{
 		return response()->json(['status' => false, 'message' => 'Slug available to use']);
 	}
@@ -68,10 +69,10 @@ class PostAjaxController extends Controller
 	/**
 	 * Update post
 	 * @param  Request $request
-	 * @param  String  $id     
-	 * @return JSON          
+	 * @param  String  $id
+	 * @return JSON
 	 */
-	public function update(Request $request, $id) 
+	public function update(Request $request, $id)
 	{
 		$post = $this->postService->findAndUpdate($id, $request);
 
@@ -90,12 +91,17 @@ class PostAjaxController extends Controller
 	/**
 	 * Publish post
 	 * @param  PostPublishRequest $request
-	 * @param  String  $id     
-	 * @return JSON          
+	 * @param  String  $id
+	 * @return JSON
 	 */
-	public function publish(PostPublishRequest $request, $id) 
+	public function publish(PostPublishRequest $request, $id)
 	{
 		$post = $this->postService->publish($id, $request);
+
+        event(
+            new MarkdownPostPublished($post)
+        );
+
 
 		if(!$post)
 		{
@@ -133,7 +139,7 @@ class PostAjaxController extends Controller
 	{
 		// delete image
 		$image = $this->postService->deleteImage($request);
-		
+
 		return response()->json([
 			'status' => true,
 			'message' => 'Image deleted successfully'
@@ -142,9 +148,9 @@ class PostAjaxController extends Controller
 
 	/**
 	 * Edit post
-	 * @param  Request $request 
-	 * @param  String  $id      
-	 * @return JSON           
+	 * @param  Request $request
+	 * @param  String  $id
+	 * @return JSON
 	 */
 	public function edit(Request $request, $id)
 	{
@@ -161,7 +167,7 @@ class PostAjaxController extends Controller
     public function getLinkInfo(Request $request)
     {
     	$data = get_data($request->url);
-    	
+
     	$doc = new \DOMDocument();
     	@$doc->loadHTML($data);
     	$nodes = $doc->getElementsByTagName('title');
@@ -205,7 +211,7 @@ class PostAjaxController extends Controller
      * @return JSON
      */
 	public function posts(Request $request)
-	{		
+	{
 		$posts = $this->postService->content(10, $request);
 
 		return response()->json($posts);

@@ -18,12 +18,12 @@ Route::get('leave', RedirectorPageController::class)->name('leave.kodinger');
 
 Auth::routes(['register' => false]);
 
-Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.'], function() 
+Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.'], function()
 {
 	Route::get('/', 'DashboardController@index')->name('index')->middleware('permission:dashboard');
 });
 
-Route::group(['prefix' => 'communities', 'as' => 'community.'], function() 
+Route::group(['prefix' => 'communities', 'as' => 'community.'], function()
 {
 	Route::group(['middleware' => 'auth'], function() {
 		Route::get('/create', 'CommunityController@create')->name('create')->middleware('permission:community-create');
@@ -36,9 +36,9 @@ Route::group(['prefix' => 'communities', 'as' => 'community.'], function()
 	});
 });
 
-Route::group(['prefix' => 'posts', 'as' => 'post.'], function() 
+Route::group(['prefix' => 'posts', 'as' => 'post.'], function()
 {
-	Route::group(['middleware' => 'auth'], function() 
+	Route::group(['middleware' => 'auth'], function()
 	{
 		// Route::get('/create', 'PostController@create')->name('create')->middleware('permission:post-create');
 		Route::get('/', 'PostController@index')->name('index')->middleware('permission:post-list');
@@ -52,7 +52,7 @@ Route::group(['prefix' => 'posts', 'as' => 'post.'], function()
 	});
 });
 
-Route::group(['prefix' => 'contributes', 'as' => 'contribute.', 'middleware' => 'auth'], function() 
+Route::group(['prefix' => 'contributes', 'as' => 'contribute.', 'middleware' => 'auth'], function()
 {
 	Route::get('/', 'ContributeController@index')->name('index');
 	Route::get('/{slug}', 'ContributeController@create')->name('create');
@@ -61,7 +61,7 @@ Route::group(['prefix' => 'contributes', 'as' => 'contribute.', 'middleware' => 
 	Route::post('{id}/reject', 'ContributeController@reject')->name('reject');
 });
 
-Route::group(['prefix' => 'manage-users', 'as' => 'user.'], function() 
+Route::group(['prefix' => 'manage-users', 'as' => 'user.'], function()
 {
 	// Route::get('/create', 'UserController@create')->name('create');
 	Route::get('/', 'UserController@index')->name('index')->middleware('permission:user-list');
@@ -72,9 +72,9 @@ Route::group(['prefix' => 'manage-users', 'as' => 'user.'], function()
 	// Route::post('/', 'UserController@store')->name('store');
 });
 
-Route::group(['prefix' => 'comments', 'as' => 'comment.'], function() 
+Route::group(['prefix' => 'comments', 'as' => 'comment.'], function()
 {
-	Route::group(['middleware' => 'auth'], function() 
+	Route::group(['middleware' => 'auth'], function()
 	{
 		Route::get('/', 'CommentController@index')->name('index');
 		Route::delete('/{id}/delete', 'CommentController@destroy')->name('delete');
@@ -109,3 +109,5 @@ Route::get('/{slug?}', 'FrontendController@single')->name('single');
 Route::get('/{username?}/{slug?}', 'FrontendController@singlePost')->name('post.show');
 Route::get('/tag/{slug}', 'FrontendController@index')->name('tag');
 // Route::get('/home', 'HomeController@index')->name('home');
+
+//Route::get('_/x/{payload}');

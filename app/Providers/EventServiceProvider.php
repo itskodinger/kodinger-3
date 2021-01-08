@@ -8,9 +8,11 @@ use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use App\Events\Post\{
     Discover\DiscoverPostCreated,
+    Markdown\MarkdownPostPublished,
 };
 use App\Listeners\Post\{
     Discover\FetchDiscoverPostUrlPreview,
+    Markdown\DispatchMentionNotifications
 };
 
 class EventServiceProvider extends ServiceProvider
@@ -26,6 +28,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         DiscoverPostCreated::class => [
             FetchDiscoverPostUrlPreview::class
+        ],
+        MarkdownPostPublished::class => [
+            DispatchMentionNotifications::class,
         ]
     ];
 

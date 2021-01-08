@@ -35,14 +35,14 @@ class Post extends Model
     protected $appends = [
         'tag_ids',
         'tagify',
-    	'time', 
+    	'time',
         'blurry_image',
-    	'markdown', 
-    	'markdown_truncate', 
+    	'markdown',
+    	'markdown_truncate',
         'content_markdown',
         'content_markdown_truncated',
-    	'is_mine', 
-    	'is_post_saved', 
+    	'is_mine',
+    	'is_post_saved',
     	'is_post_loved',
     	'post_card',
         'pages_object',
@@ -80,7 +80,7 @@ class Post extends Model
         return truncate(strip_tags($this->getContentMarkdownAttribute()), 100);
     }
 
-    protected function isMarkdownPost()
+    public function isMarkdownPost()
     {
         return $this->type == 'markdown';
     }
@@ -229,7 +229,7 @@ class Post extends Model
     {
         if(!$this->published_at)
             return $this->created_at->diffForHumans();
-        
+
     	return $this->published_at->diffForHumans();
     }
 
@@ -333,7 +333,7 @@ class Post extends Model
 	public function user()
 	{
 		return $this->hasOne('App\User', 'id', 'user_id')->select([
-			'id', 
+			'id',
 			'name',
 			'username',
 			'avatar',

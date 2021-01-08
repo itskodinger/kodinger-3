@@ -176,6 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\PostServiceProvider::class,
         App\Providers\URLServiceProvider::class,
+        App\Providers\NotificationServiceProvider::class,
 
     ],
 
