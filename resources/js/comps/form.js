@@ -480,7 +480,7 @@ class Form extends Component {
 			publish: true,
 			statusSaving: 'Saved'
         }, () => {
-            this.toast.add('💾&nbsp; Post autosaved.')
+            this.toast.add('💾&nbsp; Post disimpan secara otomatis.')
         });
 
 	}
