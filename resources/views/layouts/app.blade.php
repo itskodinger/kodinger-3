@@ -329,7 +329,13 @@
                         		Menulis
                         	</a>
                             <div class="relative flex-shrink-0">
-                                <a onclick="this.nextElementSibling.classList.toggle('hidden');document.body.classList.toggle('overflow-hidden');"><img alt="{{ auth()->user()->name }}" src="{{ auth()->user()->the_avatar_sm }}" class="w-10 border rounded cursor-pointer user-dropdown"></a>
+                                <a onclick="this.nextElementSibling.classList.toggle('hidden');document.body.classList.toggle('overflow-hidden');">
+                                    <img alt="{{ auth()->user()->name }}" src="{{ auth()->user()->the_avatar_sm }}" class="w-10 border rounded cursor-pointer user-dropdown">
+                                    <span class="absolute top-0 right-0 flex w-3 h-3 -mt-1 -mr-1">
+                                        <span class="absolute inline-flex w-full h-full bg-red-500 rounded-full animate-ping"></span>
+                                        <span class="relative inline-flex w-3 h-3 rounded-full bg-red-500"></span>
+                                    </span>
+                                </a>
                                 <ul class="fixed right-0 hidden w-full h-full mt-4 bg-white border-t shadow-lg user-dropdown-menu sm:absolute sm:h-auto sm:mt-3 sm:border-t-0 sm:rounded sm:w-56">
                                     @can('dashboard')
                                     <li><a class="flex px-5 py-3 text-indigo-600 rounded-tl rounded-tr hover:bg-indigo-100" href="@route('dashboard.index')">
@@ -342,6 +348,12 @@
                                     	<svg class="w-4 mr-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="edit-2"><rect width="24" height="24" opacity="0"/><path d="M19 20H5a1 1 0 0 0 0 2h14a1 1 0 0 0 0-2z"/><path d="M5 18h.09l4.17-.38a2 2 0 0 0 1.21-.57l9-9a1.92 1.92 0 0 0-.07-2.71L16.66 2.6A2 2 0 0 0 14 2.53l-9 9a2 2 0 0 0-.57 1.21L4 16.91a1 1 0 0 0 .29.8A1 1 0 0 0 5 18zM15.27 4L18 6.73l-2 1.95L13.32 6zm-8.9 8.91L12 7.32l2.7 2.7-5.6 5.6-3 .28z"/></g></g></svg>
                                         Buat Post
                                     </a></li> --}}
+                                    <li><a class="flex items-center px-5 py-3 text-gray-800 rounded-tl rounded-tr hover:bg-indigo-100" href="@route('notifications')">
+                                        <svg class="w-4 mr-3 stroke-current"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                                        Notifikasi 
+
+                                        <div class="ml-2 w-2 h-2 inline-flex rounded-full bg-red-500"></div>
+                                    </a></li>
                                     <li><a class="flex px-5 py-3 text-gray-800 rounded-tl rounded-tr hover:bg-indigo-100" href="@route('single', auth()->user()->username)">
                                         <svg class="w-4 mr-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="person"><rect width="24" height="24" opacity="0"/><path d="M12 11a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0-6a2 2 0 1 1-2 2 2 2 0 0 1 2-2z"/><path d="M12 13a7 7 0 0 0-7 7 1 1 0 0 0 2 0 5 5 0 0 1 10 0 1 1 0 0 0 2 0 7 7 0 0 0-7-7z"/></g></g></svg>
                                         Profile
