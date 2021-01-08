@@ -33,6 +33,7 @@ module.exports = {
     display: ['responsive', 'group-hover']
   },
   plugins: [
+    require('@tailwindcss/typography'),
   	function({ addUtilities, theme }) {
   		const classes = {
   			'.counter': {

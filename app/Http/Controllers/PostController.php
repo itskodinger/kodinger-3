@@ -27,11 +27,11 @@ class PostController extends Controller
 	/**
 	 * Index page
 	 * @param  Request $request Request
-	 * @return view           
+	 * @return view
 	 */
     public function index(Request $request)
     {
-    	$posts = $this->postService->paginate(10, $request);
+    	$posts = $this->postService->model()->orderBy('created_at', 'DESC')->paginate(10);
 
         return view('posts.index', compact('posts'));
     }

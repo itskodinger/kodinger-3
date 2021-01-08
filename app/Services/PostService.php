@@ -64,10 +64,10 @@ class PostService
 	protected function with($parent=false, $arr2=[])
 	{
 		return array_merge([
-			($parent ? $parent . '.' : '') . 'tags', 
-			($parent ? $parent . '.' : '') . 'tags.tag', 
-			($parent ? $parent . '.' : '') . 'user', 
-			($parent ? $parent . '.' : '') . 'attributes', 
+			($parent ? $parent . '.' : '') . 'tags',
+			($parent ? $parent . '.' : '') . 'tags.tag',
+			($parent ? $parent . '.' : '') . 'user',
+			($parent ? $parent . '.' : '') . 'attributes',
 		], $arr2);
 	}
 
@@ -102,7 +102,7 @@ class PostService
 		if($tag) {
 			$tag = Tag::whereName($tag)->first();
 
-			if(!$tag) 
+			if(!$tag)
 				return false;
 
 			$tag_id = $tag->id;
@@ -119,7 +119,7 @@ class PostService
 	{
 		$posts = $user->lovePosts()->with($this->with('post', ['post']))
 				->has('post')
-				->paginate(10);	
+				->paginate(10);
 
 		return $posts;
 	}
@@ -128,7 +128,7 @@ class PostService
 	{
 		$posts = $user->savePosts()->with($this->with('post', ['post']))
 				->has('post')
-				->paginate(10);	
+				->paginate(10);
 
 		return $posts;
 	}
@@ -137,7 +137,7 @@ class PostService
 	{
 		$adds = [
 			'id' => Str::uuid(),
-			'slug' => uniqid(), 
+			'slug' => uniqid(),
 			'type' => 'link',
 			'tags' => explode(',', $request->tags),
 			'status' => 'processing',
@@ -154,7 +154,7 @@ class PostService
 		// event(
 		// 	new DiscoverPostCreated($post)
 		// );
-		
+
 		FetchDiscoverUrlPreview::dispatch($post);
 
 		return $post->load($this->with());
@@ -196,7 +196,7 @@ class PostService
 		$req_search = $request['search'] ?? null;
 		$req_type = $request['type'] ?? null;
 		$req_tag = $request['tag'] ?? null;
-		
+
 		if($request) {
 			if($req_search) {
 				$posts = $posts->where('title', 'like', '%'. $req_search .'%');
@@ -210,7 +210,7 @@ class PostService
 			if($req_tag) {
 				$tag = Tag::whereName($req_tag)->first();
 
-				if(!$tag) 
+				if(!$tag)
 					return false;
 
 				$tag_id = $tag->id;
@@ -268,7 +268,7 @@ class PostService
 		$image = $request->image;
 		$image_ext = $image->getClientOriginalExtension();
 
-		if($video_thumbnail) 
+		if($video_thumbnail)
 		{
 			$video_thumbnail = str_replace('data:image/png;base64,', '', $video_thumbnail);
 			$video_thumbnail = base64_decode($video_thumbnail);
@@ -365,7 +365,7 @@ class PostService
 		}else{
 			$input = $request->all();
 		}
-	
+
 		$data = $this->model()->find($id);
 
 		// temp solution: need better solution
@@ -377,7 +377,7 @@ class PostService
 					'post_id' => $id,
 					'tag_id' => $tag
 				]);
-			}			
+			}
 		}
 
 		$data->update($input);

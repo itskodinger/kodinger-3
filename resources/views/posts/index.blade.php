@@ -3,8 +3,8 @@
 @section('dash_content')
 	<h2 class="mb-2 text-gray-600 text-lg flex items-center">Semua Content
         <span class="ml-6">
-            <a class="text-indigo-600" href="@current(['type' => 'link'])">Discover</a> | 
-            <a class="text-indigo-600" href="@current(['type' => 'content'])">Content</a> | 
+            <a class="text-indigo-600" href="@current(['type' => 'link'])">Discover</a> |
+            <a class="text-indigo-600" href="@current(['type' => 'content'])">Content</a> |
             <a class="text-indigo-600" href="@current(['status' => 'draft'])">Hanya Draft</a>
         </span>
 		{{-- @button(['tag' => 'a', 'href' => route('post.create'), 'class' => 'ml-auto'])
@@ -14,7 +14,7 @@
 	<div class="bg-white rounded border-2 border-gray-200">
     	@foreach($posts as $post)
     	<div class="p-4 border-b border-gray-200">
-    		<div class="items-center">
+    		<div class="items-center break-all">
         		<div class="py-1 px-2 mr-1 rounded text-sm inline-block text-white capitalize {{ $post->status == 'publish' ? 'bg-green-500' : 'bg-orange-500' }}">
         			{{ $post->status }}
         		</div>
@@ -37,7 +37,7 @@
     	@endforeach
 
 	</div>
-	<div class="mt-5"> 
+	<div class="mt-5">
     	{!! $posts->links() !!}
     </div>
 @stop

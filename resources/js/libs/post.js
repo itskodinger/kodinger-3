@@ -844,7 +844,7 @@ let api = {
 								<div class="px-2">&bull;</div>
 								<div class="px-2">${post.ert} baca</div>
 							</div>
-							<div class="markdowned markdowned-mdpost mb-4">
+							<div class="prose max-w-full mb-4">
 								${post.content_markdown}
 							</div>
 
