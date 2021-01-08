@@ -98,6 +98,7 @@ Route::get('/about', 'FrontendController@about')->name('about');
 Route::get('/contact', 'FrontendController@contact')->name('contact');
 // Route::get('/discover/{tag?}', 'FrontendController@discover')->name('discover');
 Route::get('/{slug}/loves', 'FrontendController@profileLoves')->name('loves');
+Route::get('/notifications', 'FrontendController@profileNotifications')->name('notifications');
 Route::get('/saves', 'FrontendController@profileSaves')->name('saves');
 Route::get('/contribute/myposts', 'FrontendController@contributesMyPosts')->name('contribute.myposts');
 Route::get('/{slug?}/contributes', 'FrontendController@contributes')->name('contributes');

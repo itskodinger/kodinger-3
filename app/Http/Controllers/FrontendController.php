@@ -196,6 +196,20 @@ class FrontendController extends Controller
 		return view('saves', compact('posts', 'user'));
 	}
 
+    /**
+     * Profile page: notifications
+     * @param Request $request Request
+     * @return view
+     */
+    public function profileNotifications(Request $request) 
+    {
+        $user = auth()->user();
+
+        $notifications = [];
+        
+        return view('notifications', compact('notifications', 'user'));
+    }
+
 	/**
 	 * User's discussions page
 	 * @param  String $slug User's username
