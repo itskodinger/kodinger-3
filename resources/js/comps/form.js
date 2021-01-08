@@ -55,6 +55,7 @@ class Form extends Component {
 			statusSaving: '',
 			cover: '',
 			editorMaximized: false,
+			editorState: 'editor',
 
 			currentLinkKey: Object.keys(key2str)[0],
 		}
@@ -510,6 +511,25 @@ class Form extends Component {
 					this.toast.add(`🖖&nbsp; Post sudah disimpan sebagai draft`);
 				}).catch(() => {});
 			}
+
+            if(( (e[key] && e.keyCode == '59') || (e[key] && e.keyCode == '186')) && this.state.editorMaximized) {
+                e.preventDefault();
+
+                if( this.state.editorState == 'editor' ) {
+                    this.setState({editorState: 'preview'});
+                    document.getElementById('previewButton').click();
+                }
+                else
+                {
+                    this.setState({editorState: 'editor'});
+                    document.getElementById('editorButton').click();
+                }
+
+
+                this.toast.add(`Pindah ke mode ${this.state.editorState.charAt(0).toUpperCase()}${this.state.editorState.slice(1)}.`);
+
+            }
+
 		});
 	}
 
@@ -2255,8 +2275,8 @@ class Form extends Component {
 
 
                                                             <div className="flex ml-auto bg-white rounded editor-modes">
-                                                                <button onClick={this.contentSwitch.bind(this, 'editor')} className="px-4 py-2 text-white bg-indigo-600 border-t border-b border-l border-gray-200 rounded-tl rounded-bl">Editor</button>
-                                                                <button onClick={this.contentSwitch.bind(this, 'preview')} className="px-4 py-2 border-t border-b border-r border-gray-200 rounded-tr rounded-br">Preview</button>
+                                                                <button onClick={this.contentSwitch.bind(this, 'editor')} id="editorButton" className="px-4 py-2 text-white bg-indigo-600 border-t border-b border-l border-gray-200 rounded-tl rounded-bl">Editor</button>
+                                                                <button onClick={this.contentSwitch.bind(this, 'preview')} id="previewButton" className="px-4 py-2 border-t border-b border-r border-gray-200 rounded-tr rounded-br">Preview</button>
                                                             </div>
                                                         </div>
                                                         <div className="content-editor">
