@@ -111,4 +111,4 @@ Route::get('/{username?}/{slug?}', 'FrontendController@singlePost')->name('post.
 Route::get('/tag/{slug}', 'FrontendController@index')->name('tag');
 // Route::get('/home', 'HomeController@index')->name('home');
 
-//Route::get('_/x/{payload}');
+Route::get('_/notification/{payload}', 'FrontendController@openNotification')->name('notification.open');

@@ -527,3 +527,31 @@ function supported_links()
 		],
 	];
 }
+
+if( ! function_exists('current_user_unread_notification_count') ) {
+
+    function current_user_unread_notification_count() {
+        if( ! auth()->check() ) return 0;
+
+        return auth()->user()->notifications()->where('status', 'UNREAD')->count();
+    }
+
+}
+
+if( ! function_exists('current_user_read_notification_count') ) {
+
+    function current_user_read_notification_count() {
+        if( ! auth()->check() ) return 0;
+
+        return auth()->user()->notifications()->where('status', '!=', 'UNREAD')->count();
+    }
+}
+
+if( ! function_exists('current_user_total_notification_count') ) {
+
+    function current_user_total_notification_count() {
+        if( ! auth()->check() ) return 0;
+
+        return auth()->user()->notifications->count();
+    }
+}

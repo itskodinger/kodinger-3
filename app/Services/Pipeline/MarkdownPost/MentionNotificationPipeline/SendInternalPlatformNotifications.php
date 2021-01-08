@@ -8,7 +8,7 @@ use App\NotificationSystem;
 
 class SendInternalPlatformNotifications {
 
-    protected $notificationKind = 'MARKDOWN_POST';
+    protected $notificationKind = 'post_mention';
 
     /**
      * Handle the pipe.
@@ -31,7 +31,8 @@ class SendInternalPlatformNotifications {
             NotificationSystem::create([
                 'from_user_id' => $scenario->getAuthor()->id,
                 'to_user_id'   => $user->id,
-                'payload'      => json_encode($payload)
+                'payload'      => json_encode($payload),
+                'kind'         => $this->notificationKind
             ]);
         }
 

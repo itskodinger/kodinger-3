@@ -94,7 +94,7 @@ class User extends Authenticatable
         {
             return (explode(' ', $this->name))[0];
         }
-        
+
         return $this->name;
     }
 
@@ -141,5 +141,9 @@ class User extends Authenticatable
     public function setting()
     {
         return $this->hasMany('App\UserSetting');
+    }
+
+    public function notifications() {
+        return $this->hasMany(NotificationSystem::class, 'to_user_id', 'id');
     }
 }

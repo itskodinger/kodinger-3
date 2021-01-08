@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Services\Post\Markdown\MentionNotificationScenario;
 use App\Contracts\Post\Markdown\MentionNotificationScenario as MarkdownMentionContract;
+use App\Registries\NotificationRedirectorRegistry;
 
 class NotificationServiceProvider extends ServiceProvider
 {
@@ -19,15 +20,21 @@ class NotificationServiceProvider extends ServiceProvider
             MarkdownMentionContract::class,
             MentionNotificationScenario::class
         );
+
+        $this->app->singleton(NotificationRedirectorRegistry::class);
+
+        $this->registerNotificationRedirector();
     }
 
-    /**
-     * Bootstrap services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        //
+    protected function registerNotificationRedirector() {
+        $redirectors = config('notification-redirector');
+
+        if( ! is_array($redirectors) ) return;
+
+        foreach( $redirectors as $key => $redirector ) {
+            $this->app->make(NotificationRedirectorRegistry::class)->register(
+                $key, app($redirector)
+            );
+        }
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\NotificationSystem;
+use App\Registries\NotificationRedirectorRegistry;
 use Illuminate\Http\Request;
 use Services\PostService;
 use Services\UserService;
@@ -19,6 +21,7 @@ class FrontendController extends Controller
 	protected $commentService;
 	protected $communityService;
 	protected $tagService;
+    protected $notificationRedirectorRegistry;
 
 	/**
 	 * Construct
@@ -28,14 +31,16 @@ class FrontendController extends Controller
 	 * @param CommentService    $commentService    Comment service layer
 	 * @param CommunityService  $communityService  Community service layer
 	 * @param TagService        $tagService        Tag service layer
+     * @param NotificationRedirectorRegistry $notificationRedirectorRegistry
 	 */
 	public function __construct(
-		PostService $postService, 
-		UserService $userService, 
-		ContributeService $contributeService, 
-		CommentService $commentService, 
+		PostService $postService,
+		UserService $userService,
+		ContributeService $contributeService,
+		CommentService $commentService,
 		CommunityService $communityService,
-		TagService $tagService
+        TagService $tagService,
+        NotificationRedirectorRegistry $notificationRedirectorRegistry
 	)
 	{
 		$this->postService = $postService;
@@ -44,6 +49,7 @@ class FrontendController extends Controller
 		$this->commentService = $commentService;
 		$this->communityService = $communityService;
 		$this->tagService = $tagService;
+        $this->notificationRedirectorRegistry = $notificationRedirectorRegistry;
 	}
 
 	/**
@@ -201,12 +207,14 @@ class FrontendController extends Controller
      * @param Request $request Request
      * @return view
      */
-    public function profileNotifications(Request $request) 
+    public function profileNotifications(Request $request)
     {
+        // 'post_mention', 'post_comment', 'post_like', 'comment_mention', 'comment_reply'
+
         $user = auth()->user();
 
-        $notifications = [];
-        
+        $notifications = $user->notifications;
+
         return view('notifications', compact('notifications', 'user'));
     }
 
@@ -332,7 +340,7 @@ class FrontendController extends Controller
 	{
 		if(!auth()->check()) return abort(403);
 
-		if($id) 
+		if($id)
 		{
 			$this->isAllowedEdit($id);
 		}
@@ -344,7 +352,7 @@ class FrontendController extends Controller
 	 * New post
 	 * @return view
 	 */
-	public function newPost($type=false) 
+	public function newPost($type=false)
 	{
 		return view('post_new', compact('type'));
 	}
@@ -355,7 +363,7 @@ class FrontendController extends Controller
 
 		if($post->type == 'link') return abort(404);
 
-		if($post->user_id !== auth()->user()->id && !auth()->user()->can('post-update')) 
+		if($post->user_id !== auth()->user()->id && !auth()->user()->can('post-update'))
 			return abort(403);
 	}
 
@@ -363,11 +371,11 @@ class FrontendController extends Controller
 	 * Markdown post
 	 * @return view
 	 */
-	public function postMD($id=false) 
+	public function postMD($id=false)
 	{
 		if(!auth()->check()) return abort(403);
 
-		if($id) 
+		if($id)
 		{
 			$this->isAllowedEdit($id);
 		}
@@ -399,4 +407,28 @@ class FrontendController extends Controller
 	{
 		return view('scene');
 	}
+
+    public function openNotification($payload) {
+        try {
+            $notificationId = decrypt($payload);
+            $notification = app(NotificationSystem::class)->findOrFail($notificationId);
+        } catch(\Exception $e) {
+            return abort(404);
+        }
+
+        if( $notification->status == 'UNREAD' ) {
+            $notification->update(['status' => 'READ']);
+        }
+
+        if( ! $this->notificationRedirectorRegistry->has($notification->kind) )
+            return abort(404);
+
+        $redirectUrl = $this->notificationRedirectorRegistry
+                            ->get($notification->kind)
+                            ->generateRedirectUrl($notification);
+
+
+        return redirect()->away($redirectUrl);
+
+    }
 }
