@@ -1,0 +1,123 @@
+<?php
+
+namespace App\Services\Post\Markdown;
+
+use App\User;
+use App\Post;
+use App\Comment;
+use App\Contracts\Post\Markdown\CommentAddedScenario as CommentAddedScenarioContract;
+
+class CommentAddedScenario implements CommentAddedScenarioContract {
+
+    /**
+     * The Comment Author.
+     *
+     * @var  User $user
+     */
+    protected $commentAuthor;
+
+    /**
+     * The Post Author.
+     *
+     * @var  User $user
+     */
+    protected $postAuthor;
+
+    /**
+     * The Post.
+     *
+     * @var  Post $post
+     */
+    protected $post;
+
+    /**
+     * The Comment.
+     *
+     * @var  Comment $comment
+     */
+    protected $comment;
+
+    /**
+     * Set the user who commented.
+     *
+     * @param  User $user
+     * @return self
+     */
+    public function setCommentAuthor(User $user) {
+        $this->commentAuthor = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the user who commented.
+     *
+     * @return User|null
+     */
+    public function getCommentAuthor() {
+        return $this->commentAuthor;
+    }
+
+    /**
+     * Set the user who create the post.
+     *
+     * @param  User $user
+     * @return self
+     */
+    public function setPostAuthor(User $user) {
+        $this->postAuthor = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the user who create the post.
+     *
+     * @return User|null
+     */
+    public function getPostAuthor() {
+        return $this->postAuthor;
+    }
+
+    /**
+     * Set the Post.
+     *
+     * @param  Post $post
+     * @return self
+     */
+    public function setPost(Post $post) {
+        $this->post = $post;
+
+        return $this;
+    }
+
+    /**
+     * Get the Post.
+     *
+     * @return Post|null
+     */
+    public function getPost() {
+        return $this->post;
+    }
+
+    /**
+     * Set the Comment.
+     *
+     * @param  Comment $comment
+     * @return self
+     */
+    public function setComment(Comment $comment) {
+        $this->comment = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Get the Comment.
+     *
+     * @return Comment|null
+     */
+    public function getCommet() {
+        return $this->comment;
+    }
+}

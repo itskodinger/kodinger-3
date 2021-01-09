@@ -34,6 +34,9 @@
                     @case('post_mention')
                         <p class="text-lg">{{ $notification->from->name }} mentioned you in a Post.</p>
                     @break
+                    @case('post_comment')
+                        <p class="text-lg">{{ $notification->from->name }} added new comment on your Post.</p>
+                    @break
 
                 @endswitch
                 <div class="flex items-center mt-1 text-sm text-gray-600">

@@ -2,10 +2,12 @@
 
 namespace Services;
 
+use App\Post;
 use App\Comment;
+use App\Events\Post\Markdown\MarkdownPostCommentAdded;
 use GrahamCampbell\Markdown\Facades\Markdown;
 
-class CommentService 
+class CommentService
 {
 	public function model()
 	{
@@ -75,6 +77,16 @@ class CommentService
 		$input['user_id'] = auth()->user()->id;
 
 		$comment = $this->model()->create($input);
+
+        if( $request->has('post_id') ) {
+            $post = Post::find($request->post_id);
+
+            if( $post instanceof Post && $post->isMarkdownPost() ) {
+                event(
+                    new MarkdownPostCommentAdded($post, $comment)
+                );
+            }
+        }
 
 		return $this->model()->find($comment->id);
 	}

@@ -9,10 +9,15 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use App\Events\Post\{
     Discover\DiscoverPostCreated,
     Markdown\MarkdownPostPublished,
+    Markdown\MarkdownPostCommentAdded,
+    Markdown\MarkdownPostCommentReplied,
 };
 use App\Listeners\Post\{
     Discover\FetchDiscoverPostUrlPreview,
-    Markdown\DispatchMentionNotifications
+    Markdown\DispatchMentionNotifications,
+    Markdown\DispatchCommentNotification,
+    Markdown\DispatchCommentRepliedNotification,
+
 };
 
 class EventServiceProvider extends ServiceProvider
@@ -31,6 +36,12 @@ class EventServiceProvider extends ServiceProvider
         ],
         MarkdownPostPublished::class => [
             DispatchMentionNotifications::class,
+        ],
+        MarkdownPostCommentAdded::class => [
+            DispatchCommentNotification::class,
+        ],
+        MarkdownPostCommentReplied::class => [
+            DispatchCommentRepliedNotification::class,
         ]
     ];
 
