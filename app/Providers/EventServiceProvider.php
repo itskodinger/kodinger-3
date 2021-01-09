@@ -7,15 +7,15 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use App\Events\Post\{
+    PostCommentAdded,
     Discover\DiscoverPostCreated,
     Markdown\MarkdownPostPublished,
-    Markdown\MarkdownPostCommentAdded,
     Markdown\MarkdownPostCommentReplied,
 };
 use App\Listeners\Post\{
+    DispatchPostCommentAddedNotification,
     Discover\FetchDiscoverPostUrlPreview,
     Markdown\DispatchMentionNotifications,
-    Markdown\DispatchCommentNotification,
     Markdown\DispatchCommentRepliedNotification,
 
 };
@@ -37,8 +37,8 @@ class EventServiceProvider extends ServiceProvider
         MarkdownPostPublished::class => [
             DispatchMentionNotifications::class,
         ],
-        MarkdownPostCommentAdded::class => [
-            DispatchCommentNotification::class,
+        PostCommentAdded::class => [
+            DispatchPostCommentAddedNotification::class,
         ],
         MarkdownPostCommentReplied::class => [
             DispatchCommentRepliedNotification::class,

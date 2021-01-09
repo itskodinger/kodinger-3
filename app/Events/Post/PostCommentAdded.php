@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events\Post\Markdown;
+namespace App\Events\Post;
 
 use App\Comment;
 use App\Post;
@@ -12,7 +12,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class MarkdownPostCommentAdded
+class PostCommentAdded
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

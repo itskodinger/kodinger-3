@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Listeners\Post\Markdown;
+namespace App\Listeners\Post;
 
 use App\Contracts\Post\Markdown\CommentAddedScenario;
-use App\Events\Post\Markdown\MarkdownPostCommentAdded;
-use App\Services\Pipeline\MarkdownPost\CommentAddedNotificationPipeline\SendInternalPlatformNotification;
+use App\Events\Post\PostCommentAdded;
+use App\Services\Pipeline\Post\CommentAddedNotificationPipeline\SendInternalPlatformNotification;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Pipeline\Pipeline;
 
-class DispatchCommentNotification
+class DispatchPostCommentAddedNotification
 {
 
     /**
@@ -37,7 +37,7 @@ class DispatchCommentNotification
      * @param  MarkdownPostCommentAdded  $event
      * @return void
      */
-    public function handle(MarkdownPostCommentAdded $event)
+    public function handle(PostCommentAdded $event)
     {
         $comment = $event->comment;
         $post    = $event->post;

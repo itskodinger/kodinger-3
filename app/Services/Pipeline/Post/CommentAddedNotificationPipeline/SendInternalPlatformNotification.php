@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Pipeline\MarkdownPost\CommentAddedNotificationPipeline;
+namespace App\Services\Pipeline\Post\CommentAddedNotificationPipeline;
 
 use Closure;
 use App\NotificationSystem;
@@ -23,10 +23,6 @@ class SendInternalPlatformNotification {
      * @param  Closure  $next
      */
     public function handle(CommentAddedScenario $scenario, Closure $next) {
-
-        $post = $scenario->getPost();
-
-        if( ! $post->isMarkdownPost() ) return $next($scenario);
 
         if( $scenario->getCommentAuthor()->id == $scenario->getPostAuthor()->id ) return $next($scenario);
 

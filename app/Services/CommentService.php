@@ -4,7 +4,7 @@ namespace Services;
 
 use App\Post;
 use App\Comment;
-use App\Events\Post\Markdown\MarkdownPostCommentAdded;
+use App\Events\Post\PostCommentAdded;
 use GrahamCampbell\Markdown\Facades\Markdown;
 
 class CommentService
@@ -81,9 +81,9 @@ class CommentService
         if( $request->has('post_id') ) {
             $post = Post::find($request->post_id);
 
-            if( $post instanceof Post && $post->isMarkdownPost() ) {
+            if( $post instanceof Post ) {
                 event(
-                    new MarkdownPostCommentAdded($post, $comment)
+                    new PostCommentAdded($post, $comment)
                 );
             }
         }
