@@ -483,6 +483,10 @@
     </script>
     <script src="{{ mix('js/app.js') }}"></script>
 
+    <!-- Fathom - beautiful, simple website analytics -->
+    <script src="https://cdn.usefathom.com/script.js" data-site="QIOPAKYR" defer></script>
+    <!-- / Fathom -->
+
     @stack('js')
 </body>
 </html>
