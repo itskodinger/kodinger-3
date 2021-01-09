@@ -98,11 +98,6 @@ class PostAjaxController extends Controller
 	{
 		$post = $this->postService->publish($id, $request);
 
-        event(
-            new MarkdownPostPublished($post)
-        );
-
-
 		if(!$post)
 		{
 			return response()->json([

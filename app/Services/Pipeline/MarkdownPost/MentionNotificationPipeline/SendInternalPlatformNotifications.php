@@ -22,7 +22,6 @@ class SendInternalPlatformNotifications {
 
         if( ! $post->isMarkdownPost() ) return $next($scenario);
 
-
         foreach($scenario->getAllMentionedUsers() as $user) {
             $payload = [
                 'post_id' => $post->id

@@ -213,7 +213,7 @@ class FrontendController extends Controller
 
         $user = auth()->user();
 
-        $notifications = $user->notifications;
+        $notifications = $user->notifications()->latest()->get();
 
         return view('notifications', compact('notifications', 'user'));
     }

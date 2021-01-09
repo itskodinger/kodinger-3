@@ -15,6 +15,7 @@ use Services\UserService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\ImageManagerStatic as Image;
+use App\Events\Post\Markdown\MarkdownPostPublished;
 use Carbon\Carbon;
 
 class PostService
@@ -348,14 +349,31 @@ class PostService
 
 	public function publish($id, $request)
 	{
+
+        // need better approach, to trigger only on first publish.
+        $needToTriggerEvent = false;
+
 		$post = $this->find($id);
 
 		if(strtoupper($post->status) == 'DRAFT' && !$post->published_at)
 		{
+
+            $needToTriggerEvent = true;
+
 			$request = $request->merge(['published_at' => Carbon::now()]);
 		}
 
-		return $this->findAndUpdate($id, $request);
+		$publishedPost = $this->findAndUpdate($id, $request);
+
+        if( $needToTriggerEvent ) {
+
+            event(
+                new MarkdownPostPublished($publishedPost)
+            );
+
+        }
+
+        return $publishedPost;
 	}
 
 	public function findAndUpdate($id, $request)
