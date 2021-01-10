@@ -10,13 +10,11 @@ use App\Events\Post\{
     PostCommentAdded,
     Discover\DiscoverPostCreated,
     Markdown\MarkdownPostPublished,
-    Markdown\MarkdownPostCommentReplied,
 };
 use App\Listeners\Post\{
     DispatchPostCommentAddedNotification,
     Discover\FetchDiscoverPostUrlPreview,
     Markdown\DispatchMentionNotifications,
-    Markdown\DispatchCommentRepliedNotification,
 
 };
 
@@ -40,9 +38,6 @@ class EventServiceProvider extends ServiceProvider
         PostCommentAdded::class => [
             DispatchPostCommentAddedNotification::class,
         ],
-        MarkdownPostCommentReplied::class => [
-            DispatchCommentRepliedNotification::class,
-        ]
     ];
 
     /**

@@ -5,9 +5,10 @@ namespace App\Services\Post\Markdown;
 use App\User;
 use App\Post;
 use App\Comment;
+use App\Contracts\Post\Concerns\HasParentComment;
 use App\Contracts\Post\Markdown\CommentAddedScenario as CommentAddedScenarioContract;
 
-class CommentAddedScenario implements CommentAddedScenarioContract {
+class CommentAddedScenario implements CommentAddedScenarioContract, HasParentComment {
 
     /**
      * The Comment Author.
@@ -24,6 +25,13 @@ class CommentAddedScenario implements CommentAddedScenarioContract {
     protected $postAuthor;
 
     /**
+     * The parent comment author.
+     *
+     * @var  User $user
+     */
+    protected $parentCommentAuthor;
+
+    /**
      * The Post.
      *
      * @var  Post $post
@@ -36,6 +44,13 @@ class CommentAddedScenario implements CommentAddedScenarioContract {
      * @var  Comment $comment
      */
     protected $comment;
+
+    /**
+     * The parent comment.
+     *
+     * @var  Comment $parentComment
+     */
+    protected $parentComment;
 
     /**
      * Set the user who commented.
@@ -119,5 +134,48 @@ class CommentAddedScenario implements CommentAddedScenarioContract {
      */
     public function getCommet() {
         return $this->comment;
+    }
+
+
+    /**
+     * Set parent comment.
+     *
+     * @param  Comment $comment
+     * @return self
+     */
+    public function setParentComment(Comment $comment) {
+        $this->parentComment = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Get parent comment.
+     *
+     * @return Comment|null
+     */
+    public function getParentComment() {
+        return $this->parentComment;
+    }
+
+    /**
+     * Set parent comment author.
+     *
+     * @param  User $user
+     * @return self
+     */
+    public function setParentCommentAuthor(User $user) {
+        $this->parentCommentAuthor = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the parent comment author.
+     *
+     * @return  User|null
+     */
+    public function getParentCommentAuthor() {
+        return $this->parentCommentAuthor;
     }
 }

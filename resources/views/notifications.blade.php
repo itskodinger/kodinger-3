@@ -32,10 +32,13 @@
             <div class="ml-5">
                 @switch($notification->kind)
                     @case('post_mention')
-                        <p class="text-lg">{{ $notification->from->name }} mentioned you in a Post.</p>
+                        <p class="text-lg">{{ $notification->from->name }} menyebut kamu di Postingan mu.</p>
                     @break
                     @case('post_comment')
-                        <p class="text-lg">{{ $notification->from->name }} added new comment on your Post.</p>
+                        <p class="text-lg">{{ $notification->from->name }} menambah komenter di Postingan mu.</p>
+                    @break
+                    @case('comment_reply')
+                        <p class="text-lg">{{ $notification->from->name }} membalas komentar mu.</p>
                     @break
 
                 @endswitch

@@ -2,6 +2,7 @@
 
 namespace App\Listeners\Post;
 
+use App\Contracts\Post\Concerns\HasParentComment;
 use App\Contracts\Post\Markdown\CommentAddedScenario;
 use App\Events\Post\PostCommentAdded;
 use App\Services\Pipeline\Post\CommentAddedNotificationPipeline\SendInternalPlatformNotification;
@@ -47,6 +48,11 @@ class DispatchPostCommentAddedNotification
                                     ->setPostAuthor($post->user)
                                     ->setComment($comment)
                                     ->setCommentAuthor($comment->user);
+
+        if( ! is_null($comment->reply) && $commentAddedScenario instanceof HasParentComment ) {
+            $commentAddedScenario->setParentComment($comment->reply)
+                                 ->setParentCommentAuthor($comment->reply->user);
+        }
 
         app(Pipeline::class)
             ->send($commentAddedScenario)
