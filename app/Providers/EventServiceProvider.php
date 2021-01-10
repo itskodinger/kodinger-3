@@ -13,6 +13,7 @@ use App\Events\Post\{
 };
 use App\Listeners\Post\{
     DispatchPostCommentAddedNotification,
+    DispatchPostCommentMentionNotifications,
     Discover\FetchDiscoverPostUrlPreview,
     Markdown\DispatchMentionNotifications,
 
@@ -37,6 +38,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         PostCommentAdded::class => [
             DispatchPostCommentAddedNotification::class,
+            DispatchPostCommentMentionNotifications::class
         ],
     ];
 

@@ -2,13 +2,15 @@
 
 namespace App\Listeners\Post;
 
+use Illuminate\Pipeline\Pipeline;
+use App\Events\Post\PostCommentAdded;
 use App\Contracts\Post\Concerns\HasParentComment;
 use App\Contracts\Post\Markdown\CommentAddedScenario;
-use App\Events\Post\PostCommentAdded;
+use App\Services\Pipeline\Post\CommentAddedNotificationPipeline\ParseMentionedUsers;
 use App\Services\Pipeline\Post\CommentAddedNotificationPipeline\SendInternalPlatformNotification;
-use Illuminate\Queue\InteractsWithQueue;
+use App\Services\Pipeline\Post\CommentAddedNotificationPipeline\SendMentionedInternalPlatformNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Pipeline\Pipeline;
+use Illuminate\Queue\InteractsWithQueue;
 
 class DispatchPostCommentAddedNotification
 {
@@ -19,7 +21,9 @@ class DispatchPostCommentAddedNotification
      * @var  array $pipes
      */
     protected $pipes = [
-        SendInternalPlatformNotification::class
+        ParseMentionedUsers::class,
+        SendInternalPlatformNotification::class,
+        SendMentionedInternalPlatformNotification::class
     ];
 
     /**

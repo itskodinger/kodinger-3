@@ -6,9 +6,11 @@ use App\User;
 use App\Post;
 use App\Comment;
 use App\Contracts\Post\Concerns\HasParentComment;
+use App\Contracts\Post\Concerns\WithMentionedUsers;
 use App\Contracts\Post\Markdown\CommentAddedScenario as CommentAddedScenarioContract;
 
-class CommentAddedScenario implements CommentAddedScenarioContract, HasParentComment {
+class CommentAddedScenario
+    implements CommentAddedScenarioContract, HasParentComment, WithMentionedUsers {
 
     /**
      * The Comment Author.
@@ -51,6 +53,13 @@ class CommentAddedScenario implements CommentAddedScenarioContract, HasParentCom
      * @var  Comment $parentComment
      */
     protected $parentComment;
+
+    /**
+     * Mentioned Users.
+     *
+     * @var array $mentionedUsers
+     */
+    protected $mentionedUsers = [];
 
     /**
      * Set the user who commented.
@@ -177,5 +186,27 @@ class CommentAddedScenario implements CommentAddedScenarioContract, HasParentCom
      */
     public function getParentCommentAuthor() {
         return $this->parentCommentAuthor;
+    }
+
+
+    /**
+     * Add user to mentioned list.
+     *
+     * @param  User $user
+     * @return self
+     */
+    public function addMentionedUser(User $user) {
+        $this->mentionedUsers[] = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get all mentioned users.
+     *
+     * @return array
+     */
+    public function getAllMentionedUsers() {
+        return $this->mentionedUsers;
     }
 }
