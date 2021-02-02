@@ -445,7 +445,7 @@ class PostService
 
 	public function random()
 	{
-		$posts = $this->model()->inRandomOrder()->whereNull('deleted_at')->whereStatus('publish');
+		$posts = $this->model()->withoutTrashed()->inRandomOrder()->where('status', 'publish');
 
 		return $posts->first();
 	}
