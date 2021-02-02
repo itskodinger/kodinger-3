@@ -445,9 +445,9 @@ class PostService
 
 	public function random()
 	{
-		$posts = $this->model()->inRandomOrder()->whereNull('deleted_at')->whereStatus('publish')->whereNull('type')->orWhere('type', 'markdown')->first();
+		$posts = $this->model()->inRandomOrder()->whereNull('deleted_at')->whereStatus('publish');
 
-		return $posts;
+		return $posts->first();
 	}
 
 	public function loved($take=5)
