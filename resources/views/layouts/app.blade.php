@@ -33,6 +33,7 @@
         g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
       })();
     </script>
+    <script data-ad-client="ca-pub-4892545911020275" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <!-- End Matomo Code -->
     @endif
 </head>
