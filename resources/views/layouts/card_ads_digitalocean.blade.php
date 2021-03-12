@@ -6,7 +6,7 @@
             <div class="mt-2 font-light text-gray-300">
                 Dapatkan saldo $100 dari DigitalOcean gratis sekarang!
             </div>
-            <a href="https://m.do.co/c/25ecba490a7e" target="_blank" class="inline-block px-6 py-2 mt-5 text-sm font-semibold tracking-wider uppercase bg-white border border-transparent rounded hover:bg-transparent hover:text-white hover:border-white" style="color: #0080FF">Daftar Sekarang!</a>
+            <a href="https://m.do.co/c/25ecba490a7e" target="_blank" class="inline-block px-6 py-2 mt-5 text-sm font-semibold tracking-wider uppercase bg-white border border-transparent rounded hover:bg-opacity-75 hover:text-white hover:border-white" style="color: #0080FF">Daftar Sekarang!</a>
         </div>
     </div>
 </div>
