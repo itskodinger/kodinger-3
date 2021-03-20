@@ -1222,6 +1222,7 @@ let api = {
 		const { data:posts } = res;
 
 		let wrapper = document.createDocumentFragment();
+        let adsSlot = 1
 
 		// append post element to the wrapper
 		let appendingTemplate = function(post) {
@@ -1251,7 +1252,12 @@ let api = {
 			// appending
 			wrapper.appendChild(element);
 
-            generateAds()
+
+
+            if( adsSlot > 0 && (Math.random() < .5) ) {
+                generateAds()
+                adsSlot--
+            }
 
 			return element;
 		}
@@ -1299,12 +1305,7 @@ let api = {
                 </div>
             `
 
-            let adsSlot = 1
-
-            if( adsSlot > 0 && (Math.random() < .5) ) {
-                wrapper.appendChild(str2dom(adsTemplate));
-                adsSlot--
-            }
+            wrapper.appendChild(str2dom(adsTemplate));
         }
 
 		let checkPost = function(post) {
