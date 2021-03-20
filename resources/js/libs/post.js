@@ -1285,7 +1285,7 @@ let api = {
                         <div class="embeddable-frame">
                             <!-- random-post-ads -->
                             <ins class="adsbygoogle"
-                                style="display:block"
+                                style="display:block;height: 100% !important;"
                                 data-ad-client="ca-pub-4892545911020275"
                                 data-ad-slot="8829019500"
                                 data-ad-format="auto"
