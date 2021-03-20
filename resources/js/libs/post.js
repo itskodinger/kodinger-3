@@ -1270,11 +1270,12 @@ let api = {
                                 <a class="text-lg" href="/itskodinger">
                                     Kodinger
                                 </a>
+
+                                <div class="rounded  inline-flex px-2 bg-gray-300 opacity-50 ">Iklan</div>
+
                             </h4>
                             <div class="-mx-1 flex items-center text-sm text-gray-500">
-                                <p class="mx-1">@itskodinger</p>
-                                <p class="mx-1">&bull;</p>
-                                <p class="mx-1 font-semibold">1 hari yang lalu</p>
+                                <p class="mx-1">@itskodinger_ads</p>
                             </div>
                         </div>
                     </div>
