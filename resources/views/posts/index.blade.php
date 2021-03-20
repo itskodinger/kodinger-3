@@ -1,7 +1,7 @@
 @extends('layouts.dashboard', ['title' => 'Posts'])
 
 @section('dash_content')
-	<h2 class="mb-2 text-gray-600 text-lg flex items-center">Semua Content
+	<h2 class="flex items-center mb-2 text-lg text-gray-600">Semua Content
         <span class="ml-6">
             <a class="text-indigo-600" href="@current(['type' => 'link'])">Discover</a> |
             <a class="text-indigo-600" href="@current(['type' => 'content'])">Content</a> |
@@ -11,7 +11,7 @@
 			Tambah Konten
 		@endbutton --}}
 	</h2>
-	<div class="bg-white rounded border-2 border-gray-200">
+	<div class="bg-white border-2 border-gray-200 rounded">
     	@foreach($posts as $post)
     	<div class="p-4 border-b border-gray-200">
     		<div class="items-center break-all">
@@ -20,7 +20,7 @@
         		</div>
         		{{ $post->title ?? $post->raw_pages }}
     		</div>
-    		<div class="mt-2 -mx-3 text-gray-600 flex">
+    		<div class="flex mt-2 -mx-3 text-gray-600">
         		<div class="mx-3">{{ $post->created_at->diffForHumans() }}</div>
         		@if($post->status == 'draft')
         		<a class="mx-3 text-green-500" href="@route('post.publish', $post->id)">Publish</a>

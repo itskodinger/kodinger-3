@@ -1251,8 +1251,60 @@ let api = {
 			// appending
 			wrapper.appendChild(element);
 
+            generateAds()
+
 			return element;
 		}
+
+        let generateAds = function() {
+
+            const adsTemplate = `
+
+                <div class="bg-white rounded border border-gray-200 mb-10">
+                    <div class="flex p-6 items-center">
+                        <a href="/itskodinger">
+                            <img class=" w-12 rounded border" src="https://kodinger-cdn.sgp1.digitaloceanspaces.com/public/avatar/460/35509766.png">
+                        </a>
+                        <div class="ml-3">
+                            <h4 class="font-semibold">
+                                <a class="text-lg" href="/itskodinger">
+                                    Kodinger
+                                </a>
+                            </h4>
+                            <div class="-mx-1 flex items-center text-sm text-gray-500">
+                                <p class="mx-1">@itskodinger</p>
+                                <p class="mx-1">&bull;</p>
+                                <p class="mx-1 font-semibold">1 hari yang lalu</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="md:border border-b border-t md:rounded md:mx-6 mb-5">
+
+                        <div class="embeddable-frame">
+                            <!-- random-post-ads -->
+                            <ins class="adsbygoogle"
+                                style="display:block"
+                                data-ad-client="ca-pub-4892545911020275"
+                                data-ad-slot="8829019500"
+                                data-ad-format="auto"
+                                data-full-width-responsive="true"></ins>
+                            <script>
+                                (adsbygoogle = window.adsbygoogle || []).push({});
+                            </script>
+                        </div>
+
+                    </div>
+                </div>
+            `
+
+            let adsSlot = 1
+
+            if( adsSlot > 0 && (Math.random() < .5) ) {
+                wrapper.appendChild(str2dom(adsTemplate));
+                adsSlot--
+            }
+        }
 
 		let checkPost = function(post) {
 			if("post" in post) {
@@ -1277,7 +1329,9 @@ let api = {
 					}
 
 					appendingTemplate(post);
+
 				});
+
 			}
 
 			if(direct) {
