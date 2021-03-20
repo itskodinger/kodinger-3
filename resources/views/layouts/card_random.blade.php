@@ -8,7 +8,6 @@ $selectedTemplate = $templates[array_rand($templates)];
 @endphp
 
 <div class="rounded">
-@include('layouts.card_ads_adsense')
     @if($random !== null && ! $showAdsInstead)
         <a href="@route('post.show', [$random->user->username, $random->slug])">
             <img src="{{ $random->thumbnail }}" alt="{{ $random->title }}" class="rounded">
