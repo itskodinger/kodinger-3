@@ -2324,7 +2324,7 @@ class Form extends Component {
 										        <h2 className="mb-4 text-xl font-semibold text-indigo-600">Tautan <span className="text-sm font-normal text-gray-600">(Optional)</span></h2>
 										        <p className="mt-2 mb-6 leading-relaxed text-gray-600">Sertakan tautan referensi yang relevan dengan konten, bisa tautan ke halaman resmi situs web, tutorial, <code>code playground</code>, atau yang lainnya. <a href={routes.docs + '/content#form-links'} className="text-indigo-600 border-b border-indigo-600" target="_blank">Pelajari selengkapnya</a> tentang tautan.</p>
 
-										        <div className="flex flex-no-wrap mb-4 overflow-x-auto">
+										        <div className="flex mb-4 overflow-x-auto flex-nowrap">
 										        	{ Object.keys(key2str).map((name, index) => {
 											        	return (
 											        		<div
