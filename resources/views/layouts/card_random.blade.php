@@ -3,7 +3,7 @@
 @php
 $random = $post->random();
 $showAdsInstead = (bool) mt_rand(0, 1);
-$templates = ['layouts.card_ads_adsense', 'layouts.card_ads_digitalocean'];
+$templates = ['layouts.card_ads_digitalocean'];
 $selectedTemplate = $templates[array_rand($templates)];
 @endphp
 
