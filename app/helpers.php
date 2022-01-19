@@ -522,7 +522,7 @@ function supported_links()
 		[
 			'name' => 'trakteer',
 			'display_name' => 'Trakteer',
-			'domain' => 'trakteer.com',
+			'domain' => 'trakteer.id',
 			'eg' => 'https://trakteer.id/username'
 		],
 	];
